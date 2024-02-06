@@ -48,14 +48,14 @@ Additional metadata and TLV record data can be attached to this endpoint as well
   Open metadata object property
 </ParamField>
 
-<ParamField initialValue={[{ type: 123, value: 'customeValue' }]} body="tlvRecords" type="array">
+<ParamField initialValue={[{ type: '123456', value: 'customeValue' }]} body="tlvRecords" type="array">
   List of TLV records
   <Expandable title="tlvRecord" defaultOpen>
-    <ParamField body="type" type="number" initialValue={123}>
-      type of the TLV record
+    <ParamField body="type" type="string" initialValue={'123456'}>
+      type of the TLV record (numeric string)
     </ParamField>
     <ParamField body="value" type="string" initialValue="myTLVRecordValue">
-      value of the TLV record
+      value of the TLV record (hex encoded string)
     </ParamField>
   </Expandable>
 </ParamField>
