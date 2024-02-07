@@ -51,8 +51,8 @@ Additional metadata and TLV record data can be attached to this endpoint as well
 <ParamField initialValue={[{ type: '123456', value: 'customeValue' }]} body="tlvRecords" type="array">
   List of TLV records
   <Expandable title="tlvRecord" defaultOpen>
-    <ParamField body="type" type="string" initialValue={'123456'}>
-      type of the TLV record (numeric string)
+    <ParamField body="type" type="number" initialValue={123456}>
+      type of the TLV record
     </ParamField>
     <ParamField body="value" type="string" initialValue="myTLVRecordValue">
       value of the TLV record (hex encoded string)
