@@ -46,22 +46,79 @@ https://yourserver.com/api/v1/zbd/callback
 Below is a set of example payloads for the main APIs available:
 
 #### Charges
-
-<Info>Coming soon.</Info>
+```json
+{
+    "amount":"1000",
+    "callbackUrl":"<your_callback_url",
+    "description":"Test charge",
+    "id":"<id>",
+    "internalId":null,
+    "status":"expired",
+    "unit":"msats"
+}
+```
 
 
 #### Payments
-
-<Info>Coming soon.</Info>
+```json
+{
+    "amount":"10000",
+    "confirmedAt":"2024-02-06T11:51:26.985Z",
+    "description":"Test payment",
+    "fee":"0",
+    "id":"<payment_id>",
+    "internalId":null,
+    "invoice":"<your_invoice>",
+    "preimage":"<preimage>",
+    "processedAt":"2024-02-06T11:51:26.985Z",
+    "status":"completed",
+    "unit":"msats"
+}
+```
 
 
 #### Withdrawals 
-
-<Info>Coming soon.</Info>
+```json
+{
+    "amount":"10000",
+    "callbackUrl":"<your_callback_url>",
+    "createdAt":"2024-02-06T12:02:08.166Z",
+    "description":"Test withdrawal",
+    "expiresAt":"2024-02-06T12:05:08.164Z",
+    "fee":"0",
+    "id":"<id>",
+    "internalId":null,
+    "invoice":
+    {
+        "fastRequest":"<fastRequest>",
+        "fastUri":"<fastUri",
+        "request":"<request>",
+        "uri":"<uri>"
+    },
+    "status":"completed",
+    "unit":"msats"
+}
+```
 
 #### Lightning Address
-
-<Info>Coming soon.</Info>
+```json
+{
+    "amount":"1000",
+    "callbackUrl":"<your_callback_url",
+    "confirmedAt":"2024-02-06T12:11:08.308Z",
+    "createdAt":"2024-02-06T12:11:07.700Z",
+    "description":"ZEBEDEE Payment",
+    "fee":"0",
+    "id":"<id>",
+    "internalId":null,
+    "invoice":"<invoice>",
+    "preimage":"<preimage",
+    "status":"completed",
+    "transactionId":"<transactionId>",
+    "unit":"msats",
+    "walletId":"<walletId>"
+}
+```
 
 ## Security / Integrity
 
