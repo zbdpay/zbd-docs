@@ -261,7 +261,7 @@
       "pages": [
         "courses/build-bitcoin-game",
         {
-          "group": "Game Dev Security",
+          "group": "Game Dev: Security",
           "pages": [
             "courses/game-security/introduction",
             "courses/game-security/insecure-game",
