@@ -7,7 +7,7 @@
   },
   "modeToggle": {
     "default": "light",
-    "isHidden": true
+    "isHidden": false
   },
   "metadata": {
     "og:image": "https://cdn.zbd.gg/zbd/api-seo.png"
