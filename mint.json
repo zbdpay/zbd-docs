@@ -281,30 +281,6 @@
       "pages": ["courses/nostr-101", "courses/nostr-relay"]
     },
     {
-      "group": "Web Development",
-      "pages": [
-        {
-          "group": "Web Dev 101",
-          "pages": [
-            "courses/webdev101/introduction",
-            "courses/webdev101/html-css",
-            "courses/webdev101/javascript",
-            "courses/webdev101/api"
-          ]
-        },
-        {
-          "group": "Web Dev 201",
-          "pages": [
-            "courses/webdev201/introduction",
-            "courses/webdev201/networking",
-            "courses/webdev201/typescript",
-            "courses/webdev201/react",
-            "courses/webdev201/sql"
-          ]
-        }
-      ]
-    },
-    {
       "group": "API Reference",
       "pages": [
         "api-reference/introduction",
