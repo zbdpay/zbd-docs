@@ -194,7 +194,7 @@
     },
     {
       "group": "Resources",
-      "pages": ["docs/examples", "docs/sdk", "docs/integrations", "docs/unsupported-regions"]
+      "pages": ["docs/examples", "docs/sdk", "docs/integrations", "docs/global-support"]
     },
     {
       "group": "Knowledge Base",
