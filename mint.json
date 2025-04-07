@@ -33,10 +33,6 @@
   },
   "topbarLinks": [
     {
-      "name": "Bounties",
-      "url": "https://console.algora.io/org/zbd/bounties?status=open"
-    },
-    {
       "name": "API Status",
       "url": "https://status.zbd.dev/"
     },
@@ -171,23 +167,6 @@
         {
           "group": "ZBD App",
           "pages": ["docs/zbd-app/download", "docs/zbd-app/uri-schemes"]
-        },
-        {
-          "group": "ZBD Shield",
-          "pages": [
-            "docs/zbd-shield/introduction",
-            "docs/zbd-shield/access",
-            "docs/zbd-shield/apikey",
-            "docs/zbd-shield/connect",
-            "docs/zbd-shield/faq"
-          ]
-        },
-        {
-          "group": "ZBD Streamer",
-          "pages": [
-            "docs/zbd-streamer/introduction",
-            "docs/zbd-streamer/customization"
-          ]
         },
         "docs/nbd"
       ]
@@ -477,6 +456,10 @@
     {
       "source": "/knowledge-base/payins/zbd-user",
       "destination": "/knowledge-base/payins/zbd-gamertag"
+    },
+    {
+      "source": "/docs/unsupported-regions",
+      "destination": "/docs/global-support"
     }
   ]
 }
