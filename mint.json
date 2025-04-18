@@ -173,7 +173,7 @@
     },
     {
       "group": "Resources",
-      "pages": ["docs/examples", "docs/sdk", "docs/integrations", "docs/global-support"]
+      "pages": ["docs/openapi", "docs/examples", "docs/sdk", "docs/integrations", "docs/global-support"]
     },
     {
       "group": "Knowledge Base",
