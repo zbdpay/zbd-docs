@@ -6,8 +6,7 @@
     "light": "/logo/zbd.svg"
   },
   "modeToggle": {
-    "default": "light",
-    "isHidden": true
+    "default": "light"
   },
   "metadata": {
     "og:image": "https://cdn.zbd.gg/zbd/api-seo.png"
@@ -48,6 +47,16 @@
   "anchors": [
     {
       "icon": "terminal",
+      "name": "Getting Started",
+      "url": "getting-started"
+    },
+    {
+      "icon": "terminal",
+      "name": "Payments",
+      "url": "payments"
+    },
+    {
+      "icon": "terminal",
       "name": "API Reference",
       "url": "api-reference"
     },
@@ -60,6 +69,16 @@
       "icon": "play",
       "name": "Courses",
       "url": "courses"
+    },
+    {
+      "icon": "play",
+      "name": "ZBD Payments",
+      "url": "payments"
+    },
+    {
+      "icon": "play",
+      "name": "ZBD Rewards SDK",
+      "url": "rewards"
     }
   ],
   "navigation": [
@@ -222,8 +241,8 @@
       "pages": ["knowledge-base/glossary", "knowledge-base/lightning-network"]
     },
     {
-      "group": "Courses",
-      "pages": ["courses/introduction"]
+      "group": "ZBD Payments",
+      "pages": ["payments/introduction"]
     },
     {
       "group": "Bitcoin Lightning",

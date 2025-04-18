@@ -1,0 +1,113 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "ZBD Documentation",
+  "description": "ZBD is the global Bitcoin payments API for app and game developers. Integrate ZBD into your app or game to enable multicurrency payments, rewards, and payouts in minutes.",
+  "colors": {
+    "primary": "#9563FF",
+    "light": "#AE87FF",
+    "dark": "#0D001D"
+  },
+  "banner": {
+    "content": "🚀 ZBD Rewards SDK is now in public beta! [Learn more](https://zbd.gg/blog/zbd-rewards-sdk-beta)"
+  },
+  "favicon": "/favicon.png",
+  "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Introduction",
+          "href": "https://zbd.gg/introduction"
+        },
+        {
+          "anchor": "Introduction",
+          "href": "https://zbd.gg/introduction"
+        },
+        {
+          "anchor": "Introduction",
+          "href": "https://zbd.gg/introduction"
+        }
+      ]
+    },
+    "tabs": [
+      {
+        "tab": "Getting Started",
+        "groups": [
+          {
+            "group": "Payments",
+            "pages": [
+              "docs/introduction",
+              "docs/introduction",
+              "docs/introduction"
+            ]
+          },
+          {
+            "group": "Rewards",
+            "pages": [
+              "docs/introduction",
+              "docs/introduction",
+              "docs/introduction"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "SDKs",
+        "groups": [
+          {
+            "group": "Payments",
+            "pages": [
+              "docs/introduction",
+              "docs/introduction",
+              "docs/introduction"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Blog",
+        "href": "https://zbd.gg/blog"
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/zbd.svg",
+    "dark": "/logo/zbd.svg"
+  },
+  "appearance": {
+    "default": "system"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "API Status",
+        "href": "https://status.zbd.dev/"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/zebedeeio"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Log In",
+      "href": "https://dashboard.zebedee.io"
+    }
+  },
+  "search": {
+    "prompt": "Search ZBD Documentation"
+  },
+  "seo": {
+    "metatags": {
+      "og:image": "https://cdn.zbd.gg/zbd/api-seo.png"
+    },
+    "indexing": "navigable"
+  },
+  "footer": {
+    "socials": {
+      "twitter": "https://x.com/zebedeeio",
+      "github": "https://github.com/zebedeeio",
+      "discord": "https://discord.gg/zbd"
+    }
+  }
+}
