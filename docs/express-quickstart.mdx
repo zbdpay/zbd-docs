@@ -37,22 +37,22 @@ pnpm add express
 
 </CodeGroup>
 
-## 3. Install @zbd/node Node.js SDK
+## 3. Install @zbddev/payments-sdk Node.js SDK
 
 Inside your Express.js 
 
 <CodeGroup>
 
 ```bash yarn
-yarn add @zbd/node
+yarn add @zbddev/payments-sdk
 ```
 
 ```bash npm
-npm install @zbd/node
+npm install @zbddev/payments-sdk
 ```
 
 ```bash pnpm
-pnpm add @zbd/node
+pnpm add @zbddev/payments-sdk
 ```
 
 </CodeGroup>
@@ -63,10 +63,12 @@ Create a new file called `index.js` and add the following code:
 
 ```js
 import express from "express";
-import { zbd } from "@zbd/node";
+import ZbdPayments from '@zbddev/payments-sdk';
 
-const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8';
-const ZBD = new zbd(ZBD_API_KEY);
+const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8'; // dummy key
+const client = new ZbdPayments({
+  apikey: ZBD_API_KEY,
+});
 
 // Create Express app
 const app = express();
@@ -74,10 +76,10 @@ const app = express();
 // Creating a Bitcoin Lightning payment request
 app.get("/request", async (req, res) => {
   try {
-    // @ts-ignore
-    const data = await ZBD.createCharge({
-      amount: "100000", // 100 satoshis (100,000 msats)
-      description: "Express + ZBD!",
+    const data = await client.lightningCharges.create({
+      amount: '100000',
+      callbackUrl: 'https://your-app.com/zbd-callback',
+      description: 'Express + ZBD!',
     });
     res.status(200).json({ data });
   } catch (error) {
@@ -88,8 +90,8 @@ app.get("/request", async (req, res) => {
 // Send a payment to a Bitcoin Lightning Address
 app.get("/send", async (req, res) => {
   try {
-    const data = await ZBD.sendLightningAddressPayment({
-      lnAddress: "andre@zbd.gg", // Who is the recipient?
+    const data = await client.lightningAddress.sendPayment({
+      lnAddress: "andreneves@zbd.gg", // Who is the recipient?
       amount: "100000", // 100 satoshis (100,000 msats)
       comment: "Express + ZBD!",
     });

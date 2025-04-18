@@ -21,7 +21,7 @@ The ZBD + Next.js Playground Starter Kit is an application codebase that allows 
   <Card title="Deploy to Vercel" icon={<svg width="30" height="25" viewBox="0 0 76 65" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#000000"/></svg>} color="#000000" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fzebedeeio%2Fnextjs-zebedee-starter&env=ZBD_API_KEY&envDescription=Your%20ZBD%20project%20API%20key&demo-title=ZBD%20%2B%20Next.js%20Starter&demo-description=Starter%20kit%20for%20using%20ZBD%20API%20with%20Next.js%20fullstack%20applications&demo-url=https%3A%2F%2Fnextjs-zebedee-starter.vercel.app%2F&demo-image=https%3A%2F%2Fi.imgur.com%2FNf8wRgv.png">
     1-click deploy your own instance of the ZBD Playground Starter Kit.
   </Card>
-  <Card title="@zbd/node SDK" icon="node-js" color="#000000" href="https://node.zbd.dev/">
+  <Card title="@zbddev/payments-sdk SDK" icon="node-js" color="#000000" href="https://node.zbd.dev/">
     View detailed documentation for the Node.js SDK for ZBD API.
   </Card>
 </CardGroup>
@@ -41,22 +41,22 @@ Start with a brand new Next.js project. To begin run the following command and w
 npx create-next-app@latest
 ```
 
-### 2. Install @zbd/node Node.js SDK
+### 2. Install @zbddev/payments-sdk Node.js SDK
 
 Install ZBD:
 
 <CodeGroup>
 
 ```bash yarn
-yarn add @zbd/node
+yarn add @zbddev/payments-sdk
 ```
 
 ```bash npm
-npm install @zbd/node
+npm install @zbddev/payments-sdk
 ```
 
 ```bash pnpm
-pnpm add @zbd/node
+pnpm add @zbddev/payments-sdk
 ```
 
 </CodeGroup>
@@ -67,16 +67,19 @@ Create a new file `/app/api/receive/route.ts` and add the following code to crea
 
 ```js
 import { NextResponse } from 'next/server';
-import { zbd } from "@zbd/node";
+import ZbdPayments from '@zbddev/payments-sdk';
 
-const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8';
-const ZBD = new zbd(ZBD_API_KEY);
+const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8'; // dummy key
+const client = new ZbdPayments({
+  apikey: ZBD_API_KEY,
+});
 
 export async function POST() {
   try {
-    const data = await ZBD.createCharge({
-      amount: "100000", // 100 satoshis (100,000 msats)
-      description: "Next.js + ZBD!",
+    const data = await client.lightningCharges.create({
+      amount: '100000',
+      callbackUrl: 'https://your-app.com/zbd-callback',
+      description: 'Next.js + ZBD!',
     });
 
     return NextResponse.json(data);
@@ -90,15 +93,17 @@ Then create a new file `/app/api/send/route.ts` and add the following code to cr
 
 ```js
 import { NextResponse } from 'next/server';
-import { zbd } from "@zbd/node";
+import ZbdPayments from '@zbddev/payments-sdk';
 
 const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8';
-const ZBD = new zbd(ZBD_API_KEY);
+const client = new ZbdPayments({
+  apikey: ZBD_API_KEY,
+});
 
 export async function POST() {
   try {
-    const data = await ZBD.sendLightningAddressPayment({
-      lnAddress: "andre@zbd.gg", // Who is the recipient?
+    const data = await client.lightningAddress.sendPayment({
+      lnAddress: "andreneves@zbd.gg", // Who is the recipient?
       amount: "100000", // 100 satoshis (100,000 msats)
       comment: "Next.js + ZBD!",
     });
