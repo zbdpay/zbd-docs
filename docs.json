@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "maple",
   "name": "ZBD Documentation",
   "description": "ZBD is the global Bitcoin payments API for app and game developers. Integrate ZBD into your app or game to enable multicurrency payments, rewards, and payouts in minutes.",
   "colors": {
@@ -16,16 +16,16 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Introduction",
-          "href": "https://zbd.gg/introduction"
+          "anchor": "ZBD Rewards SDK v2",
+          "href": "payments/intro"
         },
         {
-          "anchor": "Introduction",
-          "href": "https://zbd.gg/introduction"
+          "anchor": "ZBD Onramp",
+          "href": "payments/intro"
         },
         {
-          "anchor": "Introduction",
-          "href": "https://zbd.gg/introduction"
+          "anchor": "ZBD App",
+          "href": "app/download"
         }
       ]
     },
@@ -34,45 +34,92 @@
         "tab": "Getting Started",
         "groups": [
           {
-            "group": "Payments",
+            "group": "ZBD",
             "pages": [
-              "docs/introduction",
-              "docs/introduction",
-              "docs/introduction"
+              "base/introduction"
             ]
           },
           {
             "group": "Rewards",
             "pages": [
-              "docs/introduction",
-              "docs/introduction",
-              "docs/introduction"
+              "base/introduction",
+              "base/introduction",
+              "base/introduction"
             ]
           }
         ]
       },
       {
-        "tab": "SDKs",
+        "tab": "Payments",
         "groups": [
           {
-            "group": "Payments",
+            "group": "Overview",
             "pages": [
-              "docs/introduction",
-              "docs/introduction",
-              "docs/introduction"
+              "payments/intro"
+            ]
+          },
+          {
+            "group": "Login with ZBD",
+            "pages": [
+              "oauth2/intro",
+              "oauth2/intro",
+              "oauth2/intro"
             ]
           }
         ]
       },
       {
-        "tab": "Blog",
-        "href": "https://zbd.gg/blog"
+        "tab": "Rewards",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Rewards2",
+            "pages": [
+              "rewards/intro",
+              "rewards/intro",
+              "rewards/intro"
+            ]
+          },
+          {
+            "group": "Login with ZBD22",
+            "pages": [
+              "oauth2/intro",
+              "oauth2/intro",
+              "oauth2/intro"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "App",
+        "groups": [
+          {
+            "group": "ZBD App",
+            "pages": [
+              "app/download",
+              "app/uri-schemes"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Help",
+        "groups": [
+          {
+            "group": "Help",
+            "pages": [
+              "help/glossary",
+              "help/global-support",
+              "help/lightning-network"
+            ]
+          }
+        ]
       }
     ]
   },
   "logo": {
-    "light": "/logo/zbd.svg",
-    "dark": "/logo/zbd.svg"
+    "light": "/img/logo/zbd.svg",
+    "dark": "/img/logo/zbd.svg"
   },
   "appearance": {
     "default": "system"
