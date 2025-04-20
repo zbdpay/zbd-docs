@@ -1,50 +1,81 @@
 ---
 title: 'Introduction'
-description: 'Learn about the robust ZBD Dev Dashboard and its functionalities.'
+description: 'ZBD is the global Bitcoin payments API for developers.'
 ---
 
-<Frame caption="ZBD Dev Dashboard">
-  <img src="/img/v2/devdash/devdash1.png" alt="ZBD Dev Dashboard" />
-</Frame>
-<br />
+## Gaming 101
 
-## What is the Dev Dashboard?
+Integrate ZBD into your game to enable Bitcoin payments, rewards, and payouts in minutes.
 
-The [ZBD Dev Dashboard](https://dashboard.zebedee.io) is your portal for integrating with next-gen payments via the ZBD API.
-
-It allows you to:
-
-*   Manage a fully-programmable Bitcoin Lightning Network wallet
-*   Create and manage your Projects
-*   Access API key(s) to interact with our powerful payment endpoints
-*   Oversee transaction activity
-*   Create single-time vouchers that you can share with others
-*   And more!
-
-## Who is it for?
-
-The ZBD Dev Dashboard is for everyone, whether you’re a global payments provider, a Bitcoin enthusiast, or somewhere in between.
-
-*   Fintech and Payment Providers:
-    *   Build with peace of mind. Focus on your products while we ensure regulatory and compliance coverage.
-    *   Instantly serve customers in 100+ countries. With digital-native payments, borders cease to exist.
-    *   Process transactions as small as $0.0002 with instant settlement and lower fees than any other rail.
-*   For Game and Application Developers:
-    *   When players get Bitcoin rewards just for playing, they keep coming back for more. Every. Single. Day.
-    *   Create highly innovative experiences designed around nanopayments. Your imagination is the only limit.
-    *   Pump up profitability with better user engagement and introduce brand new monetization opportunities with peer to peer transactions.
-*   For Developers
-    *   Monetize your application by integrating money into your product or service
-    *   Play with the most advanced payment rails in the world
-*   For Bitcoin Engineers
-    *   Familiarize yourself with the Lightning Network
-    *   Leverage Lightning API that opens up instant global payments
-*   For Nostr Enthusiasts
-    *   Monetize your Nostr relay by adding ZBD paywall
-
-
-<CardGroup cols={1}>
-  <Card title="Know what you want to build?" icon="arrow-up-right-from-square" color="#000000" href="https://dashboard.zebedee.io/signup">
-    Create a ZBD Developer account today!
+<CardGroup cols={2}>
+  <Card title="Rewarded Play" icon="gamepad" color="#3C873A" href="/courses/rewarded-play/introduction">
+    Best practices and UX flows for building real-money rewards for players.
+  </Card>
+  <Card title="In-Game Bitcoin Rewards" color="#ff9900" icon={"bitcoin"} href="/courses/rewarded-play/integrating-player-rewards-in-a-game">
+    Learn how to massively engage your users with Bitcoin rewards.
+  </Card>
+  <Card title="Send to Gamertag API" icon={"bolt"} href="/api-reference/zbd-gamertag/send">
+    0-to-Bitcoin in minutes -- API docs for sending to ZBD Gamertags.
+  </Card>
+  <Card title="Send Bitcoin to Email" color="black" icon={"envelope"} href="/api-reference/email/send">
+    Easiest way to reward your players with Bitcoin -- through emails!
+  </Card>
+  <Card title="Game Security 101" color="#00c2ff" icon={"shield-halved"} href="/courses/game-security/introduction">
+    Video walkthrough on how to properly secure your ZBD-integrated game.
+  </Card>
+  <Card title="Adding Bitcoin to Bomberman" color="red" icon={"ghost"} href="/courses/build-bitcoin-game">
+    How to add Bitcoin payins/payouts to a sample Bomberman game.
   </Card>
 </CardGroup>
+
+## Quick Start
+
+Learn how to get ZBD set up in your favorite stack.
+
+<CardGroup cols={2}>
+  <Card title="Node.js Quick Start" icon="node-js" color="#3C873A" href="/docs/nodejs-quickstart"></Card>
+  <Card title="Next.js Playground Starter" icon={<svg className="h-6 w-6" height="1024pt" viewBox=".5 -.2 1023 1024.1" width="1024pt" xmlns="http://www.w3.org/2000/svg"><path d="m478.5.6c-2.2.2-9.2.9-15.5 1.4-145.3 13.1-281.4 91.5-367.6 212-48 67-78.7 143-90.3 223.5-4.1 28.1-4.6 36.4-4.6 74.5s.5 46.4 4.6 74.5c27.8 192.1 164.5 353.5 349.9 413.3 33.2 10.7 68.2 18 108 22.4 15.5 1.7 82.5 1.7 98 0 68.7-7.6 126.9-24.6 184.3-53.9 8.8-4.5 10.5-5.7 9.3-6.7-.8-.6-38.3-50.9-83.3-111.7l-81.8-110.5-102.5-151.7c-56.4-83.4-102.8-151.6-103.2-151.6-.4-.1-.8 67.3-1 149.6-.3 144.1-.4 149.9-2.2 153.3-2.6 4.9-4.6 6.9-8.8 9.1-3.2 1.6-6 1.9-21.1 1.9h-17.3l-4.6-2.9c-3-1.9-5.2-4.4-6.7-7.3l-2.1-4.5.2-200.5.3-200.6 3.1-3.9c1.6-2.1 5-4.8 7.4-6.1 4.1-2 5.7-2.2 23-2.2 20.4 0 23.8.8 29.1 6.6 1.5 1.6 57 85.2 123.4 185.9s157.2 238.2 201.8 305.7l81 122.7 4.1-2.7c36.3-23.6 74.7-57.2 105.1-92.2 64.7-74.3 106.4-164.9 120.4-261.5 4.1-28.1 4.6-36.4 4.6-74.5s-.5-46.4-4.6-74.5c-27.8-192.1-164.5-353.5-349.9-413.3-32.7-10.6-67.5-17.9-106.5-22.3-9.6-1-75.7-2.1-84-1.3zm209.4 309.4c4.8 2.4 8.7 7 10.1 11.8.8 2.6 1 58.2.8 183.5l-.3 179.8-31.7-48.6-31.8-48.6v-130.7c0-84.5.4-132 1-134.3 1.6-5.6 5.1-10 9.9-12.6 4.1-2.1 5.6-2.3 21.3-2.3 14.8 0 17.4.2 20.7 2z"></path><path d="m784.3 945.1c-3.5 2.2-4.6 3.7-1.5 2 2.2-1.3 5.8-4 5.2-4.1-.3 0-2 1-3.7 2.1zm-6.9 4.5c-1.8 1.4-1.8 1.5.4.4 1.2-.6 2.2-1.3 2.2-1.5 0-.8-.5-.6-2.6 1.1zm-5 3c-1.8 1.4-1.8 1.5.4.4 1.2-.6 2.2-1.3 2.2-1.5 0-.8-.5-.6-2.6 1.1zm-5 3c-1.8 1.4-1.8 1.5.4.4 1.2-.6 2.2-1.3 2.2-1.5 0-.8-.5-.6-2.6 1.1zm-7.6 4c-3.8 2-3.6 2.8.2.9 1.7-.9 3-1.8 3-2 0-.7-.1-.6-3.2 1.1z"></path></svg>} href="/docs/nextjs-quickstart"></Card>
+  <Card title="Send/Receive Bitcoin on Vercel" icon={<svg width="30" height="25" viewBox="0 0 76 65" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="#000000"/></svg>} href="/docs/vercel-edge-functions/send" />
+  <Card title="Send/Receive Bitcoin with Supabase" icon={<svg width="28" height="30" viewBox="0 0 109 113" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M63.7076 110.284C60.8481 113.885 55.0502 111.912 54.9813 107.314L53.9738 40.0627L99.1935 40.0627C107.384 40.0627 111.952 49.5228 106.859 55.9374L63.7076 110.284Z" fill="url(#paint0_linear)"/><path d="M63.7076 110.284C60.8481 113.885 55.0502 111.912 54.9813 107.314L53.9738 40.0627L99.1935 40.0627C107.384 40.0627 111.952 49.5228 106.859 55.9374L63.7076 110.284Z" fill="url(#paint1_linear)" fillOpacity="0.2"/><path d="M45.317 2.07103C48.1765 -1.53037 53.9745 0.442937 54.0434 5.041L54.4849 72.2922H9.83113C1.64038 72.2922 -2.92775 62.8321 2.1655 56.4175L45.317 2.07103Z" fill="#3ECF8E"/><defs><linearGradient id="paint0_linear" x1="53.9738" y1="54.974" x2="94.1635" y2="71.8295" gradientUnits="userSpaceOnUse"><stop stopColor="#249361"/><stop offset="1" stopColor="#3ECF8E"/></linearGradient><linearGradient id="paint1_linear" x1="36.1558" y1="30.578" x2="54.4844" y2="65.0806" gradientUnits="userSpaceOnUse"><stop/><stop offset="1" stopOpacity="0"/></linearGradient></defs></svg>} href="/docs/vercel-edge-functions/send" />
+  <Card title="Rust Quick Start" icon="rust" color="#AA2704" href="/docs/rust-quickstart"></Card>
+  <Card title="Add Bitcoin Rewards to your Game" icon="gamepad" color="#32d615" href="/courses/rewarded-play/integrating-player-rewards-in-a-game"></Card>
+  <Card title="Add ZBD Login to a Next.js app" icon="unlock" color="#9563FF" href="/docs/zbd-login/integrations/next"></Card>
+  {/* <Card title="C# Quick Start" icon="csharp" href="/docs/csharp-quickstart" icon={<svg width="26px" height="26px" viewBox="0 0 256 288" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid"><g><path d="M255.569,84.452376 C255.567,79.622376 254.534,75.354376 252.445,71.691376 C250.393,68.089376 247.32,65.070376 243.198,62.683376 C209.173,43.064376 175.115,23.505376 141.101,3.86637605 C131.931,-1.42762395 123.04,-1.23462395 113.938,4.13537605 C100.395,12.122376 32.59,50.969376 12.385,62.672376 C4.064,67.489376 0.015,74.861376 0.013,84.443376 C0,123.898376 0.013,163.352376 0,202.808376 C0,207.532376 0.991,211.717376 2.988,215.325376 C5.041,219.036376 8.157,222.138376 12.374,224.579376 C32.58,236.282376 100.394,275.126376 113.934,283.115376 C123.04,288.488376 131.931,288.680376 141.104,283.384376 C175.119,263.744376 209.179,244.186376 243.209,224.567376 C247.426,222.127376 250.542,219.023376 252.595,215.315376 C254.589,211.707376 255.582,207.522376 255.582,202.797376 C255.582,202.797376 255.582,123.908376 255.569,84.452376" fill="#A179DC" fillRule="nonzero"></path><path d="M128.182,143.241376 L2.988,215.325376 C5.041,219.036376 8.157,222.138376 12.374,224.579376 C32.58,236.282376 100.394,275.126376 113.934,283.115376 C123.04,288.488376 131.931,288.680376 141.104,283.384376 C175.119,263.744376 209.179,244.186376 243.209,224.567376 C247.426,222.127376 250.542,219.023376 252.595,215.315376 L128.182,143.241376" fill="#280068" fillRule="nonzero"></path><path d="M255.569,84.452376 C255.567,79.622376 254.534,75.354376 252.445,71.691376 L128.182,143.241376 L252.595,215.315376 C254.589,211.707376 255.58,207.522376 255.582,202.797376 C255.582,202.797376 255.582,123.908376 255.569,84.452376" fill="#390091" fillRule="nonzero"></path><path d="M201.892326,116.294008 L201.892326,129.767692 L215.36601,129.767692 L215.36601,116.294008 L222.102852,116.294008 L222.102852,129.767692 L235.576537,129.767692 L235.576537,136.504534 L222.102852,136.504534 L222.102852,149.978218 L235.576537,149.978218 L235.576537,156.71506 L222.102852,156.71506 L222.102852,170.188744 L215.36601,170.188744 L215.36601,156.71506 L201.892326,156.71506 L201.892326,170.188744 L195.155484,170.188744 L195.155484,156.71506 L181.6818,156.71506 L181.6818,149.978218 L195.155484,149.978218 L195.155484,136.504534 L181.6818,136.504534 L181.6818,129.767692 L195.155484,129.767692 L195.155484,116.294008 L201.892326,116.294008 Z M215.36601,136.504534 L201.892326,136.504534 L201.892326,149.978218 L215.36601,149.978218 L215.36601,136.504534 Z" fill="#FFFFFF"></path><path d="M128.456752,48.625876 C163.600523,48.625876 194.283885,67.7121741 210.718562,96.0819435 L210.558192,95.808876 L169.209615,119.617159 C161.062959,105.823554 146.128136,96.5150717 128.996383,96.3233722 L128.456752,96.3203544 C102.331178,96.3203544 81.1506705,117.499743 81.1506705,143.625316 C81.1506705,152.168931 83.4284453,160.17752 87.3896469,167.094792 C95.543745,181.330045 110.872554,190.931398 128.456752,190.931398 C146.149522,190.931398 161.565636,181.208041 169.67832,166.820563 L169.481192,167.165876 L210.767678,191.083913 C194.51328,219.21347 164.25027,238.240861 129.514977,238.620102 L128.456752,238.625876 C93.2021701,238.625876 62.4315028,219.422052 46.0382398,190.902296 C38.0352471,176.979327 33.4561922,160.837907 33.4561922,143.625316 C33.4561922,91.1592636 75.9884604,48.625876 128.456752,48.625876 Z" fill="#FFFFFF" fillRule="nonzero"></path></g></svg>}></Card> */}
+  <Card title="Nostr Relay Setup" icon="bitcoin" color="#FF9900" href="/knowledge-base/guides/nostr-relay"></Card>
+  <Card title="Lightning Address Payouts" icon="bolt-lightning" color="#FCC01E" href="/knowledge-base/payouts/lightning-address"></Card>
+  <Card title="Download ZBD App" icon="app-store-ios" color="#00ADD8" href="/docs/zbd-app/download"></Card>
+</CardGroup>
+
+## What is ZBD?
+
+ZBD is the payments platform for modern developers, providing the speed and reliability innovators need to create monetized and meaningfully-engaging user experiences.
+
+We enable businesses and consumers to quickly introduce instantaneous Bitcoin payments to the fabric of their games, applications, and platforms. ZBD has the most comprehensive set of Bitcoin Lightning API capabilities and is industry-leader in supporting companies in the fields of gaming, social, adtech and fintech.
+
+With ZBD, it's easy! Anyone can do it. What are YOU building?
+
+## Explore
+
+Discover the full range of features and capabilities.
+
+<CardGroup cols={3}>
+  <Card title="Lightning Address" icon="at" color="#000"  href="/knowledge-base/payouts/lightning-address">
+    Like an email address, but for Bitcoin.
+  </Card>
+  <Card title="Charges" icon="arrows-down-to-line" color="#000" href="/knowledge-base/payins/charges">
+    QR codes to accept Bitcoin payments.
+  </Card>
+  <Card title="Payments" icon="arrows-up-to-line" color="#000" href="/knowledge-base/payouts/lightning-charges">
+    Send instant payments globally.
+  </Card>
+  <Card title="Withdrawal Requests" icon="qrcode" color="#000"  href="/knowledge-base/payouts/withdrawal-requests">
+    Vouchers and QRs for instant withdrawals.
+  </Card>
+  <Card title="ZBD Login" icon="user-shield" color="#000"  href="/docs/zbd-login">
+    Login with Google, but now with global money.
+  </Card>
+  <Card title="Sandbox APIs" icon="vial-circle-check" color="#000"  href="/docs/dashboard/projects/sandbox">
+    Securely test, create, and iterate.
+  </Card>
+</CardGroup>
+

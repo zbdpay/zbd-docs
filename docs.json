@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
+  "theme": "mint",
   "name": "ZBD Documentation",
   "description": "ZBD is the global Bitcoin payments API for app and game developers. Integrate ZBD into your app or game to enable multicurrency payments, rewards, and payouts in minutes.",
   "colors": {
@@ -13,106 +13,427 @@
   },
   "favicon": "/favicon.png",
   "navigation": {
-    "global": {
-      "anchors": [
-        {
-          "anchor": "ZBD Rewards SDK v2",
-          "href": "payments/intro"
-        },
-        {
-          "anchor": "ZBD Onramp",
-          "href": "payments/intro"
-        },
-        {
-          "anchor": "ZBD App",
-          "href": "app/download"
-        }
-      ]
-    },
     "tabs": [
       {
         "tab": "Getting Started",
-        "groups": [
+        "anchors": [
           {
-            "group": "ZBD",
+            "anchor": "Introduction",
             "pages": [
-              "base/introduction"
+              {
+                "group": "Overview",
+                "pages": [
+                  "get-started/intro"
+                ]
+              },
+              {
+                "group": "Products",
+                "pages": [
+                  {
+                    "group": "ZBD Dev Dashboard",
+                    "pages": [
+                      "docs/dashboard/introduction",
+                      {
+                        "group": "Account",
+                        "pages": [
+                          "docs/dashboard/signup",
+                          "docs/dashboard/complete-profile"
+                        ]
+                      },
+                      {
+                        "group": "Projects",
+                        "pages": [
+                          "docs/dashboard/projects/sandbox",
+                          "docs/dashboard/projects/create",
+                          "docs/dashboard/projects/api",
+                          "docs/dashboard/projects/wallet",
+                          "docs/dashboard/projects/edit",
+                          "docs/dashboard/projects/archive"
+                        ]
+                      },
+                      "docs/dashboard/vouchers"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "group": "Rewards",
+            "anchor": "Python",
             "pages": [
-              "base/introduction",
-              "base/introduction",
-              "base/introduction"
+              "get-started/intro"
             ]
           }
         ]
       },
       {
         "tab": "Payments",
-        "groups": [
+        "anchors": [
           {
-            "group": "Overview",
+            "anchor": "Overview",
+            "icon": "book-open",
             "pages": [
               "payments/intro"
             ]
           },
           {
-            "group": "Login with ZBD",
+            "anchor": "Onramp",
+            "icon": "arrow-up",
             "pages": [
-              "oauth2/intro",
-              "oauth2/intro",
-              "oauth2/intro"
+              "payments/onramp/intro",
+              "payments/onramp/architecture",
+              "payments/onramp/user-flow",
+              "payments/onramp/theming"
+            ]
+          },
+          {
+            "anchor": "Bitcoin Payments",
+            "icon": "bolt",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "payments/api/introduction",
+                  "payments/api/errors",
+                  "payments/api/callbacks",
+                  {
+                    "group": "Resources",
+                    "pages": [
+                      "payments/api/resources/overview",
+                      "payments/api/resources/openapi",
+                      "payments/api/resources/postman"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "Bitcoin API Reference",
+            "icon": "code",
+            "pages": [
+              {
+                "group": "Lightning Address",
+                "pages": [
+                  "payments/api/lightning-address/overview",
+                  "payments/api/lightning-address/send",
+                  "payments/api/lightning-address/validate",
+                  "payments/api/lightning-address/create-charge"
+                ]
+              },
+              {
+                "group": "Lightning Charges",
+                "pages": [
+                  "payments/api/lightning-charges/overview",
+                  "payments/api/lightning-charges/create",
+                  "payments/api/lightning-charges/retrieve",
+                  "payments/api/lightning-charges/decode",
+                  "payments/api/lightning-charges/create-static",
+                  "payments/api/lightning-charges/retrieve-static",
+                  "payments/api/lightning-charges/update-static"
+                ]
+              },
+              {
+                "group": "Lightning Payments",
+                "pages": [
+                  "payments/api/lightning-payments/overview",
+                  "payments/api/lightning-payments/send",
+                  "payments/api/lightning-payments/retrieve"
+                ]
+              },
+              {
+                "group": "Withdrawal Requests",
+                "pages": [
+                  "payments/api/withdrawal-requests/create",
+                  "payments/api/withdrawal-requests/retrieve"
+                ]
+              },
+              {
+                "group": "Vouchers",
+                "pages": [
+                  "payments/api/vouchers/overview",
+                  "payments/api/vouchers/create",
+                  "payments/api/vouchers/retrieve",
+                  "payments/api/vouchers/redeem",
+                  "payments/api/vouchers/revoke"
+                ]
+              },
+              {
+                "group": "Email Payments",
+                "pages": [
+                  "payments/api/email/overview",
+                  "payments/api/email/send"
+                ]
+              },
+              {
+                "group": "Gamertags",
+                "pages": [
+                  "payments/api/gamertags/overview",
+                  "payments/api/gamertags/send",
+                  "payments/api/gamertags/retrieve-payment",
+                  "payments/api/gamertags/create-charge",
+                  "payments/api/gamertags/retrieve-userid",
+                  "payments/api/gamertags/retrieve-from-userid"
+                ]
+              },
+              {
+                "group": "Wallet",
+                "pages": [
+                  "payments/api/wallet/overview",
+                  "payments/api/wallet/retrieve-balance",
+                  "payments/api/wallet/internal-transfer"
+                ]
+              },
+              {
+                "group": "Keysend",
+                "pages": ["payments/api/keysend/overview", "payments/api/keysend/send"]
+              },
+              {
+                "group": "Utilities",
+                "pages": [
+                  "payments/api/utils/btc-usd",
+                  "payments/api/utils/is-supported-region",
+                  "payments/api/utils/ip"
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "Knowledge Base",
+            "icon": "book-open",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "payments/knowledge-base/intro",
+                  "payments/knowledge-base/integrations",
+                  "payments/knowledge-base/templates"
+                ]
+              },
+              {
+                "group": "Guides",
+                "pages": [
+                  {
+                    "group": "Pay Ins",
+                    "pages": [
+                      "payments/knowledge-base/payins/lightning-charges",
+                      "payments/knowledge-base/payins/gamertags"
+                    ]
+                  },
+                  {
+                    "group": "Pay Outs",
+                    "pages": [
+                      "payments/knowledge-base/payouts/lightning-address",
+                      "payments/knowledge-base/payouts/gamertags",
+                      "payments/knowledge-base/payouts/withdrawal-requests",
+                      "payments/knowledge-base/payouts/lightning-charges",
+                      "payments/knowledge-base/payouts/email"
+                    ]
+                  },
+                  {
+                    "group": "Lightning Address",
+                    "pages": [
+                      "payments/knowledge-base/lightning-address/intro",
+                      "payments/knowledge-base/lightning-address/custom",
+                      "payments/knowledge-base/lightning-address/quick-pay-app",
+                      "payments/knowledge-base/lightning-address/static-charges"
+                    ]
+                  },
+                  {
+                    "group": "Nostr",
+                    "pages": [
+                      "payments/knowledge-base/nostr/nostr-relay"
+                    ]
+                  }
+                ]
+              }
             ]
           }
         ]
       },
       {
         "tab": "Rewards",
-        "icon": "book-open",
-        "groups": [
+        "anchors": [
           {
-            "group": "Rewards2",
+            "anchor": "Rewards SDK",
+            "icon": "code",
             "pages": [
-              "rewards/intro",
-              "rewards/intro",
-              "rewards/intro"
+              {
+                "group": "Overview",
+                "pages": [
+                  "rewards/intro"
+                ]
+              }
             ]
           },
           {
-            "group": "Login with ZBD22",
+            "anchor": "Knowledge Base",
             "pages": [
-              "oauth2/intro",
-              "oauth2/intro",
-              "oauth2/intro"
+              {
+                "group": "Overview",
+                "pages": [
+                  "rewards/knowledge-base/intro"
+                ]
+              },
+              {
+                "group": "Rewarded Play",
+                "pages": [
+                  "rewards/knowledge-base/rewarded-play/intro",
+                  "rewards/knowledge-base/rewarded-play/integrating",
+                  {
+                    "group": "Game Security Course",
+                    "pages": [
+                      "rewards/knowledge-base/game-security/introduction",
+                      "rewards/knowledge-base/game-security/insecure-game",
+                      "rewards/knowledge-base/game-security/hacking-saved-game",
+                      "rewards/knowledge-base/game-security/hacking-memory-values",
+                      "rewards/knowledge-base/game-security/decompiling-source-code",
+                      "rewards/knowledge-base/game-security/altering-network-traffic",
+                      "rewards/knowledge-base/game-security/securing-game",
+                      "rewards/knowledge-base/game-security/replay-attacks",
+                      "rewards/knowledge-base/game-security/securing-data",
+                      "rewards/knowledge-base/game-security/app-check"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Integration Guides",
+                "pages": [
+                  "rewards/knowledge-base/integrations/unity",
+                  "rewards/knowledge-base/integrations/beamable"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "SDKs",
+        "versions": [
+          {
+            "version": "latest",
+            "dropdowns": [
+              {
+                "dropdown": "TypeScript",
+                "pages": [
+                  {
+                    "group": "Overview",
+                    "pages": [
+                      "payments/sdk/typescript/intro"
+                    ]
+                  },
+                  {
+                    "group": "Guides",
+                    "pages": [
+                      "payments/sdk/typescript/next",
+                      "payments/sdk/typescript/node",
+                      "payments/sdk/typescript/express",
+                      {
+                        "group": "Vercel",
+                        "pages": [
+                          "payments/sdk/typescript/vercel/send",
+                          "payments/sdk/typescript/vercel/receive"
+                        ]
+                      },
+                      {
+                        "group": "Supabase",
+                        "pages": [
+                          "payments/sdk/typescript/supabase/send",
+                          "payments/sdk/typescript/supabase/receive"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "dropdown": "Go",
+                "pages": [
+                  "payments/sdk/go"
+                ]
+              },
+              {
+                "dropdown": "Rust",
+                "pages": [
+                  "payments/sdk/rust"
+                ]
+              },
+              {
+                "dropdown": "C#",
+                "pages": [
+                  "payments/sdk/csharp"
+                ]
+              },
+              {
+                "dropdown": "HTTP",
+                "pages": [
+                  "payments/sdk/http"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Login with ZBD",
+        "versions": [
+          {
+            "version": "latest",
+            "anchors": [
+              {
+                "anchor": "Overview",
+                "pages": [
+                  {
+                    "group": "Overview",
+                    "pages": [
+                      "oauth2/intro",
+                      "oauth2/integration",
+                      "oauth2/guidelines",
+                      "oauth2/walkthrough"
+                    ]
+                  },
+                  {
+                    "group": "Integrations & Guides",
+                    "pages": [
+                      "oauth2/integrations/intro",
+                      "oauth2/integrations/next-auth",
+                      "oauth2/integrations/better-auth"
+                    ]
+                  }
+                ]
+              },
+              {
+                "anchor": "API Reference",
+                "icon": "code",
+                "pages": [
+                  {
+                    "group": "Login & Authorization",
+                    "pages": [
+                      "oauth2/api/authorization",
+                      "oauth2/api/retrieve-access-token",
+                      "oauth2/api/refresh-token"
+                    ]
+                  },
+                  {
+                    "group": "Data Fetching",
+                    "pages": [
+                      "oauth2/api/retrieve-user",
+                      "oauth2/api/retrieve-wallet"
+                    ]
+                  }
+                ]
+              }
             ]
           }
         ]
       },
       {
         "tab": "App",
-        "groups": [
-          {
-            "group": "ZBD App",
-            "pages": [
-              "app/download",
-              "app/uri-schemes"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Help",
-        "groups": [
-          {
-            "group": "Help",
-            "pages": [
-              "help/glossary",
-              "help/global-support",
-              "help/lightning-network"
-            ]
-          }
+        "pages": [
+          "app/intro",
+          "app/download",
+          "app/uri-schemes"
         ]
       }
     ]
@@ -131,7 +452,7 @@
         "href": "https://status.zbd.dev/"
       },
       {
-        "label": "GitHub",
+        "label": "Create Account",
         "href": "https://github.com/zebedeeio"
       }
     ],

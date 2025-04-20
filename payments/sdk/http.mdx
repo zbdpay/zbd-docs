@@ -1,0 +1,89 @@
+---
+title: HTTP
+description: Learn how to send and receive instant Bitcoin payments with Rust and ZBD.
+---
+
+## Prerequisites
+
+To complete this guide, you will need the following:
+
+- [ZBD Project with a Live API key](/docs/dashboard/projects/api)
+- [Rust](https://www.rust-lang.org/tools/install) and [cargo](https://www.rust-lang.org/tools/install) installed
+
+## 1. Create a Rust project
+
+```bash
+cargo new <project-name>
+cd <project-name>
+```
+
+## 2. Install dependencies
+
+Add both the `zebedee-rust` and `tokio` crates to your project:
+
+```bash
+cargo add zebedee-rust tokio
+```
+
+## 3. Update your Cargo.toml
+
+Update your `Cargo.toml` file to use full features in tokio.
+
+```yaml
+[package]
+name = "zbd-rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1.29.1", features = ['full']}
+zebedee-rust = "0.4.4"
+```
+
+## 4. Create a Charge
+
+Open your project's `main.rs` file and add the following code:
+
+```rust
+use std::env;
+use zebedee_rust::{charges::*, ZebedeeClient};
+
+#[tokio::main]
+async fn main(){
+    let apikey: String = env::var("ZBD_API_KEY").unwrap();
+    let zbd_client = ZebedeeClient::new().apikey(apikey).build();
+
+    let charge = Charge{
+        amount: String::from("5000"),
+        ..Default::default()
+    };
+
+    let charges_res = zbd_client.create_charge(&charge).await.unwrap();
+
+    println!("{:?}", charge_res);
+}
+```
+
+<Tip>Make sure to create an environment variable called **ZBD_API_KEY** in your Rust project. This is the API key you get from your ZBD Project.</Tip>
+
+Run the following command to create your charge:
+
+```bash
+cargo run
+```
+
+You can now create charges using the ZBD and Rust!
+
+<Info>Charges and payment requests are usually shown to users as QR codes that can be scanned by mobile apps (e.g. [ZBD](https://zbd.one/download)). Read [Callbacks](/api-reference/callbacks) to understand how to receive updates about your payment asynchronously.</Info>
+
+## 5. Try it yourself
+
+You can now begin receiving instant Bitcoin payments with Rust + ZBD!
+
+<CardGroup cols={1}>
+  <Card title="Rust Example" icon="github" color="#000000" href="https://github.com/miketwenty1/zebedee-rust">
+    See the full source code.
+  </Card>
+</CardGroup>

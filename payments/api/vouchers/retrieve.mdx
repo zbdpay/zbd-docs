@@ -1,0 +1,56 @@
+---
+title: "Retrieve Voucher"
+api: "GET https://api.zebedee.io/v0/vouchers/{VOUCHER_ID}"
+---
+
+## Description
+
+Retrieves details for a [ZBD Voucher](/docs/dashboard/vouchers). Returns whether the provided ID corresponds to a valid Voucher, and details about a valid Voucher. 
+
+## Usage
+
+You can retrieve details about a voucher at any time, including whether it is valid, redeemed, or revoked.
+
+## Configuration
+
+### Path Parameters
+
+<ParamField required path="VOUCHER_ID" type="string">
+  ID of the Voucher
+</ParamField>
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+    "success": true,
+    "data": {
+        "amount": "1000",
+        "code": "7EE15185",
+        "createdAt": "2023-08-24T15:01:56.408Z",
+        "createTransactionId": "0e11be7a-fd5e-48db-a0bb-54731681bc25",
+        "description": "Voucher for user.",
+        "id": "a2eb43c4-af7f-4eb9-839c-ca31db34b3fc",
+        "redeemedAt": null,
+        "redeemedById": null,
+        "redeemedTransactionId": null,
+        "revokedAt": null,
+        "revokedById": null,
+        "revokedTransactionId": null,
+        "updatedAt": null,
+        "unit": "msats",
+        "walletId": "4a4bd549-297e-4e67-a594-386200e1bc21"
+    },
+    "message": "Successfully retrieved Voucher."
+}
+```
+
+</ResponseExample>

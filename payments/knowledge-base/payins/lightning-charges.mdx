@@ -1,0 +1,102 @@
+---
+title: 'Receiving Lightning Payments'
+sidebarTitle: 'Lightning Charges'
+description: 'Learn how to receive Lightning payments using the ZBD API.'
+---
+
+## Charge API
+In order to receive Bitcoin through the Lightning Network using the ZBD API, you must first create a **Charge**.
+
+A Charge accepts the following attributes:
+
+| Property | Description |
+| --- | --- |
+| `amount` | The Charge amount (in millisatoshis --> 1 satoshi = 1,000 millisatoshi). |
+| `description` | The Charge note or comment. |
+| `internalId` | An optional free-use attribute. Usually used by setting the Player/User ID of your Game/Application in order to link specific Charges to specific Players. |
+| `callbackUrl` | The URL ZBD API will make a POST HTTP request to with information about the Charges's status updates. See [Callbacks](/api-reference/callbacks) for more. |
+| `expiresIn` | The desired expiration time for this Charge (in seconds). |
+
+To create a Charge, use the [`/charges`](/api-reference/charges/create) API (or leverage one of our SDKs) by passing the correct attributes:
+
+<CodeGroup>
+
+```js NodeJS
+// Using ZBD's NodeJS SDK
+import { zbd } from '@zbd/node';
+
+// Instantiate ZBD client
+const ZBD = new zbd(API_KEY_HERE);
+
+// Set the payload
+const payload = {
+  expiresIn: 300,
+  amount: '50000',
+  internalId: '118304b8',
+  description: 'My Charge Description',
+  callbackUrl: 'https://your-app.com/zbd-callback',
+};
+
+// Create Charge
+try {
+  const response = await ZBD.createCharge(payload);
+} catch(error) {
+  console.log({ error });
+}
+```
+
+```bash cURL
+curl --location --request POST 'https://api.zebedee.io/v0/charges' \
+--header 'Content-Type: application/json' \
+--header 'apikey: API_KEY_HERE' \
+--data-raw '{
+    "expiresIn": 300,
+    "amount": "50000",
+    "internalId": "118304b8",
+    "description": "My Charge Description",
+    "callbackUrl": "https://your-app.com/zbd-callback"
+}'
+```
+
+</CodeGroup>
+
+If the submitted request suceeds, you can expect a JSON API response that resembles the following:
+
+```json
+{
+  "message": "Successfully created Charge.",
+  "data": {
+    "id": "c121356b-9671-4fbd-a751-987fb4b3d0b3",
+    "description": "My Charge Description",
+    "createdAt": "2022-12-23T03:58:17.993Z",
+    "callbackUrl": "https://your-app.com/zbd-callback",
+    "internalId": "118304b8",
+    "amount": "50000",
+    "status": "pending",
+    "invoice": {
+      "expiresAt": "2019-12-23T04:08:18.038Z",
+      "request": "lnbc20n1p0qqw66pp5lhjn2sshvh03h2lsxyzg5eyfwt0760207q3hake25fs7l3psegtqdpgg3jhxcmjd9c8g6t0dcsx7e3qw35x2gzrdpshyem9cqzpgxqzjcfppjramjf8sxnvy3k8dq84kv56dy5gq9mlqs9qy9qsqsp5jvf69w282jdxkyt824dn0crxdentx8nvncfdt0ulqp75lvkjpagqqwpgcttpmfzaxc3akfn85jlu8cmtv5l2hu8q3yqttru8vlryg3vnewssy8w00yyfsghzqj03j45kj3uhhjek6q6e8djfu5u4gna6wjcqdsdhwe"
+    }
+  }
+}
+```
+
+## Receiving Funds
+
+Now that you have created a Charge, you can allow anyone to pay this Payment Request in the Bitcoin Lightning Network. Depending on your use-case you may choose to display the `invoice.request` property as a QR Code that others can scan with their mobile apps, or you can put it under a button click.
+
+**Any Bitcoin Lightning-capable wallets can read, decode, and effect payments against these Charges.**
+
+## Charge Updates
+
+All Charges will either **complete** or **expire**. If no payment is effected until the Charge's expiration time, the Charge (and underlying Bitcoin Lightning Network Invoice) will expire and will therefore no longer be payable. To know the status of your specific Charge, check the `status` attribute returned from the `/charges/create` or `/charges/get` API calls.
+
+```json
+{
+  ...
+  "status": "pending" // pending | completed | expired | error
+  ...
+}
+```
+
+<Tip>To subscribe to updates on any given Charge object, the recommended approach is to provide a `callbackUrl` property when creating that Charge. Whenever there are updates to the Charge (a payment was made, or Charge expires) the ZBD API will make a POST request to the URL provided in `callbackUrl`, passing the Charge updates as data in the request.</Tip>

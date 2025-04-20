@@ -1,0 +1,78 @@
+---
+title: 'Send Bitcoin to ZBD Gamertag'
+sidebarTitle: 'Pay to Gamertags'
+description: 'Learn how to instantly send Bitcoin to a ZBD user.'
+---
+
+## Introduction
+
+The ZBD API allows for developers to create Charges, perform Payments, and process Withdrawal Requests for any user, wallet, or service that understands / speaks the Lightning Network protocol. These capabilities are possible because of the underlying `Lightning Charges / Payment Requests / Invoices`, the single-use payable QR codes the platform can create and handle.
+
+While this Payment Request provides a truly interoperable experience for ZBD-powered apps, games, and services to interact with any type of Bitcoin Lightning wallet a user may use, it can at times provide for a much poorer user experience (UX). This is the case because it involves a switch of context, going in-and-out of the app / game and wallet applications to perform a simple payment or withdrawal. This is especially true for mobile devices (which comprises over 2/3 of the entire gaming market for example).
+
+## Enter the ZBD Gamertag
+
+**Every ZBD user has a ZBD Gamertag.** A ZBD Gamertag is a user's unique identifier that allows a developer to directly interact with the given user. This means you can directly send payments to users / gamers.
+
+### Send Bitcoin to ZBD Gamertags
+
+In order to send payments directly to a ZBD user you just need to make a simple API call with a payload similar to the example below.
+
+<CodeGroup>
+
+```js NodeJS
+// Using ZBD's NodeJS SDK
+import { zbd } from '@zbd/node';
+
+// Instantiate ZBD client
+const ZBD = new zbd(API_KEY_HERE);
+
+// Set the payload
+const payload = {
+  amount: '50000',
+  gamertag: 'andre',
+  description: 'ZBD so fast!',
+};
+
+// Send Payment
+try {
+  const response = await ZBD.sendGamertagPayment(payload);
+} catch(error) {
+  console.log({ error });
+}
+```
+
+```bash cURL
+curl --location --request POST 'https://api.zebedee.io/v0/gamertag/send-payment' \
+--header 'Content-Type: application/json' \
+--header 'apikey: API_KEY_HERE' \
+--data-raw '{
+    "gamertag": "andre",
+    "amount": "50000",
+    "description": "ZBD so fast!",
+}'
+```
+
+</CodeGroup>
+
+If the ZBD Gamertag exists and is active, the ZBD API will perform the transaction and will return a 200 status code and a JSON response with the following:
+
+```json
+{
+  "success": true,
+  "data": {
+    "status": "settled",
+    "settledAt": "2021-10-08T14:21:55.378Z",
+    "amount": "5000",
+    "receiverId": "3dde8e48-7c13-4db7-a0e5-caf2a48c002a",
+    "comment": "So fast!"
+  },
+  "message": "Payment done."
+}
+```
+
+At this stage the user will receive a Push Notification alerting them they've been sent some Bitcoin.
+
+## In-Game Bitcoin Rewards through ZBD Gamertag
+
+One of the many benefits of the ZBD API is that it is flexible enough to allow for developers to create simple in-game / in-app reward systems for their users. This is shown to increase user retention and improve general KPIs around ROAS and CPI. This is done by asking the user to enter their ZBD Gamertag in the game, and whenever the user completes a level, or triggers an event (depends entirely on the game or app and the developer's needs), some Bitcoin is immediately streamed to the user's ZBD App.
