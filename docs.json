@@ -4,8 +4,8 @@
   "name": "ZBD Documentation",
   "description": "ZBD is the global Bitcoin payments API for app and game developers. Integrate ZBD into your app or game to enable multicurrency payments, rewards, and payouts in minutes.",
   "colors": {
-    "primary": "#9563FF",
-    "light": "#AE87FF",
+    "primary": "#1659e7",
+    "light": "#6294fd",
     "dark": "#0D001D"
   },
   "banner": {
@@ -329,7 +329,30 @@
               {
                 "group": "Overview",
                 "pages": [
-                  "rewards/intro"
+                  "rewards/sdk",
+                  "rewards/sdk/download",
+                  "rewards/sdk/compatibility",
+                  "rewards/sdk/security"
+                ]
+              },
+              {
+                "group": "Integrating",
+                "pages": [
+                  "rewards/sdk/integration",
+                  "rewards/sdk/video-walkthrough",
+                  "rewards/sdk/send-rewards",
+                  "rewards/sdk/user-status",
+                  "rewards/sdk/user-balance",
+                  "rewards/sdk/user-withdrawal",
+                  "rewards/sdk/building",
+                  "rewards/sdk/troubleshoot"
+                ]
+              },
+              {
+                "group": "Pushing to App Stores",
+                "pages": [
+                  "rewards/sdk/ios-app-store",
+                  "rewards/sdk/android-app-store"
                 ]
               }
             ]
@@ -341,17 +364,17 @@
               {
                 "group": "Overview",
                 "pages": [
-                  "rewards/api/intro"
+                  "rewards/api"
                 ]
               },
               {
                 "group": "Knowledge Base",
                 "pages": [
-                  "rewards/knowledge-base/intro",
+                  "rewards/knowledge-base",
                   {
                     "group": "Rewarded Play",
                     "pages": [
-                      "rewards/knowledge-base/rewarded-play/intro",
+                      "rewards/knowledge-base/rewarded-play",
                       "rewards/knowledge-base/rewarded-play/integrating",
                       {
                         "group": "Game Security Course",

@@ -1,0 +1,60 @@
+---
+title: 'Building'
+description: 'Comprehensive video guides for mastering Bitcoin apps and games with ZBD.'
+icon: 'gear'
+---
+
+# Building for Android
+
+### Minimum API Level
+
+Make sure that the minimum API Level is set to **Android 10 API Level 29** in your settings. 
+
+<Steps>
+  <Step title="Build Settings">
+  </Step>
+  <Step title="Player Settings">
+  </Step>
+  <Step title="Other Settings">
+  </Step>
+  <Step title="Identification">
+  </Step>
+  <Step title="Minimum API Level">
+  </Step>
+</Steps> 
+
+### Dependencies
+
+The ZBDSDK in Android requires a few dependenices to be installed. To make this as smooth as possible we included the `External Dependency Manager` in the package. This should automatically install the dependencies and deal with any duplicate classes.
+
+However, you may need to manually resolve the dependencies by going to:
+
+<Steps>
+  <Step title="Assets">
+  </Step>
+  <Step title="External Dependency Manager">
+  </Step>
+  <Step title="Android Resolver">
+  </Step>
+  <Step title="Resolve">
+  </Step>
+</Steps>
+
+If during the build process you get build errors, specifically mentioning duplicate classes you may need to go to 
+
+<Steps>
+  <Step title="Assets">
+  </Step>
+  <Step title="External Dependency Manager">
+  </Step>
+  <Step title="Android Resolver">
+  </Step>
+  <Step title="Delete Resolved Libraries">
+  </Step>
+</Steps>
+
+# Building for iOS
+
+### Target Minimum iOS Version
+
+Make sure that the `Target Minimum iOS Version` is set to at least 13 in your settings.

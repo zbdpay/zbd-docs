@@ -1,0 +1,89 @@
+---
+title: 'Security'
+description: 'Security features and best practices for the ZBD Rewards SDK.'
+icon: 'shield'
+---
+
+It’s important to explain the security assumptions of the SDK and to reiterate that no game is 100% secure—especially when real-money rewards are involved.
+
+If you do not call the **`SendReward`** endpoint from your own backend server, it must be called from the client, which exposes it to abuse. A malicious attacker could potentially call this endpoint multiple times to reward themselves the maximum amount of Bitcoin.
+
+To mitigate this, **we limit how much a user can withdraw based on how long their device has been online.**
+
+<Info>
+For example, a user may attempt to reward themselves 10,000 sats, but they will only be able to withdraw 2 sats per 5 minutes of "Time Alive", effectively slowing down withdrawals to prevent farming.
+</Info>
+
+# Time Alive
+
+When your app/game is open, the SDK sends a “ping” to the ZBD backend roughly every 20 seconds. This allows the SDK to calculate how long it has been online in a way that cannot be easily spoofed.
+
+Additionally, we use Apple and Google attestation systems to verify that the device is genuine and is running a non-rooted and non-jailbroken OS.
+
+This further restricts malicious users, as they are only able to withdraw a maximum of **X sats every Y minutes per Z real devices**.
+
+However, a more sophisticated operation may involve hundreds of genuine devices kept online in an attempt to farm rewards while passing attestation checks.
+
+To help mitigate this, we can toggle additional verification steps such as CAPTCHAs or facial recognition at the point of withdrawal. We also monitor network and IP address activity —- but none of these measures are foolproof. A determined attacker may still find ways to bypass them.
+
+This is why we **strongly recommend (almost require) calling the `SendReward` method from your own secure backend servers** and providing us with the IP address of that server, so we can restrict access to only trusted sources.
+
+# Attestation
+
+In order to make sure we have everything we need to detect your app/game has not been tampered with as part of our attestation check, we require a couple of pieces of information.
+
+### Android
+
+For Android we need your Bundle ID or package name i.e. `com.domain.appname` -- this is what you set in your Unity build settings.
+
+We also need the SHA256 hash of your app signing key.
+
+To find your app's SHA256 hash key for Google Play:
+
+<Steps>
+  <Step title="Go to the Google Play Console and select your app">
+  </Step>
+  <Step title="Navigate to 'Release'">
+  </Step>
+  <Step title="Click on 'Setup'">
+  </Step>
+  <Step title="Navigate to 'App Integrity'">
+  </Step>
+  <Step title="Select 'App Signing'">
+  </Step>
+  <Step title="Get the SHA256 hash key">
+    Find the `App signing key certificate` section and copy the SHA-256 fingerprint.
+  </Step>
+</Steps>
+
+For development purposes you can generate a SHA256 hash key for your keystore using the following command:
+
+```bash
+keytool -list -v -keystore path/to/your.keystore -alias your_alias -storepass your_keystore_password -keypass your_key
+```
+
+It should look something like this
+
+```bash
+EA:A1:69:AA:2F:FC:6D:16:84:ED:06:11:E0:65:2B:E0:BB:9C:5B:E3:41:96:06:E2:3D:85:8F:2C:22:2A:E9:86
+```
+
+### iOS
+
+For iOS we need your Bundle ID (`com.domain.appname`) and your Team ID.
+
+To find your app's Team ID:
+
+<Steps>
+  <Step title="Go to the Apple Developer Portal">
+  </Step>
+  <Step title="Navigate to 'Certificates, Identifiers & Profiles'">
+  </Step>
+  <Step title="Select 'Identifiers'">
+  </Step>
+  <Step title="Select your app">
+  </Step>
+  <Step title="Get the Team ID">
+    Copy the code from the `Team ID` section.
+  </Step>
+</Steps>
