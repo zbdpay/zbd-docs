@@ -77,8 +77,8 @@
                 "group": "Overview",
                 "pages": [
                   "payments/intro",
-                  "payments/glossary",
                   "payments/lightning-network",
+                  "payments/lightning-address",
                   "payments/templates"
                 ]
               },
@@ -87,12 +87,6 @@
                 "pages": [
                   "payments/mcp",
                   "payments/llms"
-                ]
-              },
-              {
-                "group": "Lightning Address",
-                "pages": [
-                  "payments/lightning-address"
                 ]
               },
               {
@@ -128,8 +122,7 @@
                 "pages": [
                   "payments/coverage",
                   "payments/changelog",
-                  "payments/roadmap",
-                  "payments/prod-checklist"
+                  "payments/glossary"
                 ]
               }
             ]

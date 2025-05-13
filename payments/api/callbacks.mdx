@@ -6,12 +6,12 @@ description: 'Receive secure payment status updates from ZBD servers.'
 <Tip>
 **Every payment in the Bitcoin Lightning Network is asynchronous.**
 
-**Therefore, every payment inside of ZBD API is asynchronous.**
+**Therefore, every payment inside of ZBD Payments API is asynchronous.**
 </Tip>
 
 ## Payment Lifecycle
 
-Although it may be that 99% of the time you use the ZBD API to send a payment it settles immediately, this is NOT a certainty. All payments are asynchronous so there's still chances they will not succeed.
+Although it may be that 99% of the time you use the ZBD Payments API to send a payment it settles immediately, this is NOT a certainty. All payments are asynchronous so there's still chances they will not succeed.
 
 The Lightning Network is a decentralized organism / network and therefore there are many factors and circumstances that are outside of ZBD's control. Whether it is another provider going offline, or improper management of Bitcoin liquidity on the network, payments in Lightning can fail and you as a developer must understand how to react to these failures.
 
@@ -23,13 +23,13 @@ To receive payments, you normally create [Charges](/api-reference/charges/create
 
 On the other hand, to send Bitcoin you must use one of the many [Payment APIs](/knowledge-base/introduction#instant-bitcoin-payouts). Payments through the Lightning Network can always fail, due to a myriad of reasons (e.g. network connectivity, size of payment, destination or receipient, etc). Because of that, every payment starts in a `processing` state, and only when it's settled or failed does it receive the `completed` or `failed` status' respectively.
 
-As you can understand now, **it is important that you subscribe to updates on all your Charges and Payments when using the ZBD API**.
+As you can understand now, **it is important that you subscribe to updates on all your Charges and Payments when using the ZBD Payments API**.
 
-<Tip>**ZBD API retains a 97% payment success rate for all time payments in the Lightning Network.**</Tip>
+<Tip>**ZBD Payments API retains a 97% payment success rate for all time payments in the Lightning Network.**</Tip>
 
 ## Callback URL
 
-In order to properly receive updates to any Payments, Charges, and Withdrawals created through the ZBD API, you should always pass along the `callbackUrl` property.
+In order to properly receive updates to any Payments, Charges, and Withdrawals created through the ZBD Payments API, you should always pass along the `callbackUrl` property.
 
 This `callbackUrl` should point to an HTTP server that you control/manage and should expose a POST HTTP call on this endpoint. It could look like this:
 
@@ -124,7 +124,7 @@ Below is a set of example payloads for the main APIs available:
 
 It is important that developers are able to validate the integrity of all API calls performed to their `callbackUrl` endpoints.
 
-To ensure that calls are coming from trusted ZBD API servers, please use the [ZBD IP Address API Endpoint](/api-reference/utils/ip).
+To ensure that calls are coming from trusted ZBD Payments API servers, please use the [ZBD IP Address API Endpoint](/api-reference/utils/ip).
 
 **By checking the originating IP address** of the request received to your callback servers, **with the approved IP address** returned from this API endpoint, you are able to verify the authenticity of the requests.
 
@@ -132,7 +132,7 @@ To ensure that calls are coming from trusted ZBD API servers, please use the [ZB
 
 ## Testing Locally
 
-When developing with the ZBD API, it is imperative that developers can test full end-to-end functionality of payment flows, including the async updates received through the `callbackUrl`s.
+When developing with the ZBD Payments API, it is imperative that developers can test full end-to-end functionality of payment flows, including the async updates received through the `callbackUrl`s.
 
 In order to receive updates locally, we recommend using a proxy server such as [ngrok](https://ngrok.com).
 
@@ -141,4 +141,4 @@ In order to receive updates locally, we recommend using a proxy server such as [
 - ngrok URL (e.g. `https://84c5dfxx39d74.ngrok.io`) is provided
   - This URL is accessible to the world --> expose an API endpoint here and use it as the `callbackUrl` (e.g. `https://84c5dfxx39d74.ngrok.io/api/zbd-callback`).
 
-You will now be able to receive async updates about your ZBD API transactions directly to your local environment.
+You will now be able to receive async updates about your ZBD Payments API transactions directly to your local environment.

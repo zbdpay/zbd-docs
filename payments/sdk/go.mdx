@@ -3,45 +3,6 @@ title: 'Go SDK'
 description: 'Learn how to use the Go SDK to send Bitcoin to any Email.'
 ---
 
-## Send Bitcoin to Email API
-
-To send Bitcoin to a given email, all you need to do is call the [Pay to Email API](/api-reference/email/send) with a POST call providing the following properties:
-
-| Property | Description |
-| --- | --- |
-| `email` | Recipient email to send payment to. |
-| `amount` | Total amount of satoshis to send (in millisatoshis). |
-| `comment` | comment to be sent with the payment (max 150 characters). |
-
-<Info>Example: If you wish to reward 20 satoshis to a user for their completion of a challenge, and you have the user's email, you can use the information below to send it in 1 API call.</Info>
-
-## Details
-
-- If the email is associated with an existing ZBD App account, then that user account will be credited the sats.
-- Otherwise, the sats will be issued to the email in the form of a valid [ZBD Voucher](/docs/dashboard/vouchers) that the recipient can redeem in the [ZBD Mobile App](/docs/zbd-app/download). 
-
-## API Response
-
-Response payloads will look like this:
-
-```
-{
-    "success": true,
-    "data": {
-        "amount": "1000",
-        "code": "CB6A2DC5",
-        "createdAt": "2023-08-29T22:07:25.736Z",
-        "createTransactionId": "a3742c93-be3b-49aa-9414-79deb04137b9",
-        "description": "Sending to an email!",
-        "fee": "1000",
-        "id": "bdd0ee12-5231-4759-88aa-bb3634ed99e4",
-        "unit": "msats",
-        "walletId": "0701cf1b-059b-4b88-854e-3362d9b96aab"
-    },
-    "message": "Voucher was sent to email address."
-}
-```
-
-Wow that's easy. Welcome to email payments!
-
-<Tip>There are no Lightning Network Fees for this endpoint.</Tip>
+<Info>
+This guide is coming soon. Until then you can check the [Go SDK repository](https://github.com/zebedeeio/go-sdk).
+</Info>

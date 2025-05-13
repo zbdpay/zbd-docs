@@ -1,45 +1,48 @@
 ---
 title: 'Changelog'
 sidebarTitle: 'Changelog'
-description: ZBD Onramp is the global Bitcoin payments API for app and game developers. Integrate ZBD into your app or game to enable multicurrency payments, rewards, and payouts in minutes.
+description: Track changes and updates to ZBD Payments APIs, products, and services.
 ---
 
-> Keep track of changes and updates
-
-The `Update` component is used to keep track of changes and updates.
-
-<Update label="2024-10-12" description="v0.1.1">
+<Update label="2025-05-01" description="zbd.dev">
   <Frame>
     <img className="block" src="https://mintlify-assets.b-cdn.net/hero-light.png" />
   </Frame>
 
-  ## Changelog
+  ## zbd.dev Updated
 
-  You can add anything here, like a screenshot, a code snippet, or a list of changes.
+  - ZBD Payments Documentation site with divided section for each business vertical
+    - [Payments](/payments)
+    - [Rewards](/rewards)
 
-  #### Features
-
-  * Responsive design
-  * Sticky section for each changelog
 </Update>
 
-<Update label="2024-10-11" description="v0.1.0">
-  ### How to use
+<Update label="2025-04-15" description="v1.6.2">
 
-  ```md
-  <Update label="2024-10-12" description="v0.1.1">
-    This is how you use a changelog with a label 
-    and a description.
-  </Update>
-  <Update label="2024-10-11" description="v0.1.0">
-    This is how you use a changelog with a label 
-    and a description.
-  </Update>
+  ## TypeScript SDK
+
+  ```bash
+  pnpm install @zbddev/payments-sdk
   ```
 
-  You can use multiple `Update` components to create changelogs.
-</Update>
+  - New TypeScript SDK for ZBD Payments APIs support [all APIs available](//payments/api).
 
-<Tip>
-  Each `label` creates an anchor and also shows up on the table of contents on the right.
-</Tip>
+  ```typescript
+  import ZbdPayments from '@zbddev/payments-sdk';
+
+  const client = new ZbdPayments({
+    apikey: process.env['ZBD_PAYMENTS_API_KEY'],
+  });
+
+  async function main() {
+    await client.lightningAddress.sendPayment({
+      amount: '500000',
+      comment: 'Instant global payments',
+      lnAddress: 'andreneves@zbd.gg',
+    });
+  }
+
+  main();
+  ```
+
+</Update>
