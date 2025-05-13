@@ -128,43 +128,19 @@
             ]
           },
           {
-            "anchor": "Onramp",
-            "icon": "arrow-up",
-            "pages": [
-              {
-                "group": "Onramp",
-                "pages": [
-                  "payments/onramp/intro",
-                  "payments/onramp/architecture",
-                  "payments/onramp/user-flow",
-                  "payments/onramp/theming"
-                ]
-              },
-              {
-                "group": "Customization",
-                "pages": [
-                  "payments/onramp/intro",
-                  "payments/onramp/architecture",
-                  "payments/onramp/user-flow",
-                  "payments/onramp/theming"
-                ]
-              }
-            ]
-          },
-          {
-            "anchor": "Bitcoin Payment SDKs",
+            "anchor": "Payment SDKs",
             "icon": "code",
             "pages": [
               {
                 "group": "Overview",
                 "pages": [
-                  "payments/sdk/intro"
+                  "payments/sdk"
                 ]
               },
               {
                 "group": "TypeScript",
                 "pages": [
-                  "payments/sdk/typescript/intro",
+                  "payments/sdk/typescript",
                   {
                 "group": "Guides",
                 "pages": [
@@ -210,7 +186,7 @@
             ]
           },
           {
-            "anchor": "Bitcoin API Reference",
+            "anchor": "API Reference",
             "icon": "code",
             "pages": [
               {
@@ -225,7 +201,7 @@
               {
                 "group": "Lightning Address",
                 "pages": [
-                  "payments/api/lightning-address/overview",
+                  "payments/api/lightning-address",
                   "payments/api/lightning-address/send",
                   "payments/api/lightning-address/validate",
                   "payments/api/lightning-address/create-charge"
@@ -234,7 +210,7 @@
               {
                 "group": "Lightning Charges",
                 "pages": [
-                  "payments/api/lightning-charges/overview",
+                  "payments/api/lightning-charges",
                   "payments/api/lightning-charges/create",
                   "payments/api/lightning-charges/retrieve",
                   "payments/api/lightning-charges/decode",
@@ -246,7 +222,7 @@
               {
                 "group": "Lightning Payments",
                 "pages": [
-                  "payments/api/lightning-payments/overview",
+                  "payments/api/lightning-payments",
                   "payments/api/lightning-payments/send",
                   "payments/api/lightning-payments/retrieve"
                 ]
@@ -254,7 +230,7 @@
               {
                 "group": "Withdrawal Requests",
                 "pages": [
-                  "payments/api/withdrawal-requests/overview",
+                  "payments/api/withdrawal-requests",
                   "payments/api/withdrawal-requests/create",
                   "payments/api/withdrawal-requests/retrieve"
                 ]
@@ -262,7 +238,7 @@
               {
                 "group": "Vouchers",
                 "pages": [
-                  "payments/api/vouchers/overview",
+                  "payments/api/vouchers",
                   "payments/api/vouchers/create",
                   "payments/api/vouchers/retrieve",
                   "payments/api/vouchers/redeem",
@@ -272,14 +248,14 @@
               {
                 "group": "Email Payments",
                 "pages": [
-                  "payments/api/email/overview",
+                  "payments/api/email",
                   "payments/api/email/send"
                 ]
               },
               {
                 "group": "Gamertags",
                 "pages": [
-                  "payments/api/gamertags/overview",
+                  "payments/api/gamertags",
                   "payments/api/gamertags/send",
                   "payments/api/gamertags/retrieve-payment",
                   "payments/api/gamertags/create-charge",
@@ -290,19 +266,19 @@
               {
                 "group": "Wallet",
                 "pages": [
-                  "payments/api/wallet/overview",
+                  "payments/api/wallet",
                   "payments/api/wallet/retrieve-balance",
                   "payments/api/wallet/internal-transfer"
                 ]
               },
               {
                 "group": "Keysend",
-                "pages": ["payments/api/keysend/overview", "payments/api/keysend/send"]
+                "pages": ["payments/api/keysend", "payments/api/keysend/send"]
               },
               {
                 "group": "Utilities",
                 "pages": [
-                  "payments/api/utils/overview",
+                  "payments/api/utils",
                   "payments/api/utils/btc-usd",
                   "payments/api/utils/is-supported-region",
                   "payments/api/utils/ip"
@@ -317,7 +293,7 @@
         "anchors": [
           {
             "anchor": "Rewards SDK",
-            "icon": "code",
+            "icon": "layer-group",
             "pages": [
               {
                 "group": "Overview",
@@ -399,50 +375,41 @@
           },
           {
             "anchor": "Login with ZBD",
-            "icon": "bot",
+            "icon": "wand-magic-sparkles",
             "pages": [
               {
                 "group": "Overview",
                 "pages": [
-                  "oauth2/intro",
-                  "oauth2/integration",
-                  "oauth2/guidelines",
-                  "oauth2/walkthrough"
-                ]
-              },
-              {
-                "group": "Integrations",
-                "pages": [
-                  "oauth2/integrations/intro",
-                  "oauth2/integrations/next-auth",
-                  "oauth2/integrations/better-auth"
+                  "rewards/oauth2",
+                  "rewards/oauth2/integration",
+                  "rewards/oauth2/guidelines",
+                  "rewards/oauth2/walkthrough"
                 ]
               },
               {
                 "group": "API Reference",
                 "icon": "code",
                 "pages": [
-                  "oauth2/api/overview",
-                  "oauth2/api/authorization",
-                  "oauth2/api/retrieve-access-token",
-                  "oauth2/api/refresh-token",
-                  "oauth2/api/data-fetching",
-                  "oauth2/api/retrieve-user",
-                  "oauth2/api/retrieve-wallet"
+                  "rewards/oauth2/api/overview",
+                  "rewards/oauth2/api/authorization",
+                  "rewards/oauth2/api/retrieve-access-token",
+                  "rewards/oauth2/api/refresh-token",
+                  "rewards/oauth2/api/data-fetching",
+                  "rewards/oauth2/api/retrieve-user",
+                  "rewards/oauth2/api/retrieve-wallet"
                 ]
               }
             ]
           },
           {
             "anchor": "ZBD App",
-            "icon": "code",
+            "icon": "apple",
             "pages": [
               {
-                "group": "Overview",
+                "group": "Resources",
                 "pages": [
-                  "app/intro",
-                  "app/download",
-                  "app/uri-schemes"
+                  "rewards/app/download",
+                  "rewards/app/uri-schemes"
                 ]
               }
             ]
