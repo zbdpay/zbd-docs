@@ -1,19 +1,20 @@
 ---
 title: 'Pay Lightning Network Charges'
 sidebarTitle: 'Pay to Lightning Charges'
+icon: 'arrow-up-to-line'
 description: 'Learn how to pay Lightning Network Charges using ZBD.'
 ---
 
 ## Payment API
 
-In order to make a payment against a Lightning Network Payment Request (a.k.a Lightning Invoices, or Charges), you simply have to use the [Send Payment API](/api-reference/payments/send) endpoint. A Payment accepts the following attributes:
+In order to make a payment against a Lightning Network Payment Request (a.k.a Lightning Invoices, or Charges), you simply have to use the [Send Payment API](/payments/api/lightning-payments/send) endpoint. A Payment accepts the following attributes:
 
 | Property | Status | Description |
 | --- | :-: | --- |
 | `invoice` | _String_ | The Lightning payment request, or invoice, that is meant to be paid. |
 | `description` | _String_ | The Payment description (only used for internal record-keeping). |
 | `internalId` | _String_ | An optional free-use attribute. Usually used by setting the Player/User ID of your Game/Application in order to link specific Payments to specific users. |
-| `callbackUrl` | _String_ | The URL ZBD services will make a POST HTTP request to with information about the Payment's status updates. See [Callbacks](/api-reference/callbacks) for more. |
+| `callbackUrl` | _String_ | The URL ZBD services will make a POST HTTP request to with information about the Payment's status updates. See [Callbacks](/payments/api/callbacks) for more. |
 
 To perform the Payment, use the API (or leverage one of our SDKs) by passing the correct attributes:
 
@@ -76,4 +77,4 @@ If the submitted request suceeds, you can expect a JSON API response that resemb
 
 ## Payment Updates
 
-There are cases where Lightning Payments can `get stuck` in transit (e.g. a network node on the path to the payment's destination suddenly goes offline). ZBD aims to provide cutting edge Lightning Network infrastructure with high availability and liquidity. That said, due to the possibility of running into stuck payment cases, the recommended method of getting Payment updates is through the `callbackUrl` attribute. By providing a `callbackUrl` when making the Payment, the [ZBD API](/api-reference/introduction) is able to make a POST request to that URL and pass along Payment updates as they happen.
+There are cases where Lightning Payments can `get stuck` in transit (e.g. a network node on the path to the payment's destination suddenly goes offline). ZBD aims to provide cutting edge Lightning Network infrastructure with high availability and liquidity. That said, due to the possibility of running into stuck payment cases, the recommended method of getting Payment updates is through the `callbackUrl` attribute. By providing a `callbackUrl` when making the Payment, the [ZBD API](/payments/api) is able to make a POST request to that URL and pass along Payment updates as they happen.

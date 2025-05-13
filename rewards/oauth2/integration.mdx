@@ -1,5 +1,6 @@
 ---
 title: 'Integrating'
+icon: 'terminal'
 description: 'Learn how to integrate ZBD Login into your application.'
 ---
 
@@ -26,7 +27,7 @@ In order to properly redirect users to the ZBD login portal, you must open a bro
     * `response_type` = code
     * `redirect_uri` = \<your_url_callback>
     * `code_challenge_method` = S256
-    * `code_challenge` = \<code challenge generated from [PKCE section](/docs/zbd-login/walkthrough#building-authorization-url)>
+    * `code_challenge` = \<code challenge generated from [PKCE section](/rewards/oauth2/walkthrough#building-authorization-url)>
 
 > After accessing the ZBD login portal URL and successfully authenticating, the user will be redirected back to your application with `state` and `code` query parameters included. These two properties allow you to hit the `token` endpoint, and get the user's `accessToken`.
 
@@ -158,4 +159,4 @@ From the opened OAuth2 Settings modal, you can add up to 3 redirect URLs (whethe
 </Frame>
 <br />
 
-Once you've added your redirect URLs / app schemas, you can save by clicking `Update`. You're now all set up for using `ZBD Login` on your application. For more detailed examples [check out the OAuth2 Code Walkthrough for source code and LOC explanation](/docs/zbd-login/walkthrough).
+Once you've added your redirect URLs / app schemas, you can save by clicking `Update`. You're now all set up for using `ZBD Login` on your application. For more detailed examples [check out the OAuth2 Code Walkthrough for source code and LOC explanation](/rewards/oauth2/walkthrough).

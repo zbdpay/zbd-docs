@@ -6,7 +6,7 @@ api: "POST https://api.zebedee.io/v0/static-charges"
 
 ## Description
 
-Static Charges are static Payment Requests in the Bitcoin Lightning Network. Whereas [Charges](/api-reference/charges/create) create fixed-amount and single-use Payment Requests that expire, Static Charges provide you a lot more flexibility & capabilities, including:
+Static Charges are static Payment Requests in the Bitcoin Lightning Network. Whereas [Charges](/payments/api/lightning-charges/create) create fixed-amount and single-use Payment Requests that expire, Static Charges provide you a lot more flexibility & capabilities, including:
 
 - **Variable Amounts** -> Static Charges have both `minAmount` and `maxAmount` properties, allowing for variable amounts set by the payer.
 
@@ -26,7 +26,7 @@ Use this API endpoint to create advanced Payment Requests on the Bitcoin Lightni
   You can create a `multi-use` Static Charge with a fixed amount too, simply by setting `minAmount` and `maxAmount` to the same amount.
 </Tip>
 
-To understand more use cases for Static Charges, [check our in-depth guide](/knowledge-base/guides/static-charges).
+To understand more use cases for Static Charges, [check our in-depth guide](/payments/api/lightning-charges).
 
 ## Configuration
 

@@ -1,6 +1,7 @@
 ---
 title: 'Using Withdrawal QR Codes'
 sidebarTitle: 'Pay to Withdrawal QRs'
+icon: 'qrcode'
 description: 'Understanding the Lightning Charge Workflow Problem'
 ---
 
@@ -37,20 +38,20 @@ To perform the reverse (Project paying User), as with all Lightning payments, th
 
 Withdrawal Requests are the exact opposite of a Charge. Whereas a Charge is a payment from a User to a Project, a Withdrawal Request can be understood as a payment from a Project to a User. In other words, a Charge is a QR code that accepts a Bitcoin payment while **a Withdrawal Request is a QR code that allows a User to claim Bitcoin**.
 
-ZBD's Withdrawal Request capability is based on the [LNURL open-source specification](https://github.com/fiatjaf/lnurl-rfc), which provides a standard for easier communication between Wallets (users) and Projects, through the use of HTTP requests. A developer building upon ZBD's Withdrawal Requests functionality does not need to understand the underlying methodology and workflow of LNURL - the [ZBD API](/api-reference/introduction) abstracts away any complexities. Let's see how to do it.
+ZBD's Withdrawal Request capability is based on the [LNURL open-source specification](https://github.com/fiatjaf/lnurl-rfc), which provides a standard for easier communication between Wallets (users) and Projects, through the use of HTTP requests. A developer building upon ZBD's Withdrawal Requests functionality does not need to understand the underlying methodology and workflow of LNURL - the [ZBD API](/payments/api) abstracts away any complexities. Let's see how to do it.
 
 <Tip>If you've been able to create a ZBD Charge, then you will be able to create a ZBD Withdrawal Request easily.</Tip>  
 
 ### Creating a Withdrawal Request
 
-When creating a Withdrawal Request code to allow Lightning Wallets to withdraw funds from the Project (game or application) you must provide the following attributes to the [`/withdrawal-requests`](/api-reference/withdrawal-requests/create) endpoint:
+When creating a Withdrawal Request code to allow Lightning Wallets to withdraw funds from the Project (game or application) you must provide the following attributes to the [`/withdrawal-requests`](/payments/api/withdrawal-requests/create) endpoint:
 
 | Property | Status | Description |
 | --- | :-: | --- |
 | `amount` | _String_ | The Withdrawal Request amount (in millisatoshis). |
 | `description` | _String_ | The Withdrawal Request description. |
 | `internalId` | _String_ | An optional free-use attribute. Usually used by setting the Player/User ID of your Game/Application in order to link specific Withdrawal Requests to specific Players. |
-| `callbackUrl` | _String_ | The URL ZBD services will make a POST HTTP request to with information about the Withdrawal Requests's status updates. See [Callbacks](/api-reference/callbacks) for more. |
+| `callbackUrl` | _String_ | The URL ZBD services will make a POST HTTP request to with information about the Withdrawal Requests's status updates. See [Callbacks](/payments/api/callbacks) for more. |
 | `expiresIn` | _Number_ | The desired expiration time for this Withdrawal Request (in seconds). |
 
 To create the Withdrawal Request, use the ZBD API (or leverage one of our SDKs) by passing the correct attributes:
@@ -139,4 +140,4 @@ Note that the Withdrawal Request is created in a `pending` state as it still has
 }
 ```
 
-To subscribe to updates on a specific Withdrawal Request, the recommended approach is to provide a `callbackUrl` property when creating that Withdrawal Request. Whenever there are updates to the Withdrawal Request (a payment was made, or it has expired) the [ZBD API](/knowledge-base/zbd-api/overview) will make a POST request to the URL provided in `callbackUrl`, passing the Withdrawal Request updates as data in the request.
+To subscribe to updates on a specific Withdrawal Request, the recommended approach is to provide a `callbackUrl` property when creating that Withdrawal Request. Whenever there are updates to the Withdrawal Request (a payment was made, or it has expired) the [ZBD API](/payments/api) will make a POST request to the URL provided in `callbackUrl`, passing the Withdrawal Request updates as data in the request.

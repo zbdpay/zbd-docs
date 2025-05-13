@@ -17,11 +17,11 @@ The Lightning Network is a decentralized organism / network and therefore there 
 
 ### Receiving Bitcoin
 
-To receive payments, you normally create [Charges](/api-reference/charges/create) (or [Static Charges](/api-reference/static-charges/create)). These are created and remain in a `pending` status until someone successfully scans and pays the Charge, at which point it becomes `completed`. If enough time is elapsed, the Charge can also `expire` making it impossible to be paid.
+To receive payments, you normally create [Charges](/payments/api/lightning-charges/create) (or [Static Charges](/payments/api/lightning-charges/create-static)). These are created and remain in a `pending` status until someone successfully scans and pays the Charge, at which point it becomes `completed`. If enough time is elapsed, the Charge can also `expire` making it impossible to be paid.
 
 ### Sending Bitcoin
 
-On the other hand, to send Bitcoin you must use one of the many [Payment APIs](/knowledge-base/introduction#instant-bitcoin-payouts). Payments through the Lightning Network can always fail, due to a myriad of reasons (e.g. network connectivity, size of payment, destination or receipient, etc). Because of that, every payment starts in a `processing` state, and only when it's settled or failed does it receive the `completed` or `failed` status' respectively.
+On the other hand, to send Bitcoin you must use one of the many [Payment APIs](/payments#instant-bitcoin-payouts). Payments through the Lightning Network can always fail, due to a myriad of reasons (e.g. network connectivity, size of payment, destination or receipient, etc). Because of that, every payment starts in a `processing` state, and only when it's settled or failed does it receive the `completed` or `failed` status' respectively.
 
 As you can understand now, **it is important that you subscribe to updates on all your Charges and Payments when using the ZBD Payments API**.
 
@@ -124,7 +124,7 @@ Below is a set of example payloads for the main APIs available:
 
 It is important that developers are able to validate the integrity of all API calls performed to their `callbackUrl` endpoints.
 
-To ensure that calls are coming from trusted ZBD Payments API servers, please use the [ZBD IP Address API Endpoint](/api-reference/utils/ip).
+To ensure that calls are coming from trusted ZBD Payments API servers, please use the [ZBD IP Address API Endpoint](/payments/api/utils/ip).
 
 **By checking the originating IP address** of the request received to your callback servers, **with the approved IP address** returned from this API endpoint, you are able to verify the authenticity of the requests.
 

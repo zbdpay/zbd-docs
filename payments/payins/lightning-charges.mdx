@@ -1,6 +1,7 @@
 ---
 title: 'Receiving Lightning Payments'
 sidebarTitle: 'Lightning Charges'
+icon: 'arrow-down-to-line'
 description: 'Learn how to receive Lightning payments using the ZBD API.'
 ---
 
@@ -14,10 +15,10 @@ A Charge accepts the following attributes:
 | `amount` | The Charge amount (in millisatoshis --> 1 satoshi = 1,000 millisatoshi). |
 | `description` | The Charge note or comment. |
 | `internalId` | An optional free-use attribute. Usually used by setting the Player/User ID of your Game/Application in order to link specific Charges to specific Players. |
-| `callbackUrl` | The URL ZBD API will make a POST HTTP request to with information about the Charges's status updates. See [Callbacks](/api-reference/callbacks) for more. |
+| `callbackUrl` | The URL ZBD API will make a POST HTTP request to with information about the Charges's status updates. See [Callbacks](/payments/api/callbacks) for more. |
 | `expiresIn` | The desired expiration time for this Charge (in seconds). |
 
-To create a Charge, use the [`/charges`](/api-reference/charges/create) API (or leverage one of our SDKs) by passing the correct attributes:
+To create a Charge, use the [`/charges`](/payments/api/lightning-charges/create) API (or leverage one of our SDKs) by passing the correct attributes:
 
 <CodeGroup>
 

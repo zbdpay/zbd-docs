@@ -8,7 +8,7 @@ description: Learn how to send Bitcoin using Vercel Edge Functions.
 
 To complete this guide, you will need the following:
 
-- [ZBD Project with a Live API key](/docs/dashboard/projects/api)
+- [ZBD Project with a Live API key](/get-started/api-keys)
 - [Vercel account](https://vercel.com/signup) + [Vercel CLI installed](https://vercel.com/docs/cli#installing-vercel-cli)
 
 ## 1. Create a Next.js Project
@@ -27,7 +27,7 @@ cd <project-name>
 
 <Note>For this guide we will be making use of the [App Router](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) inside of Next.js.</Note>
 
-Create a new file in the `app/api/send/route.ts` that makes a payment to a [Lightning Address](/knowledge-base/glossary#lightning-address) (e.g. andre@zbd.gg) with the following code:
+Create a new file in the `app/api/send/route.ts` that makes a payment to a [Lightning Address](/payments/glossary#lightning-address) (e.g. andre@zbd.gg) with the following code:
 
 <CodeGroup>
 
@@ -66,7 +66,7 @@ export async function GET() {
 ## 3. Send payment locally
 
 <Warning>
-  In order to successfully send payments through the API, you must have an active balance in the ZBD Project you are using. [Learn more about depositing funds into a ZBD Project wallet](/docs/dashboard/projects/wallet#funding-a-project-wallet).
+  In order to successfully send payments through the API, you must have an active balance in the ZBD Project you are using. [Learn more about depositing funds into a ZBD Project wallet](/get-started/add-funds).
 
   If you do not have funds in the ZBD Project you are using, you will receive a 4xx error from the API.
 </Warning>

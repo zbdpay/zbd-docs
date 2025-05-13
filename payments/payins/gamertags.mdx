@@ -1,12 +1,13 @@
 ---
 title: 'Request Charge for ZBD Gamertag'
 sidebarTitle: 'Gamertag Charges'
+icon: 'person-arrow-down-to-line'
 description: 'Learn how to generate payment requests specifically for ZBD users.'
 ---
 
 ## ZBD Gamertag Charge API
 
-While you can use the [Send Bitcoin to ZBD Gamertag](/api-reference/zbd-gamertag/send) endpoint to make a direct payment to a ZBD user, if you want to create a regular Lightning Network payment request / Charge QR code for that given user, you can do so using the [Create Charge for ZBD Gamertag](/api-reference/zbd-gamertag/create) endpoint.
+While you can use the [Send Bitcoin to ZBD Gamertag](/payments/api/gamertags/send) endpoint to make a direct payment to a ZBD user, if you want to create a regular Lightning Network payment request / Charge QR code for that given user, you can do so using the [Create Charge for ZBD Gamertag](/payments/api/gamertags/create-charge) endpoint.
 
 In order to request Charges from a ZBD Gamertag you just need to make a simple API call with a payload like the example below.
 
@@ -72,6 +73,6 @@ Alternatively you could rely on the Project's own Wallet as a form of escrow. Yo
 
 <Info>Alice will effectively be paying the Project Wallet in this scenario.</Info>
 
-Once payment is settled, you can use the [Send Bitcoin to ZBD Gamertag](/api-reference/zbd-gamertag/send) endpoint and send the same amount to **Bob**. When this second payment settles you can then transfer the sword asset inside the game.
+Once payment is settled, you can use the [Send Bitcoin to ZBD Gamertag](/payments/api/gamertags/send) endpoint and send the same amount to **Bob**. When this second payment settles you can then transfer the sword asset inside the game.
 
 While this technically involves two transactions, it provides a bit more control to the Developer that wishes to manage the transfer of assets/in-game items a bit more closely and with more checks and balances in place. Both approaches are recommended.

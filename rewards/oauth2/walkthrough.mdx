@@ -2,6 +2,8 @@
 title: 'Implementation Walkthrough'
 sidebarTitle: 'Walkthrough'
 description: 'Detailed walkthrough of an implementation of ZBD Login.'
+icon: 'person-running'
+
 ---
 
 ## Client Side
@@ -9,16 +11,16 @@ description: 'Detailed walkthrough of an implementation of ZBD Login.'
 When setting up OAuth2 from client side, you have two options:
 
 - Build the entire flow yourself
-    - Make a request for building the [authorization URL](/docs/zbd-login/walkthrough#building-authorization-url)
+    - Make a request for building the [authorization URL](/rewards/oauth2/walkthrough#building-authorization-url)
     - Handling the Webview with the created URL
     - Getting the `code` after authenticating with ZEBEDE
-    - Making another request for [getting the token](/docs/zbd-login/walkthrough#getting-the-token-and-accessing-zbd-api)
+    - Making another request for [getting the token](/rewards/oauth2/walkthrough#getting-the-token-and-accessing-zbd-api)
 - Make use of some of the available OAuth libraries available for the language you are working on, which would handle the initial steps of the flow
     - Install and set up configs accordingly to the library
         - If PKCE is available on the library you might receive the `code_verifier` from the response, after authenticating.
-        - If PKCE is not available, you might need to [build the code\_challenge and code\_verifier](/docs/zbd-login/walkthrough#getting-the-token-and-accessing-zbd-api) yourself.
+        - If PKCE is not available, you might need to [build the code\_challenge and code\_verifier](/rewards/oauth2/walkthrough#building-authorization-url) yourself.
     - Getting `code` as response
-    - Making the request for [getting the token](/docs/zbd-login/walkthrough#getting-the-token-and-accessing-zbd-api)
+    - Making the request for [getting the token](/rewards/oauth2/walkthrough#getting-the-token-and-accessing-zbd-api)
 
 If you chose the second option, there are open-source libraries for handling OAuth2 on Mobile using AppAuth ([iOS](https://github.com/openid/AppAuth-iOS) and [Android](https://github.com/openid/AppAuth-Android)), as well as for React Native using [react-native-app-auth](https://github.com/FormidableLabs/react-native-app-auth).
 
@@ -28,7 +30,7 @@ If you chose the second option, there are open-source libraries for handling OAu
 
 This flow go over all the steps for Logging in with ZBD, from Building the authorization URL, with proper PKCE Keys, to getting the accessToken and calling ZBD API.
 
-If you are using a library that provides PKCE guidelines, it will most likely be able to handle the initial flow (building auth URL and getting the code) just fine. In this case, feel free to jump to the [Token Section](/docs/zbd-login/walkthrough#building-authorization-url).
+If you are using a library that provides PKCE guidelines, it will most likely be able to handle the initial flow (building auth URL and getting the code) just fine. In this case, feel free to jump to the [Token Section](/rewards/oauth2/walkthrough#building-authorization-url).
 
 ### Building Authorization URL
 

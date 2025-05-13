@@ -1,5 +1,6 @@
 ---
 title: 'Nostr Relay Quick Start'
+icon: 'server'
 description: 'Learn how to set up a paid Nostr relay with ZBD.'
 ---
 
@@ -99,7 +100,7 @@ server {
 
 ### DNS Settings
 
-To map your VM’s IP address to your subdomain.mydomain.com you need to have an A record like below in your domain DNS settings.
+To map your VM's IP address to your subdomain.mydomain.com you need to have an A record like below in your domain DNS settings.
 
 <Frame caption="DNS Settings for Nostr Relay">
   <img src="/img/v2/guides/nostr-relay/dns.webp" alt="DNS Settings for Nostr Relay" />
@@ -114,7 +115,7 @@ Now that our VM is setup, let's get our Nostr relay hooked up to ZBD. First you'
 
 * [Sign up for a ZBD Dev Dashboard account](https://dashboard.zebedee.io/signup)
 
-<Tip>Follow our in-depth guide on [how to setup a ZBD Dev Dashboard account](/docs/dashboard/signup) for more details.</Tip>
+<Tip>Follow our in-depth guide on [how to setup a ZBD Dev Dashboard account](/get-started/create-account) for more details.</Tip>
 
 Once you're all set with your ZBD account, let's create a project and title it something like _Nostr Relay_.
 
@@ -125,7 +126,7 @@ Once you're all set with your ZBD account, let's create a project and title it s
 
 Once your project is created, you will be taken to the PROJECT DETAILS view. Each project in the dashboard has a fully-programmable Bitcoin Lightning wallet, and each wallet can be managed using the API Key provided in the API tab, as shown below.
 
-**Copy this API Key, you’re going to need it when setting up Nostream.**
+**Copy this API Key, you're going to need it when setting up Nostream.**
 
 <Warning>You will need a **Production API Key** for this integration. Sandbox API Keys are not supported yet for Nostr Relays. To get a Production API Key, you need to click *LIVE* on your Project dashboard.</Warning>
 
@@ -134,9 +135,9 @@ Once your project is created, you will be taken to the PROJECT DETAILS view. Eac
 </Frame>
 <br />
 
-_Bonus: you are also encouraged to place your VM’s IP addresses in the whitelisting field to ensure API calls to ZBD using your API Key are only ever coming from the provided IP addresses._
+_Bonus: you are also encouraged to place your VM's IP addresses in the whitelisting field to ensure API calls to ZBD using your API Key are only ever coming from the provided IP addresses._
 
-Now that we’ve gotten the ZBD API Key, let’s store it in the configuration file for Nostream and set it live!
+Now that we've gotten the ZBD API Key, let's store it in the configuration file for Nostream and set it live!
 
 ## Nostream Setup
 

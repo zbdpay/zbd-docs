@@ -1,12 +1,13 @@
 ---
 title: 'Beamable Integration'
 sidebarTitle: 'Beamable Servers'
+icon: 'server'
 description: 'How to integrate ZBD into your Beamable project.'
 ---
 
 ## Why use [Beamable](https://beamable.com/?referral=zbd) with ZBD?
 
-To ensure the security of your game integration with the [ZBD API](/api-reference/introduction), it is _crucial_ to safeguard your [ZBD API Key](/docs/dashboard/projects/api) and avoid exposing it within any client-side code. 
+To ensure the security of your game integration with the [ZBD API](/payments/api), it is _crucial_ to safeguard your [ZBD API Key](/get-started/api-keys) and avoid exposing it within any client-side code. 
 
 By leveraging [Beamable](https://beamable.com/?referral=zbd)'s Microservices and Realm (environment) configurations, you can secure your ZBD API Key by moving it from the game client to a server.
 
@@ -20,17 +21,17 @@ This provides you a path for a seamless integration solution that powers easy an
 
 ## ZBD Unity Package Overview
 
-The ZBD Unity Package is a great starting point/reference package to safely integrate the [ZBD API](/api-reference/introduction) into your game using [Beamable](https://beamable.com/?referral=zbd) Microservices. See instructions to download the ZBD Unity Package [here](#3-download-zbd-unity-package).
+The ZBD Unity Package is a great starting point/reference package to safely integrate the [ZBD API](/payments/api) into your game using [Beamable](https://beamable.com/?referral=zbd) Microservices. See instructions to download the ZBD Unity Package [here](#3-download-zbd-unity-package).
 
 The ZBD Unity Package contains the following:
 
 ### Microservice Demo
 
-This demo showcases how you can use a [Beamable](https://beamable.com/?referral=zbd) Microservice to integrate with the [ZBD API](/api-reference/introduction) safely. You can utilize the fully functional Microservice in your project, or use this as a guide to create your own Microservices.
+This demo showcases how you can use a [Beamable](https://beamable.com/?referral=zbd) Microservice to integrate with the [ZBD API](/payments/api) safely. You can utilize the fully functional Microservice in your project, or use this as a guide to create your own Microservices.
 
 ### ZBD Login Demo
 
-This demo showcases a working implementation of [ZBD Login](/docs/zbd-login/introduction) (OAuth2) using [Beamable](https://beamable.com/?referral=zbd) Microservices on an Android device, enabling you to quickly achieve secure login to your game. 
+This demo showcases a working implementation of [ZBD Login](/rewards/oauth2) (OAuth2) using [Beamable](https://beamable.com/?referral=zbd) Microservices on an Android device, enabling you to quickly achieve secure login to your game. 
 
 ### UI Kit Demo
 
@@ -73,7 +74,7 @@ Follow the instructions [here](https://docs.beamable.com/docs/installing-beamabl
 
 ### 1. Obtain ZBD API Key
 
-To interact with the [ZBD API](/api-reference/introduction), you must obtain an [API Key](/docs/dashboard/projects/api) from your [ZBD Dev Dashboard](https://dashboard.zebedee.io/) account. If you are unsure about the process, see [this guide](/docs/dashboard/introduction) for step-by-step instructions.
+To interact with the [ZBD API](/payments/api), you must obtain an [API Key](/get-started/api-keys) from your [ZBD Dev Dashboard](https://dashboard.zebedee.io/) account. If you are unsure about the process, see [this guide](/get-started/dev-dashboard) for step-by-step instructions.
 
 ### 2. Add ZBD API Key to your [Beamable](https://beamable.com/?referral=zbd) Project
 
@@ -176,7 +177,7 @@ At this point, your game can now connect the published Beamable Microservice(s),
 
 ## Integrating the Microservices
 
-To see sample code for how to integrate [Beamable](https://beamable.com/?referral=zbd) Microservices, view the `MyController.cs` file in the scripts directory of the ZBD Unity Package within Unity. Insert this code in applicable area(s) of your game; e.g. when you're [Sending sats to a ZBD Gamertag](/api-reference/zbd-gamertag/send).
+To see sample code for how to integrate [Beamable](https://beamable.com/?referral=zbd) Microservices, view the `MyController.cs` file in the scripts directory of the ZBD Unity Package within Unity. Insert this code in applicable area(s) of your game; e.g. when you're [Sending sats to a ZBD Gamertag](/payments/api/gamertags/send).
 
 To get data that needs to be secure from [Beamable](https://beamable.com/?referral=zbd) (as we do for the `apikey` and `clientsecret`), you can reference the code in `Config.cs` and the `GetAPIKey` function in `ZebedeeMicroservice.cs`.
 
@@ -203,7 +204,7 @@ public string ClientSecret => _settings.GetSetting("ZebedeeAPI", "clientsecret")
 
 ## ZBD Login Example Scene
 
-This scene shows how you can integrate [ZBD Login](/docs/zbd-login/introduction) with an Android build.
+This scene shows how you can integrate [ZBD Login](/rewards/oauth2) with an Android build.
 
 This uses the Microservice to communicate with ZBD to let your users log in securely.
 
@@ -211,7 +212,7 @@ To see how to integrate ZBD Login (OAuth2 flow) you can check out the `LoginCont
 
 ### 1. Get ZBD OAuth2 Client ID
 
-Add your [Client ID](/docs/zbd-login/integration) from the [ZBD Dev Dashboard](https://dashboard.zebedee.io/) and add it to the `LoginController` in the ZBD Login demo scene.
+Add your [Client ID](/rewards/oauth2/integration) from the [ZBD Dev Dashboard](https://dashboard.zebedee.io/) and add it to the `LoginController` in the ZBD Login demo scene.
 
 <Frame>
   <img src="/img/v2/guides/beamable/beamable-clientid.png" alt="Add client ID to demo scene" />

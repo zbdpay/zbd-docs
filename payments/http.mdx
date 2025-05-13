@@ -7,12 +7,12 @@ description: Learn how to use ZBD API using HTTP calls.
 
 To complete this guide, you will need the following:
 
-- [ZBD Project with a Live API key](/docs/dashboard/projects/api)
+- [ZBD Project with a Live API key](/get-started/api-keys)
 - [cURL](https://curl.se/), [httpie](https://httpie.io/), [wget](https://www.gnu.org/software/wget/) or any other HTTP client
 
 ## 1. Create payment request
 
-To create a [Charge](/knowledge-base/glossary#charge) on the Bitcoin Lightning Network, use the [Charges HTTP API](/api-reference/charges/create):
+To create a [Charge](/payments/glossary#charge) on the Bitcoin Lightning Network, use the [Charges HTTP API](/payments/api/lightning-charges/create):
 
 ```bash
 curl --request POST \
@@ -28,7 +28,7 @@ Check the `data.invoice.request` property on the response payload for the conten
 
 ## 2. Send payment to Bitcoin Lightning invoice
 
-You can pay a Bitcoin Lightning payment request, or [Charge](/knowledge-base/glossary#charge), by leveraging the [Payments HTTP API](/api-reference/payments/send):
+You can pay a Bitcoin Lightning payment request, or [Charge](/payments/glossary#charge), by leveraging the [Payments HTTP API](/payments/api/lightning-payments/send):
 
 ```bash
 curl --request POST \
@@ -40,11 +40,11 @@ curl --request POST \
   }'
 ```
 
-Check the `data.status` property on the response payload to know if the payment was successful. Check [Callbacks](/api-reference/callbacks) to understand how to get async payments from ZBD.
+Check the `data.status` property on the response payload to know if the payment was successful. Check [Callbacks](/payments/api/callbacks) to understand how to get async payments from ZBD.
 
 ## 3. Send payment to Lightning Address
 
-To send an instant Bitcoin payment to a [Lightning Address](/knowledge-base/guides/lightning-address) (e.g. andre @ zbd.gg), you can use the [Lightning Address HTTP API](/api-reference/lightning-address/send):
+To send an instant Bitcoin payment to a [Lightning Address](/payments/lightning-address) (e.g. andre @ zbd.gg), you can use the [Lightning Address HTTP API](/payments/api/lightning-address/send):
 
 ```bash
 curl --request POST \
@@ -57,4 +57,4 @@ curl --request POST \
   }'
 ```
 
-Check the `data.status` property on the response payload to know if the payment was successful. Check [Callbacks](/api-reference/callbacks) to understand how to get async payments from ZBD.
+Check the `data.status` property on the response payload to know if the payment was successful. Check [Callbacks](/payments/api/callbacks) to understand how to get async payments from ZBD.

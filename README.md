@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://zbd.dev">
-    <img src="https://avatars.githubusercontent.com/u/54384134?s=200&v=4" height="96">
+    <img src="https://avatars.githubusercontent.com/u/54384134?s=200&v=4" height="96" />
     <h3 align="center">ZBD API Docs</h3>
   </a>
 </p>
@@ -35,7 +35,6 @@ With ZBD, it's easy! Anyone can do it. **[What are YOU building?](https://dashbo
 
 - [Help & Support](https://help.zebedee.io)
 - [Twitter](https://twitter.com/zebedeeio)
-- [Dev Discord](https://discord.gg/zbd)
 - [Download ZBD](https://zbd.gg)
 
 ## Contributing

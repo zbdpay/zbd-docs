@@ -1,0 +1,49 @@
+---
+title: "Get UserID by Gamertag"
+description: "Retrieve Gamertag from a ZBD user ID."
+api: "GET https://api.zebedee.io/v0/user-id/gamertag/{GAMERTAG}"
+---
+
+## Description
+
+Make use of this endpoint to get a given User's ID when provided with a ZBD Gamertag.
+
+## Usage
+
+This is needed because ZBD Gamertags are akin to social media handles, they are swappable. In the scenario where a Developer is using a ZBD Gamertag as the identifier for transaction limits and/or thresholds (for example), a user could simply change their ZBD Gamertag and try to bypass those constraints. Using a truly unique and immutable ID like the `User ID` will provide Developers with the needed assurances.
+
+## Configuration
+
+### Path Parameters
+
+<ParamField required path="GAMERTAG" type="string">
+  ZBD Gamertag
+</ParamField>
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json 200 Response
+{
+  "success": true,
+  "data": {
+    "id": "0a59bf56-daa3-4888-8330-cbc02eba3a6e"
+  }
+}
+```
+
+```json 400 Response
+{
+  "success": false,
+  "message": "No user found with this gamertag"
+}
+```
+
+</ResponseExample>

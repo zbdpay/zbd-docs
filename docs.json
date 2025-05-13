@@ -6,60 +6,48 @@
   "colors": {
     "primary": "#1659e7",
     "light": "#6294fd",
-    "dark": "#0D001D"
-  },
-  "banner": {
-    "content": "🚀 ZBD Rewards SDK is now in public beta! [Learn more](https://zbd.gg/blog/zbd-rewards-sdk-beta)"
+    "dark": "#1659e7"
   },
   "favicon": "/favicon.png",
   "navigation": {
     "tabs": [
       {
         "tab": "Getting Started",
-        "pages": [
+        "dropdowns": [
           {
-            "group": "Overview",
+            "dropdown": "Build with ZBD",
+            "icon": "bolt-lightning",
             "pages": [
-              "get-started/intro"
-            ]
-          },
-          {
-            "group": "Set Up ZBD",
-            "pages": [
+              "get-started",
               {
                 "group": "Set Up ZBD",
                 "pages": [
-                  "get-started/intro"
+                  "get-started/dev-dashboard",
+                  "get-started/create-account",
+                  "get-started/verify-identity",
+                  "get-started/add-funds",
+                  "get-started/vouchers",
+                  {
+                    "group": "ZBD Projects",
+                    "pages": [
+                      "get-started/create-project",
+                      "get-started/api-keys",
+                      "get-started/project-wallet",
+                      "get-started/manage-project",
+                      "get-started/sandbox-project"
+                    ]
+                  }
                 ]
-              }
-            ]
-          },
-          {
-            "group": "Products",
-            "pages": [
+              },
               {
-                "group": "ZBD Dev Dashboard",
+                "group": "Products",
                 "pages": [
-                  "get-started/intro",
-                  {
-                    "group": "Account",
-                    "pages": [
-                      "get-started/dev-dashboard/signup",
-                      "get-started/dev-dashboard/complete-profile"
-                    ]
-                  },
-                  {
-                    "group": "Projects",
-                    "pages": [
-                      "get-started/dev-dashboard/projects/sandbox",
-                      "get-started/dev-dashboard/projects/create",
-                      "get-started/dev-dashboard/projects/api",
-                      "get-started/dev-dashboard/projects/wallet",
-                      "get-started/dev-dashboard/projects/edit",
-                      "get-started/dev-dashboard/projects/archive"
-                    ]
-                  },
-                  "get-started/dev-dashboard/vouchers"
+                  "get-started/zbd-onramp",
+                  "get-started/zbd-rewards-sdk",
+                  "get-started/zbd-payments-api",
+                  "get-started/login-with-zbd",
+                  "get-started/zbd-app",
+                  "get-started/zbd-mcp-server"
                 ]
               }
             ]
@@ -71,12 +59,12 @@
         "anchors": [
           {
             "anchor": "Overview",
-            "icon": "book-open",
+            "icon": "inbox",
             "pages": [
               {
                 "group": "Overview",
                 "pages": [
-                  "payments/intro",
+                  "payments",
                   "payments/lightning-network",
                   "payments/lightning-address",
                   "payments/templates"
@@ -86,7 +74,7 @@
                 "group": "Building with LLMs",
                 "pages": [
                   "payments/mcp",
-                  "payments/llms"
+                  "payments/ai-ingestion"
                 ]
               },
               {
@@ -128,8 +116,23 @@
             ]
           },
           {
-            "anchor": "Payment SDKs",
-            "icon": "code",
+            "anchor": "Onramp",
+            "icon": "circle-dollar-to-slot",
+            "pages": [
+              {
+                "group": "Onramp",
+                "pages": [
+                  "payments/onramp",
+                  "payments/onramp/architecture",
+                  "payments/onramp/user-flow",
+                  "payments/onramp/theming"
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "Payments SDK",
+            "icon": "layer-group",
             "pages": [
               {
                 "group": "Overview",
@@ -192,7 +195,7 @@
               {
                 "group": "Overview",
                 "pages": [
-                  "payments/api/introduction",
+                  "payments/api",
                   "payments/api/errors",
                   "payments/api/callbacks",
                   "payments/api/resources/openapi"
@@ -337,6 +340,18 @@
                 ]
               },
               {
+                "group": "API Reference",
+                "pages": [
+                  "rewards/api/gamertags",
+                  "rewards/api/gamertags/send",
+                  "rewards/api/gamertags/retrieve-reward",
+                  "rewards/api/gamertags/utils",
+                  "rewards/api/gamertags/create-charge",
+                  "rewards/api/gamertags/retrieve-userid",
+                  "rewards/api/gamertags/retrieve-from-userid"
+                ]
+              },
+              {
                 "group": "Knowledge Base",
                 "pages": [
                   "rewards/knowledge-base",
@@ -348,7 +363,7 @@
                       {
                         "group": "Game Security Course",
                         "pages": [
-                          "rewards/knowledge-base/game-security/introduction",
+                          "rewards/knowledge-base/game-security",
                           "rewards/knowledge-base/game-security/insecure-game",
                           "rewards/knowledge-base/game-security/hacking-saved-game",
                           "rewards/knowledge-base/game-security/hacking-memory-values",
@@ -375,7 +390,7 @@
           },
           {
             "anchor": "Login with ZBD",
-            "icon": "wand-magic-sparkles",
+            "icon": "shield-check",
             "pages": [
               {
                 "group": "Overview",
@@ -390,7 +405,7 @@
                 "group": "API Reference",
                 "icon": "code",
                 "pages": [
-                  "rewards/oauth2/api/overview",
+                  "rewards/oauth2/api",
                   "rewards/oauth2/api/authorization",
                   "rewards/oauth2/api/retrieve-access-token",
                   "rewards/oauth2/api/refresh-token",
@@ -408,7 +423,7 @@
               {
                 "group": "Resources",
                 "pages": [
-                  "rewards/app/download",
+                  "rewards/app",
                   "rewards/app/uri-schemes"
                 ]
               }
@@ -425,6 +440,9 @@
   "appearance": {
     "default": "system"
   },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude"]
+  },
   "navbar": {
     "links": [
       {
@@ -433,7 +451,7 @@
       },
       {
         "label": "Create Account",
-        "href": "https://github.com/zebedeeio"
+        "href": "https://dashboard.zebedee.io"
       }
     ],
     "primary": {
@@ -453,9 +471,106 @@
   },
   "footer": {
     "socials": {
-      "twitter": "https://x.com/zebedeeio",
-      "github": "https://github.com/zebedeeio",
-      "discord": "https://discord.gg/zbd"
+      "x": "https://x.com/zebedeeio",
+      "github": "https://github.com/zebedeeio"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/docs/introduction",
+      "destination": "/get-started"
+    },
+    {
+      "source": "/docs/nodejs-quickstart",
+      "destination": "/payments/sdk/node"
+    },
+    {
+      "source": "/docs/nextjs-quickstart",
+      "destination": "/payments/sdk/typescript/next"
+    },
+    {
+      "source": "/docs/express-quickstart",
+      "destination": "/payments/sdk/typescript/express"
+    },
+    {
+      "source": "/docs/vercel-edge-functions/send",
+      "destination": "/payments/sdk/typescript/vercel/send"
+    },
+    {
+      "source": "/docs/vercel-edge-functions/receive",
+      "destination": "/payments/sdk/typescript/vercel/receive"
+    },
+    {
+      "source": "/docs/supabase-edge-functions/send",
+      "destination": "/payments/sdk/typescript/supabase/send"
+    },
+    {
+      "source": "/docs/supabase-edge-functions/receive",
+      "destination": "/payments/sdk/typescript/supabase/receive"
+    },
+    {
+      "source": "/docs/csharp-quickstart",
+      "destination": "/payments/sdk/csharp"
+    },
+    {
+      "source": "/docs/go-quickstart",
+      "destination": "/payments/sdk/go"
+    },
+    {
+      "source": "/docs/replit-quickstart",
+      "destination": "/payments/sdk"
+    },
+    {
+      "source": "/docs/openapi",
+      "destination": "/payments/api/resources/openapi"
+    },
+    {
+      "source": "/docs/examples",
+      "destination": "/payments/templates"
+    },
+    {
+      "source": "/docs/sdk",
+      "destination": "/payments/sdk"
+    },
+    {
+      "source": "/docs/integrations",
+      "destination": "/payments"
+    },
+    {
+      "source": "/docs/global-support",
+      "destination": "/payments/coverage"
+    },
+    {
+      "source": "/courses/*",
+      "destination": "/get-started"
+    },
+    {
+      "source": "/knowledge-base/payouts/zbd-gamertag",
+      "destination": "/payments/payouts/gamertags"
+    },
+    {
+      "source": "/knowledge-base/payouts/:slug*",
+      "destination": "/payments/payouts/:slug*"
+    },
+    {
+      "source": "/knowledge-base/payins/charges",
+      "destination": "/payments/payins/lightning-charges"
+    },
+    {
+      "source": "/knowledge-base/payins/zbd-gamertag",
+      "destination": "/payments/payins/gamertags"
+    },
+    {
+      "source": "/knowledge-base/guides/nostr-relay",
+      "destination": "/payments/nostr/nostr-relay"
+    },
+    {
+      "source": "/knowledge-base/guides/*",
+      "destination": "/payments"
+    },
+    {
+      "source": "/api-reference/introduction",
+      "destination": "/payments/api"
+    }
+  ]
 }

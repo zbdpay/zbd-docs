@@ -1,0 +1,51 @@
+---
+title: "Get Reward"
+description: "Retrieve all data about a Payment sent to ZBD User."
+api: "GET https://api.zebedee.io/v0/gamertag/transaction/{id}"
+---
+
+## Description
+
+In order to get data on payments sent to ZBD Gamertags, you can use this endpoint. The data payload returned will inform you of the `status` of that transaction as well as any associated `fees`.
+
+## Usage
+
+The idea here is to use the `transactionId` property returned from the [Pay to ZBD Gamertag](/rewards/api/gamertags/send) response, and use that ID to fetch the latest details of the given Payment.
+
+## Configuration
+
+### Path Parameters
+
+<ParamField required path="id" type="string">
+  Payment Transaction ID
+</ParamField>
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+  "message": "Fetched charge.",
+  "success": true,
+  "data": {
+    "id": "903883f2-67d9-4707-a21b-ddff004fe041",
+    "receiverId": "ec9b38d5-b126-4307-9d1e-8aa0dfab5d7e",
+    "amount": "15000",
+    "fee": "1000",
+    "unit": "msats",
+    "processedAt": "2023-01-04T15:59:16.993Z",
+    "confirmedAt": "2023-01-04T15:59:16.989Z",
+    "comment": "Sending to ZBD Gamertag",
+    "status": "TRANSACTION_STATUS_COMPLETED"
+  }
+}
+```
+
+</ResponseExample>
