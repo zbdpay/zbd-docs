@@ -1,117 +1,80 @@
 ---
-title: 'Welcome to the ZBD Documentation'
+title: 'ZBD Documentation'
 sidebarTitle: 'Overview'
 description: 'Global Payment Service Provider for Gaming and Interactive Entertainment'
 ---
 
-At ZBD, we're dedicated to revolutionizing the way value moves in the digital interactive space. As a global Payment Service Provider (PSP) meticulously designed for the unique demands of gaming and interactive entertainment, we empower developers, publishers, and creators to build more engaging, rewarding, and profitable experiences for their communities worldwide.
+import { Footer } from '/snippets/footer.mdx';
 
-Whether you're an established enterprise studio or an indie developer just starting, our suite of tools is built to help you succeed.
+## Payments
 
-<h2>Supercharge Your Success with <span style={{ color: '#1659e7', fontWeight: 'bold' }}>ZBD Rewards</span></h2>
-
-Are you looking to significantly boost your game's Key Performance Indicators (KPIs)? [**ZBD Rewards**](/rewards/sdk) is the definitive solution. Move beyond traditional engagement tactics and unlock the power of instant, meaningful rewards.
+Enable instant global payments in your apps and games with multi-currency support for Bitcoin, Lightning Network, USD, EUR and Stablecoins. We handle the complexity of payments infrastructure so you can focus on building amazing experiences.
 
 <CardGroup cols={2}>
-  <Card title="ZBD Rewards SDK" icon='gamepad' img='/img/rewards/sdk-hero.png' color="#000000" href="/rewards/sdk">
+  <Card title="ZBD Onramp" horizontal icon='circle-dollar-to-slot' href="/payments/onramp">
     <p>
-      Real-money rewards drag-n-drop system to boost your engagement and retention, and monetize 2-3 times better than non-rewarded games.
+      Onboard users into your app with Bitcoin and USDC.
+    </p>
+  </Card>
+  <Card title="Payments API" horizontal icon='code' href="/payments/api">
+    <p>
+      Global instant payments with Bitcoin & Lightning Network.
+    </p>
+  </Card>
+  <Card title="TypeScript SDK" horizontal icon='layer-group' href="/payments/sdk/typescript">
+    <p>
+      Build payments features with our TS guides and starter kits.
+    </p>
+  </Card>
+  <Card title="MCP Server" horizontal icon='robot' href="/payments/mcp">
+    <p>
+      Process payments with AI and LLMs using our MCP Server.
     </p>
   </Card>
 </CardGroup>
 
-ZBD Rewards provides a flexible and powerful platform to seamlessly integrate a rewarding layer into your game, fostering a more vibrant community and keeping players captivated. Here's how:
+Getting started with ZBD Payments is as simple as:
 
+<CodeGroup>
+
+```bash TypeScript / Node.js
+pnpm install @zbddev/payments-sdk
+```
+
+```bash Rust
+cargo add zebedee-rust
+```
+
+```bash HTTP
+curl -X GET https://api.zebedee.io/v0/wallet
+```
+
+</CodeGroup>
+
+## Rewards
+
+Drive user engagement, boost retention, and unlock new revenue streams by offering real-money rewards and incentives across your experiences.
 <CardGroup cols={2}>
-  <Card title="Skyrocket Player Retention" icon="arrow-trend-up" color="#000000">
+  <Card title="ZBD Rewards SDK" horizontal icon='layer-group' href="/rewards/sdk">
     <p>
-      Give players compelling reasons to return day after day. Integrate seamless reward mechanisms that foster loyalty and significantly reduce churn.
+      Drag-and-drop Unity SDK to add real-money rewards to your games.
     </p>
   </Card>
-  <Card title="Deepen Player Engagement" icon="gamepad" color="#000000">
+  <Card title="Rewards API" horizontal icon='terminal' href="/rewards/api">
     <p>
-      Transform passive players into active participants. Encourage exploration, achievement, and social interaction by rewarding desired in-game behaviors and accomplishments.
+      Programmatically distribute rewards using our flexible Rewards API.
     </p>
   </Card>
-  <Card title="Unlock New Revenue Streams" icon="money-bill-trend-up" color="#000000">
+  <Card title="Login with ZBD" horizontal icon='shield-check' href="/rewards/oauth2">
     <p>
-      Enhance your monetization strategy by incorporating rewards that complement your existing model, driving both player satisfaction and increased, sustainable revenue.
+      Enable secure user authentication and rewards distribution with OAuth.
     </p>
   </Card>
-  <Card title="Cultivate Thriving Communities" icon="users" color="#000000">
+  <Card title="ZBD App" horizontal icon='apple' href="/rewards/app">
     <p>
-      Incentivize social interactions, user-generated content, and community events, directly building a more connected, active, and loyal player base.
+      Allow users to manage rewards and cash out with the ZBD app.
     </p>
   </Card>
 </CardGroup>
 
-<h2>Take Full Control with <span style={{ color: '#1659e7', fontWeight: 'bold' }}>ZBD Payments</span></h2>
-
-If you're seeking a payments partner that puts you firmly in control of your game's financial ecosystem, [ZBD Payments](/payments) is engineered for you. We understand that managing in-game economies requires flexibility, security, and precision. As Payments experts we take care of all of the complexities of dealing with both legacy and new payment methods, so you can focus on building the best version of your product.
-
-<CardGroup cols={2}>
-  <Card title="ZBD Onramp" icon="circle-dollar-to-slot" color="#000000" href="/payments/onramp" img="/img/payments/zbd-onramp.png">
-    <p>
-      ZBD Onramp is a payments platform that allows you to accept payments from your users in a variety of currencies and payment methods. It's a simple way to get started with [ZBD Payments](/payments).
-    </p>
-  </Card>
-  <Card title="ZBD Bitcoin API" icon="bitcoin-sign" color="#000000" href="/payments/api" img="/img/payments/bitcoin-api.png">
-    <p>
-      ZBD Bitcoin Payments API is the most powerful and flexible way to send and receive instant global Bitcoin payments. Programmable money in the fabric of your game or experience.
-    </p>
-  </Card>
-</CardGroup>
-
-With [ZBD Payments](/payments), you can gain true ownership and customize your in-game financial systems to best suit your game's unique mechanics and player base. Here's what we offer:
-
-<CardGroup cols={2}>
-  <Card title="Gain True Ownership & Flexibility" icon="sliders" color="#000000" href="https://zbd.dev/payments">
-    <p>
-      Move beyond restrictive, one-size-fits-all payment solutions. Our platform offers you granular control and customizable options for the flow of money.
-    </p>
-  </Card>
-  <Card title="Design Your Ideal In-Game Economy" icon="coins" color="#000000" href="https://zbd.dev/payments">
-    <p>
-      Implement the financial systems that perfectly match your game's mechanics, player progression, and monetization strategy.
-    </p>
-  </Card>
-  <Card title="Ensure Seamless & Secure Transactions" icon="shield-check" color="#000000" href="https://zbd.dev/payments">
-    <p>
-      Provide your users with a secure, intuitive, and lightning-fast payment experience, enhancing trust, satisfaction, and conversion rates.
-    </p>
-  </Card>
-  <Card title="Achieve Global Reach, Effortlessly" icon="globe" color="#000000" href="https://zbd.dev/payments">
-    <p>
-      Expand your player base worldwide with a payments infrastructure designed for international transactions, supporting diverse currencies and local payment methods.
-    </p>
-  </Card>
-</CardGroup>
-
-## Ready to Build with ZBD?
-
-This documentation is your comprehensive guide to integrating and leveraging the full power of ZBD's solutions. Here you'll find:
-
-<CardGroup cols={2}>
-  <Card title="Getting Started Guides" icon="book-open" color="#000000" href="/get-started">
-    <p>
-      Step-by-step instructions to get you up and running quickly with ZBD's payment solutions and features.
-    </p>
-  </Card>
-  <Card title="API References" icon="code" color="#000000" href="/payments/api">
-    <p>
-      Detailed information on our APIs to enable deep customization and integration into your applications.
-    </p>
-  </Card>
-  <Card title="Tutorials & Examples" icon="graduation-cap" color="#000000" href="/payments">
-    <p>
-      Practical examples and hands-on tutorials to inspire and guide your development journey with ZBD.
-    </p>
-  </Card>
-  <Card title="Best Practices" icon="star" color="#000000" href="/payments">
-    <p>
-      Tips, insights and recommended approaches for maximizing the impact of ZBD in your projects.
-    </p>
-  </Card>
-</CardGroup>
-
-Dive in and discover how ZBD can help you build the future of interactive entertainment.
+<Footer />
