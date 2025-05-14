@@ -1,0 +1,30 @@
+---
+title: 'Troubleshooting'
+description: 'General troubleshooting guides for the ZBD Rewards SDK.'
+icon: 'bug'
+---
+
+# Build Issues
+
+- If you encounter build issues, it is important to check that the Android and iOS deployment targets and minimum API level are set properly. Refer to [Compatibility](/rewards/sdk/compatibility) for more information.
+
+- If you receive a sign up error, please confirm that your Bundle ID / Package Name is the same as the one used whilst setting up the SDK configuration.
+
+- Make sure the stripping level is set to low or minimum in the Unity build settings.
+
+If you get the following build errors on Android please check the **[Building for Android](/rewards/sdk/building#building-for-android)** section.
+
+<CardGroup cols={2}>
+  <Frame>
+    <img src="/img/rewards/build-failure-1.png" alt="Build Failure 1" />
+  </Frame>
+  <Frame>
+    <img src="/img/rewards/build-failure-2.png" alt="Build Failure 2" />
+  </Frame>
+</CardGroup>
+
+# Performance Issues
+
+The ZBD Rewards SDK forces hardware acceleration in Android builds, this can cause some issues with games.
+
+If you notice performance issues after integrating the ZBD Rewards SDK you can delete the `ModifyUnityAndroidAppManifestSample.cs` file in the `Assets/Editor/` folder.

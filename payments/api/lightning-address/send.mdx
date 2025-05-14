@@ -1,0 +1,68 @@
+---
+title: "Pay to Lightning Address"
+description: "Send instant Bitcoin payments to any Lightning Address."
+api: "POST https://api.zebedee.io/v0/ln-address/send-payment"
+---
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="lnAddress" type="string">
+  The Lightning Address of the intended recipient (e.g. andre@zbd.gg)
+</ParamField>
+
+<ParamField required body="amount" type="string">
+  The amount for the Payment -> in millisatoshis
+</ParamField>
+
+<ParamField initialValue="‎" body="comment" type="string">
+  Note or description of this Payment
+</ParamField>
+
+<ParamField initialValue="‎" body="internalId" type="string">
+  Open metadata string property
+</ParamField>
+
+<ParamField initialValue="‎" body="callbackUrl" type="string">
+  The endpoint ZBD will POST Charge updates to
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "id": "db3e9e98-82c6-4ad5-acb8-900212d352aa",
+    "fee": "0",
+    "unit": "msats",
+    "amount": "10000",
+    "invoice": "lnbc100n1p3mtx6gpp5qpc7qvapr475jjazwkves7t7qdyq5njym52z5r6mg0a9d79w783shp5xt5ts9t74akf67j59ynkr5qz8x3hs4g09d3dttmjrwwdhrxgc03qcqzpgxqzfvsp59uasmyhqwfuek2dwyfla6dn7la5wxkwzmlvvhcuptxdxsxs8d24q9qyyssqslvgpll5cwtcmhr0ch607gg463xc3s2g7mfww2dr3l0f29czt7eq03rylyg5g09qz0w97qv87mmmcyj0ytfahhzc6y79je5vsf67tgcp8248ez",
+    "preimage": null,
+    "walletId": "2e686eed-82c6-4722-95bd-de1b23f27d44",
+    "transactionId": "2924bf31-96ba-4d26-80df-9e35c09a59cf",
+    "callbackUrl": "https://your-domain.com/zbd-callback",
+    "internalId": "uniqueIdFromYourSystem",
+    "comment": "Sending to a Lightning Address",
+    "processedAt": "2023-01-04T15:29:12.577Z",
+    "createdAt": "2023-01-04T15:29:12.514Z",
+    "status": "completed"
+  },
+  "message": "Payment done."
+}
+```
+
+</ResponseExample>

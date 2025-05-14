@@ -1,0 +1,60 @@
+---
+title: Introduction
+description: Learn how to use ZBD API using HTTP calls.
+---
+
+## Prerequisites
+
+To complete this guide, you will need the following:
+
+- [ZBD Project with a Live API key](/get-started/api-keys)
+- [cURL](https://curl.se/), [httpie](https://httpie.io/), [wget](https://www.gnu.org/software/wget/) or any other HTTP client
+
+## 1. Create payment request
+
+To create a [Charge](/payments/glossary#charge) on the Bitcoin Lightning Network, use the [Charges HTTP API](/payments/api/lightning-charges/create):
+
+```bash
+curl --request POST \
+  --url https://api.zebedee.io/v0/charges \
+  --header 'apikey: <apikey>' \
+  --data '{
+    "amount": "100000",
+    "description": "Charging for the coffee!"
+  }'
+```
+
+Check the `data.invoice.request` property on the response payload for the contents of the payment request QR code.
+
+## 2. Send payment to Bitcoin Lightning invoice
+
+You can pay a Bitcoin Lightning payment request, or [Charge](/payments/glossary#charge), by leveraging the [Payments HTTP API](/payments/api/lightning-payments/send):
+
+```bash
+curl --request POST \
+  --url https://api.zebedee.io/v0/payments \
+  --header 'apikey: YOUR_API_KEY_HERE' \
+  --data '{
+    "description": "SaaS payment",
+    "invoice": "lnbc1u1pjwejp4pp5pqm0wsg8z9ga7fl08wns429y2wr7c40s4cvws9wuccc5ekt74pcqdqhtfz5y32yg4zjqsmgv9exwegcqzzsxqzjcsp5uxmw8dqc3z2g9ed23s4xy5l97uaw5u9207wezwrg02vxeunf8l9s9qyyssq4yfrmu0vnhjx2kvzhqgacwlz3ptak9mkkvs7xwtcvs3frt34aetrjha6amehs7335eaewap0cna6nmz3rdjj7x3ufs4687k4a64drvcpwmel4q"
+  }'
+```
+
+Check the `data.status` property on the response payload to know if the payment was successful. Check [Callbacks](/payments/api/callbacks) to understand how to get async payments from ZBD.
+
+## 3. Send payment to Lightning Address
+
+To send an instant Bitcoin payment to a [Lightning Address](/payments/lightning-address) (e.g. andre @ zbd.gg), you can use the [Lightning Address HTTP API](/payments/api/lightning-address/send):
+
+```bash
+curl --request POST \
+  --url https://api.zebedee.io/v0/ln-address/send-payment \
+  --header 'apikey: YOUR_API_KEY_HERE' \
+  --data '{
+    "amount": "10000",
+    "lnAddress": "andre@zbd.gg",
+    "comment": "Thanks for the coffee!"
+  }'
+```
+
+Check the `data.status` property on the response payload to know if the payment was successful. Check [Callbacks](/payments/api/callbacks) to understand how to get async payments from ZBD.

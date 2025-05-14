@@ -1,0 +1,57 @@
+---
+title: "Revoke Voucher"
+api: "POST https://api.zebedee.io/v0/revoke-voucher"
+---
+
+## Description
+
+Credits your Project wallet by revoking a valid (non-redeemed, non-revoked) single-time use [ZBD Voucher](/get-started/vouchers).
+
+## Usage
+
+Enter a valid 8-digit voucher Code to reclaim the sats to your Project wallet. Revoke a voucher if you don't want the Voucher to be redeemable by another user.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="code" type="string">
+  Valid 8-digit ZBD Voucher Code
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+    "success": true,
+    "data": {
+        "amount": "1000",
+        "code": "E044A15A",
+        "createdAt": "2023-08-24T15:04:19.927Z",
+        "description": "Voucher for user.",
+        "id": "8703d5da-6b38-499f-b543-c6e73543b371",
+        "redeemedAt": null,
+        "redeemedById": null,
+        "redeemedTransactionId": null,
+        "revokedAt": "2023-08-24T15:04:41.196Z",
+        "revokedById": "4a4bd549-297e-4e67-a594-386200e1bc21",
+        "revokedTransactionId": "34f5abab-3f36-4fb3-b25a-4d54b0ad0924",
+        "unit": "msats"
+    },
+    "message": "Successfully revoked Voucher."
+}
+```
+
+</ResponseExample>

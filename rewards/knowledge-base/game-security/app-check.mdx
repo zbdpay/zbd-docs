@@ -1,0 +1,27 @@
+---
+title: "Detecting fake devices and apps"
+sidebarTitle: "9. Fake devices and apps"
+icon: 'robot'
+description: "Detect if the device or app are fake"
+---
+
+In this episode, Mandelduck will show us how we can use Firebase's App Check to verify that the player is using a genuinely uncompromised device and a legitimate, untampered version of the app.
+
+A small correction at 20:00 when talking about encrypting the app check token, this may not be needed for android only, as in order to use charles proxy to get and change the app check token the attacker needs a rooted device as a non rooted device running an app from google play won't let charles proxy see the data due to a security policy. This means they can only see app check tokens from devices that would fail the app check i.e. android forces a form of certificate pinning only allowing ssl certificates installed by the system and not by the user
+
+Source code on branch security-4
+
+https://github.com/zebedeeio/anti-cheat-sample-game/tree/security-4
+
+Repo for the nodejs server can be found here
+
+https://github.com/zebedeeio/anticheat-example-server
+
+<iframe
+  className="w-full aspect-video rounded-lg"
+  src="https://www.youtube.com/embed/TqqdMZA6Dfo?si=xjGJ4P_Y9CR3RRbo"
+  title="ZBD Dev - Securing Game"
+  frameBorder="0"
+  allow="accelerometer; fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>

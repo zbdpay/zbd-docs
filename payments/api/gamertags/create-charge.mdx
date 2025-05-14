@@ -1,0 +1,73 @@
+---
+title: "Create Charge"
+description: "Generate a payment request for a ZBD User."
+api: "POST https://api.zebedee.io/v0/gamertag/charges"
+---
+
+## Description
+
+While you can use the [Pay to ZBD Gamertag](/payments/api/gamertags/send) endpoint to make a direct Bitcoin payment to a given ZBD user, if for whatever reason you'd want to create a general Lightning Network Charge / Payment Request QR code, you can use this endpoint.
+
+<Info>The response payload will include a `invoiceRequest` which is the contents of the Charge / Payment Request QR code. Do note that Charges have defined expiration times. After a Charge expires it cannot be paid, simply create another Charge.</Info>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="amount" type="string">
+  The amount for the Payment -> in millisatoshis
+</ParamField>
+
+<ParamField required body="gamertag" type="string">
+  Destination ZBD Gamertag
+</ParamField>
+
+<ParamField initialValue="‎" body="description" type="string">
+  Note or comment for this Payment (visible to recipient)
+</ParamField>
+
+<ParamField initialValue="‎" body="expiresIn" type="number">
+  Time until Charge expiration -> in seconds
+</ParamField>
+
+<ParamField initialValue="‎" body="internalId" type="string">
+  Open metadata string property
+</ParamField>
+
+<ParamField initialValue="‎" body="callbackUrl" type="string">
+  The endpoint ZBD will POST Charge updates to
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+    "unit": "msats",
+    "status": "CHARGE_PENDING",
+    "amount": "15000",
+    "createdAt": "2023-03-14T19:40:13.880Z",
+    "internalId": "test",
+    "callbackUrl": "https://my-website.ngrok.io/callback",
+    "description": "Requesting Charge for Gamertag",
+    "invoiceRequest": "lnbc10n1pjppnvapp5camc852ky0et9g46gyey9mnv5xgux6tnkkq5qc6cexrr65xw2j9sdps2fjhzat9wd6xjmn8yppksctjvajjqen0wgsywctdv4e8gct8cqzpgxqzjcsp5jgs84mxjwk8n9r7xmp7ulzycy7882f5m8zagk45s2qp23p7rprqq9qyyssq3ysvdsgg5qvx0nwtlz46hcrucs7m6nkvsffcze5nhes40hqrnnes3xjcq0a4wtpqvvrdqlyqy3sz5yhqh6944unan4d32py2azq38zgq4c5ysu",
+    "invoiceExpiresAt": "2023-03-14T19:50:13.859Z",
+    "invoiceDescriptionHash": null
+  }
+}
+```
+
+</ResponseExample>

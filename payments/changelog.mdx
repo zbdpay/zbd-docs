@@ -1,0 +1,49 @@
+---
+title: 'Changelog'
+sidebarTitle: 'Changelog'
+icon: 'chart-gantt'
+description: Track changes and updates to ZBD Payments APIs, products, and services.
+---
+
+<Update label="2025-05-01" description="zbd.dev">
+  <Frame>
+    <img className="block" src="https://mintlify-assets.b-cdn.net/hero-light.png" />
+  </Frame>
+
+  ## zbd.dev Updated
+
+  - ZBD Payments Documentation site with divided section for each business vertical
+    - [Payments](/payments)
+    - [Rewards](/rewards)
+
+</Update>
+
+<Update label="2025-04-15" description="v1.6.2">
+
+  ## TypeScript SDK
+
+  ```bash
+  pnpm install @zbddev/payments-sdk
+  ```
+
+  - New TypeScript SDK for ZBD Payments APIs support [all APIs available](/payments/api).
+
+  ```typescript
+  import ZbdPayments from '@zbddev/payments-sdk';
+
+  const client = new ZbdPayments({
+    apikey: process.env['ZBD_PAYMENTS_API_KEY'],
+  });
+
+  async function main() {
+    await client.lightningAddress.sendPayment({
+      amount: '500000',
+      comment: 'Instant global payments',
+      lnAddress: 'andreneves@zbd.gg',
+    });
+  }
+
+  main();
+  ```
+
+</Update>

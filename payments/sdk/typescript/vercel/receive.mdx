@@ -1,0 +1,114 @@
+---
+title: Receiving instant Bitcoin payments on Vercel
+sidebarTitle: Receiving Payments
+description: Learn how to receive Bitcoin using Vercel Edge Functions.
+---
+
+## Prerequisites
+
+To complete this guide, you will need the following:
+
+- [ZBD Project with a Live API key](/get-started/api-keys)
+- [Vercel account](https://vercel.com/signup) + [Vercel CLI installed](https://vercel.com/docs/cli#installing-vercel-cli)
+
+## 1. Create a Next.js Project
+
+Follow the prompts on the create-next-app CLI to create a new project, and then change into the directory of your project.
+
+```bash
+yarn create next-app <project-name>
+```
+
+```bash
+cd <project-name>
+```
+
+## 2. Write an Edge Function
+
+<Note>For this guide we will be making use of the [App Router](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) inside of Next.js.</Note>
+
+Create a new file in the `app/api/request/route.ts` that creates a Bitcoin Lightning Charge (payment request) with the following code:
+
+
+<CodeGroup>
+
+```javascript app/api/request/route.ts
+import { NextResponse } from 'next/server';
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
+const ZBD_BASE_URL = 'https://api.zebedee.io';
+const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8';
+
+export async function GET() {
+  const res = await fetch(`${ZBD_BASE_URL}/v0/charges`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': `${ZBD_API_KEY}`,
+    },
+    body: JSON.stringify({
+      amount: '100000', // 100 satoshis (100,000 msats) -- ~$0.03
+      description: 'Money at internet speed', // What is this payment request for?
+    }),
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    return NextResponse.json(data);
+  }
+}
+```
+
+</CodeGroup>
+
+## 3. Create payment request locally
+
+Run function locally:
+
+```bash
+npx next dev
+```
+
+Opening your browser to the following URL: `http://localhost:3000/api/request` should return a JSON response with a payment request.
+
+You can also test this using curl command:
+
+```bash
+curl http://localhost:3000/api/request
+```
+
+You're looking for the `data.invoice.request` property in the JSON response. It starts with `lnbc1` and is the payment request anyone in the Bitcoin Lightning Network can use to pay you.
+
+```
+lnbc1u1pjdlax9pp5t7jhkd7h2wntd4f2v7xp22dknmjxp0q8nm7hfcny4p7a5mr7x3rsdp9f4hkueteypshggrfde6x2unwv46zqumsv4jkgcqzzsxqzjcsp5dsayu6m6632p28rnkeeqsr7d54amrkv6wh46yrv42gdgca8xl8gs9qyyssqgj2zrkax733rzulfkzc5mqsr8fpwrva82stpa7e0frw32722trv37jlq8mvlqfp8y75lr6mz63zd7qnxar8hhsehuy22pvfq6wjxwqqqa60lx3
+```
+
+<Info>Charges and payment requests are usually shown to users as QR codes that can be scanned by mobile apps (e.g. [ZBD](https://zbd.one/download)). Read [Callbacks](/payments/api/callbacks) to understand how to receive updates about your payment asynchronously.</Info>
+
+## 4. Create payment request in production
+
+Deploy your project to Vercel:
+
+```bash
+vercel
+```
+
+Opening your browser to the following URL: `https://project-name.vercel.app/api/request` should now return this in production.
+
+You can also test this using curl command:
+
+```bash
+curl https://project-name.vercel.app/api/request
+```
+
+## 5. Try it yourself
+
+You can now begin receiving instant Bitcoin payments on the edge with Vercel + ZBD!
+
+<CardGroup cols={1}>
+  <Card title="Vercel Edge Functions Example" icon="github" color="#000000" href="https://github.com/zebedeeio/zbd-vercel-edge-functions-example">
+    See the full source code.
+  </Card>
+</CardGroup>

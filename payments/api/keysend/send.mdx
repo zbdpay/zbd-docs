@@ -1,0 +1,87 @@
+---
+title: "Send Keysend Payment"
+description: "Start sending Keysend payments on the Lightning Network."
+api: "POST https://api.zebedee.io/v0/keysend-payment"
+---
+
+## Description
+
+Every Lightning Network node has a public key identifying it to the wider network. While most payments in the Lightning Network require Payment Requests ([Charges](/payments/glossary#charges)) QR codes to be created and then paid for, there is another type of payment known as `Spontaneous Payment` or `Keysend Payment` on a more technical note.
+
+This endpoint exposes the ability to make payment directly to a Lightning Network node Public Key, without the need for a Payment Request / Charge.
+
+## Usage
+
+If your system relies on sending Bitcoin over the Lightning Network to specific node Public Keys, this API is what you're looking for.
+
+Additional metadata and TLV record data can be attached to this endpoint as well. Both of these properties/values will be returned on the `callbackUrl` POST call from ZBD.
+
+<Info>As with all asynchronous payments in the Lightning Network, in order to receive updates about whether a payment settled, you must provide the `callbackUrl` property. As you will note from the response example below, if the Keysend Payment doesn't settle (almost) immediately, you will receive a `Payment Processing` response payload. Once it settles, you'll receive the update on the `callbackUrl`.</Info>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="amount" type="string">
+  The amount for the Payment -> in millisatoshis
+</ParamField>
+
+<ParamField required body="pubkey" type="string">
+  The Public Key for the destination Lightning node
+</ParamField>
+
+<ParamField initialValue="‎" body="callbackUrl" type="string">
+  The endpoint ZBD will POST Keysend Payment updates to
+</ParamField>
+
+<ParamField initialValue={{id: 1}} body="metadata" type="object">
+  Open metadata object property
+</ParamField>
+
+<ParamField initialValue={[{ type: '123456', value: 'customeValue' }]} body="tlvRecords" type="array">
+  List of TLV records
+  <Expandable title="tlvRecord" defaultOpen>
+    <ParamField body="type" type="number" initialValue={123456}>
+      type of the TLV record
+    </ParamField>
+    <ParamField body="value" type="string" initialValue="myTLVRecordValue">
+      value of the TLV record (hex encoded string)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ResponseExample>
+
+```json Response
+{
+  "message": "Payment processing.",
+  "success": true,
+  "data": {
+    "keysendId": "0d54521c-f41c-4cec-8799-edf9d87cf6b5",
+    "paymentId": "276e6f54-65fb-4c30-9b86-b44659015cd6",
+    "transaction": {
+      "id": "a51bd8d3-1d65-4785-bfd2-3341dc696f84",
+      "walletId": "cce98a9b-c52a-427c-8cf5-d7ca39c5035e",
+      "type": "KEYSEND_PAYMENT",
+      "totalAmount": "3000",
+      "fee": "2000",
+      "amount": "1000",
+      "description": "Keysend Payment",
+      "status": "TRANSACTION_STATUS_PROCESSING",
+      "confirmedAt": null
+    }
+  }
+}
+```
+
+</ResponseExample>

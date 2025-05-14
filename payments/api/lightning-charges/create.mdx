@@ -1,0 +1,79 @@
+---
+title: "Create Charge"
+description: "Start receiving instant Bitcoin payments through the ZBD API."
+api: "POST https://api.zebedee.io/v0/charges"
+---
+
+## Description
+
+Creates a new [Charge](/payments/glossary#charge) in the Bitcoin Lightning Network, payable by any Lightning-capable wallet.
+
+<Tip>These payment requests are single-use, fixed-amount QR codes. If you're looking for multi-use and multi-amount payment requests you want [Static Charges](/payments/api/lightning-charges/create-static).</Tip>
+
+## Usage
+
+This API is used for `receiving` funds into your ZBD Project. The primary idea is to create one of these Charges anytime someone wishes to perform a payment **TO** you.
+
+On a successful `200 HTTP response` from the ZBD API, you should render the contents of `data.invoice.uri` in a QR code. This QR code can be scanned by any Bitcoin Lightning wallet.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="amount" type="string">
+  The amount for the Charge -> in millisatoshis
+</ParamField>
+
+<ParamField required body="description" type="string">
+  Note or comment for this Charge (visible to payer)
+</ParamField>
+
+<ParamField initialValue="‎" body="expiresIn" type="number">
+  Time until Charge expiration -> in seconds
+</ParamField>
+
+<ParamField initialValue="‎" body="callbackUrl" type="string">
+  The endpoint ZBD will POST Charge updates to
+</ParamField>
+
+<ParamField initialValue="‎" body="internalId" type="string">
+  Open metadata string property
+</ParamField>
+
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "message": "Successfully created Charge.",
+  "data": {
+    "unit": "msats",
+    "amount": "10000",
+    "confirmedAt": null,
+    "status": "pending",
+    "description": "My Charge Description",
+    "createdAt": "2020-05-09T15:09:05.765Z",
+    "expiresAt": "2020-05-09T15:14:05.618Z",
+    "id": "1907b0fe-789b-4e25-b18a-0c4c0f5cced7",
+    "internalId": "11af01d092444a317cb33faa6b8304b8",
+    "callbackUrl": "https://your-website.com/callback",
+    "invoice": {
+      "request": "lnbc100n1p0td3u3pp5z2ed9yjfrz0rgu0fzuc5cdwfu8dtjlgrfztz5uga8hakkjy2yzgsdpzf4ujqsmgv9exwefqg3jhxcmjd9c8g6t0dccqzpgxqzfvsp5q8z5mkghmuzrnusxdwtmls7x8vuy63j25rt4z55gj3s7340dv72q9qy9qsqz02rlmlzcvew3vk90c6l0369ewk7tkr2tx0yrk3qa235v07w6d3qeksk99wm7y8f8ug7zqy6yjudu4cs2f4umpey43cw7msyj7uqj2qq8x03te",
+      "uri": "lightning:lnbc100n1p0td3u3pp5z2ed9yjfrz0rgu0fzuc5cdwfu8dtjlgrfztz5uga8hakkjy2yzgsdpzf4ujqsmgv9exwefqg3jhxcmjd9c8g6t0dccqzpgxqzfvsp5q8z5mkghmuzrnusxdwtmls7x8vuy63j25rt4z55gj3s7340dv72q9qy9qsqz02rlmlzcvew3vk90c6l0369ewk7tkr2tx0yrk3qa235v07w6d3qeksk99wm7y8f8ug7zqy6yjudu4cs2f4umpey43cw7msyj7uqj2qq8x03te"
+    }
+  }
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,49 @@
+---
+title: "Retrieve Withdrawal Request"
+description: "Retrieve all data about a single Withdrawal Request."
+api: "GET https://api.zebedee.io/v0/withdrawal-requests/{id}"
+---
+
+## Configuration
+
+### Path Parameters
+
+<ParamField required path="id" type="string">
+  Withdrawal Request ID
+</ParamField>
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "message": "Successfully retrieved Withdrawal Request.",
+  "data": {
+    "unit": "msats",
+    "amount": "12000",
+    "status": "pending",
+    "createdAt": "2020-05-09T15:15:30.222Z",
+    "expiresAt": "2020-05-09T15:20:30.212Z",
+    "description": "My Withdrawal Description",
+    "id": "243ee7f6-a91b-4644-aa5f-ecc9c9fdd351",
+    "internalId": "11af01d092444a317cb33faa6b8304b8",
+    "callbackUrl": "https://your-website.com/zbd-callback",
+    "invoice": {
+      "request": "lnurl1dp68gurn8ghj7er9wch85etzv4jx2efwd9hj7a3s9acxz7tvdaskgtthd96xserjv9mkzmpdwfjhzat9wd6r7um9vdex2apaxfsnqvmz8pjx2ephxucnzdphxa3xzd3kvfjk2vnyxejnzdf3x93n2e3evesnsetyxsenzvesvdjrxdtrv9jxxdnzxaskxvm9vscrzeg58h24k",
+      "fastRequest": "lnurl1dp68gurn8ghj7er9wch85etzv4jx2efwd9hj7a3s9acxz7tvdaskgtthd96xserjv9mkzmpdwfjhzat9wd6r7arpvu7hw6t5dpj8ycth2fjhzat9wd6zv6e385exzvpnvguxgetyxumnzvf5xumkycfkxe3x2efjvsmx2vf4xyckxdtx89nxzwr9vs6rxvfnxp3kgve4vdskgcekvgmkzcenv4jrqvt9yekkjmjhd96xserjv9mkzcnvv57nzv3sxqczvmtp0ptkjargv3exzampvfkx20f3xgcrqvpxv3jkvct4d36ygetnvdexjur5d9hku02d0ys9w6t5dpj8ycthv9kzq3r9wd3hy6tsw35k7m3xvdskcmrzv93kk0tgw368que69uhkgetk9eax2cn9v3jk2tnfduhhvvp0wpex7cm9wdej6amfw35xgunpwaskcttjv4ch2etnwsvtdjtq",
+      "uri": "lightning:lnurl1dp68gurn8ghj7er9wch85etzv4jx2efwd9hj7a3s9acxz7tvdaskgtthd96xserjv9mkzmpdwfjhzat9wd6r7um9vdex2apaxfsnqvmz8pjx2ephxucnzdphxa3xzd3kvfjk2vnyxejnzdf3x93n2e3evesnsetyxsenzvesvdjrxdtrv9jxxdnzxaskxvm9vscrzeg58h24k",
+      "fastUri": "lightning:lnurl1dp68gurn8ghj7er9wch85etzv4jx2efwd9hj7a3s9acxz7tvdaskgtthd96xserjv9mkzmpdwfjhzat9wd6r7arpvu7hw6t5dpj8ycth2fjhzat9wd6zv6e385exzvpnvguxgetyxumnzvf5xumkycfkxe3x2efjvsmx2vf4xyckxdtx89nxzwr9vs6rxvfnxp3kgve4vdskgcekvgmkzcenv4jrqvt9yekkjmjhd96xserjv9mkzcnvv57nzv3sxqczvmtp0ptkjargv3exzampvfkx20f3xgcrqvpxv3jkvct4d36ygetnvdexjur5d9hku02d0ys9w6t5dpj8ycthv9kzq3r9wd3hy6tsw35k7m3xvdskcmrzv93kk0tgw368que69uhkgetk9eax2cn9v3jk2tnfduhhvvp0wpex7cm9wdej6amfw35xgunpwaskcttjv4ch2etnwsvtdjtq"
+    }
+  }
+}
+```
+
+</ResponseExample>

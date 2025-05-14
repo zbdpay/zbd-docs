@@ -1,0 +1,59 @@
+---
+title: 'Bitcoin Lightning Network'
+sidebarTitle: 'Lightning Network'
+icon: 'bitcoin-sign'
+description: 'Learn how the Lightning Network revolutionizes global payments.'
+---
+
+<Frame type="glass">
+  <img src="/img/v1/btc-ln.png" alt="Bitcoin Lightning Network" />
+</Frame>
+<br />
+
+## Introduction
+
+The Bitcoin Lightning Network is a second-layer protocol built on top of the Bitcoin blockchain. It revolutionizes the approach to Bitcoin transactions, enabling instant payments across a network of participants. This has profound implications for various industries, from finance to online retail, as it offers a scalable, speedy, and low-cost solution to Bitcoin transactions.
+
+## How Lightning Network works
+
+The Lightning Network operates by creating off-chain payment channels, enabling users to conduct multiple Bitcoin transactions without needing to record every single one on the blockchain.
+
+<CardGroup cols={1}>
+  <Card title="Channel Creation" icon="door-open" color="#000000">
+    Two parties create a multi-signature wallet, which is a wallet they both have access to with their private keys. This wallet is then recorded on the Bitcoin blockchain.
+  </Card>
+  <Card title="Transactions" icon="left-right" color="#000000">
+    Transactions between the two parties happen off-chain, with each party signing off on an updated balance sheet to reflect each transaction.
+  </Card>
+  <Card title="Channel Closure" icon="shop-slash" color="#000000">
+    Once the parties finish transacting, they close out the channel, and the final balance is registered on the blockchain.
+  </Card>
+</CardGroup>    
+
+Transactions are able to hop between channels, enabling payments between parties that do not have a direct channel open. This effectively creates a web of payment channels, allowing for instant payments between any two parties on the network. This approach fundamentally changes the way Bitcoin transactions are processed, allowing for virtually unlimited transactions between parties, with only the opening and closing of the channel being recorded on the blockchain.
+
+## Advantages of the Lightning Network
+
+The Lightning Network presents several compelling benefits:
+
+
+<CardGroup cols={2}>
+  <Card title="Speed" icon="bolt" color="#000000">
+    Transactions are almost instantaneous, reducing the waiting time associated with Bitcoin transactions.
+  </Card>
+  <Card title="Low Fees" icon="wallet" color="#000000">
+    Transaction costs are minimal since they do not need miners' validation, making micropayments viable.
+  </Card>
+  <Card title="Scalability" icon="globe" color="#000000">
+    The network can process a significantly larger number of transactions per second (TPS) compared to the base Bitcoin blockchain, making it more scalable.
+  </Card>
+  <Card title="Privacy" icon="shield" color="#000000">
+    As transactions are mainly off-chain, only the opening and closing transactions are recorded on the blockchain, providing greater transaction privacy.
+  </Card>
+</CardGroup>
+
+## Conclusion
+
+The Lightning Network is a powerful innovation in the Bitcoin ecosystem, offering a solution to scalability, speed, and cost issues that have long plagued online global payments. By enabling instant, low-fee transactions, it opens new possibilities in various industries, paving the way for wider Bitcoin adoption and novel applications based on streaming global payments technology. Developers who understand and leverage this technology will have a considerable advantage in creating next-generation applications.
+
+<Tip>If you're just getting started with Bitcoin and Lightning Network, we recommend you **[download ZBD](https://zbd.gg)** to familiarize yourself with the technology, the ZBD platform and its many features and products.</Tip>

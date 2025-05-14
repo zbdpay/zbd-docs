@@ -1,0 +1,60 @@
+---
+title: "Create Voucher"
+api: "POST https://api.zebedee.io/v1/create-voucher"
+---
+
+## Description
+
+Debits your Project wallet to create a single-time use [ZBD Voucher](/get-started/vouchers). Returns a valid 8-digit voucher Code which can be redeemed by any ZBD user to claim the sats (crediting their account). Creating a voucher takes either a fee of 1 sat or 1% of the voucher amount. 
+
+<Tip>ZBD Vouchers are redeemable by any ZBD user, via the Developer Dashboard or ZBD App.</Tip>
+
+## Usage
+
+You can create vouchers any time you want to send another ZBD user sats from a Project Wallet. For example, you could run a giveaway by programatically creating the required number of vouchers and distributing the Codes to users accordingly.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="amount" type="string">
+  The amount for the Charge -> in millisatoshis
+</ParamField>
+
+<ParamField body="description" type="string">
+  Note or comment for this Charge (visible to payer)
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+    "success": true,
+    "data": {
+        "amount": "1000",
+        "code": "7EE15185",
+        "createdAt": "2023-08-24T15:01:56.408Z",
+        "createTransactionId": "0e11be7a-fd5e-48db-a0bb-54731681bc25",
+        "description": "Voucher for user.",
+        "fee": "1000",
+        "id": "a2eb43c4-af7f-4eb9-839c-ca31db34b3fc",
+        "unit": "msats",
+        "walletId": "4a4bd549-297e-4e67-a594-386200e1bc21"
+    },
+    "message": "Successfully created Voucher."
+}
+```
+
+</ResponseExample>

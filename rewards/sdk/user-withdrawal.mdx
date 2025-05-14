@@ -1,0 +1,22 @@
+---
+title: 'Retrieving Withdrawal Limit'
+description: 'Instructions for retrieving user balances from the ZBD Rewards SDK.'
+icon: 'upload'
+---
+
+You can also check the withdrawal limit of a user from the `GetBalance` response by checking `callback.withdrawalLimit`.
+
+```csharp
+ZBDController.Instance.GetBalance(callback=>
+{
+  if (callback.success)
+  { 
+    // the users withdrawal limit in satoshis (not millisatoshis)
+    Debug.Log(callback.withdrawalLimit);
+  }
+  else
+  {
+    Debug.LogError("get balance error " + callback.message);
+  }
+});
+```

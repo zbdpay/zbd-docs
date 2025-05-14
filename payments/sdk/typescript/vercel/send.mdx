@@ -1,0 +1,116 @@
+---
+title: Sending instant Bitcoin payments on Vercel
+sidebarTitle: Sending Payments
+description: Learn how to send Bitcoin using Vercel Edge Functions.
+---
+
+## Prerequisites
+
+To complete this guide, you will need the following:
+
+- [ZBD Project with a Live API key](/get-started/api-keys)
+- [Vercel account](https://vercel.com/signup) + [Vercel CLI installed](https://vercel.com/docs/cli#installing-vercel-cli)
+
+## 1. Create a Next.js Project
+
+Follow the prompts on the create-next-app CLI to create a new project, and then change into the directory of your project.
+
+```bash
+yarn create next-app <project-name>
+```
+
+```bash
+cd <project-name>
+```
+
+## 2. Write an Edge Function
+
+<Note>For this guide we will be making use of the [App Router](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) inside of Next.js.</Note>
+
+Create a new file in the `app/api/send/route.ts` that makes a payment to a [Lightning Address](/payments/glossary#lightning-address) (e.g. andre@zbd.gg) with the following code:
+
+<CodeGroup>
+
+```javascript app/api/send/route.ts
+import { NextResponse } from 'next/server';
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
+const ZBD_BASE_URL = 'https://api.zebedee.io';
+const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8';
+
+export async function GET() {
+  const res = await fetch(`${ZBD_BASE_URL}/v0/ln-address/send-payment`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': `${ZBD_API_KEY}`,
+    },
+    body: JSON.stringify({
+      lnAddress: 'andre@zbd.gg', // Who is the recipient of the payment?
+      amount: '100000', // 100 satoshis (100,000 msats) -- ~$0.03
+      comment: 'Money at internet speed', // What is this payment for?
+    }),
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    return NextResponse.json(data);
+  }
+}
+```
+
+</CodeGroup>
+
+## 3. Send payment locally
+
+<Warning>
+  In order to successfully send payments through the API, you must have an active balance in the ZBD Project you are using. [Learn more about depositing funds into a ZBD Project wallet](/get-started/add-funds).
+
+  If you do not have funds in the ZBD Project you are using, you will receive a 4xx error from the API.
+</Warning>
+
+Run function locally:
+
+```bash
+npx next dev
+```
+
+Opening your browser to the following URL: `http://localhost:3000/api/send` should return a JSON response with the payment sent message.
+
+You can also test this using curl command:
+
+```bash
+curl http://localhost:3000/api/send
+```
+
+You're looking for the `status` of `completed` to know that the payment settled successfully. 
+
+<Info>Payments in the Lightning Network are asynchronous so you may see a response stating the payment is `processing`. This is expected -- use the `callbackUrl` property to receive updates about your payments.</Info>
+
+## 4. Send payment in production
+
+Deploy your project to Vercel:
+
+```bash
+vercel
+```
+
+Opening your browser to the following URL: `https://project-name.vercel.app/api/send` should now return this in production.
+
+You can also test this using curl command:
+
+```bash
+curl https://project-name.vercel.app/api/send
+```
+
+## 5. Try it yourself
+
+You can now begin sending instant Bitcoin payments on the edge with Vercel + ZBD!
+
+<CardGroup cols={1}>
+  <Card title="Vercel Edge Functions Example" icon="github" color="#000000" href="https://github.com/zebedeeio/zbd-vercel-edge-functions-example">
+    See the full source code.
+  </Card>
+</CardGroup>

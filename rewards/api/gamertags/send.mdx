@@ -1,0 +1,55 @@
+---
+title: "Send Reward"
+description: "Send instant Bitcoin payments to ZBD Users."
+api: "POST https://api.zebedee.io/v0/gamertag/send-payment"
+---
+
+<Info>Unlike other payout endpoints in the ZBD API, sending payments to ZBD Gamertags is a synchronous action -> this is why there is no `callbackUrl` property. The payment either succeeds or fails on the spot.</Info>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="amount" type="string">
+  The amount for the Payment -> in millisatoshis
+</ParamField>
+
+<ParamField required body="gamertag" type="string">
+  Destination ZBD Gamertag
+</ParamField>
+
+<ParamField required initialValue="‎" body="description" type="string">
+  Note or comment for this Payment (visible to recipient)
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+      "id": "49cccd62-b686-4057-9f44-f492bd54ac39",
+      "status": "settled",
+      "transactionId": "78fb6474-d791-47a1-bda1-a4b9023898c0",
+      "receiverId": "ec9b38d5-b126-4307-9d1e-8aa0dfab5d7e",
+      "amount": "1000",
+      "comment": "Sent to ZBD Gamertag",
+      "settledAt": "2023-07-19T21:42:54.993Z"
+  },
+  "message": "Payment done."
+}
+```
+
+</ResponseExample>

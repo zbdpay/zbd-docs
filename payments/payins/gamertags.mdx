@@ -1,0 +1,78 @@
+---
+title: 'Request Charge for ZBD Gamertag'
+sidebarTitle: 'Gamertag Charges'
+icon: 'person-arrow-down-to-line'
+description: 'Learn how to generate payment requests specifically for ZBD users.'
+---
+
+## ZBD Gamertag Charge API
+
+While you can use the [Send Bitcoin to ZBD Gamertag](/payments/api/gamertags/send) endpoint to make a direct payment to a ZBD user, if you want to create a regular Lightning Network payment request / Charge QR code for that given user, you can do so using the [Create Charge for ZBD Gamertag](/payments/api/gamertags/create-charge) endpoint.
+
+In order to request Charges from a ZBD Gamertag you just need to make a simple API call with a payload like the example below.
+
+```bash
+curl --location --request POST 'https://api.zebedee.io/v0/gamertag/charges' \
+--header 'Content-Type: application/json' \
+--header 'apikey: API_KEY_HERE' \
+--data-raw '{
+    "gamertag": "andre",
+    "amount": "15000",
+    "internalId": "12347ahk1n",
+    "description": "ZBD so fast!",
+    "callbackUrl": "https://your-app.com/zbd-callback"
+}'
+```
+
+In order to receive updates about the status of this request, make sure to include a `callbackUrl` in the `data` portion of the request.
+
+The response payload will include a **`invoiceRequest`** which is the contents of the payment request QR code.
+
+```json
+{
+  "success": true,
+  "data": {
+    "status": "CHARGE_PENDING",
+    "amount": "15000",
+    "internalId": "12347ahk1n",
+    "description": "ZBD so fast!",
+    "invoiceRequest": "lnbc100n1pskq45xpp5q5rtpfzydndqk4fu2y4h64fdc284y6av0fn8gz4dmkq89xuxd28sdpvw3jhxarfdenjqctxw3jhygrjv4kk7anfdenjqmnpd4jscqzpgxqzjcsp59g6vgrss790zkwjqc3adndzt5tcq2ltaxynfstggjl6rre3kk6js9qyyssqfyan62pzsjsm62l6zq57jv9pmlpmycvqu649ccfjn7mar77awgykz2gft3fcgl9x5m4mz78nyng920uf6zwft5qnt2qjtqgpl7c72dgq4z7mgv",
+    "invoiceExpiresAt": "2021-10-08T14:42:38.759Z",
+    "unit": "msats",
+    "createdAt": "2022-02-08T14:32:38.793Z"
+  },
+  "message": "Successfully created charge request for gamertag"
+}
+```
+
+<Info>Charges / Payment Requests have defined expiration times. After a Charge expires it cannot be paid, but you can simply create another one.</Info>
+
+Once a payment is made and the Charge settles, the ZBD User will receive a Push Notification alerting them they've been sent some Bitcoin.
+
+## Multiplayer Commerce through ZBD Gamertag Charges
+
+For App or Game Developers that wish to provide a more robust commerce experience for their users and gamers, requesting an invoice from ZBD Gamertags can be one of the ways.
+
+**Think of yourself, the Developer, as the Orchestrator of payments.**
+
+By leveraging Lightning Network invoices tied to specific ZBD Gamertag, you can ensure that the payment is made to the correct user, and that the payment has truly settled.
+
+### 1. Two-Step Payment Orchestration
+
+Let's say **Alice** wants to buy a sword from **Bob** inside of the game. Well that's easy, and there's two ways:
+
+### 2. ZBD Gamertag Charges
+
+You can use the above endpoint to create a Charge from **Bob**'s ZBD Gamertag, and display it for **Alice** to pay. Pass a `callbackUrl` on the ZBD API request and when the payment settles, you will be alerted of it and can then transfer the sword asset inside the game.
+
+**Yes, it's really that simple!**
+
+### 3. Project Wallet as Escrow
+
+Alternatively you could rely on the Project's own Wallet as a form of escrow. You can create a Charge using the `/charges` endpoint passing a `callbackUrl` to receive settlement updates, and have **Alice** pay it.
+
+<Info>Alice will effectively be paying the Project Wallet in this scenario.</Info>
+
+Once payment is settled, you can use the [Send Bitcoin to ZBD Gamertag](/payments/api/gamertags/send) endpoint and send the same amount to **Bob**. When this second payment settles you can then transfer the sword asset inside the game.
+
+While this technically involves two transactions, it provides a bit more control to the Developer that wishes to manage the transfer of assets/in-game items a bit more closely and with more checks and balances in place. Both approaches are recommended.

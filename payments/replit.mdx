@@ -1,0 +1,121 @@
+---
+title: Instant Bitcoin Payments with Replit and ZBD API
+sidebarTitle: Introduction
+description: 1 API away from adding Bitcoin to the fabric of your games, apps, and systems.
+---
+
+As a Bitcoin payments API infrastructure provider, one of the many items we aim to always improve upon is `developer-time-to-payment` — how long does it take for a new ZBD developer to perform their first global Bitcoin payment?
+
+Because of that, our team is always focused on introducing new ways to quickly get started in a secure server environment and interacting with the ZBD API or SDKs.
+
+[Replit](https://replit.com) is an online integrated development environment (IDE) that allows users to write, run, and collaborate on code directly from their web browser. Basically, any developer can spin up an entire development environment on the language of their choosing, and go from first code commit to full production deployment all in the same web interface.
+
+Add the flexibility developers have with cloud-based IDEs like Replit, to the simplicity of the ZBD API for global instant Bitcoin payments and you have a winner!
+
+## Getting Started
+
+Head on over to [Replit.com](https://replit.com/) and create a free account if you don't already have one.
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/replit-dashboard.png" alt="Replit Dashboard" />
+</Frame>
+
+Once you're in, find the [zbd-nextjs-dev-playground](https://replit.com/@andrerfneves/zebedee-nextjs-dev-playground?v=1) template.
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/replit-dev-playground.png" alt="zebedee-nextjs-dev-playground Replit Template" />
+</Frame>
+
+## Using the Template
+
+Click the **USE TEMPLATE** button on top right and give your new project a name. Your repl instance will begin to boot up and you'll see the robust IDE interface from Replit begin to take shape in the page.
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/replit-ide.png" alt="Repl instance IDE UI" />
+</Frame>
+
+We're basically done, now just need to connect a ZBD API Key to this new repl instance.
+
+If you don't yet have a [ZBD Dev Dashboard](https://dashboard.zebedee.io/) account, head on over to the [official how-to documentation](/get-started/create-account) or the [ZBD Developer Dashboard signup page](https://dashboard.zebedee.io/). Once you've got your account setup and verified, create a new Project and fetch its [LIVE API Key](/get-started/sandbox-project) from the dashboard (*important: it HAS to be a LIVE API Key, a SANDBOX API Key will not work*). It should look something like this:
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/dev-dashboard.jpeg" alt="ZBD Developer Dashboard - Project API page" />
+</Frame>
+
+## Setting Environment Variables
+
+Now to place the ZBD API Key securely in the Replit dashboard, search for the **Secrets** tool on the sidebar:
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/replit-secrets-ui.jpeg" alt="Replit Secrets UI" />
+</Frame>
+
+Click to **NEW SECRET** and name it **ZEBEDEE_API_KEY** and paste the key you copied from the ZBD Developer Dashboard.
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/replit-secrets-ui-2.png" alt="Replit Secrets UI" />
+</Frame>
+
+That's it! You're all set.
+
+## Running the Repl
+
+Now press the big green **RUN** button on the top of the Replit page and you should see a new Webview module pop up with the template's frontend loaded.
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/webview.png" alt="Webview now shows a loaded version of the Template UI" />
+</Frame>
+
+You can now head on over to your repl's web url, mine is: [https://zebedee-nextjs-dev-playground.andrerfneves.repl.co](https://zebedee-nextjs-dev-playground.andrerfneves.repl.co/), and you should see your newly deployed ZEBEDEE-powered application!
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/nextjs.png" alt="Next.js Playground" />
+</Frame>
+
+## Template Walkthrough
+
+The bottom 4 navigation item links take you to other ZBD API and ZBD Developer Dashboard learning resources. You can also find detailed [documentation about the @zbddev/payments-sdk Node.js SDK](https://node.zbd.dev/). Lastly, there are guides on how to best deploy this starter kit to services like Vercel and Replit (this guide!).
+
+At the top right of the web app you will find the **OPEN PLAYGROUND** link. Clicking that will take you to the *ZBD + Next.js Dev Playground* page which contains modules for the main use-cases of the ZBD API — Payments and Payment Requests (Charges), Lightning Address Payouts, Withdrawal QR codes, BTCUSD price ticker and much more.
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/nextjs-playground.png" alt="Playground modules for ZBD + Next.js Starter Kit" />
+</Frame>
+
+On the top right you can see the *ZBD Project Wallet* detailing the balance of Bitcoin (in satoshis) available to this ZBD API Project key.
+
+Each module is self-contained, which means you can just fill in each of the form elements and hit Submit to watch the magic happen. Results will appear inline.
+
+**You can now literally send Bitcoin instantly anywhere in the world! No big deal.**
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/charge-module.jpeg" width="350" alt="Create Charge module showing payment request QR code" />
+</Frame>
+
+Here's a Bitcoin Lightning Network payment request QR code I created by filling in the two input fields and hitting 1 button click.
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/send-module.png" width="350" alt="Send to Lightning Address module showing success API message." />
+</Frame>
+
+Here I am sending a Bitcoin payment that's settling instantaneously through the Lightning Network — this time sent to a [Lightning Address](https://lightningaddress.com/) (e.g. andre@zbd.gg).
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/replit-code-ui.jpeg" alt="Code UI for Replit IDE" />
+</Frame>
+
+The template is meant to serve as both a set of example source code files for developers to learn and get ideas from, as well as a full-blown backend + frontend app development environment. Because it is based on the Next.js framework, developers can get started editing code directly on the template's JavaScript files and watch their changes reflect live on the accompanying Webview.
+
+<Tip>
+We are now at a stage in the adoption of this technology where developers can add support for global instant payins and payouts with mere lines of code.
+  
+ZBD enables every app developer to move money at the speed of the internet, all 1 API away.
+</Tip>
+
+## Troubleshooting
+
+If you start your repl and it provides a message like the one below, it means you have not properly configured the **ZEBEDEE_API_KEY** in your Replit project's Secrets.
+
+<Frame>
+  <img src="/img/docs/replit-quickstart/replit-shell.png" alt="Replit Shell showing error with API Key env variable missing" />
+</Frame>
