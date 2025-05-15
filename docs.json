@@ -304,7 +304,8 @@
                   "rewards/sdk",
                   "rewards/sdk/download",
                   "rewards/sdk/compatibility",
-                  "rewards/sdk/security"
+                  "rewards/sdk/security",
+                  "rewards/coverage"
                 ]
               },
               {
