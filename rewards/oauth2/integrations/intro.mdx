@@ -10,7 +10,7 @@ When creating Next.js applications with authentication support, **[NextAuth.js](
 
 It's a great library that supports any authentication provider, and thanks to the [`next-auth-zbd-provider`](https://github.com/zebedeeio/next-auth-zbd-provider) NPM package it also **supports ZBD Login out of the box**.
 
-<Tip>**TLDR:** [Clone this starter kit repo](https://github.com/zebedeeio/next-auth-zbd-starter) and set up environment variables from [ZBD Dev Dashboard](https://dashboard.zebedee.io).</Tip>
+<Tip>**TLDR:** [Clone this starter kit repo](https://github.com/zebedeeio/next-auth-zbd-starter) and set up environment variables from [ZBD Developer Dashboard](https://dashboard.zebedee.io).</Tip>
 
 The basic stack is as follows:
 - [Next.js](https://nextjs.org/)
@@ -51,7 +51,7 @@ The `getZBDProvider` function takes the following parameters:
 
 ## Getting OAuth2 + Live API Keys
 
-To get the OAuth2 and Live API Key credentials from your ZBD Project, go to [ZBD Dev Dashboard](https://dashboard.zebedee.io) and click on the project you want to use. Pick the specific API and/or OAuth2 tabs accordingly, and find the necessary credentials:
+To get the OAuth2 and Live API Key credentials from your ZBD Project, go to [ZBD Developer Dashboard](https://dashboard.zebedee.io) and click on the project you want to use. Pick the specific API and/or OAuth2 tabs accordingly, and find the necessary credentials:
 
 <Frame>
   <img src="/img/oauth2/nextauth-api.png" width="500" alt="ZBD + NextAuth.js" />
@@ -65,7 +65,7 @@ To get the OAuth2 and Live API Key credentials from your ZBD Project, go to [ZBD
 ## Setting up OAuth2 Callbacks
 When setting up ZBD OAuth2 you must not forget to enter the appropriate callback URL. This works with both your local and production development environments.
 
-In this example, NextAuth expects a callback in the path. For example, your local environment would be `http://localhost:3000/api/auth/callback/zbd`. Therefore we must add this to the ZBD Dev Dashboard like so:
+In this example, NextAuth expects a callback in the path. For example, your local environment would be `http://localhost:3000/api/auth/callback/zbd`. Therefore we must add this to the ZBD Developer Dashboard like so:
 
 <Frame>
   <img src="/img/oauth2/nextauth-oauth2-settings.png" width="400" alt="ZBD + NextAuth.js" />
