@@ -1,68 +1,310 @@
 ---
 title: 'Vouchers'
 icon: 'ticket'
-sidebarTitle: 'Using vouchers'
-description: 'Learn about ZBD Vouchers and how to best leverage this feature.'
+sidebarTitle: 'Vouchers'
+description: 'Create shareable Bitcoin gifts and promotional codes that drive engagement'
 ---
 
-A ZBD Voucher is a single-time use coupon that can be redeemed by another ZBD user to transfer funds from your Developer Wallet into their wallet.
+Turn Bitcoin into shareable gift codes. Vouchers are redeemable payment links that let you distribute value without knowing recipients' payment details – perfect for promotions, rewards, and re-engagement campaigns.
 
-## Voucher Use Cases
+<CardGroup cols={3}>
+  <Card title="No User Details Needed" icon="user">
+    Send Bitcoin without knowing Lightning addresses or gamertags
+  </Card>
+  <Card title="Perfect for Marketing" icon="megaphone">
+    Create bulk codes for promotions, giveaways, and campaigns
+  </Card>
+  <Card title="Track Everything" icon="chart-line">
+    Monitor redemption rates and campaign performance
+  </Card>
+</CardGroup>
 
-You can create Vouchers anytime you want to send another ZBD user sats from your Developer Wallet.
+## Why Use Vouchers?
 
-Examples:
+### 🎁 User Acquisition & Retention
 
-*   You want to gift a user but don't know their ZBD Gamertag or Lightning Address
-*   You want to send a Voucher to a user's email to re-engage them
-*   You want to run a promotion where you generate 100 Vouchers and give them away to people
+<Tabs>
+  <Tab title="New User Onboarding">
+    **The Problem**: Getting users to try your app is hard
+    
+    **The Solution**: Give them immediate value
+    ```javascript
+    // Create welcome bonus vouchers
+    const voucher = await zbd.createVoucher({
+      amount: 1000, // sats (~$0.50)
+      description: "Welcome to GameApp! 🎮"
+    });
+    
+    // Send via email/SMS
+    sendWelcomeEmail(user.email, voucher.code);
+    ```
+    
+    **Result**: 3x higher activation rates
+  </Tab>
+  <Tab title="Win-Back Campaigns">
+    **Re-engage Dormant Users**
+    
+    Send personalized vouchers to users who haven't been active:
+    - "We miss you! Here's 2000 sats"
+    - "Complete your profile for 5000 sats"
+    - "Return bonus: 10,000 sats"
+    
+    **Case Study**: Game studio saw 40% of churned users return
+  </Tab>
+  <Tab title="Referral Programs">
+    **Viral Growth Mechanics**
+    
+    ```javascript
+    // Both referrer and referee get rewards
+    const referralVoucher = await createVoucher({
+      amount: 5000,
+      description: "Thanks for sharing!"
+    });
+    ```
+    
+    Users share more when they can give real value
+  </Tab>
+</Tabs>
 
-## Create Voucher
+### 🎯 Marketing & Promotions
 
-To create Vouchers, go to the `Vouchers` page in the Developer Dashboard and click `Create Voucher`. When you create a Voucher, it debits the funds from your Developer Wallet. Alternatively, you can use the [Create Voucher](/payments/api/vouchers/create) API endpoint.
+<CardGroup cols={2}>
+  <Card title="Social Media Giveaways">
+    - Twitter/X campaigns: "RT to win!"
+    - Discord events and contests
+    - Twitch stream rewards
+    - Community milestones
+  </Card>
+  <Card title="Event Marketing">
+    - Conference booth traffic
+    - QR code scavenger hunts
+    - Workshop attendance rewards
+    - Beta testing incentives
+  </Card>
+  <Card title="Content Marketing">
+    - Survey completion rewards
+    - Newsletter signup bonuses
+    - Tutorial completion gifts
+    - Review incentives
+  </Card>
+  <Card title="Partnership Campaigns">
+    - Co-marketing vouchers
+    - Influencer distribution
+    - Cross-promotion codes
+    - Sponsor activations
+  </Card>
+</CardGroup>
 
-## Redeem Voucher
+## Creating Vouchers
 
-Vouchers are redeemed by entering the unique 8-digit code within the Developer Dashboard or Mobile App, or using the [Redeem Voucher](/payments/api/vouchers/redeem) API endpoint. The funds from the Voucher will be credited to your wallet balance. 
+### Dashboard Method
 
-Developer Dashboard users can redeem Vouchers by pressing `z` + `m`, entering the 8-digit code, then pressing `Redeem Voucher`. This will credit the sats to your Developer wallet. 
+Navigate to **Vouchers** in your dashboard and click **Create Voucher**:
 
-ZBD Mobile App users can redeem Vouchers by following these steps:
-1. Tap your wallet balance in the navbar to open your Wallet details
-2. Press `Vouchers`
-3. Press `Redeem`
-4. Enter the Voucher Code
-5. Press `Redeem Voucher`
+<Frame caption="Create vouchers directly from the dashboard">
+  <img src="/img/v3/create-voucher.png" alt="Create Voucher Interface" />
+</Frame>
 
-## Share Voucher
+### API Method
 
-The unique 8-digit code from a Voucher can be shared with another ZBD user, who can redeem it to transfer the funds from your wallet to their own.
+<CodeGroup>
+```javascript Node.js
+// Single voucher
+const voucher = await zbd.createVoucher({
+  amount: 1000, // satoshis
+  description: "Thanks for playing!"
+});
 
-## View Created Vouchers
+console.log(`Share this code: ${voucher.code}`);
+// Output: Share this code: ABC12345
 
-There are multiple options to view Vouchers:
+// Bulk creation for campaigns
+const campaign = await Promise.all(
+  Array(100).fill(null).map(() => 
+    zbd.createVoucher({
+      amount: 500,
+      description: "Launch week special"
+    })
+  )
+);
+```
 
-1. Navigate to the `Vouchers` page within the [Developer Dashboard](https://dashboard.zebedee.io/) to view a list of your Vouchers created via the Developer Dashboard UI.
+```python Python
+# Create marketing voucher
+voucher = zbd.create_voucher(
+    amount=1000,
+    description="Welcome bonus"
+)
 
-2. Navigate to the applicable [Project Wallet](/get-started/project-wallet) page within the [Developer Dashboard](https://dashboard.zebedee.io/) and view the Transactions History table to view a list of your Vouchers created via API.
+# Generate QR code for easy sharing
+qr_url = f"https://zbd.gg/v/{voucher['code']}"
+```
 
-3. Use the [Get Voucher](/payments/api/vouchers/retrieve) endpoint to retrieve the details about a Voucher. 
+```bash cURL
+curl -X POST https://api.zebedee.io/v0/vouchers \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": "1000",
+    "description": "Conference giveaway"
+  }'
+```
+</CodeGroup>
 
-## Revoke a Voucher
+## Distribution Strategies
 
-If you issue a Voucher, but want to revoke (cancel) it, you can:
+### 📧 Email Campaigns
 
-1.  Revoke it via the [Revoke Voucher](/payments/api/vouchers/revoke) API endpoint
-2.  Revoke it within the Developer Dashboard:
-    1.  Navigate to the `Vouchers` page within the Developer Dashboard
-    2.  Find the applicable Voucher within the data table
-    3.  Click on the Voucher to open the Voucher Details modal
-    4.  Click `Revoke`
-    5.  The Voucher funds will be credited to your Developer Wallet
+```html
+<!-- Beautiful email template -->
+<div style="text-align: center; padding: 20px;">
+  <h2>You've received Bitcoin! 🎉</h2>
+  <p>Redeem your gift with this code:</p>
+  <div style="font-size: 32px; font-weight: bold; 
+              background: #f0f0f0; padding: 20px; 
+              border-radius: 8px; margin: 20px;">
+    ABC12345
+  </div>
+  <p>Redeem now!</p>
+</div>
+```
 
-## Voucher Statuses
-| Status | Description |
-| --- | --- |
-| `Valid` | This means the Voucher is active and available for another user to redeem. |
-| `Redeemed` | This means the Voucher has been redeemed by you or another user. Since Vouchers are single-time use, a Redeemed Voucher cannot be redeemed again. |
-| `Revoked` | This means the Voucher has been cancelled and can no longer be redeemed. |
+### 🎮 In-App Distribution
+
+```javascript
+// Trigger voucher creation on achievement
+async function rewardAchievement(userId, achievement) {
+  const voucher = await zbd.createVoucher({
+    amount: achievement.rewardAmount,
+    description: `Achievement unlocked: ${achievement.name}`
+  });
+  
+  // Show in-game notification
+  showNotification({
+    title: "Achievement Unlocked! 🏆",
+    message: `You earned ${achievement.rewardAmount} sats!`,
+    code: voucher.code,
+    action: "Tap to redeem"
+  });
+}
+```
+
+## Redemption Process
+
+### For End Users
+
+<Tabs>
+  <Tab title="Developer Dashboard">
+    **Quick Redemption** (anywhere in dashboard):
+    1. Open redemption modal inside Vouchers page
+    2. Enter 8-character code
+    3. Click "Redeem Voucher"
+    4. Funds instantly added to wallet
+  </Tab>
+  <Tab title="ZBD Rewards App">
+    **Mobile Redemption**:
+    1. Tap wallet balance in navbar
+    2. Select "Redeem Voucher"
+    3. Enter voucher code
+    4. Confirm redemption
+  </Tab>
+</Tabs>
+
+### API Redemption
+
+```javascript
+// Programmatic redemption
+const result = await zbd.redeemVoucher({
+  code: 'ABC12345',
+});
+
+if (result.success) {
+  console.log(`Redeemed ${result.amount} sats!`);
+}
+```
+
+## Managing Vouchers
+
+### Voucher Statuses
+
+| Status | Description | Action Available |
+|--------|-------------|-----------------|
+| 🟢 **Valid** | Active and redeemable | Share, Revoke |
+| ✅ **Redeemed** | Successfully claimed | View details |
+| ❌ **Revoked** | Cancelled by creator | None |
+
+### Revoke Unused Vouchers
+
+Cancel vouchers and reclaim funds:
+
+<CodeGroup>
+```javascript Node.js
+// Revoke single voucher
+await zbd.revokeVoucher(voucherId);
+```
+
+```bash cURL
+curl -X POST https://api.zebedee.io/v0/vouchers/voucher_id/revoke \
+  -H "apikey: YOUR_API_KEY"
+```
+</CodeGroup>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Set Expiration Dates" icon="clock">
+    Create urgency and prevent long-term liabilities
+  </Card>
+  <Card title="Use Descriptive Names" icon="tag">
+    Track campaign performance with clear descriptions
+  </Card>
+</CardGroup>
+
+## Advanced Use Cases
+
+### 🎰 Gamified Redemption
+
+```javascript
+// Mystery box vouchers with random amounts
+function createMysteryVoucher() {
+  const amounts = [100, 500, 1000, 5000, 10000];
+  const random = amounts[Math.floor(Math.random() * amounts.length)];
+  
+  return zbd.createVoucher({
+    amount: random,
+    description: "Mystery Box 📦"
+  });
+}
+```
+
+## Common Questions
+
+<AccordionGroup>
+  <Accordion title="Do vouchers expire?">
+    Yes, vouchers expire and are automatically revoked if not redeemed within 30 days. Unused funds are returned to your wallet.
+  </Accordion>
+  <Accordion title="Can vouchers be redeemed multiple times?">
+    No, each voucher is single-use only. For recurring rewards, create multiple vouchers.
+  </Accordion>
+</AccordionGroup>
+
+## Start Your First Campaign
+
+<Steps>
+  <Step title="Plan Your Campaign">
+    Define goals, audience, and budget
+  </Step>
+  <Step title="Create Vouchers">
+    Use dashboard or API for bulk creation
+  </Step>
+  <Step title="Distribute Codes">
+    Email, social media, or in-app
+  </Step>
+  <Step title="Track Performance">
+    Monitor redemption rates and adjust
+  </Step>
+</Steps>
+
+<Card title="Ready to Drive Engagement?" icon="rocket" href="/payments/api/vouchers/create">
+  **Start Creating Vouchers** - Check out our API reference for programmatic voucher creation at scale.
+</Card>

@@ -1,0 +1,350 @@
+---
+title: "API Reference"
+description: "Complete API reference for ZBD Onramp integration"
+---
+
+Complete reference for all ZBD Onramp API endpoints and webhook events.
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://api.zebedee.io
+```
+
+## Authentication
+
+All requests require an API key in the header:
+
+```
+apikey: YOUR_API_KEY
+```
+
+<Note>
+  Get your API keys by [scheduling a call](https://cal.com/zbdpay/sales) with our sales team.
+</Note>
+
+## Create Widget Session
+
+Initialize a new onramp widget session for a user.
+
+<CodeGroup>
+```bash cURL
+POST /api/v1/ramp-widget
+
+curl -X POST https://api.zebedee.io/api/v1/ramp-widget \
+  -H "Content-Type: application/json" \
+  -H "apikey: YOUR_API_KEY" \
+  -d '{
+    "email": "user@example.com",
+    "webhook_url": "https://yourapp.com/webhooks/zbd"
+  }'
+```
+
+```javascript Node.js
+const response = await fetch('https://api.zebedee.io/api/v1/ramp-widget', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'apikey': process.env.ZBD_API_KEY
+  },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    webhook_url: 'https://yourapp.com/webhooks/zbd'
+  })
+});
+
+const data = await response.json();
+```
+</CodeGroup>
+
+### Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `email` | string | **Yes** | User's email address for verification |
+| `webhook_url` | string | **Yes** | URL to receive webhook notifications |
+| `access_token` | string | No | Existing user session token (for returning users) |
+| `quote_currency` | string | No | Fiat currency code (default: "USD") |
+| `base_currency` | string | No | Cryptocurrency: "BTC" or "USDC" (default: "BTC") |
+| `destination` | string | No | URL to redirect after successful purchase |
+| `reference_id` | string | No | Your internal reference ID for this session |
+| `metadata` | object | No | Custom key-value pairs (max 10 keys, 500 chars per value) |
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "session_token": "eyJraWQiOiJzLWE1OWNkMjc4...",
+    "widget_url": "https://ramp.zbdpay.com/?session=eyJraWQiOiJzLWE1OWNkMjc4...",
+    "session_id": "ses_9n3f7h2u4b",
+    "expires_at": "2025-06-09T12:00:00Z"
+  }
+}
+```
+
+### Error Responses
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "INVALID_EMAIL",
+    "message": "Please provide a valid email address"
+  }
+}
+```
+
+Common error codes:
+- `INVALID_EMAIL` - Email format is invalid
+- `INVALID_WEBHOOK_URL` - Webhook URL is not accessible
+- `UNAUTHORIZED` - Invalid API key
+- `RATE_LIMITED` - Too many requests
+
+## Webhook Events
+
+Webhooks are sent as POST requests to your specified `webhook_url`.
+
+### Event Structure
+
+All webhook events follow this structure:
+
+```json
+{
+  "id": "evt_2n4f8gu3nf",
+  "type": "onramp.purchase.completed",
+  "created_at": "2025-06-09T10:30:00Z",
+  "livemode": true,
+  "data": {
+    // Event-specific data
+  }
+}
+```
+
+### Event Types
+
+#### `onramp.session.created`
+
+Fired when a widget session is initialized.
+
+```json
+{
+  "type": "onramp.session.created",
+  "data": {
+    "session_id": "ses_9n3f7h2u4b",
+    "reference_id": "your_reference_123",
+    "email": "user@example.com",
+    "metadata": {
+      "custom_field": "value"
+    }
+  }
+}
+```
+
+#### `onramp.email.verified`
+
+Fired when user completes email verification.
+
+```json
+{
+  "type": "onramp.email.verified",
+  "data": {
+    "session_id": "ses_9n3f7h2u4b",
+    "user_id": "usr_8h3d6f9k2m",
+    "email": "user@example.com",
+    "is_new_user": true
+  }
+}
+```
+
+#### `onramp.kyc.completed`
+
+Fired when KYC verification is successfully completed (first-time users only).
+
+```json
+{
+  "type": "onramp.kyc.completed",
+  "data": {
+    "session_id": "ses_9n3f7h2u4b",
+    "user_id": "usr_8h3d6f9k2m",
+    "kyc_level": "full",
+    "verified_at": "2025-06-09T10:25:00Z"
+  }
+}
+```
+
+#### `onramp.purchase.completed`
+
+Fired when a purchase is successfully completed and crypto is delivered.
+
+```json
+{
+  "type": "onramp.purchase.completed",
+  "data": {
+    "session_id": "ses_9n3f7h2u4b",
+    "reference_id": "your_reference_123",
+    "user_id": "usr_8h3d6f9k2m",
+    "email": "user@example.com",
+    "transaction": {
+      "id": "txn_7g2d5c8j1n",
+      "amount": 50.00,
+      "currency": "USD",
+      "crypto_amount": 0.00052,
+      "crypto_currency": "BTC",
+      "exchange_rate": 96153.85,
+      "fees": {
+        "platform_fee": 2.50,
+        "network_fee": 0.50,
+        "total": 3.00
+      },
+      "delivery": {
+        "method": "lightning",
+        "address": "user@zbd.gg",
+        "transaction_id": "lntx_8j3k5m7p9q",
+        "delivered_at": "2025-06-09T10:29:55Z"
+      },
+      "payment_method": "ach_debit",
+      "status": "completed",
+      "created_at": "2025-06-09T10:28:00Z",
+      "completed_at": "2025-06-09T10:29:55Z"
+    },
+    "metadata": {
+      "custom_field": "value"
+    }
+  }
+}
+```
+
+#### `onramp.purchase.failed`
+
+Fired when a purchase fails at any stage.
+
+```json
+{
+  "type": "onramp.purchase.failed",
+  "data": {
+    "session_id": "ses_9n3f7h2u4b",
+    "reference_id": "your_reference_123",
+    "user_id": "usr_8h3d6f9k2m",
+    "reason": "payment_declined",
+    "error_message": "Insufficient funds in bank account",
+    "failed_at": "2025-06-09T10:29:00Z",
+    "metadata": {
+      "custom_field": "value"
+    }
+  }
+}
+```
+
+### Webhook Security
+
+All webhooks include a signature header for verification:
+
+```
+X-ZBD-Signature: sha256=7d38cdd689735b008b3c702edd92eea23791c5f6
+```
+
+Verify webhooks using HMAC-SHA256:
+
+```javascript
+const crypto = require('crypto');
+
+function verifyWebhook(payload, signature, secret) {
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(payload)
+    .digest('hex');
+  
+  const provided = signature.replace('sha256=', '');
+  
+  return crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(provided)
+  );
+}
+```
+
+### Webhook Retry Policy
+
+Failed webhook deliveries are retried with exponential backoff:
+
+- Attempt 1: Immediate
+- Attempt 2: 5 seconds
+- Attempt 3: 30 seconds
+- Attempt 4: 2 minutes
+- Attempt 5: 10 minutes
+- Attempt 6: 1 hour
+
+Webhooks are considered failed if:
+- Response status is not 2xx
+- No response within 5 seconds
+- Connection error
+
+## Error Codes
+
+### HTTP Status Codes
+
+| Code | Description |
+|------|-------------|
+| 200 | Success |
+| 400 | Bad Request - Invalid parameters |
+| 401 | Unauthorized - Invalid API key |
+| 403 | Forbidden - Access denied |
+| 404 | Not Found - Resource doesn't exist |
+| 429 | Too Many Requests - Rate limited |
+| 500 | Internal Server Error |
+
+### Application Error Codes
+
+| Code | Description | Resolution |
+|------|-------------|------------|
+| `INVALID_EMAIL` | Email format is invalid | Provide valid email address |
+| `INVALID_CURRENCY` | Currency code not supported | Use USD for fiat, BTC/USDC for crypto |
+| `SESSION_EXPIRED` | Widget session has expired | Create a new session |
+| `USER_BLOCKED` | User failed fraud checks | Contact support |
+| `KYC_REQUIRED` | User needs to complete KYC | User will be guided through KYC flow |
+| `PURCHASE_LIMIT_EXCEEDED` | Amount exceeds limits | Reduce purchase amount |
+| `PAYMENT_METHOD_UNAVAILABLE` | Selected payment method not available | Try different payment method |
+
+## Rate Limits
+
+API endpoints are rate limited to ensure platform stability:
+
+| Endpoint | Limit | Window |
+|----------|-------|--------|
+| `/api/v1/ramp-widget` | 100 requests | 1 minute |
+| All endpoints (per API key) | 1000 requests | 1 hour |
+
+Rate limit headers are included in responses:
+
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1623456789
+```
+
+## Testing
+
+<Info>
+  Sandbox environment is coming soon. Currently, all integrations use production mode. Test with small amounts during development.
+</Info>
+
+## Support
+
+<CardGroup cols={2}>
+  <Card title="Integration Support" icon="code" href="https://cal.com/zbdpay/sales">
+    Get help with your integration from our technical team
+  </Card>
+  <Card title="API Status" icon="signal" href="https://status.zbd.dev">
+    Check current API status and subscribe to updates
+  </Card>
+</CardGroup>
+
+---
+
+<Note>
+  This API is in active development. Subscribe to our [changelog](https://zbd.dev/changelog) for updates.
+</Note>

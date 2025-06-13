@@ -1,55 +1,138 @@
 ---
 title: "Send Reward"
-description: "Send instant Bitcoin payments to ZBD Users."
+description: "Send instant Bitcoin rewards to users via their ZBD Gamertag"
 api: "POST https://api.zebedee.io/v0/gamertag/send-payment"
 ---
 
-<Info>Unlike other payout endpoints in the ZBD API, sending payments to ZBD Gamertags is a synchronous action -> this is why there is no `callbackUrl` property. The payment either succeeds or fails on the spot.</Info>
+Send instant Bitcoin rewards to any ZBD user. Perfect for achievements, milestones, referrals, or any action you want to incentivize.
+
+<Info>
+  **Synchronous API** - Unlike other payment endpoints, rewards are delivered instantly. The API response confirms success or failure immediately - no callbacks needed.
+</Info>
 
 ## Configuration
 
 ### Header Parameters
 
 <ParamField required header="apikey" type="string">
-  ZBD Project API Key
+  Your ZBD Project API Key
 </ParamField>
 
-<ParamField initialValue="application/json" header="Content-Type" type="string">
-  Content Type
+<ParamField required header="Content-Type" type="string" initialValue="application/json">
+  Content Type (must be application/json)
 </ParamField>
 
-### Body
+### Body Parameters
 
 <ParamField required body="amount" type="string">
-  The amount for the Payment -> in millisatoshis
+  Reward amount in **millisatoshis** (1 sat = 1000 msats)
+  
+  Common amounts:
+  - `"1000"` = 1 satoshi (~$0.0005)
+  - `"100000"` = 100 sats (~$0.05)
+  - `"1000000"` = 1,000 sats (~$0.50)
+  - `"10000000"` = 10,000 sats (~$5.00)
 </ParamField>
 
 <ParamField required body="gamertag" type="string">
-  Destination ZBD Gamertag
+  The recipient's ZBD Gamertag (case-insensitive)
+  
+  Examples: `"player123"`, `"bitcoingamer"`, `"speedrunner42"`
 </ParamField>
 
-<ParamField required initialValue="‎" body="description" type="string">
-  Note or comment for this Payment (visible to recipient)
+<ParamField body="description" type="string">
+  Message shown to the recipient (max 150 characters)
+  
+  Best practices:
+  - Be specific: "Level 10 achievement unlocked!"
+  - Add emojis: "Great job! 🎯"
+  - Include context: "Tournament prize - 3rd place"
 </ParamField>
-
-
 
 <ResponseExample>
-
-```json Response
+```json 200 - Success
 {
   "success": true,
   "data": {
-      "id": "49cccd62-b686-4057-9f44-f492bd54ac39",
-      "status": "settled",
-      "transactionId": "78fb6474-d791-47a1-bda1-a4b9023898c0",
-      "receiverId": "ec9b38d5-b126-4307-9d1e-8aa0dfab5d7e",
-      "amount": "1000",
-      "comment": "Sent to ZBD Gamertag",
-      "settledAt": "2023-07-19T21:42:54.993Z"
+    "id": "49cccd62-b686-4057-9f44-f492bd54ac39",
+    "status": "settled",
+    "transactionId": "78fb6474-d791-47a1-bda1-a4b9023898c0",
+    "receiverId": "ec9b38d5-b126-4307-9d1e-8aa0dfab5d7e",
+    "amount": "1000000",
+    "comment": "Achievement unlocked! 🏆",
+    "settledAt": "2024-03-19T21:42:54.993Z"
   },
   "message": "Payment done."
 }
 ```
-
 </ResponseExample>
+
+### Error Responses
+
+<ResponseExample>
+```json 400 - Invalid Gamertag
+{
+  "success": false,
+  "message": "User not found with provided gamertag"
+}
+```
+
+```json 400 - Insufficient Balance
+{
+  "success": false,
+  "message": "Insufficient balance in project wallet"
+}
+```
+
+```json 401 - Invalid API Key
+{
+  "success": false,
+  "message": "Invalid API key provided"
+}
+```
+</ResponseExample>
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique payment ID |
+| `status` | string | Always "settled" for successful payments |
+| `transactionId` | string | ZBD transaction ID for tracking |
+| `receiverId` | string | Recipient's ZBD User ID |
+| `amount` | string | Amount sent in millisatoshis |
+| `comment` | string | Your description as seen by recipient |
+| `settledAt` | string | ISO 8601 timestamp of delivery |
+
+## Common Patterns
+
+### Reward with Limits
+
+```javascript
+// Implement daily reward limits
+async function sendDailyReward(gamertag, amount) {
+  const dailyLimit = 10000; // 10k sats per day
+  const userTotal = await getDailyTotal(gamertag);
+  
+  if (userTotal + amount > dailyLimit) {
+    throw new Error(`Daily limit exceeded. ${dailyLimit - userTotal} sats remaining.`);
+  }
+  
+  const result = await sendReward({
+    gamertag,
+    amount: amount * 1000,
+    description: "Daily challenge complete!"
+  });
+  
+  await updateDailyTotal(gamertag, userTotal + amount);
+  return result;
+}
+```
+
+## Try It Out
+
+Ready to send your first reward? Use our API playground on the right to test with your API key.
+
+<Note>
+  **Instant Delivery** - Rewards appear in the user's ZBD App immediately. They'll get a push notification if they have the app installed!
+</Note>

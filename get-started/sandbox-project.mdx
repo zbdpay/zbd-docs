@@ -1,100 +1,252 @@
 ---
 title: 'Sandbox Projects'
 icon: 'shield-check'
-sidebarTitle: 'Sandbox projects'
-description: 'Understand the difference between Sandbox and Live Projects.'
+sidebarTitle: 'Sandbox Projects'
+description: 'Test your integration risk-free with fake Bitcoin in a sandbox environment'
 ---
 
-Now that we've created our first Project let's talk about Sandbox Projects & APIs, vs Live Projects & APIs.
+Every developer's journey with ZBD starts in the sandbox. It's your risk-free playground where you can test payments, break things, and perfect your integration before touching real money.
 
-## Introduction
+<Info>
+  **Default Environment**: All new projects start as sandbox projects. This protects you from accidentally spending real Bitcoin while learning the platform.
+</Info>
 
-**Every new Project in the ZBD Developer Dashboard is created as a Sandbox Project by default.** This means that the Project is not connected to mainnet Lightning Network, or Bitcoin blockchain, and is not using real Bitcoin. This is a great way to test your integration and make sure everything is working as expected before going live.
+## What Makes Sandbox Special
 
-When dealing with Sandbox Projects, it is important to remember that the Bitcoin/satoshis/sats displayed are **fake money**. The purpose of the Sandbox environment is to allow folks to test their integration without having to spend real money. This is why we call it a _Sandbox_.
+<CardGroup cols={2}>
+  <Card title="Fake Bitcoin" icon="bitcoin">
+    10,000 free satoshis to start, top up anytime
+  </Card>
+  <Card title="Test Users" icon="users">
+    Pre-created users with wallets for end-to-end testing
+  </Card>
+</CardGroup>
 
-When you create your first Sandbox Project you will notice that your Project has a `Sandbox` label on it. This is to help you differentiate between Sandbox Projects and Live Projects. Additionally, you will notice that you have 10,000 _fake satoshis_. This is the default amount of _fake satoshis_ that every Sandbox Project starts with.
+### Visual Indicators
 
-<Frame type="glass">
-  <img src="/img/v2/devdash/sandbox-project-created.png" alt="ZBD Developer Dashboard | Project Created" />
+Sandbox projects are clearly marked to prevent confusion:
+
+<Frame caption="Sandbox projects show clear labeling in the dashboard">
+  <img src="/img/v2/devdash/sandbox-project-created.png" alt="Sandbox Project Created" />
 </Frame>
-<br />
 
-## Sandbox Testing Users
+Look for:
+- 🧪 **"Sandbox" label** on project cards
+- 🎮 **Test Bitcoin balance** (not real money!)
+- 👥 **Test Users tab** only in sandbox
+- 🔑 **Sandbox API endpoints** in documentation
 
-One other differentiation between Sandbox and Live Projects is the existence of _Test Users_. Test Users are a special type of user that can be used to test your integration. Test Users are not real users, and they do not have real Bitcoin. They are simply a way to test your integration without having to create a real user.
+## Sandbox Architecture
 
-Test Users are pre-created for every new Sandbox Project. You can view your Test Users by clicking on the `Test Users` tab in your Project.
+```mermaid
+graph LR
+    A[Your App] -->|Sandbox API Key| B[ZBD Sandbox]
+    B --> C[Fake Lightning Network]
+    B --> D[Test User Wallets]
+    B --> E[Simulated Payments]
+    
+    style B fill:#ffeb3b,stroke:#333,stroke-width:2px
+    style C fill:#fff9c4,stroke:#333,stroke-width:2px
+    style D fill:#fff9c4,stroke:#333,stroke-width:2px
+    style E fill:#fff9c4,stroke:#333,stroke-width:2px
+```
 
-<Frame type="glass">
-  <img src="/img/v2/devdash/sandbox-test-users.png" alt="ZBD Developer Dashboard | Test Users" />
+## Getting Started with Sandbox
+
+### Your First Sandbox Project
+
+When you create your first project, you'll automatically get:
+
+<Steps>
+  <Step title="Sandbox Wallet">
+    Pre-funded with 10,000 fake satoshis
+  </Step>
+  <Step title="Sandbox API Key">
+    Works only with sandbox endpoints
+  </Step>
+  <Step title="Test Users">
+    5 pre-created users with ZBD gamertags
+  </Step>
+  <Step title="Full API Access">
+    All payment features available for testing
+  </Step>
+</Steps>
+
+### Test Users
+
+Click the **Test Users** tab to see your pre-created testing accounts:
+
+<Frame caption="Pre-created test users for payment testing">
+  <img src="/img/v2/devdash/sandbox-test-users.png" alt="Sandbox Test Users" />
 </Frame>
-<br />
 
-## Topping Up Sandbox Wallet
+Each test user has:
+- Unique ZBD Gamertag
+- Test wallet with balance
+- Ability to receive payments
+- Full transaction history
 
-If you ever find yourself running low on _fake satoshis_ you can always top up your Sandbox Wallet. To do this, simply click on the `Top Up` button in your Project's quick actions module on the right-hand side.
+**Example Test Users**:
+```
+- SandboxUser1#7823
+- TestPlayer42#1337  
+- DevTester99#2024
+```
 
-<Frame type="glass">
-  <img src="/img/v2/devdash/sandbox-topup-wallet.png" alt="ZBD Developer Dashboard | Topup Sandbox Project Wallet" />
+## Topping Up Your Sandbox
+
+Running low on fake satoshis? Add more instantly:
+
+<Frame caption="Top up your sandbox wallet with one click">
+  <img src="/img/v2/devdash/sandbox-topup-wallet.png" alt="Topup Sandbox Wallet" />
 </Frame>
-<br />
 
-<Note>Currently the Top Up functionality for Sandbox Project Wallets is fixed at increments of 10,000 satoshis. Given this is for testing purposes you should have more than enough to test your integration.
-You may top up as many times as you'd like.</Note>
+<CardGroup cols={2}>
+  <Card title="Instant Top-up" icon="plus">
+    Click "Top Up" for +10,000 sats instantly
+  </Card>
+  <Card title="Unlimited Refills" icon="infinity">
+    No limits - top up as many times as needed
+  </Card>
+</CardGroup>
 
 ## Sandbox API Endpoints
 
-As is expected, Sandbox Projects have their own Sandbox APIs and API Keys. These APIs are identical to the Live APIs, except that they are not connected to mainnet Bitcoin Lightning Network. This means that you can test your integration without having to spend real money.
+Sandbox uses separate endpoints to ensure you never accidentally mix test and production:
 
-You can view all Sandbox APIs by heading over to the [Sandbox API Reference page](/payments/api/gamertags/send).
+```
+Base URL: https://sandbox.api.zebedee.io
 
-<Note>At the moment we have exposed the [**Send Bitcoin to ZBD Gamertag Sandbox API**](/payments/api/gamertags/send) for testing purposes. We will be adding more Sandbox APIs in the future, including the ability to create Sandbox Charges and Static Charges, as well as send Sandbox Payments.
-**If you're looking to leverage any of the other ZBD Payment APIs, go through the Identity Verification Process and swap to a Live Project.**</Note>
+Example endpoints:
+- /v0/gamertag/send
+```
 
-## Sending Bitcoin to a Sandbox ZBD Gamertag
+<Warning>
+  **Currently Limited**: Only the Send to Gamertag API is available in sandbox. More endpoints coming soon. For full API testing, complete verification for production access.
+</Warning>
 
-Now that we have a clear understanding of Sandbox Projects and Sandbox APIs, let's test our integration by sending some _fake satoshis_ to our Sandbox Test Users.
+## Testing Payments in Sandbox
 
-First of, start by copying the `Sandbox API Key` from your Project's _API tab_.
+Let's send your first test payment:
 
-<Frame type="glass">
-  <img src="/img/v2/devdash/sandbox-api-key.png" alt="ZBD Developer Dashboard | Sandbox API Key" />
+### 1. Get Your Sandbox API Key
+
+<Frame caption="Copy your sandbox API key from the API tab">
+  <img src="/img/v2/devdash/sandbox-api-key.png" alt="Sandbox API Key" />
 </Frame>
-<br />
 
-Now that we have our Sandbox API Key, let's use the [**Send Bitcoin to ZBD Gamertag Sandbox API**](/payments/api/gamertags/send) to send some _fake satoshis_ to our Sandbox Test User.
+### 2. Send Test Payment
 
-You may write your own HTTP client to do this test, but the simplest way is to use the _API Playground Module_ available in the [ZBD API Reference](https://zbd.dev/api-reference). On every API Reference page you will find a _ZBD API Playground Module_ on the right-hand side that you can use to directly test an API endpoint by providing it an API Key and a payload (if necessary).
+Use the API Playground or your own code:
 
-<Frame type="glass" caption="Replace YOUR_API_KEY_HERE with your Sandbox API Key">
-  <img src="/img/v2/devdash/sandbox-doc-portal.png" alt="ZBD API Reference - Sandbox APIs" />
+<CodeGroup>
+```bash cURL
+curl -X POST https://sandbox.api.zebedee.io/v0/gamertag/send \
+  -H "apikey: YOUR_SANDBOX_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "gamertag": "SandboxUser1#7823",
+    "amount": "100",
+    "description": "Test payment!"
+  }'
+```
+
+```javascript Node.js
+const response = await fetch('https://sandbox.api.zebedee.io/v0/gamertag/send', {
+  method: 'POST',
+  headers: {
+    'apikey': process.env.SANDBOX_API_KEY,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    gamertag: 'SandboxUser1#7823',
+    amount: '100',
+    description: 'Test payment!'
+  })
+});
+
+const result = await response.json();
+console.log('Payment sent!', result);
+```
+</CodeGroup>
+
+### 3. Verify Success
+
+Check your sandbox wallet to see the transaction:
+
+<Frame caption="Transaction appears instantly in your sandbox wallet">
+  <img src="/img/v2/devdash/sandbox-wallet-post-tx.png" alt="Sandbox Wallet After Transaction" />
 </Frame>
-<br />
 
-Head on over to the API Reference page and enter your Sandbox API Key and one of your Test User's ZBD Gamertag. Then click on the `Send Request` button on the top right.
+Click on the transaction for full details:
 
-If successful the API will return a `success: true` payload, it means you successfully sent Bitcoin!
-
-Returning to the ZBD Developer Dashboard, you will notice that your Sandbox Wallet has been debited by the amount of _fake satoshis_ you sent to your Test User and that a new transaction is now reflected in the _Transactions_ table.
-
-<Frame type="glass">
-  <img src="/img/v2/devdash/sandbox-wallet-post-tx.png" alt="ZBD Developer Dashboard | Sandbox Wallet" />
+<Frame caption="Detailed view of sandbox transactions">
+  <img src="/img/v2/devdash/sandbox-tx-details.png" alt="Sandbox Transaction Details" />
 </Frame>
-<br />
 
-Click on the transaction to view the transaction details for more information around settlement time, fees incurred, etc.
+## Transitioning to Production
 
-<Frame type="glass">
-  <img src="/img/v2/devdash/sandbox-tx-details.png" alt="ZBD Developer Dashboard | Sandbox Transaction Details" />
-</Frame>
-<br />
+Ready to handle real money? Here's your checklist:
 
-<Note>To confirm that the _fake satoshis_ were indeed sent to the right Test User, head on over to the Test Users tab in your Project.</Note>
+<Steps>
+  <Step title="Complete Testing">
+    - All payment flows tested
+    - Error handling verified
+    - Webhook integration working
+    - Performance acceptable
+  </Step>
+  <Step title="Verify Identity">
+    Complete KYB process for production access
+  </Step>
+  <Step title="Create Production Project">
+    New project with production API key
+  </Step>
+  <Step title="Update Your Code">
+    - Change API endpoints
+    - Update API key
+    - Enable production monitoring
+    - Set up error alerts
+  </Step>
+  <Step title="Go Live!">
+    Start with small real transactions
+  </Step>
+</Steps>
 
-<Tip>The flow is **IDENTICAL** for Live Projects and Live APIs. The only difference is that you will be using real Bitcoin and real money.</Tip>
+## Troubleshooting Sandbox
+
+<CardGroup cols={2}>
+  <Card title="API Key Not Working" icon="key">
+    Ensure you're using sandbox endpoints with sandbox keys
+  </Card>
+  <Card title="Can't Find Test Users" icon="users">
+    Test Users tab only appears in sandbox projects
+  </Card>
+  <Card title="Need More APIs" icon="code">
+    Complete verification for full API access in production
+  </Card>
+  <Card title="Webhook Issues" icon="webhook">
+    Sandbox webhooks work identically to production
+  </Card>
+</CardGroup>
 
 ## Next Steps
 
-You have just used the [**Send Bitcoin to ZBD Gamertag Sandbox API**](/payments/api/gamertags/send) to send _fake satoshis_ to your Sandbox Test User.
+You've mastered the sandbox! Time to level up:
 
+<CardGroup cols={3}>
+  <Card title="Verify Identity" icon="user-check" href="/get-started/verify-identity">
+    Complete KYB for production access
+  </Card>
+  <Card title="API Reference" icon="book" href="/payments/api">
+    Explore all available endpoints
+  </Card>
+  <Card title="Go Production" icon="rocket" href="/get-started/create-project">
+    Create your first production project
+  </Card>
+</CardGroup>
+
+---
+
+<Note>
+  **Remember**: Sandbox is your friend. Test everything here first. Break things, experiment, and learn. That's what it's for! When you're confident everything works, production is just an endpoint change away.
+</Note>

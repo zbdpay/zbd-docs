@@ -26,12 +26,12 @@
                   "get-started/create-account",
                   "get-started/verify-identity",
                   "get-started/add-funds",
+                  "get-started/create-project",
+                  "get-started/api-keys",
                   "get-started/vouchers",
                   {
                     "group": "ZBD Projects",
                     "pages": [
-                      "get-started/create-project",
-                      "get-started/api-keys",
                       "get-started/project-wallet",
                       "get-started/manage-project",
                       "get-started/sandbox-project"
@@ -66,8 +66,7 @@
                 "pages": [
                   "payments",
                   "payments/lightning-network",
-                  "payments/lightning-address",
-                  "payments/templates"
+                  "payments/lightning-address"
                 ]
               },
               {
@@ -96,12 +95,6 @@
                       "payments/payouts/lightning-charges",
                       "payments/payouts/email"
                     ]
-                  },
-                  {
-                    "group": "Nostr",
-                    "pages": [
-                      "payments/nostr/nostr-relay"
-                    ]
                   }
                 ]
               },
@@ -120,12 +113,33 @@
             "icon": "circle-dollar-to-slot",
             "pages": [
               {
-                "group": "Onramp",
+                "group": "Overview",
                 "pages": [
                   "payments/onramp",
+                  "payments/onramp/quickstart",
+                  "payments/onramp/api",
+                  "payments/onramp/faq"
+                ]
+              },
+              {
+                "group": "Configuration",
+                "pages": [
                   "payments/onramp/architecture",
-                  "payments/onramp/user-flow",
-                  "payments/onramp/theming"
+                  "payments/onramp/webhooks",
+                  "payments/onramp/user-flow"
+                ]
+              },
+              {
+                "group": "Customization",
+                "pages": [
+                  "payments/onramp/appearance",
+                  "payments/onramp/branding"
+                ]
+              },
+              {
+                "group": "Emails",
+                "pages": [
+                  "payments/onramp/receipts"
                 ]
               }
             ]
@@ -337,12 +351,7 @@
               {
                 "group": "Overview",
                 "pages": [
-                  "rewards/api"
-                ]
-              },
-              {
-                "group": "API Reference",
-                "pages": [
+                  "rewards/api",
                   "rewards/api/gamertags",
                   "rewards/api/gamertags/send",
                   "rewards/api/gamertags/retrieve-reward",

@@ -1,35 +1,221 @@
 ---
 title: 'API Keys'
 icon: 'key'
-sidebarTitle: 'Getting API keys'
-description: 'Learn how to generate and manage your Project’s API Keys.'
+sidebarTitle: 'API Keys'
+description: 'Generate and secure your keys to unlock Lightning-fast payments'
 ---
 
-Within a Project's `API` tab, you will find your project's unique API Key. This key allows you to invoke calls using the ZBD API.
+API keys are your passport to the ZBD platform. With a single key, you can send payments globally, create invoices, manage wallets, and build the future of digital payments.
 
-<Warning>**This is a server-side API key.** It must remain secure. Therefore, do not include this key in any client-side applications. If your API key ever becomes compromised, navigate to your Project's `API` tab to generate a new one.</Warning>
+<Warning>
+  **Security First** - API keys are server-side only and grant full access to your project's wallet. Never expose them in client-side code, mobile apps, or public repositories.
+</Warning>
+
+## Your First API Key
+
+Navigate to your project's **API** tab to view and manage your API keys.
 
 <Frame caption="ZBD Developer Dashboard | API Tab">
   <img src="/img/v3/api-key.png" alt="ZBD Developer Dashboard | API Tab" />
 </Frame>
-<br />
 
-## Regenerating an API Key
+### What You Can Do With API Keys
 
-Regenerating an API Key will disable the previous API Key for the Project. Click to regenerate and confirm the prompt.
+<CardGroup cols={2}>
+  <Card title="Send Payments" icon="paper-plane">
+    Pay any Lightning Address or invoice instantly
+  </Card>
+  <Card title="Receive Payments" icon="inbox">
+    Generate invoices and process incoming payments
+  </Card>
+  <Card title="Manage Wallets" icon="wallet">
+    Check balances and transaction history
+  </Card>
+  <Card title="Create Vouchers" icon="ticket">
+    Issue redeemable payment links
+  </Card>
+</CardGroup>
 
-<Frame caption="ZBD Developer Dashboard | Regenerate API Key">
-  <img src="/img/v3/api-key-2.png" alt="ZBD Developer Dashboard | Regenerate API Key" />
-</Frame>
-<br />
+## Quick Start Example
 
-## IP Allowlisting
+Once you have your API key, you're ready to send your first payment:
 
-Within the `API` Tab of the [ZBD Developer Dashboard](https://dashboard.zebedee.io), you can specify which IP addresses can access the ZBD API using your API key(s). API calls originating from IP addresses not explicitly listed here will be rejected. This is a great step to increase your integration's security with ZBD.
+<CodeGroup>
+```bash cURL
+curl -X POST https://api.zebedee.io/v0/payments \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": "1000",
+    "description": "First payment!",
+    "internalId": "test-001",
+    "callbackUrl": "https://myapp.com/webhook"
+  }'
+```
+
+```javascript Node.js
+const payment = await fetch('https://api.zebedee.io/v0/payments', {
+  method: 'POST',
+  headers: {
+    'apikey': process.env.ZBD_API_KEY,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    amount: '1000',
+    description: 'First payment!',
+    internalId: 'test-001'
+  })
+});
+```
+</CodeGroup>
+
+## Security Best Practices
+
+### 🔐 Secure Storage
+
+<Tabs>
+  <Tab title="Environment Variables">
+    ```bash
+    # .env file (never commit this!)
+    ZBD_API_KEY=your_api_key_here
+    
+    # Access in code
+    const apiKey = process.env.ZBD_API_KEY;
+    ```
+    
+    **Best for**: Local development and deployment platforms
+  </Tab>
+  <Tab title="Secret Management">
+    Use dedicated secret management services:
+    
+    - **AWS Secrets Manager**
+    - **Google Secret Manager**
+    - **HashiCorp Vault**
+    - **Azure Key Vault**
+    
+    **Best for**: Production environments
+  </Tab>
+  <Tab title="CI/CD">
+    Configure secrets in your deployment pipeline:
+    
+    - **GitHub Actions**: Repository secrets
+    - **Vercel**: Environment variables
+    - **Heroku**: Config vars
+    - **Docker**: Build secrets
+    
+    **Best for**: Automated deployments
+  </Tab>
+</Tabs>
+
+### 🛡️ IP Allowlisting
+
+Restrict API access to specific IP addresses for maximum security:
 
 <Frame caption="ZBD Developer Dashboard | Allowed IPs">
   <img src="/img/v3/api-key-3.png" alt="ZBD Developer Dashboard | Allowed IPs" />
 </Frame>
-<br />
 
-<Warning>If you ever suspect that your API Key is compromised, regenerate it immediately.</Warning>
+**How to Configure:**
+1. Navigate to your project's API tab
+2. Click "API Access Controls"
+3. Add your server's IP addresses
+4. Save changes
+
+<Info>
+  **Dynamic IPs?** If your infrastructure uses dynamic IPs (like serverless functions), consider using a proxy service with static IPs or contact our team for alternative security options.
+</Info>
+
+## Key Rotation & Regeneration
+
+Regular key rotation is a security best practice. Here's when and how to do it:
+
+### When to Rotate Keys
+
+- ⏰ **Scheduled**: Every 90 days as a best practice
+- 🚨 **Immediately if**:
+  - Key exposed in client code
+  - Committed to version control
+  - Employee with access leaves
+  - Suspicious activity detected
+
+### How to Regenerate
+
+<Frame caption="ZBD Developer Dashboard | Regenerate API Key">
+  <img src="/img/v3/api-key-2.png" alt="ZBD Developer Dashboard | Regenerate API Key" />
+</Frame>
+
+<Warning>
+  **Important**: Regenerating creates a new key and immediately disables the old one. Update your applications before regenerating to avoid downtime.
+</Warning>
+
+### Zero-Downtime Rotation Strategy
+
+<Steps>
+  <Step title="Plan the Rotation">
+    Schedule during low-traffic period
+  </Step>
+  <Step title="Update Staging First">
+    Test new key in staging environment
+  </Step>
+  <Step title="Deploy to Production">
+    Update production with new key
+  </Step>
+  <Step title="Regenerate Key">
+    Once deployed, regenerate in dashboard
+  </Step>
+  <Step title="Monitor">
+    Watch logs for any failed authentications
+  </Step>
+</Steps>
+
+## API Key Permissions (Coming Soon)
+
+<Info>
+  **Scoped Permissions** - Soon you'll be able to create keys with limited permissions:
+  - Read-only keys for analytics
+  - Payment-only keys for point-of-sale
+  - Receive-only keys for donation pages
+</Info>
+
+## Testing Your API Key
+
+Use this simple test to verify your key is working:
+
+<CodeGroup>
+```bash cURL
+curl https://api.zebedee.io/v0/wallet \
+  -H "apikey: YOUR_API_KEY"
+```
+
+```javascript Node.js
+// Quick test script
+const testApiKey = async () => {
+  const response = await fetch('https://api.zebedee.io/v0/wallet', {
+    headers: { 'apikey': process.env.ZBD_API_KEY }
+  });
+  
+  if (response.ok) {
+    console.log('✅ API key is valid!');
+    const wallet = await response.json();
+    console.log('Balance:', wallet.data.balance, 'sats');
+  } else {
+    console.error('❌ API key test failed:', response.status);
+  }
+};
+
+testApiKey();
+```
+</CodeGroup>
+
+## Ready to Build?
+
+You now have everything needed to start integrating ZBD payments into your application.
+
+<CardGroup cols={2}>
+  <Card title="Send First Payment" icon="rocket" href="/payments/sdk/typescript">
+    Use our SDKs to send your first Lightning payment
+  </Card>
+  <Card title="API Reference" icon="code" href="/payments/api">
+    Explore all available endpoints
+  </Card>
+</CardGroup>

@@ -1,36 +1,112 @@
 ---
 title: "Get Reward"
-description: "Retrieve all data about a Payment sent to ZBD User."
+description: "Retrieve details about a reward sent to a ZBD user"
 api: "GET https://api.zebedee.io/v0/gamertag/transaction/{id}"
 ---
 
-## Description
+Track and verify rewards sent to your users. This endpoint provides complete transaction details including status, fees, and confirmation times.
 
-In order to get data on payments sent to ZBD Gamertags, you can use this endpoint. The data payload returned will inform you of the `status` of that transaction as well as any associated `fees`.
+## When to Use This
 
-## Usage
-
-The idea here is to use the `transactionId` property returned from the [Pay to ZBD Gamertag](/rewards/api/gamertags/send) response, and use that ID to fetch the latest details of the given Payment.
+<CardGroup cols={2}>
+  <Card title="Verify Delivery" icon="check">
+    Confirm rewards reached the intended recipient
+  </Card>
+  <Card title="Track Performance" icon="chart-line">
+    Build reward dashboards and reports with transaction data
+  </Card>
+  <Card title="Handle Support" icon="headset">
+    Investigate user inquiries about rewards
+  </Card>
+  <Card title="Audit Trail" icon="clipboard-check">
+    Maintain records for accounting and compliance
+  </Card>
+</CardGroup>
 
 ## Configuration
 
 ### Path Parameters
 
 <ParamField required path="id" type="string">
-  Payment Transaction ID
+  Transaction ID from the Send Reward response
+  
+  Example: `"78fb6474-d791-47a1-bda1-a4b9023898c0"`
 </ParamField>
 
 ### Header Parameters
 
 <ParamField required header="apikey" type="string">
-  ZBD Project API Key
+  Your ZBD Project API Key
 </ParamField>
 
+## Code Examples
 
+<CodeGroup>
+```bash cURL
+curl -X GET https://api.zebedee.io/v0/gamertag/transaction/78fb6474-d791-47a1-bda1-a4b9023898c0 \
+  -H "apikey: YOUR_API_KEY"
+```
+
+```javascript Node.js
+async function verifyReward(transactionId) {
+  const response = await fetch(
+    `https://api.zebedee.io/v0/gamertag/transaction/${transactionId}`,
+    {
+      headers: {
+        'apikey': process.env.ZBD_API_KEY
+      }
+    }
+  );
+  
+  const result = await response.json();
+  
+  if (result.success) {
+    console.log(`Reward status: ${result.data.status}`);
+    console.log(`Amount: ${result.data.amount / 1000} sats`);
+    console.log(`Delivered at: ${result.data.confirmedAt}`);
+    return result.data;
+  }
+  
+  throw new Error(result.message);
+}
+
+// Verify a recent reward
+const txId = "78fb6474-d791-47a1-bda1-a4b9023898c0";
+const details = await verifyReward(txId);
+```
+
+```python Python
+import requests
+
+def get_reward_details(transaction_id):
+    """Get details about a sent reward"""
+    
+    response = requests.get(
+        f'https://api.zebedee.io/v0/gamertag/transaction/{transaction_id}',
+        headers={'apikey': ZBD_API_KEY}
+    )
+    
+    data = response.json()
+    
+    if data['success']:
+        reward = data['data']
+        print(f"Status: {reward['status']}")
+        print(f"Amount: {int(reward['amount']) / 1000} sats")
+        print(f"Fee: {int(reward['fee']) / 1000} sats")
+        print(f"Confirmed: {reward['confirmedAt']}")
+        return reward
+    else:
+        raise Exception(data['message'])
+
+# Check on a reward
+details = get_reward_details("78fb6474-d791-47a1-bda1-a4b9023898c0")
+```
+</CodeGroup>
+
+## Response
 
 <ResponseExample>
-
-```json Response
+```json Success Response
 {
   "message": "Fetched charge.",
   "success": true,
@@ -42,10 +118,35 @@ The idea here is to use the `transactionId` property returned from the [Pay to Z
     "unit": "msats",
     "processedAt": "2023-01-04T15:59:16.993Z",
     "confirmedAt": "2023-01-04T15:59:16.989Z",
-    "comment": "Sending to ZBD Gamertag",
+    "comment": "Achievement unlocked! 🏆",
     "status": "TRANSACTION_STATUS_COMPLETED"
   }
 }
 ```
-
 </ResponseExample>
+
+### Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique transaction identifier |
+| `receiverId` | string | Recipient's ZBD User ID |
+| `amount` | string | Reward amount in millisatoshis |
+| `fee` | string | Network fee in millisatoshis |
+| `unit` | string | Always "msats" |
+| `processedAt` | string | When transaction was initiated |
+| `confirmedAt` | string | When reward was delivered |
+| `comment` | string | Description sent with reward |
+| `status` | string | Transaction status (see below) |
+
+### Status Values
+
+| Status | Description |
+|--------|-------------|
+| `TRANSACTION_STATUS_COMPLETED` | Reward successfully delivered |
+| `TRANSACTION_STATUS_PENDING` | Processing (rare for gamertag payments) |
+| `TRANSACTION_STATUS_FAILED` | Reward failed to deliver |
+
+<Note>
+  **Instant Verification** - Rewards sent to gamertags are confirmed within milliseconds. The status will almost always be `COMPLETED` when you check.
+</Note>

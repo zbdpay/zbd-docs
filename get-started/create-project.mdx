@@ -1,36 +1,142 @@
 ---
-title: 'Create Project'
-icon: 'diagram-project'
-sidebarTitle: 'Creating a project'
-description: 'Learn how to create a new Project in the ZBD Developer Dashboard.'
+title: "Create Project"
+icon: "diagram-project" 
+sidebarTitle: "Create Project"
+description: "Set up your first ZBD project and unlock the power of Lightning payments"
 ---
 
-Projects are the gateway into using the [ZBD API](/payments/api). Each project comes with a unique API key and a Bitcoin Lightning wallet. With this API key, you can receive funds, make payments, and withdraw Bitcoin — the API makes it possible to handle everything programmatically.
+Projects are your gateway to the future of payments. Each project gets its own Lightning wallet, API keys, and analytics – everything you need to integrate ZBD into your app or game.
 
-## 1 - Navigate to Projects 
+<Info>
+  **One Account, Multiple Projects** - Create separate projects for different apps, environments, or business units. Each project has isolated wallets and permissions.
+</Info>
 
-Navigate to the `Projects` page in the sidebar menu and click the `+ New Project` button in the top right of the page to open up the Create Project modal.
+## Why Projects Matter
+
+<CardGroup cols={3}>
+  <Card title="Isolated Wallets" icon="wallet">
+    Each project has its own Bitcoin Lightning wallet with separate balances
+  </Card>
+  <Card title="Unique API Keys" icon="key">
+    Get your API key per project with specific permissions
+  </Card>
+  <Card title="Analytics & Insights" icon="chart-line">
+    Track performance metrics per project independently
+  </Card>
+</CardGroup>
+
+## Creating Your First Project
+
+### Step 1: Navigate to Projects
+
+From your dashboard, click **Projects** in the sidebar and then the **+ New Project** button.
 
 <Frame caption="ZBD Developer Dashboard | Projects">
   <img src="/img/v3/create-project.png" alt="ZBD Developer Dashboard | Projects" />
 </Frame>
-<br />
 
-## 2 - Enter Project details
+### Step 2: Configure Your Project
 
-Complete the fields in the modal. The Project Name and Project Description fields are required, while the Project Image is highly recommended.
+Fill in your project details in the creation modal:
 
 <Frame caption="ZBD Developer Dashboard | Create Project Form">
   <img src="/img/v3/create-project-2.png" alt="ZBD Developer Dashboard | Create Project Form" />
 </Frame>
-<br />
 
-<Tip>Your _Project Name_ and _Project Image_ will appear in the ZBD Rewards App if you make a payment using the ZBD Gamertag system of APIs. The image needs to be square and less than 3 MB to upload and display properly.</Tip>  
+### Step 3: Create and Explore
 
-## 3 - Submit
+Click **Create Project** and you will be redirected to your new project's wallet page.
 
-Now, click `Create Project` -- you will be redirected to the Project's Wallet tab once its successfully created.
+## What Happens Next
 
-## Next Steps
+Once your project is created, you instantly get:
 
-**Success! You've just created your first ZBD Project.**
+<Steps>
+  <Step title="Lightning Wallet">
+    A programmable Bitcoin Lightning wallet ready for instant global payments
+  </Step>
+  <Step title="API Key Generation">
+    Head to the API Keys tab to generate your first key
+  </Step>
+  <Step title="Start Building">
+    Use our SDKs to send your first payment in minutes
+  </Step>
+</Steps>
+
+## Project Best Practices
+
+### Environment Strategy
+
+<Tabs>
+  <Tab title="Development Setup">
+    Create separate projects for each environment:
+    
+    - **MyGame - Development**: Sandbox testing with test transactions
+    - **MyGame - Staging**: Pre-production testing with real money
+    - **MyGame - Production**: Live environment for real users
+    
+    This separation ensures clean analytics and prevents accidental transactions.
+  </Tab>
+  <Tab title="Multi-App Setup">
+    Organize projects by application:
+    
+    - **Mobile Game**: iOS and Android API keys sharing one wallet
+    - **Web Platform**: Separate wallet with frontend/backend keys
+    - **Tournament System**: Isolated wallet for prize pools
+    
+    Each app gets its own analytics and wallet management.
+  </Tab>
+</Tabs>
+
+### Common Use Cases
+
+<AccordionGroup>
+  <Accordion title="Gaming Studio" icon="gamepad">
+    - **Separate projects per game** for isolated economies
+    - **Shared project for tournaments** across multiple games
+    - **Dev/staging/prod projects** for each game
+  </Accordion>
+  <Accordion title="SaaS Platform" icon="cloud">
+    - **API product project** for usage-based billing
+    - **Marketplace project** for user-to-user payments
+    - **Regional projects** for compliance separation
+  </Accordion>
+  <Accordion title="Development Agency" icon="code">
+    - **Client projects** with isolated wallets
+    - **Demo project** for POCs and sales
+    - **Template projects** for quick starts
+  </Accordion>
+</AccordionGroup>
+
+## Quick Actions After Creation
+
+<CardGroup cols={3}>
+  <Card title="Get API Keys" icon="key" href="/get-started/api-keys">
+    Generate your first API key to start integrating
+  </Card>
+  <Card title="Fund Your Wallet" icon="coins" href="/get-started/add-funds">
+    Add funds to start processing payments
+  </Card>
+  <Card title="Send First Payment" icon="paper-plane" href="/payments/sdk/typescript">
+    Use our SDK to send your first Lightning payment
+  </Card>
+</CardGroup>
+
+## Success! You have Created Your First Project 🎉
+
+You are now ready to revolutionize payments in your application. Your Lightning wallet is active and waiting for its first transaction.
+
+<Card title="What's Next?" icon="rocket" href="/get-started/api-keys">
+  **Generate Your API Keys** - Get your API credentials and send your first payment in under 5 minutes.
+</Card>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="View SDK Docs" icon="book" href="/payments/sdk">
+    Quick start guides for all languages
+  </Card>
+  <Card title="API Reference" icon="code" href="/payments/api">
+    Explore all available endpoints
+  </Card>
+</CardGroup>

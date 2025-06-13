@@ -1,27 +1,252 @@
 ---
-title: 'Introduction'
-description: 'Comprehensive video guides for mastering Bitcoin apps and games with ZBD.'
+title: 'Knowledge Base'
+sidebarTitle: 'Introduction'
+description: 'Learn best practices for implementing secure, scalable Bitcoin rewards in your games and apps'
 ---
 
-## Educational Resources
+Your complete resource for mastering Bitcoin rewards integration. From security fundamentals to advanced implementation strategies, we've compiled everything you need to build successful rewarded experiences.
 
-ZBD provides an extensive array of educational resources, including tutorials, walkthroughs, and guides. These resources are available in both the [Knowledge Base](/rewards/knowledge-base) and [Documentation](/get-started) sections of [zbd.dev](https://zbd.dev).
+<Info>
+  **Built from Experience** - These guides come from real-world implementations across hundreds of games processing millions of rewards. Learn from what works.
+</Info>
 
-This Courses section is designed for learners seeking a more in-depth understanding. It offers a systematic, step-by-step approach to learning specific topics within the broader development ecosystem of the ZBD API.
+## What You'll Find Here
 
-We invite you to join our range of video-led courses, which aim to impart knowledge on various topics such as Bitcoin, Lightning, LNURL, Nostr.
-
-## Courses
-
-These are some of the Courses we have created and/or curated for developers learning to build with ZBD. We will be adding more Courses in the future, so be sure to check back often!
-
-### Bitcoin Gaming
-
-<CardGroup cols={2}>
-  <Card title="Game Security 101" icon="shield-halved" color="#00c2ff" href="/rewards/knowledge-base/game-security">
-    Learn from ZBD's Head of Gaming R&D on how to properly secure your ZBD-integrated game.
+<CardGroup cols={3}>
+  <Card title="Security First" icon="shield">
+    Protect your rewards from cheaters and hackers
   </Card>
-  <Card title="Bomberman with Bitcoin" icon="ghost" color="#00c2ff" href="/rewards/knowledge-base">
-    Code along with ZBD's Head of Gaming R&D as he builds a Bomberman game with Bitcoin payments.
+  <Card title="Best Practices" icon="star">
+    Proven patterns from successful integrations
+  </Card>
+  <Card title="Platform Guides" icon="gamepad">
+    Step-by-step integration for Unity, Unreal, and more
   </Card>
 </CardGroup>
+
+## Featured Courses
+
+### 🎮 Rewarded Play Guide
+
+Learn how to implement Bitcoin rewards that drive engagement without breaking your game economy.
+
+<Card title="Start Rewarded Play Course" icon="play" href="/rewards/knowledge-base/rewarded-play">
+  **Essential for Game Developers** - Understand reward economics, player psychology, and implementation strategies that have driven 40% retention increases.
+</Card>
+
+**What's Covered:**
+- Designing sustainable reward economies
+- Balancing fun gameplay with real rewards
+- Anti-cheat strategies specific to rewarded games
+- Case studies from successful implementations
+
+### 🔒 Game Security Course
+
+<Warning>
+  **Required Reading** - When real money is involved, security isn't optional. This comprehensive course covers every attack vector and how to defend against it.
+</Warning>
+
+Our 9-part security course takes you through:
+
+<Steps>
+  <Step title="The Insecure Game">
+    Start with a vulnerable example game
+  </Step>
+  <Step title="Attack Vectors">
+    Learn how hackers exploit games:
+    - Hacking saved game files
+    - Memory manipulation
+    - Source code decompilation
+    - Network traffic interception
+  </Step>
+  <Step title="Defense Strategies">
+    Implement professional security:
+    - Server-side validation
+    - Anti-tampering measures
+    - Replay attack prevention
+    - Device verification
+  </Step>
+</Steps>
+
+<Card title="Begin Security Course" icon="lock" href="/rewards/knowledge-base/game-security">
+  **9 Comprehensive Modules** - From basic vulnerabilities to advanced protection strategies. With code examples and real attack scenarios.
+</Card>
+
+### 🛠️ Integration Guides
+
+Platform-specific guides for seamless implementation:
+
+<CardGroup cols={2}>
+  <Card title="Unity Engine" icon="unity" href="/rewards/knowledge-base/integrations/unity">
+    **Most Popular** - Complete Unity integration with our drag-and-drop SDK
+    
+    - C# code examples
+    - Prefab components
+    - iOS/Android build guides
+    - Performance optimization
+  </Card>
+  <Card title="Beamable Servers" icon="server" href="/rewards/knowledge-base/integrations/beamable">
+    **Backend Integration** - Server-side rewards with Beamable
+    
+    - Microservice setup
+    - Player economy design  
+    - Secure API patterns
+    - Scaling strategies
+  </Card>
+</CardGroup>
+
+## Why This Knowledge Matters
+
+### The Cost of Getting It Wrong
+
+<Tabs>
+  <Tab title="Security Breaches">
+    **Without Proper Security:**
+    - Hackers drain reward pools
+    - Fake rewards flood the system
+    - Player trust destroyed
+    - Potential legal issues
+    
+    **One game lost $50,000 in 24 hours** due to a simple client-trust vulnerability.
+  </Tab>
+  <Tab title="Poor Implementation">
+    **Common Mistakes Cost:**
+    - Players exploit imbalanced rewards
+    - Server costs spiral out of control
+    - Retention actually decreases
+    - Negative reviews pile up
+    
+    **Proper implementation drives 3-5x ROI** on reward spend.
+  </Tab>
+  <Tab title="Scaling Issues">
+    **Growing Pains:**
+    - Rewards system can't handle success
+    - Database locks under load
+    - API rate limits hit
+    - Players face delays
+    
+    **Plan for 100x growth** from day one.
+  </Tab>
+</Tabs>
+
+## Learning Paths
+
+Choose your journey based on your role:
+
+### For Game Developers
+
+<Steps>
+  <Step title="Security Course">
+    Start with security fundamentals (2-3 hours)
+  </Step>
+  <Step title="Rewarded Play Guide">
+    Learn reward design principles (1 hour)
+  </Step>
+  <Step title="Platform Integration">
+    Implement in your engine (2-4 hours)
+  </Step>
+  <Step title="Launch & Iterate">
+    Monitor, adjust, optimize
+  </Step>
+</Steps>
+
+### For Backend Engineers
+
+<Steps>
+  <Step title="Security Course (Advanced)">
+    Focus on modules 5-9 for server security
+  </Step>
+  <Step title="API Best Practices">
+    Study rate limiting and validation
+  </Step>
+  <Step title="Beamable Guide">
+    If using microservices architecture
+  </Step>
+</Steps>
+
+### For Product Managers
+
+<Steps>
+  <Step title="Rewarded Play Overview">
+    Understand the economics
+  </Step>
+  <Step title="Security Introduction">
+    Know the risks and mitigations
+  </Step>
+  <Step title="Case Studies">
+    Learn from successful implementations
+  </Step>
+</Steps>
+
+## Quick Reference
+
+### Security Checklist
+
+<Checklist>
+- [ ] Never trust the client
+- [ ] Validate all rewards server-side
+- [ ] Implement rate limiting
+- [ ] Use cryptographic signatures
+- [ ] Monitor for anomalies
+- [ ] Regular security audits
+- [ ] Incident response plan
+</Checklist>
+
+### Common Vulnerabilities
+
+| Attack Type | Risk Level | Prevention |
+|------------|------------|------------|
+| Memory hacking | 🔴 High | Server validation |
+| Replay attacks | 🔴 High | Nonce/timestamp checks |
+| Save file tampering | 🟡 Medium | Encryption + server sync |
+| Network interception | 🟡 Medium | TLS + certificate pinning |
+| Fake devices | 🟡 Medium | Device attestation |
+
+## Community Wisdom
+
+<CardGroup cols={2}>
+  <Card title="Success Stories" icon="trophy">
+    **THNDR Games**: "The security course saved us from a major vulnerability before launch"
+    
+    **Bitcoin Miner**: "Rewarded play guide helped us balance rewards perfectly"
+  </Card>
+  <Card title="Lessons Learned" icon="lightbulb">
+    **Common Insight**: "We wish we'd read the security course before writing any code"
+    
+    **Best Practice**: "Server-side validation isn't optional - it's essential"
+  </Card>
+</CardGroup>
+
+## Stay Updated
+
+The landscape of rewarded gaming evolves rapidly:
+
+- **New Attack Vectors** - We update the security course as new threats emerge
+- **Platform Changes** - Integration guides updated for latest SDKs
+- **Best Practices** - Community-driven improvements
+
+<Note>
+  **Continuous Learning** - Bookmark this knowledge base and check back regularly. We add new content based on developer feedback and emerging trends.
+</Note>
+
+## Get Started
+
+Don't wait until after launch to think about security and best practices:
+
+<CardGroup cols={3}>
+  <Card title="Start Security Course" icon="shield" href="/rewards/knowledge-base/game-security">
+    Essential for every developer
+  </Card>
+  <Card title="Rewarded Play Guide" icon="coins" href="/rewards/knowledge-base/rewarded-play">
+    Design sustainable economies
+  </Card>
+  <Card title="Unity Integration" icon="unity" href="/rewards/knowledge-base/integrations/unity">
+    Most popular platform guide
+  </Card>
+</CardGroup>
+
+---
+
+<Card title="Questions? Need Guidance?" icon="comments" href="https://cal.com/zbdpay/sales">
+  **Talk to Our Team** - Get personalized advice for your specific implementation challenges.
+</Card>

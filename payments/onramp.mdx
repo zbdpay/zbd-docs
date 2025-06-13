@@ -1,9 +1,136 @@
 ---
-title: 'ZBD Onramp'
-sidebarTitle: 'Introduction'
-description: 'Onboard into Bitcoin or USDC with ZBD Onramp.'
+title: "ZBD Onramp"
+sidebarTitle: "Introduction"
+description: "Enable Bitcoin and USDC purchases directly in your app with our embeddable onramp widget"
 ---
 
-<Info>
-  Section coming soon.
-</Info>
+Enable your users to buy Bitcoin and USDC directly within your app or game. ZBD Onramp is the first widget to support Lightning Address delivery, providing instant Bitcoin access for gaming and interactive entertainment.
+
+<CardGroup cols={3}>
+  <Card title="Lightning Fast" icon="bolt">
+    First-in-market Lightning Address support for instant Bitcoin delivery
+  </Card>
+  <Card title="Gaming Optimized" icon="gamepad">
+    Built for high-throughput gaming transactions and in-app purchases
+  </Card>
+  <Card title="Compliance Built-in" icon="shield-check">
+    Integrated KYC/AML with gaming-friendly risk assessment
+  </Card>
+</CardGroup>
+
+## How It Works
+
+<Steps>
+  <Step title="Initialize Session">
+    Your backend creates a secure session with our API
+  </Step>
+  <Step title="User Completes Purchase">
+    Users verify identity and purchase Bitcoin or USDC through the widget
+  </Step>
+  <Step title="Instant Delivery">
+    Funds are delivered via Lightning Address or onchain to your users
+  </Step>
+</Steps>
+
+## Perfect for Gaming Use Cases
+
+### 🎮 In-Game Wallet Top-ups
+Let players add funds to their game wallets for purchasing skins, items, or premium content. With Lightning-fast delivery, they're back in the game in seconds.
+
+### 🏆 Tournament Entry Fees
+Enable players to fund tournament entries directly. Our high-throughput system handles peak tournament registration periods without breaking a sweat.
+
+### 💰 Play-to-Earn Onboarding
+Onboard new players into your crypto-powered game economy. They can purchase their first Bitcoin or USDC and start earning immediately.
+
+## Integration at a Glance
+
+```typescript
+// 1. Initialize session (backend)
+const session = await zbd.onramp.createSession({
+  userId: "player_123",
+  email: "player@game.com"
+});
+
+// 2. Embed widget (frontend)
+<iframe src={session.widgetUrl} />
+
+// 3. Handle webhooks
+app.post('/webhooks/zbd', (req, res) => {
+  if (req.body.event === 'purchase.completed') {
+    // Credit user's game wallet
+  }
+});
+```
+
+That's it. One backend endpoint, one iframe, one webhook handler.
+
+## Key Features
+
+<Tabs>
+  <Tab title="Payment Methods">
+    ### Available Now
+    - **Pay by Bank** - ACH transfers via Plaid for US users
+    - Low fees and high success rates
+    
+    <Info>
+      Coming soon: Credit/Debit cards, Apple Pay, Google Pay, and Stablecoin payments
+    </Info>
+  </Tab>
+  <Tab title="Delivery Options">
+    ### Bitcoin Delivery
+    - **Lightning Address** - Instant delivery (industry first!)
+    - **Onchain Bitcoin** - Standard Bitcoin addresses
+    
+    ### USDC Delivery
+    - Direct to Ethereum or Polygon addresses
+    - More chains coming soon
+  </Tab>
+  <Tab title="Security & Compliance">
+    ### Built-in Protection
+    - Advanced AI-native fraud detection
+    - Automated KYC/AML processes
+    - Gaming-optimized risk scoring
+    - Bot/VPN/Emulator detection
+  </Tab>
+</Tabs>
+
+## Why ZBD Onramp?
+
+<CardGroup cols={2}>
+  <Card>
+    ### For Developers
+    - Simple 3-step integration
+    - No crypto complexity
+    - Comprehensive webhook events
+    - White-label customization
+  </Card>
+  <Card>
+    ### For Your Users
+    - Seamless in-app experience
+    - Fast KYC process
+    - Competitive rates
+    - Multiple payment options
+  </Card>
+</CardGroup>
+
+## Ready to Get Started?
+
+<Card title="Talk to Sales" icon="calendar" href="https://cal.com/zbdpay/sales">
+  Schedule a 15-minute demo to see ZBD Onramp in action and get your API keys.
+</Card>
+
+<CardGroup cols={2}>
+  <Card title="Quick Start Guide" icon="rocket" href="/payments/onramp/quickstart">
+    Get up and running in minutes with our integration guide
+  </Card>
+  <Card title="API Reference" icon="code" href="/payments/onramp/api-reference">
+    Explore the API endpoints and webhook events
+  </Card>
+</CardGroup>
+
+---
+
+<Note>
+  ZBD Onramp requires a business account and KYB verification. Individual developers can explore our Rewards products while preparing for business verification.
+</Note>

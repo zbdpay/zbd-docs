@@ -1,49 +1,48 @@
 ---
 title: "Get UserID by Gamertag"
-description: "Retrieve Gamertag from a ZBD user ID."
+description: "Convert a ZBD Gamertag to a permanent User ID for reliable tracking"
 api: "GET https://api.zebedee.io/v0/user-id/gamertag/{GAMERTAG}"
 ---
 
-## Description
+Get a user's permanent ID from their ZBD Gamertag. Essential for tracking users reliably since gamertags can change but User IDs never do.
 
-Make use of this endpoint to get a given User's ID when provided with a ZBD Gamertag.
+<Warning>
+  **Critical for User Tracking** - Gamertags are like Twitter handles - users can change them anytime. Always use the permanent User ID for databases, limits, and historical tracking.
+</Warning>
 
-## Usage
+## Why This Matters
 
-This is needed because ZBD Gamertags are akin to social media handles, they are swappable. In the scenario where a Developer is using a ZBD Gamertag as the identifier for transaction limits and/or thresholds (for example), a user could simply change their ZBD Gamertag and try to bypass those constraints. Using a truly unique and immutable ID like the `User ID` will provide Developers with the needed assurances.
+<CardGroup cols={2}>
+  <Card title="Prevent Abuse" icon="shield">
+    Users can't bypass limits by changing gamertags
+  </Card>
+  <Card title="Accurate Analytics" icon="chart-line">
+    Track the same user even after name changes
+  </Card>
+</CardGroup>
 
 ## Configuration
 
 ### Path Parameters
 
-<ParamField required path="GAMERTAG" type="string">
-  ZBD Gamertag
+<ParamField required path="gamertag" type="string">
+  The ZBD Gamertag to look up (case-insensitive)
+  
+  Examples: `"player123"`, `"bitcoingamer"`, `"speedrunner42"`
 </ParamField>
 
 ### Header Parameters
 
 <ParamField required header="apikey" type="string">
-  ZBD Project API Key
+  Your ZBD Project API Key
 </ParamField>
 
+### Response Fields
 
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Permanent User ID (UUID format) |
 
-<ResponseExample>
-
-```json 200 Response
-{
-  "success": true,
-  "data": {
-    "id": "0a59bf56-daa3-4888-8330-cbc02eba3a6e"
-  }
-}
-```
-
-```json 400 Response
-{
-  "success": false,
-  "message": "No user found with this gamertag"
-}
-```
-
-</ResponseExample>
+<Note>
+  **Pro Tip**: Always store both the User ID (permanent) and current gamertag (for display). This gives you reliability and good UX.
+</Note>

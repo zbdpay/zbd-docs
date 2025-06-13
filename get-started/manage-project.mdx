@@ -1,58 +1,109 @@
 ---
 title: 'Manage Project'
-icon: 'pencil'
-sidebarTitle: 'Managing a project'
-description: 'Learn what is means to archive a ZBD Project.'
+icon: 'gear'
+sidebarTitle: 'Manage Project'
+description: 'Edit project settings, manage access, and control your project lifecycle'
 ---
 
-# Editing a Project
+Keep your projects organized and up-to-date. From updating branding to archiving completed projects, here's everything you need to know about project management in ZBD.
 
-You can edit a Project’s Name, Description, and Image. There are two ways to edit a project:
+<Warning>
+  **Critical Actions**: Some project management actions (like archiving) are irreversible. Always ensure you understand the implications before proceeding.
+</Warning>
 
-## 1. Projects View
+## Editing Project Details
 
-From the `Projects` page, find your Project, click the `...` on the Project card, and click `Edit Project`.
+Your project's details appear in payment flows and help organize your dashboard. Keep them current and professional.
 
-## 2. Single Project View
+### What You Can Edit
 
-From within a `Project` page, press `...` menu on the top right corner and choose `Edit Project Info`.
+<CardGroup cols={3}>
+  <Card title="Project Name" icon="signature">
+    Appears in payment notifications to users
+  </Card>
+  <Card title="Description" icon="text">
+    Internal notes for your team's reference
+  </Card>
+  <Card title="Project Image" icon="image">
+    Your logo shown during payment flows
+  </Card>
+</CardGroup>
 
-<Frame caption="ZBD Developer Dashboard | Edit Project Form">
-  <img src="/img/v2/projects-edit-project.png" alt="ZBD Developer Dashboard | Edit Project Form" />
+### How to Edit
+
+Editing a project details is simple:
+
+1. Navigate to **Projects** page
+2. Find your project card
+3. Click the project card to enter project view
+4. Select **Settings** tab
+5. Edit the details you want to change
+6. Click **Update**
+
+<Frame caption="Edit Project Details">
+  <img src="/img/v3/edit-project.png" alt="Edit Project" />
 </Frame>
-<br />
 
-## 3. Editing
+## Archiving Projects
 
-Whether you picked path 1 or 2, you will arrive at a modal that looks like this. Modify the details of your project and then press `Update`.
+When a project is no longer needed, archiving keeps your dashboard clean while preserving records.
 
-<Frame caption="ZBD Developer Dashboard | Edit Project Form">
-  <img src="/img/v2/projects-edit-project-2.png" alt="ZBD Developer Dashboard | Edit Project Form" />
-</Frame>
-<br />
+<Warning>
+  **Immediate Effects of Archiving**:
+  - API key is permanently disabled
+  - No new transactions possible
+  - Wallet funds auto-transfer to main wallet
+  - Action cannot be undone
+</Warning>
 
-# Archiving a Project
+### When to Archive
 
-<Warning>**Archiving a Project immediately disables its API Key.** Please ensure that the key is not being actively used before Archiving the Project.</Warning>
+- Project development is cancelled
+- App/game has been sunset
+- Migrating to a new project
+- Cleaning up test projects
 
-To archive a Project, follow the steps below:
+### How to Archive
 
-## Open Archival View
-
-Open the Project you wish to archive, and press the `...` button in the top right of the view. Then from the dropdown menu list pick `Archive Project`.
+<Steps>
+  <Step title="Open Project">
+    Navigate to the project you want to archive
+  </Step>
+  <Step title="Select Settings Tab">
+    Click the Settings tab on the top
+  </Step>
+  <Step title="Select Archive">
+    Scroll down and choose **Archive Project** from advanced options
     
-<Frame caption="ZBD Developer Dashboard | Archive Project">
-  <img src="/img/v3/manage.png" alt="ZBD Developer Dashboard | Archive Project" />
-</Frame>
-<br />
+    <Frame caption="Archive option in project menu">
+      <img src="/img/v3/manage.png" alt="Archive Project Menu" />
+    </Frame>
+  </Step>
+  <Step title="Confirm Action">
+    Read the warning and click **Archive** to confirm
+    
+    <Frame caption="Confirm project archival">
+      <img src="/img/v3/manage-2.png" alt="Confirm Archive" />
+    </Frame>
+  </Step>
+</Steps>
 
-Confirm you want to archive the project by pressing `Archive`
+## Next Steps
 
-<Frame caption="ZBD Developer Dashboard | Archive Project">
-  <img src="/img/v3/manage-2.png" alt="ZBD Developer Dashboard | Archive Project" />
-</Frame>
-<br />
+<CardGroup cols={3}>
+  <Card title="Project Security" icon="shield" href="/get-started/api-keys">
+    Secure your API keys and set up IP allowlisting
+  </Card>
+  <Card title="Monitor Wallet" icon="chart-line" href="/get-started/project-wallet">
+    Track your project's financial activity
+  </Card>
+  <Card title="Scale Operations" icon="rocket" href="https://cal.com/zbdpay/sales">
+    Discuss enterprise features for larger teams
+  </Card>
+</CardGroup>
 
-## Project Wallet
+---
 
-<Info>All funds held within a Project Wallet when it's archived are automatically transferred to your main Developer Wallet.</Info>
+<Note>
+  **Pro Tip**: Set up a project naming convention early. As you scale, having organized projects with clear names like "AppName-Prod-US" and "AppName-Dev-EU" will save hours of confusion.
+</Note>

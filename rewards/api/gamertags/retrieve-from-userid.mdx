@@ -1,41 +1,64 @@
 ---
-title: "Get Gamertag By UserID"
-description: "Retrieve ZBD user ID from a Gamertag."
+title: "Get Gamertag by UserID"
+description: "Retrieve a user's current gamertag from their permanent User ID"
 api: "GET https://api.zebedee.io/v0/gamertag/user-id/{id}"
 ---
 
-## Usage
+Get the current ZBD Gamertag for a user when you have their permanent User ID. Useful for displaying current usernames and sending rewards to users you're tracking by ID.
 
-This API endpoint is the reverse of the [Get User ID for ZBD Gamertag](/rewards/api/gamertags/retrieve-userid) endpoint. Use this endpoint to get a given user's ZBD Gamertag.
+## When to Use This
 
-<Tip>If you've got a User ID and you wish to find out that user's ZBD Gamertag, perhaps to then [send that user payments](/rewards/api/gamertags/send), you may use this endpoint.</Tip>
+<CardGroup cols={2}>
+  <Card title="Display Current Names" icon="user">
+    Show up-to-date gamertags in leaderboards and profiles
+  </Card>
+  <Card title="Send Rewards by ID" icon="gift">
+    Reward users you track by permanent ID
+  </Card>
+  <Card title="Sync Databases" icon="filter">
+    Update stored gamertags periodically
+  </Card>
+  <Card title="User Lookups" icon="shield-check">
+    Find users in your system by their ID
+  </Card>
+</CardGroup>
 
 ## Configuration
 
 ### Path Parameters
 
 <ParamField required path="id" type="string">
-  User ID
+  The permanent User ID (UUID format)
+  
+  Example: `"0a59bf56-daa3-4888-8330-cbc02eba3a6e"`
 </ParamField>
 
 ### Header Parameters
 
 <ParamField required header="apikey" type="string">
-  ZBD Project API Key
+  Your ZBD Project API Key
 </ParamField>
 
-
+## Response
 
 <ResponseExample>
-
-```json Response
+```json Success Response
 {
   "success": true,
   "data": {
-    "gamertag": "foxp2"
+    "gamertag": "speedrunner42"
   },
   "message": "Fetched gamertag from uuid"
 }
 ```
-
 </ResponseExample>
+
+### Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `gamertag` | string | User's current gamertag |
+
+<Note>
+  **Two-Way Mapping** - Use [Get UserID by Gamertag](/rewards/api/gamertags/retrieve-userid) to go from gamertag → ID, and this endpoint for ID → gamertag. Together they handle all user lookups.
+</Note>
