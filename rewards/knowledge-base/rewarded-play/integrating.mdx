@@ -44,7 +44,7 @@ You will then have to do the following:
 
 **First, get some Bitcoin to your main wallet**. You can do this by pressing the *charge* button on the [wallet page](https://dashboard.zebedee.io/wallet) and making a transfer from any Bitcoin Lightning wallet or exchange that supports the Lightning protocol.
 
-If you don't have access to an exchange account, our dashboard also features a Sandbox mode to get you started with testing payments. Just make sure you're using our [Sandbox APIs and keys](https://zbd.dev/api-reference/zbd-gamertag/sandbox/send), they're separate from production ones!
+If you don't have access to an exchange account, our dashboard also features a Sandbox mode to get you started with testing payments. Just make sure you're using our [Sandbox APIs and keys](https://docs.zbdpay.com/api-reference/zbd-gamertag/sandbox/send), they're separate from production ones!
 
 More ways to top up your balance from the ZBD Dashboard are coming soon!
 
@@ -154,7 +154,7 @@ Your ZBD Project API key
 - The amount for the Payment -> in millisatoshis
 - Note / description of this Payment (will be shown to recipient)
 
-To learn more about using Send to Email, please check our docs [here](https://zbd.dev/api-reference/email/send).
+To learn more about using Send to Email, please check our docs [here](https://docs.zbdpay.com/api-reference/email/send).
 
 <CardGroup cols={2}>
  <Card title="Request">
@@ -176,16 +176,16 @@ Gives you access to more detail about your users, which enables advanced control
 
 First, you need to integrate Log in with ZBD - this is built on the OAuth2 protocol, so it should be pretty standard.
 
-**If you are using Unity and Beamable** (described above), we have a step-by-step guide and example projects for you [here](https://zbd.dev/courses/beamable-integration#zbd-login-example-scene).
+**If you are using Unity and Beamable** (described above), we have a step-by-step guide and example projects for you [here](https://docs.zbdpay.com/courses/beamable-integration#zbd-login-example-scene).
 
-**If you are using other engines or backends**, we have a guide for you [here](https://zbd.dev/docs/zbd-login/integration).
+**If you are using other engines or backends**, we have a guide for you [here](https://docs.zbdpay.com/docs/zbd-login/integration).
 
 
 #### Sending rewards with Log in with ZBD
 
 Log in with ZBD is a way to get user data. You can use it to fetch a user's ZBD Gamertag (basically their username on our system). To make payments, you just use our standard Send to Gamertag API.
 
-It's similar to sending to email. To learn how to Send to Gamertag, check our docs [here](https://zbd.dev/api-reference/zbd-gamertag/send).
+It's similar to sending to email. To learn how to Send to Gamertag, check our docs [here](https://docs.zbdpay.com/api-reference/zbd-gamertag/send).
 
 ## The front-end
 
@@ -245,7 +245,7 @@ Any system that gives out real money for playing a game will always attract expl
 **Security essential: Play Integrity**
 We HIGHLY recommend you add Google Play Integrity and iOS Device Check to any game that gives out real-money rewards. This will ensure only users on legitimate devices (not emulators, not rooted) can get rewards. Firebase offers a convenient Wrapper called App Check for both services that you can integrate inside of Unity.
 
-[Here's](https://zbd.dev/courses/game-security/app-check) how you do it.
+[Here's](https://docs.zbdpay.com/courses/game-security/app-check) how you do it.
 
 
 **Validating gameplay: Quago**

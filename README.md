@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://zbd.dev">
+  <a href="https://docs.zbdpay.com">
     <img src="https://avatars.githubusercontent.com/u/54384134?s=200&v=4" height="96" />
     <h3 align="center">ZBD API Docs</h3>
   </a>
@@ -16,10 +16,10 @@
 </p>
 
 <p align="center">
-  <a href="https://zbd.dev"><strong>Documentation</strong></a> ·
+  <a href="https://docs.zbdpay.com"><strong>Documentation</strong></a> ·
   <a href="https://dashboard.zebedee.io"><strong>Developer Dashboard</strong></a> ·
-  <a href="https://zbd.dev/api-reference/introduction"><strong>API Reference</strong></a> ·
-  <a href="https://status.zbd.dev"><strong>API Status</strong></a>
+  <a href="https://docs.zbdpay.com/api-reference/introduction"><strong>API Reference</strong></a> ·
+  <a href="https://status.zbdpay.com"><strong>API Status</strong></a>
 </p>
 <br/>
 
