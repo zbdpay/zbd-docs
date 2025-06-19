@@ -37,22 +37,22 @@ pnpm add express
 
 </CodeGroup>
 
-## 3. Install @zbddev/payments-sdk Node.js SDK
+## 3. Install @zbdpay/payments-sdk Node.js SDK
 
 Inside your Express.js 
 
 <CodeGroup>
 
 ```bash yarn
-yarn add @zbddev/payments-sdk
+yarn add @zbdpay/payments-sdk
 ```
 
 ```bash npm
-npm install @zbddev/payments-sdk
+npm install @zbdpay/payments-sdk
 ```
 
 ```bash pnpm
-pnpm add @zbddev/payments-sdk
+pnpm add @zbdpay/payments-sdk
 ```
 
 </CodeGroup>
@@ -63,7 +63,7 @@ Create a new file called `index.js` and add the following code:
 
 ```js
 import express from "express";
-import ZbdPayments from '@zbddev/payments-sdk';
+import ZbdPayments from '@zbdpay/payments-sdk';
 
 const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8'; // dummy key
 const client = new ZbdPayments({

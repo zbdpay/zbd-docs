@@ -19,24 +19,31 @@
             "icon": "bolt-lightning",
             "pages": [
               "get-started",
+              "get-started/dev-dashboard",
               {
                 "group": "Set Up ZBD",
                 "pages": [
-                  "get-started/dev-dashboard",
                   "get-started/create-account",
                   "get-started/verify-identity",
                   "get-started/add-funds",
-                  "get-started/create-project",
-                  "get-started/api-keys",
-                  "get-started/vouchers",
                   {
-                    "group": "ZBD Projects",
+                    "group": "Projects",
+                    "icon": "folder",
                     "pages": [
+                      "get-started/create-project",
+                      "get-started/api-keys",
                       "get-started/project-wallet",
-                      "get-started/manage-project",
-                      "get-started/sandbox-project"
+                      "get-started/manage-project"
                     ]
-                  }
+                  },
+                  "get-started/vouchers"
+                ]
+              },
+              {
+                "group": "Building with LLMs",
+                "pages": [
+                  "payments/mcp",
+                  "payments/ai-ingestion"
                 ]
               },
               {
@@ -46,8 +53,7 @@
                   "get-started/zbd-rewards-sdk",
                   "get-started/zbd-payments-api",
                   "get-started/login-with-zbd",
-                  "get-started/zbd-app",
-                  "get-started/zbd-mcp-server"
+                  "get-started/zbd-app"
                 ]
               }
             ]
@@ -67,13 +73,6 @@
                   "payments",
                   "payments/lightning-network",
                   "payments/lightning-address"
-                ]
-              },
-              {
-                "group": "Building with LLMs",
-                "pages": [
-                  "payments/mcp",
-                  "payments/ai-ingestion"
                 ]
               },
               {

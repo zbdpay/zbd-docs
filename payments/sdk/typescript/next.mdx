@@ -38,22 +38,22 @@ Start with a brand new Next.js project. To begin run the following command and w
 npx create-next-app@latest
 ```
 
-### 2. Install @zbddev/payments-sdk Node.js SDK
+### 2. Install @zbdpay/payments-sdk Node.js SDK
 
 Install ZBD:
 
 <CodeGroup>
 
 ```bash yarn
-yarn add @zbddev/payments-sdk
+yarn add @zbdpay/payments-sdk
 ```
 
 ```bash npm
-npm install @zbddev/payments-sdk
+npm install @zbdpay/payments-sdk
 ```
 
 ```bash pnpm
-pnpm add @zbddev/payments-sdk
+pnpm add @zbdpay/payments-sdk
 ```
 
 </CodeGroup>
@@ -64,7 +64,7 @@ Create a new file `/app/api/receive/route.ts` and add the following code to crea
 
 ```js
 import { NextResponse } from 'next/server';
-import ZbdPayments from '@zbddev/payments-sdk';
+import ZbdPayments from '@zbdpay/payments-sdk';
 
 const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8'; // dummy key
 const client = new ZbdPayments({
@@ -90,7 +90,7 @@ Then create a new file `/app/api/send/route.ts` and add the following code to cr
 
 ```js
 import { NextResponse } from 'next/server';
-import ZbdPayments from '@zbddev/payments-sdk';
+import ZbdPayments from '@zbdpay/payments-sdk';
 
 const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8';
 const client = new ZbdPayments({

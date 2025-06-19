@@ -24,7 +24,7 @@ Add the following server definition to your claude_desktop_config.json file:
   "mcpServers": {
     "zbd": {
       "command": "npx",
-      "args": ["-y", "@zbddev/payments-sdk-mcp", "--client=claude"],
+      "args": ["-y", "@zbdpay/payments-sdk-mcp", "--client=claude"],
       "env": {
         "ZBD_PAYMENTS_API_KEY": "YOUR_ZBD_API_KEY"
       }
@@ -80,10 +80,10 @@ over time, you can manually enable or disable certain capabilities:
 
 ```js
 // Import the server, generated endpoints, or the init function
-import { server, endpoints, init } from "@zbddev/payments-sdk-mcp/server";
+import { server, endpoints, init } from "@zbdpay/payments-sdk-mcp/server";
 
 // import a specific tool
-import createChargeGamertags from "@zbddev/payments-sdk-mcp/tools/gamertags/create-charge-gamertags";
+import createChargeGamertags from "@zbdpay/payments-sdk-mcp/tools/gamertags/create-charge-gamertags";
 
 // initialize the server and all endpoints
 init({ server, endpoints });
