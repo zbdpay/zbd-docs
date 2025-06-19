@@ -116,28 +116,21 @@
                 "pages": [
                   "payments/onramp",
                   "payments/onramp/quickstart",
-                  "payments/onramp/api",
                   "payments/onramp/faq"
                 ]
               },
               {
-                "group": "Configuration",
+                "group": "API Reference",
                 "pages": [
-                  "payments/onramp/architecture",
-                  "payments/onramp/webhooks",
-                  "payments/onramp/user-flow"
+                  "payments/onramp/api",
+                  "payments/onramp/session",
+                  "payments/onramp/webhooks"
                 ]
               },
               {
                 "group": "Customization",
                 "pages": [
-                  "payments/onramp/appearance",
-                  "payments/onramp/branding"
-                ]
-              },
-              {
-                "group": "Emails",
-                "pages": [
+                  "payments/onramp/branding",
                   "payments/onramp/receipts"
                 ]
               }
@@ -179,6 +172,12 @@
                       }
                     ]
                   }
+                ]
+              },
+              {
+                "group": "Python",
+                "pages": [
+                  "payments/sdk/python"
                 ]
               },
               {

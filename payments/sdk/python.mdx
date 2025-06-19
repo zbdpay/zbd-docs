@@ -1,0 +1,104 @@
+---
+title: 'Python SDK'
+description: Learn how to send and receive instant Bitcoin payments with Python and ZBD.
+---
+
+## Prerequisites
+
+To complete this guide, you will need the following:
+
+- [ZBD Project with a Live API key](/get-started/api-keys)
+- Python 3.8 or higher
+
+## 1. Install the ZBD Python package
+
+Install the official ZBD Python SDK from PyPI:
+
+```bash
+pip install zbdpay
+```
+
+## 2. Send and receive Bitcoin
+
+Get started with just a few lines of code. Here's how to send a payment to any Lightning Address:
+
+```python
+import os
+from zbdpay import ZbdPayments
+
+# Initialize the client
+client = ZbdPayments(
+    apikey=os.environ.get("ZBD_PAYMENTS_API_KEY")
+)
+
+# Send instant Bitcoin payment
+response = client.lightning_address.send_payment(
+    amount="500000",  # Amount in millisatoshis
+    comment="Instant global payments",
+    ln_address="andre@zbd.gg"
+)
+
+print(f"Payment sent! Transaction ID: {response.data.id}")
+```
+
+## 3. Create a payment request
+
+Accept Bitcoin payments by creating a charge:
+
+```python
+# Create a charge (payment request)
+charge = client.lightning_charges.create(
+    amount="100000",  # 100 satoshis
+    description="Payment for your product",
+    expires_in=300  # Expires in 5 minutes
+)
+
+print(f"Payment Request: {charge.data.invoice.request}")
+print(f"QR Code: {charge.data.invoice.uri}")
+```
+
+You're looking for the `data.invoice.request` property in the response. It starts with `lnbc1` and is the payment request anyone in the Bitcoin Lightning Network can use to pay you.
+
+<Info>
+Payment requests are usually shown to users as QR codes that can be scanned by mobile apps (e.g. [ZBD](https://zbd.one/download)). Read [Callbacks](/payments/api/callbacks) to understand how to receive updates about your payments asynchronously.
+</Info>
+
+## Async Support
+
+The SDK also supports async operations for better performance:
+
+```python
+import asyncio
+from zbdpay import AsyncZbdPayments
+
+async def main():
+    client = AsyncZbdPayments(
+        apikey=os.environ.get("ZBD_PAYMENTS_API_KEY")
+    )
+    
+    # Send payment asynchronously
+    await client.lightning_address.send_payment(
+        amount="500000",
+        comment="Async payment",
+        ln_address="andre@zbd.gg"
+    )
+
+asyncio.run(main())
+```
+
+## Next Steps
+
+Ready to dive deeper? Check out these resources:
+
+<CardGroup cols={2}>
+  <Card title="View SDK" icon="github" href="https://github.com/zbdpay/zbd-payments-python-sdk">
+    Explore the source code and contribute to the SDK
+  </Card>
+  <Card title="PyPI Package" icon="python" href="https://pypi.org/project/zbdpay">
+    View the official Python package on PyPI with full documentation
+  </Card>
+</CardGroup>
+
+## Advanced Usage
+
+For more advanced features like custom timeouts, retries, and raw response access, check out the [full documentation on PyPI](https://pypi.org/project/zbdpay).

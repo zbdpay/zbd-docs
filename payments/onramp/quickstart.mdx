@@ -10,7 +10,7 @@ This guide covers the technical details of integrating ZBD Onramp, including ses
 
 <Steps>
   <Step title="Initialize Session">
-    Call the `/api/v1/ramp-widget` endpoint from your backend
+    Call the `/v1/ramp-widget` endpoint from your backend
   </Step>
   <Step title="Load Widget">
     Embed the returned widget URL in an iframe
@@ -27,7 +27,7 @@ Create a widget session by calling our API from your backend. This ensures your 
 ### Endpoint
 
 ```
-POST https://api.zebedee.io/api/v1/ramp-widget
+POST https://api.zebedee.io/v1/ramp-widget
 ```
 
 ### Request
@@ -43,7 +43,7 @@ POST https://api.zebedee.io/api/v1/ramp-widget
         "webhook_url": "https://yourgame.com/webhooks/zbd",
         "quote_currency": "USD",
         "base_currency": "BTC",
-        "destination": "https://yourgame.com/purchase-complete",
+        "destination": "spiderman@zbd.gg",
         "reference_id": "player_123_purchase_456",
         "metadata": {
           "player_id": "123",
@@ -65,7 +65,7 @@ POST https://api.zebedee.io/api/v1/ramp-widget
         webhook_url: 'https://yourgame.com/webhooks/zbd',
         quote_currency: 'USD',
         base_currency: 'BTC',
-        destination: 'https://yourgame.com/purchase-complete',
+        destination: 'spiderman@zbd.gg',
         reference_id: `${user.id}_${purchaseId}`,
         metadata: {
           player_id: user.id,
@@ -83,13 +83,13 @@ POST https://api.zebedee.io/api/v1/ramp-widget
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `email` | string | Yes | User's email address |
-| `webhook_url` | string | Yes | URL to receive webhook events |
-| `quote_currency` | string | No | Fiat currency (default: "USD") |
-| `base_currency` | string | No | Crypto currency: "BTC" or "USDC" |
-| `destination` | string | No | URL to redirect after completion |
-| `reference_id` | string | No | Your internal reference ID |
-| `metadata` | object | No | Custom data (returned in webhooks) |
+| `email` | string | Yes | Email address of the user launching the Ramp |
+| `webhook_url` | string | Yes | URL to receive webhook notifications |
+| `quote_currency` | string | No | Currency to convert from (e.g., USD) |
+| `base_currency` | string | No | Currency to convert to (e.g., BTC) |
+| `destination` | string | No | Destination address for the funds (Lightning Address, onchain address, or USDC address) |
+| `reference_id` | string | No | Your internal reference ID for this transaction |
+| `metadata` | object | No | Additional metadata for the transaction |
 | `access_token` | string | No | Existing user session token |
 
 ### Response
@@ -125,43 +125,6 @@ Once you have the widget URL, embed it in your application using an iframe.
 ></iframe>
 ```
 
-### Frontend Events
-
-The widget communicates via `postMessage`. Listen for these events:
-
-```javascript
-window.addEventListener('message', (event) => {
-  // Verify origin
-  if (event.origin !== 'https://onramp.zbd.gg') return;
-  
-  switch (event.data.type) {
-    case 'zbd.onramp.ready':
-      console.log('Widget loaded successfully');
-      break;
-      
-    case 'zbd.onramp.close':
-      // User clicked close button
-      hideWidget();
-      break;
-      
-    case 'zbd.onramp.success':
-      // Purchase completed
-      console.log('Transaction ID:', event.data.transactionId);
-      showSuccessMessage();
-      break;
-      
-    case 'zbd.onramp.error':
-      // Handle errors
-      console.error('Widget error:', event.data.message);
-      break;
-      
-    case 'zbd.onramp.resize':
-      // Widget requests size change
-      adjustIframeHeight(event.data.height);
-      break;
-  }
-});
-```
 
 ## Security Best Practices
 

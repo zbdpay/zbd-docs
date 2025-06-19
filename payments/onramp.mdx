@@ -48,13 +48,24 @@ Onboard new players into your crypto-powered game economy. They can purchase the
 
 ```typescript
 // 1. Initialize session (backend)
-const session = await zbd.onramp.createSession({
-  userId: "player_123",
-  email: "player@game.com"
+const session = await fetch('https://api.zebedee.io/v1/ramp-widget', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'apikey': process.env.ZBD_API_KEY
+  },
+  body: JSON.stringify({
+    email: "player@game.com",
+    webhook_url: "https://yourgame.com/webhooks/zbd",
+    quote_currency: "USD",
+    base_currency: "BTC",
+    destination: "spiderman@zbd.gg",
+    reference_id: "player_123"
+  })
 });
 
 // 2. Embed widget (frontend)
-<iframe src={session.widgetUrl} />
+<iframe src={session.widget_url} />
 
 // 3. Handle webhooks
 app.post('/webhooks/zbd', (req, res) => {
