@@ -1,0 +1,62 @@
+---
+title: 'URL Scheme'
+sidebarTitle: 'URL Scheme'
+description: 'Handle secure user redirection back to your app after ZBD OAuth login using a custom URL scheme.'
+icon: 'link'
+---
+
+To enable the ZBD app to redirect back to your game after the user connects via the ZBD app,we need to know your game's URL scheme.
+If you’ve already set this up, please share it with your ZBD contact.
+If this is your first time setting it up, don’t worry. The process is straightforward, though it differs slightly between iOS and Android.
+
+## For iOS:
+
+In Unity, go to :
+<Steps>
+    <Step title="Build Settings">
+    </Step>
+    <Step title="Player Settings">
+    </Step>
+    <Step title="Other Settings">
+    </Step>
+    <Step title="Supported URL Schemes">
+    </Step>
+</Steps>
+
+and add your app’s URL scheme there. Replace `appname` with the name of your game.
+For example: `bitcoinbash`
+
+<Frame>
+    <img src="/img/rewards/schema-ios.png" alt="iOS URL Scheme Setup" />
+</Frame>
+
+## For Android:
+
+You’ll need to declare your URL scheme in your **AndroidManifest.xmlfile**. In Unity, go to:
+
+<Steps>
+    <Step title="Build Settings">
+    </Step>
+    <Step title="Player Settings">
+    </Step>
+    <Step title="Publishing Settings ">
+    </Step>
+</Steps>
+
+Enable **Custom Main Manifest**, then edit the manifest to include an intent filter for your URL scheme.
+
+<Frame>
+    <img src="/img/rewards/schema-android.png" alt="iOS URL Scheme Setup" />
+</Frame>
+
+the `AndroidManifest.xml` file is located in `Assets/Plugins/Android`. in the `<activity>` section.
+
+
+```xml
+<intent-filter>
+	<action android:name="android.intent.action.VIEW"/>
+	<category android:name="android.intent.category.DEFAULT"/>
+	<category android:name="android.intent.category.BROWSABLE" />
+	<data android:scheme="myappname" />
+</intent-filter>
+```
