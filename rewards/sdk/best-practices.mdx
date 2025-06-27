@@ -1,0 +1,51 @@
+---
+title: 'Best Practices'
+sidebarTitle: 'Best Practices'
+description: 'Optimize rewards and initialization with best practices for earn rates, withdrawal limits, and SDK failures.'
+icon: 'lightbulb'
+---
+
+# Balancing Earn Rate with Withdrawal Limit
+
+It’s possible to assign more Bitcoin to a user than they are currently allowed to withdraw.
+As outlined in the **Security** section, the TL;DR is: for fraud prevention,
+a user's withdrawal limit is tied to how long their device has been continuously online.
+
+Because of this, it’s **recommended to keep a user’s earn rate roughly aligned with their withdrawal capacity**. It's okay to occasionally let users earn more than they can immediately withdraw, this can encourage them to return to your game later and improves retention. However, avoid creating situations where users earn significantly more than they can access. For example, assigning 1,000 sats but allowing only 100 sats to be withdrawn will likely result in a frustrating user experience.
+
+## Ways to Balance Earn and Withdrawal:
+
+<Steps>
+    <Step title="Limit reward frequency ">
+        Avoid giving out rewards too often
+    </Step>
+    <Step title="Scale difficulty or rarity">
+        Make early rewards easy (e.g. the first 10 sats), then gradually slow down progression.
+    </Step>
+    <Step title="Check user withdrawal limits ">
+        Use`ZBDController.Instance.GetBalance`to retrieve the user's current balance and withdrawal cap. Adjust the reward flow based on this data.
+    </Step>
+</Steps>
+
+### Example: MergeMonsters
+In the game [MergeMonsters](https://play.google.com/store/apps/details?id=com.fumbgames.monstermerge&hl=en_US&pli=1), rewards are balanced dynamically:
+- If the user's balance exceeds 100 sats, the game stops showing coin rewards on tiles.
+- If the balance is too high, Bitcoin rewards in boss battles are shown less frequently.
+
+## Handling Initialization Success/Failure
+
+The `ZBDController.Instance.Init` function can take a few seconds to complete, so it's recommended to call it as early as possible ideally when your game first launches. Keep the instance alive using a singleton or a `DontDestroyOnLoad` object that persists across scenes.
+
+In most cases, the SDK initializes successfully. However, initialization may fail due to network issues or security checks, for example, if the user is on a VPN or proxy. When this happens, `Init` will return `false`.
+
+To ensure a smooth user experience, you should still display a call-to-action button that triggers ZBDModalController.Instance.ShowModal(). This gives users the opportunity to:
+
+<Steps>
+    <Step title="Understand why initialization failed">
+        e.g. VPN detected or no network
+    </Step>
+    <Step title="Retry sign-in through a button provided in the modal">
+    </Step>
+    <Step title="View their support ID and contact ZBD support for further assistance">
+    </Step>
+</Steps>

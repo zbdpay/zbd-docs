@@ -329,6 +329,9 @@
                   "rewards/sdk/user-status",
                   "rewards/sdk/user-balance",
                   "rewards/sdk/user-withdrawal",
+                  "rewards/sdk/url-scheme",
+                  "rewards/sdk/attestation-setup",
+                  "rewards/sdk/best-practices",
                   "rewards/sdk/building",
                   "rewards/sdk/troubleshoot"
                 ]
