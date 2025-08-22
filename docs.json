@@ -49,7 +49,7 @@
               {
                 "group": "Products",
                 "pages": [
-                  "get-started/zbd-onramp",
+                  "get-started/zbd-ramp",
                   "get-started/zbd-rewards-sdk",
                   "get-started/zbd-payments-api",
                   "get-started/login-with-zbd",
@@ -108,30 +108,30 @@
             ]
           },
           {
-            "anchor": "Onramp",
+            "anchor": "Ramp",
             "icon": "circle-dollar-to-slot",
             "pages": [
               {
                 "group": "Overview",
                 "pages": [
-                  "payments/onramp",
-                  "payments/onramp/quickstart",
-                  "payments/onramp/faq"
+                  "payments/ramp",
+                  "payments/ramp/quickstart",
+                  "payments/ramp/faq"
                 ]
               },
               {
                 "group": "API Reference",
                 "pages": [
-                  "payments/onramp/api",
-                  "payments/onramp/session",
-                  "payments/onramp/webhooks"
+                  "payments/ramp/api",
+                  "payments/ramp/session",
+                  "payments/ramp/webhooks"
                 ]
               },
               {
                 "group": "Customization",
                 "pages": [
-                  "payments/onramp/branding",
-                  "payments/onramp/receipts"
+                  "payments/ramp/branding",
+                  "payments/ramp/receipts"
                 ]
               }
             ]

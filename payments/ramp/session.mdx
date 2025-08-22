@@ -1,17 +1,17 @@
 ---
 title: "Create Widget Session"
 sidebarTitle: "Create Session"
-description: "Initialize a new onramp widget session for a user"
+description: "Initialize a new ramp widget session for a user"
 api: "POST https://api.zebedee.io/api/v1/ramp-widget"
 ---
 
 ## Description
 
-This endpoint creates a session token and widget URL that can be used to embed the ZBD Onramp widget in your game or application.
+This endpoint creates a session token and widget URL that can be used to embed the ZBD Ramp widget in your game or application.
 
 ## Usage
 
-The onramp widget allows your users to purchase Bitcoin or USDC using their preferred fiat currency. The session creation process involves:
+The ramp widget allows your users to purchase Bitcoin or USDC using their preferred fiat currency. The session creation process involves:
 
 <CardGroup cols={1}>
   <Card title="First" icon="1" color="#000000">
@@ -139,7 +139,7 @@ All webhook events follow this structure:
 ```json
 {
   "id": "evt_2n4f8gu3nf",
-  "type": "onramp.purchase.completed",
+  "type": "ramp.purchase.completed",
   "created_at": "2025-06-09T10:30:00Z",
   "livemode": true,
   "data": {
