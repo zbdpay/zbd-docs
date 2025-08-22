@@ -1,0 +1,389 @@
+---
+title: "Integration Guide"
+description: "Complete guide to integrating ZBD Ramp into your application"
+icon: "rocket"
+---
+
+Get ZBD Ramp integrated into your application in minutes using our official SDKs. This guide covers session initialization, widget rendering, and webhook handling.
+
+## Choose Your SDK
+
+Select the SDK that best fits your application:
+
+<CardGroup cols={2}>
+  <Card title="TypeScript / JavaScript" icon="js" href="/payments/ramp/sdks/typescript">
+    Core SDK for Node.js, browsers, and JavaScript frameworks
+  </Card>
+  <Card title="React" icon="react" href="/payments/ramp/sdks/react">
+    React components and hooks for web applications
+  </Card>
+  <Card title="React Native" icon="mobile" href="/payments/ramp/sdks/react-native">
+    Native components for iOS and Android apps
+  </Card>
+  <Card title="Flutter" icon="mobile-screen" href="/payments/ramp/sdks/flutter">
+    Coming soon - Flutter plugin for cross-platform apps
+  </Card>
+</CardGroup>
+
+## Integration Flow
+
+<Steps>
+  <Step title="Install SDK">
+    Add the appropriate ZBD Ramp SDK to your project
+  </Step>
+  <Step title="Initialize Session">
+    Create a session token from your backend using the SDK
+  </Step>
+  <Step title="Render Widget">
+    Display the Ramp widget using SDK components
+  </Step>
+  <Step title="Handle Events">
+    Process webhooks and widget callbacks
+  </Step>
+</Steps>
+
+## Quick Start
+
+### 1. Install the SDK
+
+<Tabs>
+  <Tab title="TypeScript/JavaScript">
+    ```bash
+    npm install @zbdpay/ramp-ts
+    ```
+  </Tab>
+  <Tab title="React">
+    ```bash
+    npm install @zbdpay/ramp-react
+    ```
+  </Tab>
+  <Tab title="React Native">
+    ```bash
+    npm install @zbdpay/ramp-react-native react-native-webview
+    ```
+  </Tab>
+</Tabs>
+
+### 2. Initialize Session (Backend)
+
+Create a session token from your backend to keep your API key secure:
+
+<Tabs>
+  <Tab title="TypeScript">
+    ```typescript
+    import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
+
+    const response = await initRampSession({
+      apikey: process.env.ZBD_API_KEY,
+      email: 'user@example.com',
+      destination: 'lightning-address@zbd.gg',
+      quote_currency: QuoteCurrencyEnum.USD,
+      base_currency: BaseCurrencyEnum.BTC,
+      webhook_url: 'https://yourapp.com/webhooks/zbd',
+      reference_id: 'user_123_purchase_456',
+      metadata: {
+        user_id: '123',
+        session_id: 'abc'
+      }
+    });
+
+    const sessionToken = response.data.session_token;
+    ```
+  </Tab>
+  <Tab title="Node.js">
+    ```javascript
+    const { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } = require('@zbdpay/ramp-ts');
+
+    const response = await initRampSession({
+      apikey: process.env.ZBD_API_KEY,
+      email: 'user@example.com',
+      destination: 'lightning-address@zbd.gg',
+      quote_currency: QuoteCurrencyEnum.USD,
+      base_currency: BaseCurrencyEnum.BTC,
+      webhook_url: 'https://yourapp.com/webhooks/zbd'
+    });
+
+    const sessionToken = response.data.session_token;
+    ```
+  </Tab>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST https://api.zbdpay.com/v1/ramp-widget \
+      -H "Content-Type: application/json" \
+      -H "apikey: YOUR_API_KEY" \
+      -d '{
+        "email": "user@example.com",
+        "webhook_url": "https://yourapp.com/webhooks/zbd",
+        "quote_currency": "USD",
+        "base_currency": "BTC",
+        "destination": "lightning-address@zbd.gg"
+      }'
+    ```
+  </Tab>
+</Tabs>
+
+### 3. Render Widget (Frontend)
+
+Display the Ramp widget in your application:
+
+<Tabs>
+  <Tab title="React">
+    ```tsx
+    import { ZBDRamp } from '@zbdpay/ramp-react';
+
+    function PaymentPage({ sessionToken }) {
+      return (
+        <ZBDRamp
+          sessionToken={sessionToken}
+          onSuccess={(data) => {
+            console.log('Payment successful:', data);
+            // Handle successful payment
+          }}
+          onError={(error) => {
+            console.error('Payment error:', error);
+            // Handle error
+          }}
+          onClose={() => {
+            console.log('Widget closed');
+            // Handle close
+          }}
+          style={{ width: '100%', height: '600px' }}
+        />
+      );
+    }
+    ```
+  </Tab>
+  <Tab title="Vanilla JavaScript">
+    ```javascript
+    import { createRamp } from '@zbdpay/ramp-ts';
+
+    const ramp = createRamp({
+      sessionToken: 'your-session-token',
+      container: '#ramp-container',
+      onSuccess: (data) => {
+        console.log('Payment successful:', data);
+      },
+      onError: (error) => {
+        console.error('Payment error:', error);
+      },
+      onClose: () => {
+        console.log('Widget closed');
+      }
+    });
+
+    ramp.mount();
+    ```
+  </Tab>
+  <Tab title="React Native">
+    ```tsx
+    import { ZBDRamp } from '@zbdpay/ramp-react-native';
+    import { View, StyleSheet } from 'react-native';
+
+    function PaymentScreen({ sessionToken }) {
+      return (
+        <View style={styles.container}>
+          <ZBDRamp
+            sessionToken={sessionToken}
+            onSuccess={(data) => {
+              console.log('Payment successful:', data);
+            }}
+            onError={(error) => {
+              console.error('Payment error:', error);
+            }}
+            style={styles.webview}
+          />
+        </View>
+      );
+    }
+
+    const styles = StyleSheet.create({
+      container: { flex: 1 },
+      webview: { flex: 1 }
+    });
+    ```
+  </Tab>
+</Tabs>
+
+### 4. Handle Webhooks
+
+Process webhook events on your backend:
+
+```javascript
+app.post('/webhooks/zbd', (req, res) => {
+  const event = req.body;
+
+  switch(event.type) {
+    case 'ramp.purchase.completed':
+      // Payment successful - credit user account
+      const { amount, currency, reference_id } = event.data;
+      creditUserAccount(reference_id, amount);
+      break;
+
+    case 'ramp.purchase.failed':
+      // Payment failed - notify user
+      notifyUserOfFailure(event.data.reference_id);
+      break;
+
+    case 'ramp.kyc.completed':
+      // KYC completed - update user status
+      updateUserKYCStatus(event.data.user_id);
+      break;
+  }
+
+  res.status(200).send('OK');
+});
+```
+
+## Complete Example
+
+Here's a full implementation using React and Node.js:
+
+### Backend (Node.js + Express)
+
+```javascript
+import express from 'express';
+import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
+
+const app = express();
+app.use(express.json());
+
+// Create session endpoint
+app.post('/api/ramp/session', async (req, res) => {
+  try {
+    const response = await initRampSession({
+      apikey: process.env.ZBD_API_KEY,
+      email: req.body.email,
+      destination: req.body.destination,
+      quote_currency: QuoteCurrencyEnum.USD,
+      base_currency: BaseCurrencyEnum.BTC,
+      webhook_url: `${process.env.BASE_URL}/webhooks/zbd`,
+      reference_id: req.user.id,
+      metadata: {
+        user_id: req.user.id,
+        session_id: req.session.id
+      }
+    });
+
+    res.json({ sessionToken: response.data.session_token });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create session' });
+  }
+});
+
+// Webhook handler
+app.post('/webhooks/zbd', async (req, res) => {
+  const event = req.body;
+
+  if (event.type === 'ramp.purchase.completed') {
+    // Credit user's account
+    await creditUserBalance(
+      event.data.reference_id,
+      event.data.amount,
+      event.data.currency
+    );
+  }
+
+  res.status(200).send('OK');
+});
+```
+
+### Frontend (React)
+
+```tsx
+import React, { useState, useEffect } from 'react';
+import { ZBDRamp } from '@zbdpay/ramp-react';
+
+function BuyBitcoin() {
+  const [sessionToken, setSessionToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch session token from backend
+    fetch('/api/ramp/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: user.email,
+        destination: user.lightningAddress
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setSessionToken(data.sessionToken);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+
+  return (
+    <div className="payment-container">
+      <h1>Buy Bitcoin</h1>
+      <ZBDRamp
+        sessionToken={sessionToken}
+        onSuccess={(data) => {
+          alert('Payment successful!');
+          window.location.href = '/wallet';
+        }}
+        onError={(error) => {
+          alert(`Payment failed: ${error.message}`);
+        }}
+        style={{ width: '100%', height: '600px' }}
+      />
+    </div>
+  );
+}
+```
+
+## Session Parameters
+
+When initializing a session, you can configure various parameters:
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `apikey` | string | Yes | Your ZBD API key |
+| `email` | string | Yes | User's email address |
+| `webhook_url` | string | Yes | URL for webhook notifications |
+| `destination` | string | No | Lightning or Bitcoin address |
+| `quote_currency` | enum | No | Source currency (USD, EUR, etc.) |
+| `base_currency` | enum | No | Target currency (BTC, USDC) |
+| `reference_id` | string | No | Your internal reference ID |
+| `metadata` | object | No | Additional data to attach |
+
+<Warning>
+  Sessions expire after 15 minutes. Create a new session if the user needs more time.
+</Warning>
+
+## Security Best Practices
+
+<CardGroup cols={2}>
+  <Card title="API Key Security" icon="key">
+    - Never expose API keys in frontend code
+    - Always create sessions from your backend
+    - Use environment variables
+    - Rotate keys regularly
+  </Card>
+  <Card title="Webhook Security" icon="shield">
+    - Use HTTPS endpoints only
+    - Implement idempotency
+    - Verify webhook signatures
+    - Log all events for audit
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Customize Appearance" icon="palette" href="/payments/ramp/themes">
+    Learn how to customize the widget to match your brand
+  </Card>
+  <Card title="Webhook Events" icon="webhook" href="/payments/ramp/webhooks">
+    Explore all available webhook events and payloads
+  </Card>
+  <Card title="API Reference" icon="code" href="/payments/ramp/session">
+    View the complete API documentation
+  </Card>
+  <Card title="Need Help?" icon="headset" href="https://zbd.one/sales">
+    Schedule a technical support session with our team
+  </Card>
+</CardGroup>

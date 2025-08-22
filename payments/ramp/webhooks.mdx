@@ -1,0 +1,907 @@
+---
+title: 'Webhook Events'
+sidebarTitle: 'Webhooks'
+description: 'Complete reference for ZBD Ramp webhook events'
+icon: 'webhook'
+---
+
+## Overview
+
+Webhooks allow you to receive real-time notifications about events that occur during the ZBD Ramp lifecycle. From session initialization to payment completion, webhooks provide crucial updates about your users' transactions.
+
+ZBD Ramp sends webhook events to your specified endpoint as HTTP POST requests. Each event contains detailed information about what occurred, allowing you to update your systems accordingly.
+
+### Webhook URL Setup
+
+Configure your webhook URL when creating a session:
+
+<CodeGroup>
+```typescript @zbdpay/ramp-ts
+import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
+
+const response = await initRampSession({
+  apikey: process.env.ZBD_API_KEY,
+  email: 'user@example.com',
+  destination: 'lightning-address@zbd.gg',
+  quote_currency: QuoteCurrencyEnum.USD,
+  base_currency: BaseCurrencyEnum.BTC,
+  webhook_url: 'https://app.xyz/webhooks/zbd',  // <---- YOUR WEBHOOK URL HERE
+  reference_id: 'order-123',
+  metadata: {
+    userId: 'user-456',
+    plan: 'premium'
+  }
+});
+
+const sessionToken = response.data.session_token;
+```
+
+```typescript Fetch
+const response = await fetch('https://api.zbdpay.com/v1/ramp-widget', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'apikey': process.env.ZBD_API_KEY
+  },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    destination: 'lightning-address@zbd.gg',
+    quote_currency: 'USD',
+    base_currency: 'BTC',
+    webhook_url: 'https://app.xyz/webhooks/zbd',  // <---- YOUR WEBHOOK URL HERE
+    reference_id: 'order-123',
+    metadata: {
+      userId: 'user-456',
+      plan: 'premium'
+    }
+  })
+});
+
+const data = await response.json();
+const sessionToken = data.data.session_token;
+```
+</CodeGroup>
+
+## Event Categories
+
+Webhook events are organized into six main categories:
+
+<CardGroup cols={3}>
+  <Card title="Session" icon="window">
+    Widget lifecycle events
+  </Card>
+  <Card title="Authentication" icon="lock">
+    User verification events
+  </Card>
+  <Card title="KYC" icon="id-card">
+    Identity verification events
+  </Card>
+  <Card title="Bank" icon="building-columns">
+    Bank connection events
+  </Card>
+  <Card title="Payment" icon="credit-card">
+    Transaction events
+  </Card>
+  <Card title="Withdrawal" icon="arrow-up-from-bracket">
+    Crypto delivery events
+  </Card>
+</CardGroup>
+
+## Event Structure
+
+All webhook events follow a consistent structure:
+
+```json
+{
+  "event": "RAMP_WIDGET.V1.EVENT_NAME",
+  "data": {
+    "email": "user@example.com",
+    "session_id": "sess_abc123xyz789",
+    // Event-specific data
+    "metadata": {
+      // Your custom metadata
+    }
+  },
+  "url": "https://partner.com/webhooks",
+  "created_at": "2025-01-18T10:30:00Z"
+}
+```
+
+## Complete Event Reference
+
+### Session Events
+
+<AccordionGroup>
+  <Accordion title="Session Initiated" icon="play">
+    **Event:** `RAMP_WIDGET.V1.SESSION.INITIATED`
+
+    Triggered when a Ramp session is successfully initiated.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.SESSION.INITIATED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789"
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:30:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Session Closed" icon="xmark">
+    **Event:** `RAMP_WIDGET.V1.SESSION.CLOSED`
+
+    Fired when a Ramp session is closed, either by unmount, user action, or completion.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.SESSION.CLOSED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789"
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T11:15:00Z"
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Authentication Events
+
+<AccordionGroup>
+  <Accordion title="Code Verification Succeeded" icon="circle-check">
+    **Event:** `RAMP_WIDGET.V1.CODE_VERIFICATION.SUCCEEDED`
+
+    Sent when a user successfully verifies their 6-digit code.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.CODE_VERIFICATION.SUCCEEDED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789"
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:32:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Code Verification Failed" icon="circle-xmark">
+    **Event:** `RAMP_WIDGET.V1.CODE_VERIFICATION.FAILED`
+
+    Triggered when a 6-digit code verification attempt fails.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.CODE_VERIFICATION.FAILED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789"
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:33:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Access Token Created" icon="key">
+    **Event:** `RAMP_WIDGET.V1.USER_ACCESS_TOKEN.CREATED`
+
+    Fired when user access and refresh tokens are generated.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.USER_ACCESS_TOKEN.CREATED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "access_token_id": "tok_abc123",
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "access_token_expires_at": "2025-01-18T11:45:00Z",
+        "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "refresh_token_expires_at": "2025-02-18T10:45:00Z",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:45:00Z"
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### KYC Events
+
+<AccordionGroup>
+  <Accordion title="KYC Initiated" icon="clipboard-list">
+    **Event:** `RAMP_WIDGET.V1.KYC.INITIATED`
+
+    Fired when KYC (Know Your Customer) verification process is initiated.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.KYC.INITIATED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:35:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="KYC Processing" icon="hourglass-half">
+    **Event:** `RAMP_WIDGET.V1.KYC.PROCESSING`
+
+    Indicates that KYC verification is being processed.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.KYC.PROCESSING",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:36:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="KYC Completed" icon="user-check">
+    **Event:** `RAMP_WIDGET.V1.KYC.COMPLETED`
+
+    Sent when KYC verification is successfully completed.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.KYC.COMPLETED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:40:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="KYC Rejected" icon="user-xmark">
+    **Event:** `RAMP_WIDGET.V1.KYC.REJECTED`
+
+    Triggered when KYC verification is rejected or fails.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.KYC.REJECTED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:41:00Z"
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Bank Connection Events
+
+<AccordionGroup>
+  <Accordion title="Bank Connection Initiated" icon="building-columns">
+    **Event:** `RAMP_WIDGET.V1.BANK_CONNECTION.INITIATED`
+
+    Triggered when bank connection flow is initiated.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.BANK_CONNECTION.INITIATED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:50:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Bank Connection Completed" icon="link">
+    **Event:** `RAMP_WIDGET.V1.BANK_CONNECTION.COMPLETED`
+
+    Sent when bank connection is successfully established.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.BANK_CONNECTION.COMPLETED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:55:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Bank Connection Failed" icon="link-slash">
+    **Event:** `RAMP_WIDGET.V1.BANK_CONNECTION.FAILED`
+
+    Fired when bank connection attempt fails.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.BANK_CONNECTION.FAILED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T10:56:00Z"
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Payment Events
+
+<AccordionGroup>
+  <Accordion title="Payment Initiated" icon="credit-card">
+    **Event:** `RAMP_WIDGET.V1.PAYMENT.INITIATED`
+
+    Triggered when a payment transaction is initiated.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.PAYMENT.INITIATED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "base_amount": "100.00",
+        "base_currency": "USD",
+        "quote_amount": "0.0025",
+        "quote_currency": "BTC",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T11:00:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Payment Settled" icon="circle-check">
+    **Event:** `RAMP_WIDGET.V1.PAYMENT.SETTLED`
+
+    Sent when a payment transaction is successfully settled.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.PAYMENT.SETTLED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "base_amount": "100.00",
+        "base_currency": "USD",
+        "quote_amount": "0.0025",
+        "quote_currency": "BTC",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T11:05:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Payment Failed" icon="circle-xmark">
+    **Event:** `RAMP_WIDGET.V1.PAYMENT.FAILED`
+
+    Fired when a payment transaction fails.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.PAYMENT.FAILED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "base_amount": "100.00",
+        "base_currency": "USD",
+        "quote_amount": "0.0025",
+        "quote_currency": "BTC",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T11:06:00Z"
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Withdrawal Events
+
+<AccordionGroup>
+  <Accordion title="Withdrawal Succeeded" icon="arrow-up-right-from-square">
+    **Event:** `RAMP_WIDGET.V1.WITHDRAWAL.SUCCEEDED`
+
+    Triggered when a withdrawal is successfully completed.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.WITHDRAWAL.SUCCEEDED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "base_amount": "100.00",
+        "base_currency": "USD",
+        "quote_amount": "0.0025",
+        "quote_currency": "BTC",
+        "destination": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T11:10:00Z"
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Withdrawal Failed" icon="arrow-down">
+    **Event:** `RAMP_WIDGET.V1.WITHDRAWAL.FAILED`
+
+    Sent when a withdrawal attempt fails.
+
+    ```json
+    {
+      "event": "RAMP_WIDGET.V1.WITHDRAWAL.FAILED",
+      "data": {
+        "email": "user@example.com",
+        "session_id": "sess_abc123xyz789",
+        "base_amount": "100.00",
+        "base_currency": "USD",
+        "quote_amount": "0.0025",
+        "quote_currency": "BTC",
+        "destination": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "metadata": {
+          "customer_id": "cust_123",
+          "source": "widget"
+        }
+      },
+      "url": "https://partner.com/webhooks",
+      "created_at": "2025-01-18T11:11:00Z"
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Webhook Implementation
+
+### Basic Handler Examples
+
+Here are webhook handler implementations in popular frameworks:
+
+<CodeGroup>
+```typescript Next.js
+// app/api/webhooks/zbd/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(request: NextRequest) {
+  const event = await request.json();
+
+  // Log the event
+  console.log(`Received webhook: ${event.event}`);
+
+  // Handle different event types
+  switch(event.event) {
+    case 'RAMP_WIDGET.V1.PAYMENT.SETTLED':
+      // Update user balance, send confirmation, etc.
+      await handlePaymentSettled(event.data);
+      break;
+
+    case 'RAMP_WIDGET.V1.KYC.COMPLETED':
+      // Update user verification status
+      await handleKYCCompleted(event.data);
+      break;
+
+    case 'RAMP_WIDGET.V1.WITHDRAWAL.SUCCEEDED':
+      // Log successful withdrawal
+      await handleWithdrawalSuccess(event.data);
+      break;
+
+    default:
+      console.log(`Unhandled event type: ${event.event}`);
+  }
+
+  // Always respond with 200 OK
+  return NextResponse.json({ received: true }, { status: 200 });
+}
+
+async function handlePaymentSettled(data: any) {
+  // Your payment processing logic
+  console.log('Payment settled:', data);
+}
+
+async function handleKYCCompleted(data: any) {
+  // Your KYC completion logic
+  console.log('KYC completed:', data);
+}
+
+async function handleWithdrawalSuccess(data: any) {
+  // Your withdrawal success logic
+  console.log('Withdrawal succeeded:', data);
+}
+```
+
+```go Go
+package main
+
+import (
+    "encoding/json"
+    "fmt"
+    "io/ioutil"
+    "log"
+    "net/http"
+)
+
+type WebhookEvent struct {
+    Event     string                 `json:"event"`
+    Data      map[string]interface{} `json:"data"`
+    URL       string                 `json:"url"`
+    CreatedAt string                 `json:"created_at"`
+}
+
+func webhookHandler(w http.ResponseWriter, r *http.Request) {
+    if r.Method != "POST" {
+        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+        return
+    }
+
+    body, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        http.Error(w, "Error reading body", http.StatusBadRequest)
+        return
+    }
+
+    var event WebhookEvent
+    err = json.Unmarshal(body, &event)
+    if err != nil {
+        http.Error(w, "Error parsing JSON", http.StatusBadRequest)
+        return
+    }
+
+    // Log the event
+    log.Printf("Received webhook: %s", event.Event)
+
+    // Handle different event types
+    switch event.Event {
+    case "RAMP_WIDGET.V1.PAYMENT.SETTLED":
+        handlePaymentSettled(event.Data)
+    case "RAMP_WIDGET.V1.KYC.COMPLETED":
+        handleKYCCompleted(event.Data)
+    case "RAMP_WIDGET.V1.WITHDRAWAL.SUCCEEDED":
+        handleWithdrawalSuccess(event.Data)
+    default:
+        log.Printf("Unhandled event type: %s", event.Event)
+    }
+
+    // Always respond with 200 OK
+    w.WriteHeader(http.StatusOK)
+    fmt.Fprintf(w, "OK")
+}
+
+func handlePaymentSettled(data map[string]interface{}) {
+    // Your payment processing logic
+    log.Printf("Payment settled: %v", data)
+}
+
+func handleKYCCompleted(data map[string]interface{}) {
+    // Your KYC completion logic
+    log.Printf("KYC completed: %v", data)
+}
+
+func handleWithdrawalSuccess(data map[string]interface{}) {
+    // Your withdrawal success logic
+    log.Printf("Withdrawal succeeded: %v", data)
+}
+
+func main() {
+    http.HandleFunc("/webhooks/zbd", webhookHandler)
+    log.Println("Server starting on :8080")
+    log.Fatal(http.ListenAndServe(":8080", nil))
+}
+```
+
+```rust Rust
+use actix_web::{web, App, HttpResponse, HttpServer, Result};
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+
+#[derive(Debug, Deserialize, Serialize)]
+struct WebhookEvent {
+    event: String,
+    data: Value,
+    url: String,
+    created_at: String,
+}
+
+async fn webhook_handler(event: web::Json<WebhookEvent>) -> Result<HttpResponse> {
+    // Log the event
+    println!("Received webhook: {}", event.event);
+
+    // Handle different event types
+    match event.event.as_str() {
+        "RAMP_WIDGET.V1.PAYMENT.SETTLED" => {
+            handle_payment_settled(&event.data).await;
+        }
+        "RAMP_WIDGET.V1.KYC.COMPLETED" => {
+            handle_kyc_completed(&event.data).await;
+        }
+        "RAMP_WIDGET.V1.WITHDRAWAL.SUCCEEDED" => {
+            handle_withdrawal_success(&event.data).await;
+        }
+        _ => {
+            println!("Unhandled event type: {}", event.event);
+        }
+    }
+
+    // Always respond with 200 OK
+    Ok(HttpResponse::Ok().body("OK"))
+}
+
+async fn handle_payment_settled(data: &Value) {
+    // Your payment processing logic
+    println!("Payment settled: {:?}", data);
+}
+
+async fn handle_kyc_completed(data: &Value) {
+    // Your KYC completion logic
+    println!("KYC completed: {:?}", data);
+}
+
+async fn handle_withdrawal_success(data: &Value) {
+    // Your withdrawal success logic
+    println!("Withdrawal succeeded: {:?}", data);
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    println!("Server starting on http://127.0.0.1:8080");
+
+    HttpServer::new(|| {
+        App::new()
+            .route("/webhooks/zbd", web::post().to(webhook_handler))
+    })
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await
+}
+```
+
+```javascript Node.js/Express
+app.post('/webhooks/zbd', (req, res) => {
+  const event = req.body;
+
+  // Log the event
+  console.log(`Received webhook: ${event.event}`);
+
+  // Handle different event types
+  switch(event.event) {
+    case 'RAMP_WIDGET.V1.PAYMENT.SETTLED':
+      // Update user balance, send confirmation, etc.
+      handlePaymentSettled(event.data);
+      break;
+
+    case 'RAMP_WIDGET.V1.KYC.COMPLETED':
+      // Update user verification status
+      handleKYCCompleted(event.data);
+      break;
+
+    case 'RAMP_WIDGET.V1.WITHDRAWAL.SUCCEEDED':
+      // Log successful withdrawal
+      handleWithdrawalSuccess(event.data);
+      break;
+
+    default:
+      console.log(`Unhandled event type: ${event.event}`);
+  }
+
+  // Always respond with 200 OK
+  res.status(200).send('OK');
+});
+
+function handlePaymentSettled(data) {
+  // Your payment processing logic
+  console.log('Payment settled:', data);
+}
+
+function handleKYCCompleted(data) {
+  // Your KYC completion logic
+  console.log('KYC completed:', data);
+}
+
+function handleWithdrawalSuccess(data) {
+  // Your withdrawal success logic
+  console.log('Withdrawal succeeded:', data);
+}
+```
+
+```python Python/Flask
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/webhooks/zbd', methods=['POST'])
+def handle_webhook():
+    event = request.json
+
+    # Log the event
+    print(f"Received webhook: {event['event']}")
+
+    # Handle different event types
+    if event['event'] == 'RAMP_WIDGET.V1.PAYMENT.SETTLED':
+        handle_payment_settled(event['data'])
+    elif event['event'] == 'RAMP_WIDGET.V1.KYC.COMPLETED':
+        handle_kyc_completed(event['data'])
+    elif event['event'] == 'RAMP_WIDGET.V1.WITHDRAWAL.SUCCEEDED':
+        handle_withdrawal_success(event['data'])
+    else:
+        print(f"Unhandled event type: {event['event']}")
+
+    # Always respond with 200 OK
+    return 'OK', 200
+
+def handle_payment_settled(data):
+    # Your payment processing logic
+    print(f"Payment settled: {data}")
+
+def handle_kyc_completed(data):
+    # Your KYC completion logic
+    print(f"KYC completed: {data}")
+
+def handle_withdrawal_success(data):
+    # Your withdrawal success logic
+    print(f"Withdrawal succeeded: {data}")
+
+if __name__ == '__main__':
+    app.run(port=8080)
+```
+</CodeGroup>
+
+## Security Best Practices
+
+<Warning>
+  **Important:** Always validate webhook authenticity before processing events.
+</Warning>
+
+### Webhook Verification
+
+1. **Use HTTPS Only** - Always use HTTPS endpoints for webhooks
+2. **Verify Signatures** - Validate webhook signatures when provided
+3. **IP Allowlisting** - Restrict webhook access to ZBD IP addresses
+4. **Idempotency** - Handle duplicate events gracefully
+5. **Timeout Handling** - Respond quickly (within 5 seconds)
+
+### Error Handling
+
+- Always respond with `200 OK` status, even if processing fails
+- Log all webhook events for debugging
+- Implement retry logic for critical operations
+- Use message queues for asynchronous processing
+
+## Testing Webhooks
+
+### Local Development
+
+Use tools like [ngrok](https://ngrok.com) to expose your local webhook endpoint:
+
+```bash
+ngrok http 3000
+```
+
+Then use the ngrok URL as your webhook endpoint during development.
+
+### Webhook Testing Checklist
+
+<Tabs>
+  <Tab title="Required Events">
+    Essential events to handle:
+    - ✅ PAYMENT.SETTLED
+    - ✅ WITHDRAWAL.SUCCEEDED
+    - ✅ PAYMENT.FAILED
+    - ✅ WITHDRAWAL.FAILED
+  </Tab>
+  <Tab title="Recommended Events">
+    Improve user experience:
+    - ✅ KYC.COMPLETED
+    - ✅ KYC.REJECTED
+    - ✅ BANK_CONNECTION.COMPLETED
+    - ✅ SESSION.CLOSED
+  </Tab>
+  <Tab title="Optional Events">
+    For advanced integrations:
+    - ⚪ SESSION.INITIATED
+    - ⚪ CODE_VERIFICATION.SUCCEEDED
+    - ⚪ KYC.INITIATED
+    - ⚪ PAYMENT.INITIATED
+  </Tab>
+</Tabs>
+
+## Troubleshooting
+
+### Common Issues
+
+<AccordionGroup>
+  <Accordion title="Webhooks not being received">
+    - Verify your webhook URL is publicly accessible
+    - Check for firewall or security rules blocking requests
+    - Ensure your endpoint responds with 200 status
+    - Confirm webhook URL was correctly set during session creation
+  </Accordion>
+
+  <Accordion title="Duplicate webhooks">
+    - Implement idempotency using the session_id
+    - Store processed event IDs to prevent reprocessing
+    - Use database transactions for critical operations
+  </Accordion>
+
+  <Accordion title="Webhook timeout errors">
+    - Process webhooks asynchronously using queues
+    - Respond immediately with 200 OK
+    - Move heavy processing to background jobs
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Session API" icon="play" href="/payments/ramp/session">
+    Learn how to create widget sessions
+  </Card>
+  <Card title="Integration Guide" icon="code" href="/payments/ramp/quickstart">
+    Complete integration walkthrough
+  </Card>
+</CardGroup>
