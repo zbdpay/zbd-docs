@@ -1,9 +1,35 @@
 ---
-title: "Create Widget Session"
-sidebarTitle: "Create Session"
+title: "Create Ramp Session"
+sidebarTitle: "Create Ramp Session"
 description: "Initialize a new ramp widget session for a user"
-api: "POST https://api.zebedee.io/api/v1/ramp-widget"
+api: "POST https://api.zbdpay.com/v1/ramp-widget"
 ---
+
+## API Overview
+
+### Base URL
+
+All API requests should be made to:
+
+```
+https://api.zbdpay.com
+```
+
+### Authentication
+
+All ZBD endpoints are protected by an API Key. To make requests against these endpoints you must pass a header property called `apikey` with your [ZBD Project API Key](/get-started/api-keys).
+
+```json
+apikey: "your-api-key-here"
+```
+
+<Note>
+  Get your API keys by [scheduling a call](https://zbd.one/sales) with our sales team.
+</Note>
+
+### SSL / HTTPS Access
+
+**ZBD only provides a secure interface over HTTPS with SSL certificate support**. Any requests that attempt to reach the ZBD API in an insecure fashion (plain-text over HTTP requests) will be rejected.
 
 ## Description
 
@@ -70,7 +96,7 @@ The ramp widget allows your users to purchase Bitcoin or USDC using their prefer
 
 <CodeGroup>
 ```bash cURL
-curl -X POST https://api.zebedee.io/api/v1/ramp-widget \
+curl -X POST https://api.zbdpay.com/v1/ramp-widget \
   -H "Content-Type: application/json" \
   -H "apikey: YOUR_API_KEY" \
   -d '{
@@ -80,7 +106,7 @@ curl -X POST https://api.zebedee.io/api/v1/ramp-widget \
 ```
 
 ```javascript Node.js
-const response = await fetch('https://api.zebedee.io/api/v1/ramp-widget', {
+const response = await fetch('https://api.zbdpay.com/v1/ramp-widget', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

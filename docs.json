@@ -120,18 +120,33 @@
                 ]
               },
               {
-                "group": "API Reference",
+                "group": "SDKs",
                 "pages": [
-                  "payments/ramp/api",
-                  "payments/ramp/session",
-                  "payments/ramp/webhooks"
+                  "payments/ramp/sdks/typescript",
+                  "payments/ramp/sdks/react",
+                  "payments/ramp/sdks/react-native",
+                  "payments/ramp/sdks/flutter"
+                ]
+              },
+              {
+                "group": "API",
+                "pages": [
+                  "payments/ramp/session"
                 ]
               },
               {
                 "group": "Customization",
                 "pages": [
-                  "payments/ramp/branding",
-                  "payments/ramp/receipts"
+                  "payments/ramp/platform",
+                  "payments/ramp/themes",
+                  "payments/ramp/ai-themes"
+                ]
+              },
+              {
+                "group": "Events",
+                "pages": [
+                  "payments/ramp/webhooks",
+                  "payments/ramp/emails"
                 ]
               }
             ]
