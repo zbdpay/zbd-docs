@@ -28,3 +28,27 @@ If you get the following build errors on Android please check the **[Building fo
 The ZBD Rewards SDK forces hardware acceleration in Android builds, this can cause some issues with games.
 
 If you notice performance issues after integrating the ZBD Rewards SDK you can delete the `ModifyUnityAndroidAppManifestSample.cs` file in the `Assets/Editor/` folder.
+
+# Unity Input Settings Issues
+
+To ensure maximum compatibility when working with the ZBD Rewards SDK, it is recommended to adjust Unity’s input configuration.
+The Unity Editor’s WebView may influence how input is handled, so setting **Active Input Handling** to **Both** helps maintain consistent support across the Old Input Manager and the New Input System.
+
+
+<Steps>
+    <Step title="Open Project Settings">
+        In Unity, go to <strong>Edit → Project Settings</strong>.
+    </Step>
+
+    <Step title="Navigate to Player → Other Settings">
+        In the Project Settings window, select <strong>Player</strong>, then scroll to the <strong>Other Settings</strong> section.
+    </Step>
+
+    <Step title="Set Active Input Handling to Both">
+        Find <strong>Active Input Handling</strong> and set it to <strong>Both</strong> — regardless of whether your project uses the Old Input Manager or the New Input System.
+        <Frame>
+            <img src="/img/rewards/Input Handling Unity.png" alt="Active Input Handling set to Both" />
+        </Frame>
+    </Step>
+
+</Steps>
