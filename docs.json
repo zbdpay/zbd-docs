@@ -325,7 +325,39 @@
                 "pages": [
                   "rewards/sdk/integration",
                   "rewards/sdk/video-walkthrough",
-                  "rewards/sdk/send-rewards",
+                  {
+                    "group": "Sending Rewards",
+                    "icon": "star",
+                    "pages": [
+                      "rewards/sdk/send-rewards-client",
+                      {
+                        "group": "Send Rewards (Server)",
+                        "icon": "server",
+                        "pages": [
+                          "rewards/sdk/send-rewards-server",
+                          "rewards/sdk/create-api-key",
+                          "rewards/sdk/send-rewards-api",
+                          "rewards/sdk/restrict-client-rewards",
+                          {
+                            "group": "Manage Blocklist Entries",
+                            "icon": "gear",
+                            "pages": [
+                              "rewards/sdk/get-blocklist-entries",
+                              "rewards/sdk/delete-blocklist-entry"
+                            ]
+                          },
+                          {
+                            "group": "Manage API Keys",
+                            "icon": "key",
+                            "pages": [
+                              "rewards/sdk/list-api-keys",
+                              "rewards/sdk/revoke-api-key"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
                   "rewards/sdk/user-status",
                   "rewards/sdk/user-balance",
                   "rewards/sdk/user-withdrawal",

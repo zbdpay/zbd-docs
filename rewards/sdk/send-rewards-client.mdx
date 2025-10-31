@@ -1,7 +1,7 @@
 ---
-title: 'Sending Rewards'
-description: 'Instructions for sending rewards to users with the ZBD Rewards SDK.'
-icon: 'star'
+title: 'Send Rewards (Client)'
+description: 'Instructions for sending rewards to users directly from the client using the ZBD Rewards SDK.'
+icon: 'mobile'
 ---
 
 # Reward Unit
@@ -18,7 +18,7 @@ To send a reward to a user you can call:
 ZBDController.Instance.SendReward(1, callback =>
 {
   if (callback.success)
-  { 
+  {
     // reward sent
   }
   else

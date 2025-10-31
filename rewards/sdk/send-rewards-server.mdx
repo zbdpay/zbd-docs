@@ -1,0 +1,49 @@
+---
+title: 'Overview'
+sidebarTitle: 'Overview'
+description: 'Learn how to securely send rewards from your server using the ZBD Rewards API.'
+icon: 'circle-info'
+---
+
+
+The ZBD Rewards API allows developers to send in-game or app-based rewards to users securely.  
+By default, rewards can be issued from **both the client SDK** and your **backend server**.
+
+For stronger security and better control, you can restrict reward sending so that **only your backend** can issue rewards.  
+This setup uses the **API version blocklist** feature for your Rewards App.
+
+<Note>
+    Server-only reward sending is recommended when:
+    - You perform additional gameplay or business validation before issuing rewards
+    - Your app offers higher-value rewards or gift card redemptions
+    - You want to minimize client-side abuse and enforce strict control
+</Note>
+
+## How It Works
+
+<Steps>
+    <Step title="Create an API Key for Your Rewards App (Server Authentication)">
+        Generate a dedicated API key to authenticate your backend with the ZBD Rewards API.
+    </Step>
+
+    <Step title="Send a Reward from Your Backend Using the v2 API">
+        Use your backend to issue rewards securely through the v2 API endpoint.
+    </Step>
+
+    <Step title="Restrict Client-Side Reward Sending (Optional)">
+        Use the API version blocklist to disable client-side reward calls, ensuring only your server can issue rewards.
+    </Step>
+    
+    <Step title="Manage Blocklist Entries (List or Delete)">
+        If client restrictions are enabled, you can view or remove entries from your API version blocklist.
+    </Step>
+
+    <Step title="Manage API Keys (List or Revoke)">
+        Maintain your API keys by listing or revoking them as needed for security.
+    </Step>
+</Steps>
+
+
+
+Next, let’s begin with **creating your API key**, which authenticates your backend for sending rewards.
+

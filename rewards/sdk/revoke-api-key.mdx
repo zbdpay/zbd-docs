@@ -1,0 +1,206 @@
+---
+title: "Revoke API Key"
+description: "Revoke an API key to prevent it from being used for authentication"
+api: "DELETE https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-key/{apiKeyId}"
+---
+
+Use this endpoint to immediately prevent it from being used for authentication with your Rewards App.
+
+<Warning>
+  Revoking an API key immediately prevents it from being used for authentication. Any services using this key will no longer be able to access your Rewards App.
+</Warning>
+
+<Info>
+  Permanent Action. Once revoked, an API key cannot be reactivated. You will need to create a new API key if needed.
+</Info>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="z-client" type="string" initialValue="developer-dashboard">
+    Client identifier (use <code>"developer-dashboard"</code> )
+</ParamField>
+
+<ParamField required header="Authorization" type="string">
+  Bearer token for authentication
+
+  Format: `Bearer {JWT_TOKEN}`
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="rewardsAppId" type="string">
+  Your Rewards App ID
+
+</ParamField>
+
+<ParamField required path="apiKeyId" type="string">
+  The ID of the API key to revoke
+  Get this ID from the "List API Keys" endpoint
+</ParamField>
+
+<ResponseExample>
+```json 200 - Success
+{
+  "success": true,
+  "message": "API key revoked successfully."
+}
+```
+</ResponseExample>
+
+
+
+<ResponseExample>
+```json 400 - Bad Request
+{
+  "success": false,
+  "message": "Invalid UUID"
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
+
+```json 403 - Forbidden
+{
+  "success": false,
+  "message": "Developer does not own this app"
+}
+```
+
+```json 404 - Not Found
+{
+  "success": false,
+  "message": "API key not found or does not belong to this app"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "message": "Internal server error"
+}
+```
+</ResponseExample>
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Whether the revocation was successful |
+| `message` | string | Confirmation message |
+
+---
+### Response Status Codes
+
+| Code | Description |
+|------|-------------|
+| `200` | API key revoked successfully |
+| `400` | Bad request - invalid UUID |
+| `401` | Unauthorized - authentication required |
+| `403` | Forbidden - developer does not own this app |
+| `404` | API key not found or does not belong to this app |
+| `500` | Internal server error |
+
+## Code Examples
+
+<CodeGroup>
+```javascript Node.js
+const rewardsAppId = 'YOUR_REWARDS_APP_ID';
+const apiKeyId = 'YOUR_API_KEY_ID';
+const jwtToken = 'YOUR_JWT_TOKEN';
+
+async function revokeApiKey(rewardsAppId, apiKeyId) {
+  const response = await fetch(
+    `https://api.zebedee.io/api/v1/rewards/app/${rewardsAppId}/api-key/${apiKeyId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'z-client': 'developer-dashboard',
+        'Authorization': `Bearer ${jwtToken}`
+      }
+    }
+  );
+
+  const data = await response.json();
+
+  if (data.success) {
+    console.log('✅ API key revoked successfully!');
+    console.log('This key can no longer be used for authentication.');
+    return data;
+  } else {
+    throw new Error(`Failed: ${data.message}`);
+  }
+}
+
+// Revoke key
+await revokeApiKey(
+  'b28e0306-2c06-4092-8d56-a1623d6b97fb',
+  '78b411d8-1f61-4824-97c6-e3c3a571f1c5'
+);
+```
+
+```bash cURL
+curl --location --request DELETE 'https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-key/{apiKeyId}' \
+--header 'z-client: developer-dashboard' \
+--header 'Authorization: Bearer {JWT_TOKEN}'
+```
+
+```python Python
+import requests
+import os
+
+jwt_token = os.getenv('JWT_TOKEN')
+
+def revoke_api_key(rewards_app_id, api_key_id):
+    """Revoke an API key to prevent authentication"""
+
+    url = f"https://api.zebedee.io/api/v1/rewards/app/{rewards_app_id}/api-key/{api_key_id}"
+    headers = {
+        "z-client": "developer-dashboard",
+        "Authorization": f"Bearer {jwt_token}"
+    }
+
+    response = requests.delete(url, headers=headers)
+    data = response.json()
+
+    if data["success"]:
+        print("✅ API key revoked successfully!")
+        print("This key can no longer be used for authentication.")
+        return data
+    else:
+        raise Exception(f"Failed: {data['message']}")
+
+# Revoke key
+revoke_api_key(
+    "b28e0306-2c06-4092-8d56-a1623d6b97fb",
+    "78b411d8-1f61-4824-97c6-e3c3a571f1c5"
+)
+```
+</CodeGroup>
+
+
+
+
+## What Happens After Revocation?
+
+<CardGroup cols={2}>
+  <Card title="Before Revocation API Key Active" icon="key" color="#22c55e">
+    Key can be used for authentication
+  </Card>
+  <Card title="After Revocation API Key Revoked" icon="lock" color="#ef4444">
+     Key can no longer authenticate
+  </Card>
+</CardGroup>
+
+## Try It Out
+
+Ready to revoke an API key? Use our API playground on the right to test with your JWT token.
+
+
+
