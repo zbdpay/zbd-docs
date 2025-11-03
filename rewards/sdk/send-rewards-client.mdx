@@ -28,22 +28,9 @@ ZBDController.Instance.SendReward(1, callback =>
 });
 ```
 
-However, for improved security it is recommended (almost required!) that you call the `SendReward` API from your app's/game's server after validating actual gameplay.
+<Note>
+    For enhanced security and validation, we recommend handling reward distribution from your backend server.
+    
+</Note>
 
-This can be done using the users ZBD SDK ID which you can obtain after initialization has completed.
-
-```csharp
-ZBDController.Instance.Init("customUserId", completion => {
-  if (completion.success) {
-    string sdkUserId = completion.userId;
-  }
-});
-```
-
-```jsx
-curl --location 'https://api.zebedee.io/api/v1/rewards/limited-achievement/reward' \
---header 'Content-Type: application/json' \
---data '{"rewardsUserId":"USER ZBD SDK ID","amount": 1}'
-```
-
-Without calling `SendReward` from your backend server the security model downgrades to only relying on device attestation and the withdrawal limit based on time the device is active. More information on this can be found in the [Security](/rewards/sdk/security) section.
+You can learn how to set this up in the **[Server Rewards Overview section](/docs/rewards/send-rewards-server)**

@@ -7,7 +7,8 @@ api: "DELETE https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-key/{a
 Use this endpoint to immediately prevent it from being used for authentication with your Rewards App.
 
 <Warning>
-  Revoking an API key immediately prevents it from being used for authentication. Any services using this key will no longer be able to access your Rewards App.
+  Revoking an API key immediately prevents it from being used for authentication. Any services using this key will no longer be able to access your Rewards App. 
+    If Send Reward v2 is using this API key, it will stop working once the key is revoked, as the key becomes invalid.
 </Warning>
 
 <Info>

@@ -106,6 +106,10 @@ This method ensures all rewards are issued from a trusted environment, preventin
 | `transactionId` | string | Unique transaction identifier |
 
 ---
+<Note>
+    Security Reminder, Never expose your API key in client-side code. Always send rewards from your backend server where your API key is securely stored.
+</Note>
+
 
 ## Code Examples
 
@@ -186,9 +190,7 @@ send_reward("f2154d1a-67e6-46f2-b293-b4b226948dc9", 10)
 ```
 </CodeGroup>
 
-<Note>
-    Security Reminder, Never expose your API key in client-side code. Always send rewards from your backend server where your API key is securely stored.
-</Note>
+
 
 ## Try It Out
 

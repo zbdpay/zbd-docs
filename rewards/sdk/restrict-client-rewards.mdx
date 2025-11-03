@@ -7,7 +7,7 @@ api: "POST https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-version-
 Block client-side `SendReward` calls by adding an API version blocklist entry to your Rewards App.
 
 <Info>
-    Optional Step This step is optional but highly recommended for apps with high-value rewards or when you need complete control over reward issuance.
+    This step is optional but highly recommended for apps with high-value rewards or when you need complete control over reward issuance.
 </Info>
 
 <Warning>
@@ -48,7 +48,7 @@ Block client-side `SendReward` calls by adding an API version blocklist entry to
 <ParamField required body="version" type="number">
   API version to blocklist
 
-  Use <code> 1 </code> to block client SDK calls
+  Use <code> 1 </code> to block client SDK calls (to block Send Reward v1)
 </ParamField>
 
 <ParamField required body="apiRoute" type="string">
@@ -112,6 +112,8 @@ Block client-side `SendReward` calls by adding an API version blocklist entry to
 ```
 </ResponseExample>
 
+
+
 ## Response Fields
 
 |Field | Type | Description |
@@ -121,7 +123,7 @@ Block client-side `SendReward` calls by adding an API version blocklist entry to
 | `data` | object | Contains blocklist entry details |
 | `id` | string | Unique identifier for this blocklist entry |
 | `rewardsAppId` | string | Your Rewards App ID |
-| `version` | number | API version that is blocklisted |
+| `version` | number | API version that is blocklisted (Send Reward v1)|
 | `apiRoute` | string | The API route that is blocklisted |
 | `createdAt` | string | ISO 8601 timestamp of when the entry was created |
 
@@ -155,7 +157,7 @@ After applying this blocklist:
 
 ### Client SDK Behavior
 
-When a client tries to send rewards after blocklist is applied:
+When a client tries to send rewards via v1 after the blocklist is applied:
 
 ```
 Error: This endpoint requires API key authentication. Please use the API key endpoint instead.
@@ -250,10 +252,11 @@ restrict_client_rewards("b28e0306-2c06-4092-8d56-a1623d6b97fb")
 ```
 </CodeGroup>
 
-
 <Note>
+    You only need to create a single block list entry with version 1 to disable client-side rewards. To re-enable client rewards, simply delete that block list entry.
     You can remove the blocklist entry at any time to re-enable client-side reward sending by deleting the blocklist entry.
 </Note>
+
 
 
 ## What's Next?
