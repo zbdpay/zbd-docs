@@ -1,0 +1,196 @@
+---
+title: "List API Keys"
+description: "Fetch all existing API keys associated with your Rewards App."
+api: "GET https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-keys"
+---
+
+Retrieve all API keys for your Rewards App to see which keys are active and when they were created.
+
+
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="z-client" type="string" initialValue="developer-dashboard">
+    Client identifier (use <code>"developer-dashboard"</code> )
+</ParamField>
+
+<ParamField required header="Authorization" type="string">
+  Bearer token for authentication
+
+  Format: `Bearer {JWT_TOKEN}`
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="rewardsAppId" type="string">
+  Your Rewards App ID
+</ParamField>
+
+<ResponseExample>
+```json 200 - Success
+{
+  "success": true,
+  "message": "Success.",
+  "data": [
+    {
+      "id": "46e64511-4efd-486c-92b7-b5a4f7e5f9d8",
+      "isActive": true,
+      "createdAt": "2025-10-30T21:55:34.742Z",
+      "revokedAt": null
+    }
+  ]
+}
+```
+</ResponseExample>
+
+### Response Status Codes
+
+| Code | Description |
+|------|-------------|
+| `200` | API keys retrieved successfully |
+| `400` | Bad request - invalid UUID |
+| `401` | Unauthorized - authentication required |
+| `403` | Forbidden - developer does not own this app |
+| `404` | Rewards app not found |
+| `500` | Internal server error |
+
+<ResponseExample>
+```json 400 - Bad Request
+{
+  "success": false,
+  "message": "Invalid UUID"
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
+
+```json 403 - Forbidden
+{
+  "success": false,
+  "message": "Developer does not own this app"
+}
+```
+
+```json 404 - Not Found
+{
+  "success": false,
+  "message": "Rewards app not found"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "message": "Internal server error"
+}
+```
+</ResponseExample>
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Whether the request was successful |
+| `message` | string | Response message |
+| `data` | array | Array of API keys |
+| `id` | string | Unique identifier for the API key |
+| `isActive` | boolean | Whether the API key is currently active |
+| `createdAt` | string | ISO 8601 timestamp of when key was created |
+| `revokedAt` | string \| null | ISO 8601 timestamp of when key was revoked, or null if active |
+
+---
+
+## Code Examples
+
+<CodeGroup>
+```javascript Node.js
+const rewardsAppId = 'YOUR_REWARDS_APP_ID';
+const jwtToken = 'YOUR_JWT_TOKEN';
+
+async function listApiKeys(rewardsAppId) {
+  const response = await fetch(
+    `https://api.zebedee.io/api/v1/rewards/app/${rewardsAppId}/api-keys`,
+    {
+      method: 'GET',
+      headers: {
+        'z-client': 'developer-dashboard',
+        'Authorization': `Bearer ${jwtToken}`
+      }
+    }
+  );
+
+  const data = await response.json();
+
+  if (data.success) {
+    console.log(`Found ${data.data.length} API keys`);
+    data.data.forEach(key => {
+      console.log(`- Key ID: ${key.id}, Active: ${key.isActive}`);
+    });
+    return data.data;
+  } else {
+    throw new Error(`Failed: ${data.message}`);
+  }
+}
+
+// Get all API keys
+const keys = await listApiKeys('b28e0306-2c06-4092-8d56-a1623d6b97fb');
+```
+
+```bash cURL
+curl --location 'https://api.zebedee.io/api/v1/rewards/app/b28e0306-2c06-4092-8d56-a1623d6b97fb/api-keys' \
+--header 'z-client: developer-dashboard' \
+--header 'Authorization: Bearer {JWT_TOKEN}'
+```
+
+```python Python
+import requests
+import os
+
+jwt_token = os.getenv('JWT_TOKEN')
+rewards_app_id = "YOUR_REWARDS_APP_ID"
+
+def list_api_keys(rewards_app_id):
+    """List all API keys for a Rewards App"""
+
+    url = f"https://api.zebedee.io/api/v1/rewards/app/{rewards_app_id}/api-keys"
+    headers = {
+        "z-client": "developer-dashboard",
+        "Authorization": f"Bearer {jwt_token}"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    if data["success"]:
+        print(f"Found {len(data['data'])} API keys")
+        for key in data["data"]:
+            print(f"- Key ID: {key['id']}, Active: {key['isActive']}")
+        return data["data"]
+    else:
+        raise Exception(f"Failed: {data['message']}")
+
+# List keys
+keys = list_api_keys("b28e0306-2c06-4092-8d56-a1623d6b97fb")
+```
+</CodeGroup>
+
+<Note>
+    Empty Response. If `data` is an empty array `[]`, it means no API keys exist for this Rewards App.
+</Note>
+
+## Try It Out
+
+Ready to view your API keys? Use our API playground on the right to test with your JWT token.
+
+## What's Next?
+
+After viewing your API keys:
+
+**Revoke API Key**. Remove an API key to prevent it from being used for authentication

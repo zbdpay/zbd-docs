@@ -1,0 +1,185 @@
+---
+title: "Create an API Key"
+description: "Generate a new API key for your Rewards App to authenticate server-side reward requests."
+api: "POST https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-key"
+---
+
+Generate an API key for your Rewards App to authenticate server-side reward requests.  
+This key authorizes your backend to send rewards securely without exposing credentials to the client.
+
+
+<Warning>
+  Store this key securely, it will not be displayed again after creation. Save it immediately in your environment variables or secrets manager.
+</Warning>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="z-client" type="string" initialValue="developer-dashboard">
+    Client identifier (use <code>"developer-dashboard"</code> )
+</ParamField>
+
+<ParamField required header="Authorization" type="string">
+  Bearer token for authentication
+
+  Format: `Bearer {JWT_TOKEN}`
+    
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="rewardsAppId" type="string">
+  Your Rewards App ID.
+    
+</ParamField>
+
+<ResponseExample>
+```json 201 - Success
+{
+  "success": true,
+  "message": "API key created successfully. Please save this key securely as it will not be shown again.",
+  "data": {
+    "id": "78b411d8-1f61-4824-97c6-e3c3a571f1c5",
+    "apiKey": "sdk_live_cbe66d6f0a60e2a8c0b2ac2831db8909d736409cadb78bce9ad94954259d8c88",
+    "createdAt": "2025-10-29T13:58:11.602Z"
+  }
+}
+```
+</ResponseExample>
+
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Whether the request was successful |
+| `message` | string | Description of the result |
+| `data` | object | Contains API key details |
+| `id` | string | Unique identifier for this API key |
+| `apiKey` | string | The actual API key to use for server authentication. **Store securely!** |
+| `createdAt` | string | ISO 8601 timestamp of when the key was created |
+
+---
+
+### Response Status Codes
+
+| Code | Description |
+|------|-------------|
+| `201` | API key created successfully |
+| `400` | Bad request - invalid UUID |
+| `401` | Unauthorized - authentication required |
+| `403` | Forbidden - developer does not own this app |
+| `409` | Conflict - race condition detected |
+| `500` | Internal server error |
+
+<ResponseExample>
+```json 400 - Bad Request
+{
+  "success": false,
+  "message": "Invalid UUID"
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
+
+```json 403 - Forbidden
+{
+  "success": false,
+  "message": "Developer does not own this app"
+}
+```
+
+```json 409 - Conflict
+{
+  "success": false,
+  "message": "Race condition detected"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "message": "Internal server error"
+}
+```
+</ResponseExample>
+
+<Note>
+    This API key will only be shown once in the response. If you lose it, you'll need to create a new key and revoke the old one.
+</Note>
+
+## Code Examples
+
+<CodeGroup>
+```javascript Node.js
+const rewardsAppId = 'YOUR_REWARDS_APP_ID';
+const jwtToken = 'YOUR_JWT_TOKEN';
+
+const response = await fetch(`https://api.zebedee.io/api/v1/rewards/app/${rewardsAppId}/api-key`, {
+  method: 'POST',
+  headers: {
+    'z-client': 'developer-dashboard',
+    'Authorization': `Bearer ${jwtToken}`
+  }
+});
+
+const data = await response.json();
+
+if (data.success) {
+  console.log('API Key created:', data.data.apiKey);
+  // IMPORTANT: Store this key in your environment variables
+  // It will not be shown again!
+} else {
+  console.error('Error:', data.message);
+}
+```
+
+```bash cURL
+curl --location --request POST 'https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-key' \
+--header 'z-client: developer-dashboard' \
+--header 'Authorization: Bearer {JWT_TOKEN}' \
+--data ''
+```
+
+```python Python
+import requests
+
+rewards_app_id = "YOUR_REWARDS_APP_ID"
+jwt_token = "YOUR_JWT_TOKEN"
+
+url = f"https://api.zebedee.io/api/v1/rewards/app/{rewards_app_id}/api-key"
+headers = {
+    "z-client": "developer-dashboard",
+    "Authorization": f"Bearer {jwt_token}"
+}
+
+response = requests.post(url, headers=headers)
+data = response.json()
+
+if data["success"]:
+    print(f"API Key created: {data['data']['apiKey']}")
+    # IMPORTANT: Store this key in your environment variables
+else:
+    print(f"Error: {data['message']}")
+```
+</CodeGroup>
+
+
+## Try It Out
+
+Ready to create your first API key? Use our API playground on the right to test with your JWT token.
+
+
+
+## What's Next?
+
+Now that you’ve created an API key, your backend can authenticate securely with the ZBD Rewards API.  
+In the next step, you’ll learn how to **send rewards directly from your server** using the **v2 API** endpoint.
+
+

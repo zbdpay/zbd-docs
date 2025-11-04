@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git mv:*)",
+      "Bash(find:*)",
+      "Bash(git -C /d/ZEBEDEEMAIN/Zebedee/GitLab/zbd-docs log --oneline -10)",
+      "Bash(git -C /d/ZEBEDEEMAIN/Zebedee/GitLab/zbd-docs remote:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
