@@ -1,10 +1,521 @@
 ---
 title: 'Flutter SDK'
 sidebarTitle: 'Flutter'
-description: 'Flutter plugin for ZBD Ramp'
+description: 'Flutter plugin for ZBD Ramp - Enable Bitcoin purchases in your Flutter apps'
 icon: 'mobile-screen'
 ---
 
+The `zbd_ramp` package provides a native Flutter widget for integrating ZBD Ramp into your iOS, Android, and Web applications.
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Flutter Optimized" icon="mobile-screen">
+    Built specifically for Flutter with native WebView integration
+  </Card>
+  <Card title="Cross-Platform" icon="layer-group">
+    Works seamlessly on iOS, Android, and Web
+  </Card>
+  <Card title="Type Safe" icon="check">
+    Full Dart type safety with comprehensive type definitions
+  </Card>
+  <Card title="Real-Time Events" icon="bolt">
+    PostMessage communication for error handling, logging, and step tracking
+  </Card>
+</CardGroup>
+
+## Installation
+
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  zbd_ramp: ^1.0.0
+  http: ^1.1.0
+```
+
+Then run:
+
+```bash
+flutter pub get
+```
+
+## Quick Start
+
+### 1. Create Session Token
+
+First, initialize a ramp session from your backend or directly in your Flutter app:
+
+<Tabs>
+  <Tab title="Email Authentication">
+    ```dart
+    import 'package:zbd_ramp/zbd_ramp.dart';
+
+    final response = await initRampSession(InitRampSessionConfig(
+      apikey: 'your-zbd-api-key',
+      email: 'user@example.com',
+      destination: 'lightning-address@zbd.gg',
+      quoteCurrency: QuoteCurrency.USD,
+      baseCurrency: BaseCurrency.BTC,
+      webhookUrl: 'https://your-webhook-url.com',
+      referenceId: 'order-123',
+      metadata: {'userId': '456', 'plan': 'premium'},
+    ));
+
+    if (response.success) {
+      final sessionToken = response.data.sessionToken;
+      // Use sessionToken with ZBDRampWidget
+    } else {
+      print('Failed to create session: ${response.error}');
+    }
+    ```
+  </Tab>
+
+  <Tab title="Access Token Authentication">
+    ```dart
+    import 'package:zbd_ramp/zbd_ramp.dart';
+
+    final response = await initRampSession(InitRampSessionConfig(
+      apikey: 'your-zbd-api-key',
+      accessToken: 'user-access-token',
+      destination: 'lightning-address@zbd.gg',
+      quoteCurrency: QuoteCurrency.USD,
+      baseCurrency: BaseCurrency.BTC,
+      webhookUrl: 'https://your-webhook-url.com',
+    ));
+
+    if (response.success) {
+      final sessionToken = response.data.sessionToken;
+      // Use sessionToken with ZBDRampWidget
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### 2. Display the Ramp Widget
+
+Add the widget to your Flutter app:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:zbd_ramp/zbd_ramp.dart';
+
+class PaymentScreen extends StatelessWidget {
+  final String sessionToken;
+
+  const PaymentScreen({Key? key, required this.sessionToken}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Buy Bitcoin')),
+      body: ZBDRampWidget(
+        config: RampConfig(sessionToken: sessionToken),
+        callbacks: RampCallbacks(
+          onSuccess: (data) {
+            print('Payment successful: $data');
+            // Handle successful payment
+          },
+          onError: (error) {
+            print('Payment error: ${error.message}');
+            // Handle error
+          },
+          onStepChange: (step) {
+            print('Current step: $step');
+            // Track user progress
+          },
+        ),
+        height: 600,
+      ),
+    );
+  }
+}
+```
+
+## API Reference
+
+### initRampSession()
+
+Creates a new session token for the ZBD Ramp widget.
+
+#### Parameters
+
+```dart
+class InitRampSessionConfig {
+  final String apikey;                            // Required: Your ZBD API key
+  final String? email;                            // Email authentication
+  final String? accessToken;                      // Access token authentication
+  final String destination;                       // Required: Lightning address or username
+  final QuoteCurrency quoteCurrency;              // Required: Quote currency (USD)
+  final BaseCurrency baseCurrency;                // Required: Base currency (BTC)
+  final String? webhookUrl;                       // Optional: Webhook URL
+  final String? referenceId;                      // Optional: Your reference ID
+  final Map<String, dynamic>? metadata;           // Optional: Additional metadata
+}
+```
+
+<Note>
+  Either `email` OR `accessToken` must be provided for authentication.
+</Note>
+
+#### Returns
+
+```dart
+class InitRampSessionResponse {
+  final InitRampSessionData data;
+  final String? error;
+  final bool success;
+  final String message;
+}
+
+class InitRampSessionData {
+  final String sessionToken;                     // Session token for widget
+  final String expiresAt;                        // Token expiration time
+  final String widgetUrl;                        // Direct widget URL
+}
+```
+
+### refreshAccessToken()
+
+Refreshes an expired access token using a refresh token.
+
 <Info>
-  Documentation for the zbd_ramp_flutter package coming soon.
+  **Token Lifecycle:**
+  - Access tokens expire after 30 days
+  - Refresh tokens expire after 90 days
+  - Both tokens are received via webhook after user completes OTP login with email
 </Info>
+
+#### Parameters
+
+```dart
+class RefreshAccessTokenConfig {
+  final String apikey;                            // Required: Your ZBD API key
+  final String accessTokenId;                     // Required: ID of access token to refresh
+  final String refreshToken;                      // Required: Refresh token
+}
+```
+
+#### Returns
+
+```dart
+class RefreshAccessTokenResponse {
+  final RefreshAccessTokenData data;
+  final String? error;
+  final bool success;
+  final String message;
+}
+
+class RefreshAccessTokenData {
+  final String accessTokenId;
+  final String accessToken;                       // New access token
+  final String refreshToken;                      // New refresh token
+  final String accessTokenExpiresAt;
+  final String refreshTokenExpiresAt;
+}
+```
+
+#### Example
+
+```dart
+try {
+  final response = await refreshAccessToken(RefreshAccessTokenConfig(
+    apikey: 'your-zbd-api-key',
+    accessTokenId: '7b585ffa-9473-43ca-ba1d-56e9e7e2263b',
+    refreshToken: 'user-refresh-token',
+  ));
+
+  if (response.success) {
+    final newAccessToken = response.data.accessToken;
+    final newRefreshToken = response.data.refreshToken;
+    // Store the new tokens securely
+  }
+} catch (error) {
+  print('Token refresh error: $error');
+}
+```
+
+### ZBDRampWidget
+
+Main Flutter widget that renders the ZBD Ramp interface.
+
+#### Constructor
+
+```dart
+ZBDRampWidget({
+  Key? key,
+  required RampConfig config,
+  required RampCallbacks callbacks,
+  double? width,
+  double? height,
+})
+```
+
+#### RampConfig
+
+Configuration for the widget:
+
+```dart
+class RampConfig {
+  final String sessionToken;                     // Required: Session token
+  final String? secret;                          // Optional: Widget secret
+}
+```
+
+#### RampCallbacks
+
+Event handlers for widget lifecycle:
+
+```dart
+class RampCallbacks {
+  final OnSuccessCallback? onSuccess;            // Payment successful
+  final OnErrorCallback? onError;                // Error occurred
+  final OnStepChangeCallback? onStepChange;      // User navigated to new step
+  final OnLogCallback? onLog;                    // Debug/info logging
+  final OnReadyCallback? onReady;                // Widget fully loaded
+  final OnCloseCallback? onClose;                // User closed widget
+}
+```
+
+## Complete Example
+
+Here's a full implementation with all callbacks:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:zbd_ramp/zbd_ramp.dart';
+
+class BuyBitcoinScreen extends StatefulWidget {
+  @override
+  _BuyBitcoinScreenState createState() => _BuyBitcoinScreenState();
+}
+
+class _BuyBitcoinScreenState extends State<BuyBitcoinScreen> {
+  String? sessionToken;
+  bool isLoading = true;
+  String? error;
+
+  @override
+  void initState() {
+    super.initState();
+    _createSession();
+  }
+
+  Future<void> _createSession() async {
+    try {
+      final response = await initRampSession(InitRampSessionConfig(
+        apikey: 'your-zbd-api-key',
+        email: 'user@example.com',
+        destination: 'lightning@zbd.gg',
+        quoteCurrency: QuoteCurrency.USD,
+        baseCurrency: BaseCurrency.BTC,
+        webhookUrl: 'https://your-webhook.com',
+        referenceId: 'user_123',
+      ));
+
+      if (response.success) {
+        setState(() {
+          sessionToken = response.data.sessionToken;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          error = response.error;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        error = e.toString();
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Buy Bitcoin')),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : error != null
+              ? Center(child: Text('Error: $error'))
+              : ZBDRampWidget(
+                  config: RampConfig(sessionToken: sessionToken!),
+                  callbacks: RampCallbacks(
+                    onSuccess: (data) {
+                      print('✅ Payment successful: $data');
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Payment successful!')),
+                      );
+                    },
+                    onError: (error) {
+                      print('❌ Error: ${error.message}');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error: ${error.message}'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    },
+                    onStepChange: (step) {
+                      print('📍 Step changed: $step');
+                    },
+                    onReady: () {
+                      print('✅ Widget ready');
+                    },
+                    onClose: () {
+                      print('👋 Widget closed');
+                      Navigator.of(context).pop();
+                    },
+                    onLog: (log) {
+                      print('📝 Log: $log');
+                    },
+                  ),
+                  height: 600,
+                ),
+    );
+  }
+}
+```
+
+## Error Handling
+
+Handle errors gracefully in your application:
+
+```dart
+void _handleError(RampError error) {
+  // Error structure: { code: string, message: string, details?: any }
+  print('Error Code: ${error.code}');
+  print('Error Message: ${error.message}');
+
+  if (error.details != null) {
+    print('Error Details: ${error.details}');
+  }
+
+  // Show user-friendly message
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('Payment Error'),
+      content: Text(error.message),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('OK'),
+        ),
+      ],
+    ),
+  );
+}
+```
+
+## Platform Setup
+
+### iOS Configuration
+
+Add the following to your `ios/Runner/Info.plist`:
+
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+  <key>NSAllowsArbitraryLoads</key>
+  <true/>
+</dict>
+<key>NSCameraUsageDescription</key>
+<string>Camera access is required for KYC verification</string>
+```
+
+### Android Configuration
+
+Add permissions to your `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+<uses-permission android:name="android.permission.VIDEO_CAPTURE" />
+<uses-permission android:name="android.permission.AUDIO_CAPTURE" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
+
+## Try the Example App
+
+The quickest way to see the SDK in action:
+
+<Steps>
+  <Step title="Clone the Repository">
+    ```bash
+    git clone https://github.com/zbdpay/ramp-flutter.git
+    cd ramp-flutter/example
+    ```
+  </Step>
+
+  <Step title="Install Dependencies">
+    ```bash
+    flutter pub get
+    ```
+  </Step>
+
+  <Step title="Run the Example">
+    ```bash
+    flutter run
+    ```
+  </Step>
+
+  <Step title="Test with Your Credentials">
+    - Enter your ZBD API Key
+    - Fill in email and Lightning destination
+    - Tap "Create Session & Load Ramp"
+  </Step>
+</Steps>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Package on pub.dev" icon="box" href="https://pub.dev/packages/zbd_ramp">
+    View the official Flutter package
+  </Card>
+
+  <Card title="GitHub Repository" icon="github" href="https://github.com/zbdpay/ramp-flutter">
+    View source code and example app
+  </Card>
+
+  <Card title="API Reference" icon="code" href="/payments/ramp/session">
+    Complete API documentation
+  </Card>
+
+  <Card title="Webhook Events" icon="webhook" href="/payments/ramp/webhooks">
+    Handle webhook notifications
+  </Card>
+</CardGroup>
+
+## Other SDKs
+
+<Tabs>
+  <Tab title="TypeScript">
+    Core TypeScript/JavaScript package for web applications.
+
+    [View TypeScript SDK →](/payments/ramp/sdks/typescript)
+  </Tab>
+
+  <Tab title="React">
+    React components for web applications.
+
+    [View React SDK →](/payments/ramp/sdks/react)
+  </Tab>
+
+  <Tab title="React Native">
+    Native components for iOS and Android apps.
+
+    [View React Native SDK →](/payments/ramp/sdks/react-native)
+  </Tab>
+</Tabs>
+
+---
+
+## Support
+
+Need help? Create an issue on [GitHub](https://github.com/zbdpay/ramp-flutter/issues) or reach out to our [support team](https://zbd.one/sales).

@@ -116,6 +116,7 @@
                 "pages": [
                   "payments/ramp",
                   "payments/ramp/quickstart",
+                  "payments/ramp/user-flow",
                   "payments/ramp/faq"
                 ]
               },

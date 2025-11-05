@@ -21,7 +21,7 @@ Select the SDK that best fits your application:
     Native components for iOS and Android apps
   </Card>
   <Card title="Flutter" icon="mobile-screen" href="/payments/ramp/sdks/flutter">
-    Coming soon - Flutter plugin for cross-platform apps
+    Flutter plugin for cross-platform mobile apps
   </Card>
 </CardGroup>
 
@@ -346,7 +346,7 @@ When initializing a session, you can configure various parameters:
 | `webhook_url` | string | Yes | URL for webhook notifications |
 | `destination` | string | No | Lightning or Bitcoin address |
 | `quote_currency` | enum | No | Source currency (USD, EUR, etc.) |
-| `base_currency` | enum | No | Target currency (BTC, USDC) |
+| `base_currency` | enum | No | Target currency (BTC) |
 | `reference_id` | string | No | Your internal reference ID |
 | `metadata` | object | No | Additional data to attach |
 
@@ -371,9 +371,66 @@ When initializing a session, you can configure various parameters:
   </Card>
 </CardGroup>
 
+## Demo Applications
+
+To help you get started quickly, we've created example applications showing ZBD Ramp integration across different platforms. These demos showcase best practices and real-world implementation patterns.
+
+<Tabs>
+  <Tab title="TypeScript">
+    <Frame>
+      <img src="/img/v3/ramp-ui/0. demo-apps/ramp-ts-example.png" alt="TypeScript Example Application" />
+    </Frame>
+
+    **Features:**
+    - Clean TypeScript implementation
+    - Session management
+    - Webhook handling
+    - Error handling examples
+
+    Perfect for web applications and Node.js backends. See the [TypeScript SDK documentation](/payments/ramp/sdks/typescript) for more details.
+  </Tab>
+
+  <Tab title="React Native">
+    <Frame>
+      <img src="/img/v3/ramp-ui/0. demo-apps/example-app-react-native.png" alt="React Native Example Application" />
+    </Frame>
+
+    **Features:**
+    - Native mobile integration
+    - WebView implementation
+    - iOS and Android support
+    - Navigation patterns
+
+    Ideal for cross-platform mobile apps. See the [React Native SDK documentation](/payments/ramp/sdks/react-native) for implementation details.
+  </Tab>
+
+  <Tab title="Flutter">
+    <Frame>
+      <img src="/img/v3/ramp-ui/0. demo-apps/example-app-flutter.png" alt="Flutter Example Application" />
+    </Frame>
+
+    **Features:**
+    - Flutter widget integration
+    - Platform-specific handling
+    - Material Design patterns
+    - State management
+
+    Flutter widget integration for iOS and Android. See the [Flutter SDK documentation](/payments/ramp/sdks/flutter) for implementation details.
+  </Tab>
+</Tabs>
+
+<Info>
+  These example applications demonstrate production-ready patterns for integrating ZBD Ramp. Use them as a starting point for your own implementation.
+</Info>
+
+---
+
 ## Next Steps
 
 <CardGroup cols={2}>
+  <Card title="View User Flow" icon="route" href="/payments/ramp/user-flow">
+    See a complete walkthrough of the user experience
+  </Card>
   <Card title="Customize Appearance" icon="palette" href="/payments/ramp/themes">
     Learn how to customize the widget to match your brand
   </Card>
