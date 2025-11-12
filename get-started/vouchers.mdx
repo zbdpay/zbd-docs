@@ -141,7 +141,7 @@ qr_url = f"https://zbd.gg/v/{voucher['code']}"
 ```
 
 ```bash cURL
-curl -X POST https://api.zebedee.io/v0/vouchers \
+curl -X POST https://api.zbdpay.com/v0/vouchers \
   -H "apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -244,7 +244,7 @@ await zbd.revokeVoucher(voucherId);
 ```
 
 ```bash cURL
-curl -X POST https://api.zebedee.io/v0/vouchers/voucher_id/revoke \
+curl -X POST https://api.zbdpay.com/v0/vouchers/voucher_id/revoke \
   -H "apikey: YOUR_API_KEY"
 ```
 </CodeGroup>

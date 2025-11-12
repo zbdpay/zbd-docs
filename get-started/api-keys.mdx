@@ -42,7 +42,7 @@ Once you have your API key, you're ready to send your first payment:
 
 <CodeGroup>
 ```bash cURL
-curl -X POST https://api.zebedee.io/v0/payments \
+curl -X POST https://api.zbdpay.com/v0/payments \
   -H "apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -54,7 +54,7 @@ curl -X POST https://api.zebedee.io/v0/payments \
 ```
 
 ```javascript Node.js
-const payment = await fetch('https://api.zebedee.io/v0/payments', {
+const payment = await fetch('https://api.zbdpay.com/v0/payments', {
   method: 'POST',
   headers: {
     'apikey': process.env.ZBD_API_KEY,
@@ -183,14 +183,14 @@ Use this simple test to verify your key is working:
 
 <CodeGroup>
 ```bash cURL
-curl https://api.zebedee.io/v0/wallet \
+curl https://api.zbdpay.com/v0/wallet \
   -H "apikey: YOUR_API_KEY"
 ```
 
 ```javascript Node.js
 // Quick test script
 const testApiKey = async () => {
-  const response = await fetch('https://api.zebedee.io/v0/wallet', {
+  const response = await fetch('https://api.zbdpay.com/v0/wallet', {
     headers: { 'apikey': process.env.ZBD_API_KEY }
   });
   

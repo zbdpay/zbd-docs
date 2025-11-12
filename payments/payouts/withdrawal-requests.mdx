@@ -83,7 +83,7 @@ try {
 ```
 
 ```bash cURL
-curl --location --request POST 'https://api.zebedee.io/v0/withdrawal-requests' \
+curl --location --request POST 'https://api.zbdpay.com/v0/withdrawal-requests' \
 --header 'Content-Type: application/json' \
 --header 'apikey: API_KEY' \
 --data-raw '{
@@ -91,7 +91,7 @@ curl --location --request POST 'https://api.zebedee.io/v0/withdrawal-requests' \
     "amount": "50000",
     "internalId": "11af01d0926b8304b8",
     "description": "My Custom Withdrawal Description",
-    "callbackUrl": "http://your-website.com/zbd-callback"
+    "callbackUrl": "https://example.com/zbd-callback"
 }'
 ```
 
@@ -109,7 +109,7 @@ If the submitted request suceeds, you can expect a JSON API response that resemb
     "status": "pending",
     "description": "Description of the Withdrawal Request",
     "createdAt": "2019-12-23T03:58:17.993Z",
-    "callbackUrl": "http://your-website.com/zbd-callback",
+    "callbackUrl": "https://example.com/zbd-callback",
     "internalId": "11af01d092444a317cb33faa6b8304b8",
     "invoice": {
       "expiresAt": "2019-12-23T04:08:18.038Z",

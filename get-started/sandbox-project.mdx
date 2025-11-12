@@ -115,7 +115,7 @@ Running low on fake satoshis? Add more instantly:
 Sandbox uses separate endpoints to ensure you never accidentally mix test and production:
 
 ```
-Base URL: https://sandbox.api.zebedee.io
+Base URL: https://sandbox.api.zbdpay.com
 
 Example endpoints:
 - /v0/gamertag/send
@@ -141,7 +141,7 @@ Use the API Playground or your own code:
 
 <CodeGroup>
 ```bash cURL
-curl -X POST https://sandbox.api.zebedee.io/v0/gamertag/send \
+curl -X POST https://sandbox.api.zbdpay.com/v0/gamertag/send \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -152,7 +152,7 @@ curl -X POST https://sandbox.api.zebedee.io/v0/gamertag/send \
 ```
 
 ```javascript Node.js
-const response = await fetch('https://sandbox.api.zebedee.io/v0/gamertag/send', {
+const response = await fetch('https://sandbox.api.zbdpay.com/v0/gamertag/send', {
   method: 'POST',
   headers: {
     'apikey': process.env.SANDBOX_API_KEY,

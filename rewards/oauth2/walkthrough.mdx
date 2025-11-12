@@ -68,7 +68,7 @@ const createZBDOauth = () => {
   const oauth2 = new OAuth2(
     ZBD_CONSUMER_KEY, // CLient ID
     ZBD_CONSUMER_SECRET, // Client Secret
-    ZEBEDEE_API_URL, // ZBD API URL: https://api.zebedee.io/v0/
+    ZEBEDEE_API_URL, // ZBD API URL: https://api.zbdpay.com/v0/
     authorizeUrl, // Authorization URL: oauth2/authorize/
     tokenPath, // Token Path: oauth2/token
     null,
@@ -184,7 +184,7 @@ Those values are send as payload on this next request:
     const response = await axios({
         method: 'POST',
         data: payload,
-        url: `https://api.zebedee.io/v0/oauth2/token`,
+        url: `https://api.zbdpay.com/v0/oauth2/token`,
         headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         },
@@ -200,7 +200,7 @@ Those values are send as payload on this next request:
     export const getUserData = async (accessToken: string) => {
     const response = await axios({
         method: 'GET',
-        url: `https://api.zebedee.io/v0/oauth2/user`,
+        url: `https://api.zbdpay.com/v0/oauth2/user`,
         headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         Authorization: `Bearer ${accessToken}`,

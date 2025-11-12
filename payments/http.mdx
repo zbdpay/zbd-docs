@@ -16,7 +16,7 @@ To create a [Charge](/payments/glossary#charge) on the Bitcoin Lightning Network
 
 ```bash
 curl --request POST \
-  --url https://api.zebedee.io/v0/charges \
+  --url https://api.zbdpay.com/v0/charges \
   --header 'apikey: <apikey>' \
   --data '{
     "amount": "100000",
@@ -32,7 +32,7 @@ You can pay a Bitcoin Lightning payment request, or [Charge](/payments/glossary#
 
 ```bash
 curl --request POST \
-  --url https://api.zebedee.io/v0/payments \
+  --url https://api.zbdpay.com/v0/payments \
   --header 'apikey: YOUR_API_KEY_HERE' \
   --data '{
     "description": "SaaS payment",
@@ -48,7 +48,7 @@ To send an instant Bitcoin payment to a [Lightning Address](/payments/lightning-
 
 ```bash
 curl --request POST \
-  --url https://api.zebedee.io/v0/ln-address/send-payment \
+  --url https://api.zbdpay.com/v0/ln-address/send-payment \
   --header 'apikey: YOUR_API_KEY_HERE' \
   --data '{
     "amount": "10000",

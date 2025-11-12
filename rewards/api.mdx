@@ -91,7 +91,7 @@ Send your first reward in seconds:
 
 <CodeGroup>
 ```bash cURL
-curl -X POST https://api.zebedee.io/v0/gamertag/send-payment \
+curl -X POST https://api.zbdpay.com/v0/gamertag/send-payment \
   -H "apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -103,7 +103,7 @@ curl -X POST https://api.zebedee.io/v0/gamertag/send-payment \
 
 ```javascript Node.js
 // Send achievement reward
-const reward = await fetch('https://api.zebedee.io/v0/gamertag/send-payment', {
+const reward = await fetch('https://api.zbdpay.com/v0/gamertag/send-payment', {
   method: 'POST',
   headers: {
     'apikey': process.env.ZBD_API_KEY,
@@ -125,7 +125,7 @@ import requests
 
 # Reward user for referral
 response = requests.post(
-    'https://api.zebedee.io/v0/gamertag/send-payment',
+    'https://api.zbdpay.com/v0/gamertag/send-payment',
     headers={
         'apikey': ZBD_API_KEY,
         'Content-Type': 'application/json'

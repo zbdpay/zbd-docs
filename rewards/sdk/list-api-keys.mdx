@@ -1,7 +1,7 @@
 ---
 title: "List API Keys"
 description: "Fetch all existing API keys associated with your Rewards App."
-api: "GET https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-keys"
+api: "GET https://api.zbdpay.com/api/v1/rewards/app/{rewardsAppId}/api-keys"
 ---
 
 Retrieve all API keys for your Rewards App to see which keys are active and when they were created.
@@ -116,7 +116,7 @@ const jwtToken = 'YOUR_JWT_TOKEN';
 
 async function listApiKeys(rewardsAppId) {
   const response = await fetch(
-    `https://api.zebedee.io/api/v1/rewards/app/${rewardsAppId}/api-keys`,
+    `https://api.zbdpay.com/api/v1/rewards/app/${rewardsAppId}/api-keys`,
     {
       method: 'GET',
       headers: {
@@ -144,7 +144,7 @@ const keys = await listApiKeys('b28e0306-2c06-4092-8d56-a1623d6b97fb');
 ```
 
 ```bash cURL
-curl --location 'https://api.zebedee.io/api/v1/rewards/app/b28e0306-2c06-4092-8d56-a1623d6b97fb/api-keys' \
+curl --location 'https://api.zbdpay.com/api/v1/rewards/app/b28e0306-2c06-4092-8d56-a1623d6b97fb/api-keys' \
 --header 'z-client: developer-dashboard' \
 --header 'Authorization: Bearer {JWT_TOKEN}'
 ```
@@ -159,7 +159,7 @@ rewards_app_id = "YOUR_REWARDS_APP_ID"
 def list_api_keys(rewards_app_id):
     """List all API keys for a Rewards App"""
 
-    url = f"https://api.zebedee.io/api/v1/rewards/app/{rewards_app_id}/api-keys"
+    url = f"https://api.zbdpay.com/api/v1/rewards/app/{rewards_app_id}/api-keys"
     headers = {
         "z-client": "developer-dashboard",
         "Authorization": f"Bearer {jwt_token}"

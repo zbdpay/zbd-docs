@@ -1,7 +1,7 @@
 ---
 title: "Revoke API Key"
 description: "Revoke an API key to prevent it from being used for authentication"
-api: "DELETE https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-key/{apiKeyId}"
+api: "DELETE https://api.zbdpay.com/api/v1/rewards/app/{rewardsAppId}/api-key/{apiKeyId}"
 ---
 
 Use this endpoint to immediately prevent it from being used for authentication with your Rewards App.
@@ -118,7 +118,7 @@ const jwtToken = 'YOUR_JWT_TOKEN';
 
 async function revokeApiKey(rewardsAppId, apiKeyId) {
   const response = await fetch(
-    `https://api.zebedee.io/api/v1/rewards/app/${rewardsAppId}/api-key/${apiKeyId}`,
+    `https://api.zbdpay.com/api/v1/rewards/app/${rewardsAppId}/api-key/${apiKeyId}`,
     {
       method: 'DELETE',
       headers: {
@@ -147,7 +147,7 @@ await revokeApiKey(
 ```
 
 ```bash cURL
-curl --location --request DELETE 'https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-key/{apiKeyId}' \
+curl --location --request DELETE 'https://api.zbdpay.com/api/v1/rewards/app/{rewardsAppId}/api-key/{apiKeyId}' \
 --header 'z-client: developer-dashboard' \
 --header 'Authorization: Bearer {JWT_TOKEN}'
 ```
@@ -161,7 +161,7 @@ jwt_token = os.getenv('JWT_TOKEN')
 def revoke_api_key(rewards_app_id, api_key_id):
     """Revoke an API key to prevent authentication"""
 
-    url = f"https://api.zebedee.io/api/v1/rewards/app/{rewards_app_id}/api-key/{api_key_id}"
+    url = f"https://api.zbdpay.com/api/v1/rewards/app/{rewards_app_id}/api-key/{api_key_id}"
     headers = {
         "z-client": "developer-dashboard",
         "Authorization": f"Bearer {jwt_token}"

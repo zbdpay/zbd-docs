@@ -1,7 +1,7 @@
 ---
 title: "Get Blocklist Entries"
 description: "Retrieve all API version blocklist entries for your Rewards App"
-api: "GET https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-version-blocklist"
+api: "GET https://api.zbdpay.com/api/v1/rewards/app/{rewardsAppId}/api-version-blocklist"
 ---
 
 Retrieve all blocklist entries for your Rewards App to see which API routes are currently restricted for client-side calls.
@@ -114,7 +114,7 @@ const jwtToken = 'YOUR_JWT_TOKEN';
 
 async function getBlocklistEntries(rewardsAppId) {
   const response = await fetch(
-    `https://api.zebedee.io/api/v1/rewards/app/${rewardsAppId}/api-version-blocklist`,
+    `https://api.zbdpay.com/api/v1/rewards/app/${rewardsAppId}/api-version-blocklist`,
     {
       method: 'GET',
       headers: {
@@ -144,7 +144,7 @@ const entries = await getBlocklistEntries('b28e0306-2c06-4092-8d56-a1623d6b97fb'
 ```
 
 ```bash cURL
-curl --location 'https://api.zebedee.io/api/v1/rewards/app/b28e0306-2c06-4092-8d56-a1623d6b97fb/api-version-blocklist' \
+curl --location 'https://api.zbdpay.com/api/v1/rewards/app/b28e0306-2c06-4092-8d56-a1623d6b97fb/api-version-blocklist' \
 --header 'z-client: developer-dashboard' \
 --header 'version: 1' \
 --header 'apiRoute: /rewards/limited-achievement/reward' \
@@ -161,7 +161,7 @@ rewards_app_id = "YOUR_REWARDS_APP_ID"
 def get_blocklist_entries(rewards_app_id):
     """Get all blocklist entries for a Rewards App"""
 
-    url = f"https://api.zebedee.io/api/v1/rewards/app/{rewards_app_id}/api-version-blocklist"
+    url = f"https://api.zbdpay.com/api/v1/rewards/app/{rewards_app_id}/api-version-blocklist"
     headers = {
         "z-client": "developer-dashboard",
         "Authorization": f"Bearer {jwt_token}",

@@ -21,7 +21,7 @@ In order to properly redirect users to the ZBD login portal, you must open a bro
 
 ### Authorization URL
 
-* Authorization: `GET` [https://api.zebedee.io/v1/oauth2/authorize](https://api.zebedee.io/v1/oauth2/authorize)
+* Authorization: `GET` [https://api.zbdpay.com/v1/oauth2/authorize](https://api.zbdpay.com/v1/oauth2/authorize)
   * In case you are building this URL yourself, without the use of libraries that support PKCE, the following properties are needed, as query params:
     * `client_id` = \<your clientId>
     * `response_type` = code
@@ -33,7 +33,7 @@ In order to properly redirect users to the ZBD login portal, you must open a bro
 
 ### Getting the Token
 
-* Token: `POST` [https://api.zebedee.io/v1/oauth2/token](https://api.zebedee.io/v1/oauth2/token)
+* Token: `POST` [https://api.zbdpay.com/v1/oauth2/token](https://api.zbdpay.com/v1/oauth2/token)
   * Once you have the `code` returned from the previous `authorization` endpoint, you must now make a `POST` request to the token endpoint, with the following properties:
 
 ```json
@@ -57,7 +57,7 @@ In order to properly redirect users to the ZBD login portal, you must open a bro
 
 ### Getting ZBD User Profile Data
 
-* Profile: `GET` [https://api.zebedee.io/v1/oauth2/user](https://api.zebedee.io/v1/oauth2/user)
+* Profile: `GET` [https://api.zbdpay.com/v1/oauth2/user](https://api.zbdpay.com/v1/oauth2/user)
   * You can now call the ZBD API endpoints passing the provided `accessToken` from the previous endpoint on the request authorization header.
 
 ```json
@@ -82,7 +82,7 @@ Response: {
 
 ### Getting ZBD User Wallet Data
 
-* Profile: `GET` [https://api.zebedee.io/v1/oauth2/wallet](https://api.zebedee.io/v1/oauth2/wallet)
+* Profile: `GET` [https://api.zbdpay.com/v1/oauth2/wallet](https://api.zbdpay.com/v1/oauth2/wallet)
   * You can now call the ZBD API endpoints passing the provided `accessToken` from the previous endpoints on the request authorization header.
 
 ```json

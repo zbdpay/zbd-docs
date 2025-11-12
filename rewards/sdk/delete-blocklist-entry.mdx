@@ -1,7 +1,7 @@
 ---
 title: "Delete Blocklist Entry"
 description: "Remove a blocklist entry to restore client-side reward sending for your Rewards App."
-api: "DELETE https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-version-blocklist/{blocklistId}"
+api: "DELETE https://api.zbdpay.com/api/v1/rewards/app/{rewardsAppId}/api-version-blocklist/{blocklistId}"
 ---
 
 This operation re-enables client SDK access for the specified API route that was previously blocked.
@@ -117,7 +117,7 @@ const jwtToken = 'YOUR_JWT_TOKEN';
 
 async function deleteBlocklistEntry(rewardsAppId, blocklistId) {
   const response = await fetch(
-    `https://api.zebedee.io/api/v1/rewards/app/${rewardsAppId}/api-version-blocklist/${blocklistId}`,
+    `https://api.zbdpay.com/api/v1/rewards/app/${rewardsAppId}/api-version-blocklist/${blocklistId}`,
     {
       method: 'DELETE',
       headers: {
@@ -146,7 +146,7 @@ await deleteBlocklistEntry(
 ```
 
 ```bash cURL
-curl --location --request DELETE 'https://api.zebedee.io/api/v1/rewards/app/{rewardsAppId}/api-version-blocklist/{blocklistId}' \
+curl --location --request DELETE 'https://api.zbdpay.com/api/v1/rewards/app/{rewardsAppId}/api-version-blocklist/{blocklistId}' \
 --header 'z-client: developer-dashboard' \
 --header 'Authorization: Bearer {JWT_TOKEN}'
 ```
@@ -160,7 +160,7 @@ jwt_token = os.getenv('JWT_TOKEN')
 def delete_blocklist_entry(rewards_app_id, blocklist_id):
     """Delete a blocklist entry to re-enable client rewards"""
 
-    url = f"https://api.zebedee.io/api/v1/rewards/app/{rewards_app_id}/api-version-blocklist/{blocklist_id}"
+    url = f"https://api.zbdpay.com/api/v1/rewards/app/{rewards_app_id}/api-version-blocklist/{blocklist_id}"
     headers = {
         "z-client": "developer-dashboard",
         "Authorization": f"Bearer {jwt_token}"
