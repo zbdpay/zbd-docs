@@ -2,7 +2,7 @@
 title: "Create Ramp Session"
 sidebarTitle: "Create Ramp Session"
 description: "Initialize a new ramp widget session for a user"
-api: "POST https://api.zbdpay.com/v1/ramp-widget"
+api: "POST https://api.zbdpay.com/api/v1/ramp-widget"
 ---
 
 ## API Overview
@@ -96,7 +96,7 @@ The ramp widget allows your users to purchase Bitcoin using their preferred fiat
 
 <CodeGroup>
 ```bash cURL
-curl -X POST https://api.zbdpay.com/v1/ramp-widget \
+curl -X POST https://api.zbdpay.com/api/v1/ramp-widget \
   -H "Content-Type: application/json" \
   -H "apikey: YOUR_API_KEY" \
   -d '{
@@ -106,7 +106,7 @@ curl -X POST https://api.zbdpay.com/v1/ramp-widget \
 ```
 
 ```javascript Node.js
-const response = await fetch('https://api.zbdpay.com/v1/ramp-widget', {
+const response = await fetch('https://api.zbdpay.com/api/v1/ramp-widget', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
