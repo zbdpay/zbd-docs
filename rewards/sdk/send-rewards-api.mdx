@@ -20,13 +20,6 @@ This method ensures all rewards are issued from a trusted environment, preventin
   API key used for authentication. Obtain this from the **Create an API Key** step.
 </ParamField>
 
-<ParamField required header="z-client" type="string" initialValue="developer-dashboard">
-    Client identifier (use <code>"developer-dashboard"</code> )
-</ParamField>
-
-<ParamField required header="Content-Type" type="string" initialValue="application/json">
-  Content Type 
-</ParamField>
 
 ### Body Parameters
 
@@ -121,9 +114,7 @@ async function sendReward(rewardsUserId, amount) {
   const response = await fetch('https://api.zebedee.io/api/v2/rewards/limited-achievement/reward', {
     method: 'POST',
     headers: {
-      'x-api-key': apiKey,
-      'z-client': 'developer-dashboard',
-      'Content-Type': 'application/json'
+      'x-api-key': apiKey
     },
     body: JSON.stringify({
       rewardsUserId,
@@ -148,8 +139,6 @@ await sendReward('f2154d1a-67e6-46f2-b293-b4b226948dc9', 10);
 ```bash cURL
 curl --location 'https://api.zebedee.io/api/v2/rewards/limited-achievement/reward' \
 --header 'x-api-key: sdk_live_c21cfd2f98762456cac1729925be494d431c7c08127953c2434f39899c073aa6' \
---header 'z-client: developer-dashboard' \
---header 'Content-Type: application/json' \
 --data '{
   "rewardsUserId": "f2154d1a-67e6-46f2-b293-b4b226948dc9",
   "amount": 10
@@ -167,9 +156,7 @@ def send_reward(rewards_user_id, amount):
 
     url = "https://api.zebedee.io/api/v2/rewards/limited-achievement/reward"
     headers = {
-        "x-api-key": api_key,
-        "z-client": "developer-dashboard",
-        "Content-Type": "application/json"
+        "x-api-key": api_key
     }
     payload = {
         "rewardsUserId": rewards_user_id,
