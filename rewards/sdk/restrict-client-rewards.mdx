@@ -32,9 +32,6 @@ Block client-side `SendReward` calls by adding an API version blocklist entry to
   Format: `Bearer {JWT_TOKEN}`
 </ParamField>
 
-<ParamField required header="Content-Type" type="string" initialValue="application/json">
-  Content Type 
-</ParamField>
 
 ### Path Parameters
 
@@ -180,8 +177,7 @@ async function restrictClientRewards(rewardsAppId) {
       method: 'POST',
       headers: {
         'z-client': 'developer-dashboard',
-        'Authorization': `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${jwtToken}`
       },
       body: JSON.stringify({
         version: 1,
@@ -208,7 +204,6 @@ await restrictClientRewards('b28e0306-2c06-4092-8d56-a1623d6b97fb');
 ```bash cURL
 curl --location 'https://api.zbdpay.com/api/v1/rewards/app/{rewardsAppId}/api-version-blocklist' \
 --header 'z-client: developer-dashboard' \
---header 'Content-Type: application/json' \
 --header 'Authorization: Bearer {JWT_TOKEN}' \
 --data '{
   "version": 1,
@@ -229,8 +224,7 @@ def restrict_client_rewards(rewards_app_id):
     url = f"https://api.zbdpay.com/api/v1/rewards/app/{rewards_app_id}/api-version-blocklist"
     headers = {
         "z-client": "developer-dashboard",
-        "Authorization": f"Bearer {jwt_token}",
-        "Content-Type": "application/json"
+        "Authorization": f"Bearer {jwt_token}"
     }
     payload = {
         "version": 1,
