@@ -1,0 +1,328 @@
+---
+title: "Decrease Withdrawal Limit"
+description: "Decrease a user's withdrawal limit."
+api: "POST https://api.zebedee.io/api/v1/rewards/users/deduct"
+---
+
+Decrease the withdrawal limit for a specific user in your Rewards App. This endpoint allows you to lower the maximum amount a user can withdraw from their rewards balance.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="Authorization" type="string">
+  Bearer token for authentication. Requires either a god admin JWT token or the JWT of the game/app owner.
+
+  Format: `Bearer {JWT_TOKEN}`
+</ParamField>
+
+<ParamField required header="z-client" type="string" initialValue="developer-dashboard">
+  Client identifier (use <code>"developer-dashboard"</code>)
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="rewardsUserId" type="string">
+  The user's rewards ID (UUID format)
+</ParamField>
+
+<ParamField required body="amount" type="number">
+  Amount to decrease the withdrawal limit by. Must be a positive number greater than 0. Cannot decrease the limit below 0.
+</ParamField>
+
+<ParamField required body="currency" type="string">
+  Currency type for the amount
+
+  Options: `MSATS` or `POINT`
+</ParamField>
+
+<ParamField required body="type" type="string">
+  Type of deduction operation
+
+  Value: `DEDUCT-TIME-BASED-REWARD`
+</ParamField>
+
+<ResponseExample>
+```json 200 - Success
+{
+  "success": true,
+  "message": "Success."
+}
+```
+</ResponseExample>
+
+### Response Status Codes
+
+| Code | Description |
+|------|-------------|
+| `200` | Deduction successful |
+| `400` | Bad request, invalid parameters, negative amount, or would result in negative limit |
+| `401` | Unauthorized, authentication required |
+| `403` | Forbidden, admin access required |
+| `500` | Internal server error |
+
+<ResponseExample>
+```json 400 - Bad Request
+{
+  "success": false,
+  "message": "Invalid amount, currency, or would result in negative limit"
+}
+```
+
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
+
+```json 403 - Forbidden
+{
+  "success": false,
+  "message": "Admin access required"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "message": "Internal server error"
+}
+```
+</ResponseExample>
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Whether the request was successful |
+| `message` | string | Response message indicating the result |
+
+---
+
+## Code Examples
+
+<CodeGroup>
+```javascript Node.js
+const rewardsUserId = 'USER_REWARDS_ID';
+const jwtToken = 'YOUR_JWT_TOKEN';
+
+async function decreaseWithdrawalLimit(rewardsUserId, amount, currency) {
+  const response = await fetch(
+    `https://api.zbdpay.com/api/v1/rewards/user/${rewardsUserId}/deduct`,
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${jwtToken}`,
+        'z-client': 'developer-dashboard',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        amount: amount,
+        currency: currency,
+        type: 'DEDUCT-TIME-BASED-REWARD'
+      })
+    }
+  );
+
+  const data = await response.json();
+
+  if (data.success) {
+    console.log('Withdrawal limit decreased successfully');
+    return data;
+  } else {
+    throw new Error(`Failed: ${data.message}`);
+  }
+}
+
+// Decrease limit by 500 MSATS
+await decreaseWithdrawalLimit('b28e0306-2c06-4092-8d56-a1623d6b97fb', 500, 'MSATS');
+```
+
+```bash cURL
+curl --location --request POST 'https://api.zbdpay.com/api/v1/rewards/user/b28e0306-2c06-4092-8d56-a1623d6b97fb/deduct' \
+--header 'Authorization: Bearer YOUR_JWT_TOKEN' \
+--header 'z-client: developer-dashboard' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "amount": 500,
+  "currency": "MSATS",
+  "type": "DEDUCT-TIME-BASED-REWARD"
+}'
+```
+
+```python Python
+import requests
+import os
+
+jwt_token = os.getenv('JWT_TOKEN')
+rewards_user_id = "USER_REWARDS_ID"
+
+def decrease_withdrawal_limit(rewards_user_id, amount, currency):
+    """Decrease a user's withdrawal limit"""
+
+    url = f"https://api.zbdpay.com/api/v1/rewards/user/{rewards_user_id}/deduct"
+    headers = {
+        "Authorization": f"Bearer {jwt_token}",
+        "z-client": "developer-dashboard",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "amount": amount,
+        "currency": currency,
+        "type": "DEDUCT-TIME-BASED-REWARD"
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+    data = response.json()
+
+    if data["success"]:
+        print("Withdrawal limit decreased successfully")
+        return data
+    else:
+        raise Exception(f"Failed: {data['message']}")
+
+# Decrease limit by 500 MSATS
+decrease_withdrawal_limit("b28e0306-2c06-4092-8d56-a1623d6b97fb", 500, "MSATS")
+```
+
+```php PHP
+<?php
+
+$jwtToken = getenv('JWT_TOKEN');
+$rewardsUserId = 'USER_REWARDS_ID';
+
+function decreaseWithdrawalLimit($rewardsUserId, $amount, $currency) {
+    global $jwtToken;
+
+    $url = "https://api.zbdpay.com/api/v1/rewards/user/{$rewardsUserId}/deduct";
+
+    $data = [
+        'amount' => $amount,
+        'currency' => $currency,
+        'type' => 'DEDUCT-TIME-BASED-REWARD'
+    ];
+
+    $options = [
+        'http' => [
+            'header'  => [
+                "Authorization: Bearer {$jwtToken}",
+                "z-client: developer-dashboard",
+                "Content-Type: application/json"
+            ],
+            'method'  => 'POST',
+            'content' => json_encode($data)
+        ]
+    ];
+
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    $response = json_decode($result, true);
+
+    if ($response['success']) {
+        echo "Withdrawal limit decreased successfully\n";
+        return $response;
+    } else {
+        throw new Exception("Failed: " . $response['message']);
+    }
+}
+
+// Decrease limit by 500 MSATS
+decreaseWithdrawalLimit('b28e0306-2c06-4092-8d56-a1623d6b97fb', 500, 'MSATS');
+?>
+```
+
+```go Go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "io"
+    "net/http"
+    "os"
+)
+
+type DecreaseRequest struct {
+    Amount   int    `json:"amount"`
+    Currency string `json:"currency"`
+    Type     string `json:"type"`
+}
+
+type Response struct {
+    Success bool   `json:"success"`
+    Message string `json:"message"`
+}
+
+func decreaseWithdrawalLimit(rewardsUserId string, amount int, currency string) (*Response, error) {
+    jwtToken := os.Getenv("JWT_TOKEN")
+    url := fmt.Sprintf("https://api.zbdpay.com/api/v1/rewards/user/%s/deduct", rewardsUserId)
+
+    requestBody := DecreaseRequest{
+        Amount:   amount,
+        Currency: currency,
+        Type:     "DEDUCT-TIME-BASED-REWARD",
+    }
+
+    jsonData, err := json.Marshal(requestBody)
+    if err != nil {
+        return nil, err
+    }
+
+    req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+    if err != nil {
+        return nil, err
+    }
+
+    req.Header.Set("Authorization", "Bearer "+jwtToken)
+    req.Header.Set("z-client", "developer-dashboard")
+    req.Header.Set("Content-Type", "application/json")
+
+    client := &http.Client{}
+    resp, err := client.Do(req)
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+
+    body, err := io.ReadAll(resp.Body)
+    if err != nil {
+        return nil, err
+    }
+
+    var response Response
+    err = json.Unmarshal(body, &response)
+    if err != nil {
+        return nil, err
+    }
+
+    if response.Success {
+        fmt.Println("Withdrawal limit decreased successfully")
+    }
+
+    return &response, nil
+}
+
+func main() {
+    // Decrease limit by 500 MSATS
+    response, err := decreaseWithdrawalLimit("b28e0306-2c06-4092-8d56-a1623d6b97fb", 500, "MSATS")
+    if err != nil {
+        fmt.Printf("Error: %v\n", err)
+        return
+    }
+    fmt.Printf("Response: %+v\n", response)
+}
+```
+</CodeGroup>
+
+<Note>
+**Validation Rules**:
+- The amount must be a positive number greater than 0
+- The decrease cannot result in a withdrawal limit below 0
+- Negative values will result in a 400 Bad Request error
+</Note>
+
+## Try It Out
+
+Ready to decrease a user's withdrawal limit? Use our API playground on the right to test with your JWT token and user ID.

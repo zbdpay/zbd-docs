@@ -19,6 +19,13 @@ This setup uses the **API version blocklist** feature for your Rewards App.
     - You want to minimize client-side abuse and enforce strict control
 </Note>
 
+## Rate Limiting
+
+The server-side endpoints are rate-limited to **60 requests per second**.
+
+If you exceed this limit, you will receive a `429 Too Many Requests` response. Implement exponential backoff in your retry logic to handle rate limiting gracefully.
+
+
 ## How It Works
 
 <Steps>
