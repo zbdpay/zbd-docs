@@ -361,7 +361,7 @@
                   "rewards/sdk/user-status",
                   "rewards/sdk/user-balance",
                   {
-                    "group": "User Withdrawal Limits",
+                    "group": "Retrieving Withdrawal Limit",
                     "icon": "upload",
                     "pages": [
                       "rewards/sdk/user-withdrawal",

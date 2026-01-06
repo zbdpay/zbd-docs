@@ -1,7 +1,7 @@
 ---
 title: "Increase Withdrawal Limit"
-description: "Programmatically increase a user's withdrawal limit via the REST API."
-api: "POST https://api.zbdpay.com/api/v1/rewards/user/{rewardsUserId}/withdrawal-limit"
+description: "Increase a user's withdrawal limit."
+api: "POST https://api.zebedee.io/api/v1/rewards/user/{rewardsUserId}/withdrawal-limit"
 ---
 
 Increase the withdrawal limit for a specific user in your Rewards App. This endpoint allows you to raise the maximum amount a user can withdraw from their rewards balance.
@@ -11,17 +11,13 @@ Increase the withdrawal limit for a specific user in your Rewards App. This endp
 ### Header Parameters
 
 <ParamField required header="Authorization" type="string">
-  Bearer token for authentication (admin JWT required)
+  Bearer token for authentication. Requires either a god admin JWT token or the JWT of the game/app owner.
 
   Format: `Bearer {JWT_TOKEN}`
 </ParamField>
 
 <ParamField required header="z-client" type="string" initialValue="developer-dashboard">
   Client identifier (use <code>"developer-dashboard"</code>)
-</ParamField>
-
-<ParamField header="x-credential-identifier" type="string">
-  User ID extracted from JWT (automatically set)
 </ParamField>
 
 ### Path Parameters
@@ -56,9 +52,9 @@ Increase the withdrawal limit for a specific user in your Rewards App. This endp
 | Code | Description |
 |------|-------------|
 | `200` | Limit added successfully |
-| `400` | Bad request - invalid parameters or negative amount |
-| `401` | Unauthorized - authentication required |
-| `403` | Forbidden - admin access required |
+| `400` | Bad request, invalid parameters or negative amount |
+| `401` | Unauthorized, authentication required |
+| `403` | Forbidden, admin access required |
 | `404` | User not found |
 | `500` | Internal server error |
 
@@ -325,10 +321,3 @@ func main() {
 ## Try It Out
 
 Ready to increase a user's withdrawal limit? Use our API playground on the right to test with your JWT token and user ID.
-
-## What's Next?
-
-After increasing withdrawal limits:
-
-- **[Decrease Withdrawal Limit](/rewards/sdk/decrease-withdrawal-limit)** - Lower a user's withdrawal limit
-- **[Retrieve Withdrawal Limit](/rewards/sdk/user-withdrawal)** - Check current withdrawal limits via SDK

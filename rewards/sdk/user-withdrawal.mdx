@@ -1,35 +1,45 @@
 ---
-title: 'User Withdrawal Limits'
-description: 'Learn how to retrieve and manage user withdrawal limits in the ZBD Rewards SDK.'
-icon: 'upload'
+title: 'Overview'
+description: 'Instructions for checking user withdrawal limits in the ZBD Rewards SDK and managing limits via REST API.'
+icon: 'circle-info'
 ---
 
-Withdrawal limits control the maximum amount a user can withdraw from their rewards balance. You can retrieve current limits using the SDK and manage them programmatically via our REST API.
+Withdrawal limits control the maximum amount a user can withdraw from their rewards balance at any time. You can use either of these methods:
 
-## Retrieving Withdrawal Limit (SDK)
+- **Retrieve via SDK** - Check a user's current limit using the GetBalance method
+- **Manage via REST API** - Increase or decrease withdrawal limits through dedicated API endpoints
 
-You can check the withdrawal limit of a user from the `GetBalance` response by checking `callback.withdrawalLimit`.
+---
+
+## Retrieving Withdrawal Limit via SDK
+
+The easiest way to get a user's withdrawal limit is through the `GetBalance` SDK method. The withdrawal limit is included in the callback response.
+
+### Implementation
+
+Call `GetBalance` to retrieve the user's current withdrawal limit:
 
 ```csharp
-ZBDController.Instance.GetBalance(callback=>
+ZBDController.Instance.GetBalance(callback =>
 {
   if (callback.success)
   {
-    // the users withdrawal limit in satoshis (not millisatoshis)
-    Debug.Log(callback.withdrawalLimit);
+    // Get the user's withdrawal limit in satoshis (not millisatoshis)
+    long withdrawalLimitSats = callback.withdrawalLimit;
+    Debug.Log($"Withdrawal limit: {withdrawalLimitSats} sats");
   }
   else
   {
-    Debug.LogError("get balance error " + callback.message);
+    Debug.LogError($"GetBalance failed: {callback.message}");
   }
 });
 ```
 
 ---
 
-## Managing Withdrawal Limits via API
+## Managing Withdrawal Limits via REST API
 
-Need to programmatically adjust withdrawal limits for your users? Use our REST API endpoints to increase or decrease limits:
+You can use these endpoints to increase or decrease a user's withdrawal limit. Admin JWT authentication is required.
 
 <CardGroup cols={2}>
   <Card title="Increase Withdrawal Limit" icon="arrow-up" href="/rewards/sdk/increase-withdrawal-limit">
@@ -40,4 +50,6 @@ Need to programmatically adjust withdrawal limits for your users? Use our REST A
   </Card>
 </CardGroup>
 
-These endpoints require admin JWT authentication and support both MSATS and POINT currencies.
+---
+
+With these two methods available, you can choose the one that best fits your application use the SDK for client-side integration or the REST API for server-side management.

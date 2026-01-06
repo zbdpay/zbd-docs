@@ -1,7 +1,7 @@
 ---
 title: "Decrease Withdrawal Limit"
-description: "Programmatically decrease a user's withdrawal limit via the REST API."
-api: "POST https://api.zbdpay.com/api/v1/rewards/user/{rewardsUserId}/deduct"
+description: "Decrease a user's withdrawal limit."
+api: "POST https://api.zebedee.io/api/v1/rewards/users/deduct"
 ---
 
 Decrease the withdrawal limit for a specific user in your Rewards App. This endpoint allows you to lower the maximum amount a user can withdraw from their rewards balance.
@@ -11,7 +11,7 @@ Decrease the withdrawal limit for a specific user in your Rewards App. This endp
 ### Header Parameters
 
 <ParamField required header="Authorization" type="string">
-  Bearer token for authentication (admin JWT required)
+  Bearer token for authentication. Requires either a god admin JWT token or the JWT of the game/app owner.
 
   Format: `Bearer {JWT_TOKEN}`
 </ParamField>
@@ -20,17 +20,11 @@ Decrease the withdrawal limit for a specific user in your Rewards App. This endp
   Client identifier (use <code>"developer-dashboard"</code>)
 </ParamField>
 
-<ParamField header="x-credential-identifier" type="string">
-  User ID extracted from JWT (automatically set)
-</ParamField>
+### Body Parameters
 
-### Path Parameters
-
-<ParamField required path="rewardsUserId" type="string">
+<ParamField required body="rewardsUserId" type="string">
   The user's rewards ID (UUID format)
 </ParamField>
-
-### Body Parameters
 
 <ParamField required body="amount" type="number">
   Amount to decrease the withdrawal limit by. Must be a positive number greater than 0. Cannot decrease the limit below 0.
@@ -62,9 +56,9 @@ Decrease the withdrawal limit for a specific user in your Rewards App. This endp
 | Code | Description |
 |------|-------------|
 | `200` | Deduction successful |
-| `400` | Bad request - invalid parameters, negative amount, or would result in negative limit |
-| `401` | Unauthorized - authentication required |
-| `403` | Forbidden - admin access required |
+| `400` | Bad request, invalid parameters, negative amount, or would result in negative limit |
+| `401` | Unauthorized, authentication required |
+| `403` | Forbidden, admin access required |
 | `500` | Internal server error |
 
 <ResponseExample>
@@ -322,20 +316,13 @@ func main() {
 ```
 </CodeGroup>
 
-<Warning>
+<Note>
 **Validation Rules**:
 - The amount must be a positive number greater than 0
 - The decrease cannot result in a withdrawal limit below 0
 - Negative values will result in a 400 Bad Request error
-</Warning>
+</Note>
 
 ## Try It Out
 
 Ready to decrease a user's withdrawal limit? Use our API playground on the right to test with your JWT token and user ID.
-
-## What's Next?
-
-After decreasing withdrawal limits:
-
-- **[Increase Withdrawal Limit](/rewards/sdk/increase-withdrawal-limit)** - Raise a user's withdrawal limit
-- **[Retrieve Withdrawal Limit](/rewards/sdk/user-withdrawal)** - Check current withdrawal limits via SDK
