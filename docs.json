@@ -360,7 +360,15 @@
                   },
                   "rewards/sdk/user-status",
                   "rewards/sdk/user-balance",
-                  "rewards/sdk/user-withdrawal",
+                  {
+                    "group": "User Withdrawal Limits",
+                    "icon": "upload",
+                    "pages": [
+                      "rewards/sdk/user-withdrawal",
+                      "rewards/sdk/increase-withdrawal-limit",
+                      "rewards/sdk/decrease-withdrawal-limit"
+                    ]
+                  },
                   "rewards/sdk/url-scheme",
                   "rewards/sdk/attestation-setup",
                   "rewards/sdk/best-practices",

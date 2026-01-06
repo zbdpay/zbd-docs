@@ -1,16 +1,20 @@
 ---
-title: 'Retrieving Withdrawal Limit'
-description: 'Instructions for retrieving user balances from the ZBD Rewards SDK.'
+title: 'User Withdrawal Limits'
+description: 'Learn how to retrieve and manage user withdrawal limits in the ZBD Rewards SDK.'
 icon: 'upload'
 ---
 
-You can also check the withdrawal limit of a user from the `GetBalance` response by checking `callback.withdrawalLimit`.
+Withdrawal limits control the maximum amount a user can withdraw from their rewards balance. You can retrieve current limits using the SDK and manage them programmatically via our REST API.
+
+## Retrieving Withdrawal Limit (SDK)
+
+You can check the withdrawal limit of a user from the `GetBalance` response by checking `callback.withdrawalLimit`.
 
 ```csharp
 ZBDController.Instance.GetBalance(callback=>
 {
   if (callback.success)
-  { 
+  {
     // the users withdrawal limit in satoshis (not millisatoshis)
     Debug.Log(callback.withdrawalLimit);
   }
@@ -20,3 +24,20 @@ ZBDController.Instance.GetBalance(callback=>
   }
 });
 ```
+
+---
+
+## Managing Withdrawal Limits via API
+
+Need to programmatically adjust withdrawal limits for your users? Use our REST API endpoints to increase or decrease limits:
+
+<CardGroup cols={2}>
+  <Card title="Increase Withdrawal Limit" icon="arrow-up" href="/rewards/sdk/increase-withdrawal-limit">
+    Raise a user's withdrawal limit with the REST API
+  </Card>
+  <Card title="Decrease Withdrawal Limit" icon="arrow-down" href="/rewards/sdk/decrease-withdrawal-limit">
+    Lower a user's withdrawal limit with the REST API
+  </Card>
+</CardGroup>
+
+These endpoints require admin JWT authentication and support both MSATS and POINT currencies.
