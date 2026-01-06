@@ -24,6 +24,20 @@ When setting up OAuth2 from client side, you have two options:
 
 If you chose the second option, there are open-source libraries for handling OAuth2 on Mobile using AppAuth ([iOS](https://github.com/openid/AppAuth-iOS) and [Android](https://github.com/openid/AppAuth-Android)), as well as for React Native using [react-native-app-auth](https://github.com/FormidableLabs/react-native-app-auth).
 
+### iOS Webview Configuration
+
+If you are calling the OAuth flow from an iOS webview integration, you need to add the following to your `Info.plist` file in Xcode:
+
+```xml
+<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>zebedee.oauth2</string>
+  <string>zbd</string>
+</array>
+```
+
+This allows your iOS app to query and open the ZBD app URL schemes required for the OAuth flow. Without this configuration, the OAuth redirect may not work properly on iOS devices.
+
 ## Server Side
 
 ### Node.js
