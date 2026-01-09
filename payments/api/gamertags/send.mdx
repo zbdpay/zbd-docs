@@ -6,6 +6,8 @@ api: "POST https://api.zbdpay.com/v0/gamertag/send-payment"
 
 <Info>Unlike other payout endpoints in the ZBD API, sending payments to ZBD Gamertags is a synchronous action -> this is why there is no `callbackUrl` property. The payment either succeeds or fails on the spot.</Info>
 
+<Warning>**Important:** ZBD Gamertags are mutable and can be changed by users at any time. If you're implementing user-specific limits (e.g., 1 withdrawal per day) or tracking balances, **do not use Gamertags as identifiers**. Instead, use the [Get ID by ZBD Gamertag](/payments/api/gamertags/retrieve-userid) endpoint to retrieve the immutable User ID for each Gamertag, then track limits and balances using that User ID. Otherwise, users can bypass your limits simply by changing their Gamertag.</Warning>
+
 ## Configuration
 
 ### Header Parameters
