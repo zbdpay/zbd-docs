@@ -50,7 +50,7 @@ Retrieve all blocklist entries for your Rewards App to see which API routes are 
       "id": "bb6178d1-4fb5-4b35-93d6-31fe052b73dd",
       "rewardsAppId": "b28e0306-2c06-4092-8d56-a1623d6b97fb",
       "version": 1,
-      "apiRoute": "/rewards/limited-achievement/reward",
+      "apiRoute": "/earn/limited-achievement/reward",
       "createdAt": "2025-10-30T22:56:28.666Z"
     }
   ]
@@ -166,7 +166,7 @@ def get_blocklist_entries(rewards_app_id):
         "z-client": "developer-dashboard",
         "Authorization": f"Bearer {jwt_token}",
         "version": "1",
-        "apiRoute": "/rewards/limited-achievement/reward"
+        "apiRoute": "/earn/limited-achievement/reward"
     }
 
     response = requests.get(url, headers=headers)

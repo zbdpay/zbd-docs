@@ -109,7 +109,7 @@ Increase the withdrawal limit for a specific user in your Rewards App from your 
 <CodeGroup>
 ```javascript Node.js
 const rewardsUserId = 'USER_REWARDS_ID';
-const apiKey = 'YOUR_API_KEY'; // Get from https://docs.zbdpay.com/rewards/sdk/create-api-key
+const apiKey = 'YOUR_API_KEY'; // Get from https://docs.zbdpay.com/earn/sdk/create-api-key
 
 async function increaseWithdrawalLimit(rewardsUserId, amount, currency) {
   const response = await fetch(
@@ -155,7 +155,7 @@ curl --location --request POST 'https://api.zebedee.io/api/v1/rewards/user/b28e0
 import requests
 import os
 
-api_key = os.getenv('API_KEY')  # Get from https://docs.zbdpay.com/rewards/sdk/create-api-key
+api_key = os.getenv('API_KEY')  # Get from https://docs.zbdpay.com/earn/sdk/create-api-key
 rewards_user_id = "USER_REWARDS_ID"
 
 def increase_withdrawal_limit(rewards_user_id, amount, currency):
@@ -187,7 +187,7 @@ increase_withdrawal_limit("b28e0306-2c06-4092-8d56-a1623d6b97fb", 1000, "MSATS")
 ```php PHP
 <?php
 
-$apiKey = getenv('API_KEY');  // Get from https://docs.zbdpay.com/rewards/sdk/create-api-key
+$apiKey = getenv('API_KEY');  // Get from https://docs.zbdpay.com/earn/sdk/create-api-key
 $rewardsUserId = 'USER_REWARDS_ID';
 
 function increaseWithdrawalLimit($rewardsUserId, $amount, $currency) {
@@ -251,7 +251,7 @@ type Response struct {
 }
 
 func increaseWithdrawalLimit(rewardsUserId string, amount int, currency string) (*Response, error) {
-    apiKey := os.Getenv("API_KEY")  // Get from https://docs.zbdpay.com/rewards/sdk/create-api-key
+    apiKey := os.Getenv("API_KEY")  // Get from https://docs.zbdpay.com/earn/sdk/create-api-key
     url := fmt.Sprintf("https://api.zebedee.io/api/v1/rewards/user/%s/withdrawal-limit", rewardsUserId)
 
     requestBody := IncreaseRequest{

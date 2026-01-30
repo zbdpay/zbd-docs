@@ -51,7 +51,7 @@ Block client-side `SendReward` calls by adding an API version blocklist entry to
 <ParamField required body="apiRoute" type="string">
   The API route to blocklist
 
-    Use <code> "/rewards/limited-achievement/reward" </code> to block client reward sending
+    Use <code> "/earn/limited-achievement/reward" </code> to block client reward sending
 </ParamField>
 
 <ResponseExample>
@@ -63,7 +63,7 @@ Block client-side `SendReward` calls by adding an API version blocklist entry to
     "id": "e2fbc21e-b524-4304-aa55-b20941ede9f6",
     "rewardsAppId": "b28e0306-2c06-4092-8d56-a1623d6b97fb",
     "version": 1,
-    "apiRoute": "/rewards/limited-achievement/reward",
+    "apiRoute": "/earn/limited-achievement/reward",
     "createdAt": "2025-10-29T14:06:50.321Z"
   }
 }
@@ -207,7 +207,7 @@ curl --location 'https://api.zbdpay.com/api/v1/rewards/app/{rewardsAppId}/api-ve
 --header 'Authorization: Bearer {JWT_TOKEN}' \
 --data '{
   "version": 1,
-  "apiRoute": "/rewards/limited-achievement/reward"
+  "apiRoute": "/earn/limited-achievement/reward"
 }'
 ```
 
@@ -228,7 +228,7 @@ def restrict_client_rewards(rewards_app_id):
     }
     payload = {
         "version": 1,
-        "apiRoute": "/rewards/limited-achievement/reward"
+        "apiRoute": "/earn/limited-achievement/reward"
     }
 
     response = requests.post(url, json=payload, headers=headers)
