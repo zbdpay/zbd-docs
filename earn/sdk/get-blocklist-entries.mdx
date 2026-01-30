@@ -1,0 +1,203 @@
+---
+title: "Get Blocklist Entries"
+description: "Retrieve all API version blocklist entries for your Rewards App"
+api: "GET https://api.zbdpay.com/api/v1/rewards/app/{rewardsAppId}/api-version-blocklist"
+---
+
+Retrieve all blocklist entries for your Rewards App to see which API routes are currently restricted for client-side calls.
+
+
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="z-client" type="string" initialValue="developer-dashboard">
+    Client identifier (use <code>"developer-dashboard"</code> )
+</ParamField>
+
+<ParamField required header="Authorization" type="string">
+  Bearer token for authentication
+
+  Format: `Bearer {JWT_TOKEN}`
+</ParamField>
+
+<ParamField header="version" type="number">
+  Filter by API version (optional)
+
+  Example: `1`
+</ParamField>
+
+<ParamField  header="apiRoute" type="string">
+  Filter by API route (optional)
+
+   Example: `/earn/limited-achievement/reward`
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="rewardsAppId" type="string">
+  Your Rewards App ID
+</ParamField>
+
+<ResponseExample>
+```json 200 - Success
+{
+  "success": true,
+  "message": "Success.",
+  "data": [
+    {
+      "id": "bb6178d1-4fb5-4b35-93d6-31fe052b73dd",
+      "rewardsAppId": "b28e0306-2c06-4092-8d56-a1623d6b97fb",
+      "version": 1,
+      "apiRoute": "/earn/limited-achievement/reward",
+      "createdAt": "2025-10-30T22:56:28.666Z"
+    }
+  ]
+}
+```
+</ResponseExample>
+
+### Response Status Codes
+
+| Code | Description |
+|------|-------------|
+| `200` | Blocklist entries retrieved successfully |
+| `401` | Unauthorized - authentication required |
+| `403` | Forbidden - developer does not own this app |
+| `500` | Internal server error |
+
+<ResponseExample>
+```json 401 - Unauthorized
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
+
+```json 403 - Forbidden
+{
+  "success": false,
+  "message": "Developer does not own this app"
+}
+```
+
+```json 500 - Server Error
+{
+  "success": false,
+  "message": "Internal server error"
+}
+```
+</ResponseExample>
+
+## Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Whether the request was successful |
+| `message` | string | Response message |
+| `data` | array | Array of blocklist entries |
+| `id` | string | Unique identifier for the blocklist entry |
+| `rewardsAppId` | string | Your Rewards App ID |
+| `version` | number | Blocked API version |
+| `apiRoute` | string | Blocked API route |
+| `createdAt` | string | ISO 8601 timestamp of when entry was created |
+
+---
+
+## Code Examples
+
+<CodeGroup>
+```javascript Node.js
+const rewardsAppId = 'YOUR_REWARDS_APP_ID';
+const jwtToken = 'YOUR_JWT_TOKEN';
+
+async function getBlocklistEntries(rewardsAppId) {
+  const response = await fetch(
+    `https://api.zbdpay.com/api/v1/rewards/app/${rewardsAppId}/api-version-blocklist`,
+    {
+      method: 'GET',
+      headers: {
+        'z-client': 'developer-dashboard',
+        'Authorization': `Bearer ${jwtToken}`,
+        'version': '1',
+        'apiRoute': '/earn/limited-achievement/reward'
+      }
+    }
+  );
+
+  const data = await response.json();
+
+  if (data.success) {
+    console.log(`Found ${data.data.length} blocklist entries`);
+    data.data.forEach(entry => {
+      console.log(`- Route: ${entry.apiRoute}, Version: ${entry.version}`);
+    });
+    return data.data;
+  } else {
+    throw new Error(`Failed: ${data.message}`);
+  }
+}
+
+// Get all entries
+const entries = await getBlocklistEntries('b28e0306-2c06-4092-8d56-a1623d6b97fb');
+```
+
+```bash cURL
+curl --location 'https://api.zbdpay.com/api/v1/rewards/app/b28e0306-2c06-4092-8d56-a1623d6b97fb/api-version-blocklist' \
+--header 'z-client: developer-dashboard' \
+--header 'version: 1' \
+--header 'apiRoute: /earn/limited-achievement/reward' \
+--header 'Authorization: Bearer {JWT_TOKEN}'
+```
+
+```python Python
+import requests
+import os
+
+jwt_token = os.getenv('JWT_TOKEN')
+rewards_app_id = "YOUR_REWARDS_APP_ID"
+
+def get_blocklist_entries(rewards_app_id):
+    """Get all blocklist entries for a Rewards App"""
+
+    url = f"https://api.zbdpay.com/api/v1/rewards/app/{rewards_app_id}/api-version-blocklist"
+    headers = {
+        "z-client": "developer-dashboard",
+        "Authorization": f"Bearer {jwt_token}",
+        "version": "1",
+        "apiRoute": "/earn/limited-achievement/reward"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    if data["success"]:
+        print(f"Found {len(data['data'])} blocklist entries")
+        for entry in data["data"]:
+            print(f"- Route: {entry['apiRoute']}, Version: {entry['version']}")
+        return data["data"]
+    else:
+        raise Exception(f"Failed: {data['message']}")
+
+# Get entries
+entries = get_blocklist_entries("b28e0306-2c06-4092-8d56-a1623d6b97fb")
+```
+</CodeGroup>
+
+<Note>
+    Empty Response. If `data` is an empty array `[]`, it means no blocklist entries exist and client-side reward sending is currently enabled.
+</Note>
+
+## Try It Out
+
+Ready to view your blocklist entries? Use our API playground on the right to test with your JWT token.
+
+## What's Next?
+
+After viewing your blocklist entries:
+
+**Delete Blocklist Entry**. Remove a restriction to re-enable client-side rewards
+
+
+

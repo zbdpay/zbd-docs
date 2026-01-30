@@ -1,0 +1,54 @@
+---
+title: 'Troubleshooting'
+description: 'General troubleshooting guides for the ZBD Earn SDK.'
+icon: 'bug'
+---
+
+# Build Issues
+
+- If you encounter build issues, it is important to check that the Android and iOS deployment targets and minimum API level are set properly. Refer to [Compatibility](/earn/sdk/compatibility) for more information.
+
+- If you receive a sign up error, please confirm that your Bundle ID / Package Name is the same as the one used whilst setting up the SDK configuration.
+
+- Make sure the stripping level is set to low or minimum in the Unity build settings.
+
+If you get the following build errors on Android please check the **[Building for Android](/earn/sdk/building#building-for-android)** section.
+
+<CardGroup cols={2}>
+  <Frame>
+    <img src="/img/earn/build-failure-1.png" alt="Build Failure 1" />
+  </Frame>
+  <Frame>
+    <img src="/img/earn/build-failure-2.png" alt="Build Failure 2" />
+  </Frame>
+</CardGroup>
+
+# Performance Issues
+
+The ZBD Earn SDK forces hardware acceleration in Android builds, this can cause some issues with games.
+
+If you notice performance issues after integrating the ZBD Earn SDK you can delete the `ModifyUnityAndroidAppManifestSample.cs` file in the `Assets/Editor/` folder.
+
+# Unity Input Settings Issues
+
+To ensure maximum compatibility when working with the ZBD Earn SDK, it is recommended to adjust Unity’s input configuration.
+The Unity Editor’s WebView may influence how input is handled, so setting **Active Input Handling** to **Both** helps maintain consistent support across the Old Input Manager and the New Input System.
+
+
+<Steps>
+    <Step title="Open Project Settings">
+        In Unity, go to <strong>Edit → Project Settings</strong>.
+    </Step>
+
+    <Step title="Navigate to Player → Other Settings">
+        In the Project Settings window, select <strong>Player</strong>, then scroll to the <strong>Other Settings</strong> section.
+    </Step>
+
+    <Step title="Set Active Input Handling to Both">
+        Find <strong>Active Input Handling</strong> and set it to <strong>Both</strong> — regardless of whether your project uses the Old Input Manager or the New Input System.
+        <Frame>
+            <img src="/img/earn/Input Handling Unity.png" alt="Active Input Handling set to Both" />
+        </Frame>
+    </Step>
+
+</Steps>

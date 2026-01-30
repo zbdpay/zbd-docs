@@ -46,22 +46,201 @@
                   "payments/ai-ingestion"
                 ]
               },
-              {
-                "group": "Products",
-                "pages": [
-                  "get-started/zbd-ramp",
-                  "get-started/zbd-rewards-sdk",
-                  "get-started/zbd-payments-api",
-                  "get-started/login-with-zbd",
-                  "get-started/zbd-app"
-                ]
-              }
+               {
+                 "group": "Products",
+                 "pages": [
+                   "get-started/zbd-ramp",
+                   "get-started/zbd-earn-sdk",
+                   "get-started/zbd-payments-api",
+                   "get-started/login-with-zbd",
+                   "get-started/zbd-app"
+                 ]
+               }
             ]
           }
         ]
       },
       {
-        "tab": "Payments",
+        "tab": "Earn",
+        "anchors": [
+          {
+            "anchor": "Earn SDK",
+            "icon": "layer-group",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "earn/sdk",
+                  "earn/sdk/download",
+                  "earn/sdk/compatibility",
+                  "earn/sdk/security",
+                  "earn/coverage"
+                ]
+              },
+              {
+                "group": "Integrating",
+                "pages": [
+                  "earn/sdk/integration",
+                  "earn/sdk/video-walkthrough",
+                  {
+                    "group": "Sending Rewards",
+                    "icon": "star",
+                    "pages": [
+                      "earn/sdk/send-rewards-client",
+                      {
+                        "group": "Send Rewards (Server)",
+                        "icon": "server",
+                        "pages": [
+                          "earn/sdk/send-rewards-server",
+                          "earn/sdk/create-api-key",
+                          "earn/sdk/send-rewards-api",
+                          "earn/sdk/restrict-client-rewards",
+                          {
+                            "group": "Manage Blocklist Entries",
+                            "icon": "gear",
+                            "pages": [
+                              "earn/sdk/get-blocklist-entries",
+                              "earn/sdk/delete-blocklist-entry"
+                            ]
+                          },
+                          {
+                            "group": "Manage API Keys",
+                            "icon": "key",
+                            "pages": [
+                              "earn/sdk/list-api-keys",
+                              "earn/sdk/revoke-api-key"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "earn/sdk/user-status",
+                  "earn/sdk/user-balance",
+                  {
+                    "group": "Retrieving Withdrawal Limit",
+                    "icon": "upload",
+                    "pages": [
+                      "earn/sdk/user-withdrawal",
+                      "earn/sdk/increase-withdrawal-limit",
+                      "earn/sdk/decrease-withdrawal-limit"
+                    ]
+                  },
+                  "earn/sdk/url-scheme",
+                  "earn/sdk/attestation-setup",
+                  "earn/sdk/best-practices",
+                  "earn/sdk/building",
+                  "earn/sdk/troubleshoot"
+                ]
+              },
+              {
+                "group": "Pushing to App Stores",
+                "pages": [
+                  "earn/sdk/ios-app-store",
+                  "earn/sdk/android-app-store"
+                ]
+              }
+            ]
+          },
+           {
+             "anchor": "Earn API",
+             "icon": "code",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "earn/api",
+                  "earn/api/gamertags",
+                  "earn/api/gamertags/send",
+                  "earn/api/gamertags/retrieve-reward",
+                  "earn/api/gamertags/utils",
+                  "earn/api/gamertags/create-charge",
+                  "earn/api/gamertags/retrieve-userid",
+                  "earn/api/gamertags/retrieve-from-userid"
+                ]
+              },
+              {
+                "group": "Knowledge Base",
+                "pages": [
+                  "earn/knowledge-base",
+                  {
+                    "group": "Rewarded Play",
+                    "pages": [
+                      "earn/knowledge-base/rewarded-play",
+                      "earn/knowledge-base/rewarded-play/integrating",
+                      {
+                        "group": "Game Security Course",
+                        "pages": [
+                          "earn/knowledge-base/game-security",
+                          "earn/knowledge-base/game-security/insecure-game",
+                          "earn/knowledge-base/game-security/hacking-saved-game",
+                          "earn/knowledge-base/game-security/hacking-memory-values",
+                          "earn/knowledge-base/game-security/decompiling-source-code",
+                          "earn/knowledge-base/game-security/altering-network-traffic",
+                          "earn/knowledge-base/game-security/securing-game",
+                          "earn/knowledge-base/game-security/replay-attacks",
+                          "earn/knowledge-base/game-security/securing-data",
+                          "earn/knowledge-base/game-security/app-check"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Integration Guides",
+                    "pages": [
+                      "earn/knowledge-base/integrations/unity",
+                      "earn/knowledge-base/integrations/beamable"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "Login with ZBD",
+            "icon": "shield-check",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "earn/oauth2",
+                  "earn/oauth2/integration",
+                  "earn/oauth2/guidelines",
+                  "earn/oauth2/walkthrough"
+                ]
+              },
+              {
+                "group": "API Reference",
+                "icon": "code",
+                "pages": [
+                  "earn/oauth2/api",
+                  "earn/oauth2/api/authorization",
+                  "earn/oauth2/api/retrieve-access-token",
+                  "earn/oauth2/api/refresh-token",
+                  "earn/oauth2/api/data-fetching",
+                  "earn/oauth2/api/retrieve-user",
+                  "earn/oauth2/api/retrieve-wallet"
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "ZBD App",
+            "icon": "apple",
+            "pages": [
+              {
+                "group": "Resources",
+                "pages": [
+                  "earn/app",
+                  "earn/app/uri-schemes"
+                ]
+              }
+            ]
+          }
+       ]
+     },
+      {
+        "tab": "Pay",
         "anchors": [
           {
             "anchor": "Overview",
@@ -101,53 +280,7 @@
                 "group": "Resources",
                 "pages": [
                   "payments/coverage",
-                  "payments/changelog",
                   "payments/glossary"
-                ]
-              }
-            ]
-          },
-          {
-            "anchor": "Ramp",
-            "icon": "circle-dollar-to-slot",
-            "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "payments/ramp",
-                  "payments/ramp/quickstart",
-                  "payments/ramp/user-flow",
-                  "payments/ramp/faq"
-                ]
-              },
-              {
-                "group": "SDKs",
-                "pages": [
-                  "payments/ramp/sdks/typescript",
-                  "payments/ramp/sdks/react",
-                  "payments/ramp/sdks/react-native",
-                  "payments/ramp/sdks/flutter"
-                ]
-              },
-              {
-                "group": "API",
-                "pages": [
-                  "payments/ramp/session"
-                ]
-              },
-              {
-                "group": "Customization",
-                "pages": [
-                  "payments/ramp/platform",
-                  "payments/ramp/themes",
-                  "payments/ramp/ai-themes"
-                ]
-              },
-              {
-                "group": "Events",
-                "pages": [
-                  "payments/ramp/webhooks",
-                  "payments/ramp/emails"
                 ]
               }
             ]
@@ -217,7 +350,7 @@
             ]
           },
           {
-            "anchor": "API Reference",
+            "anchor": "Payments API",
             "icon": "code",
             "pages": [
               {
@@ -316,182 +449,48 @@
                 ]
               }
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Rewards",
-        "anchors": [
+          },
           {
-            "anchor": "Rewards SDK",
-            "icon": "layer-group",
+            "anchor": "Onramps",
+            "icon": "circle-dollar-to-slot",
             "pages": [
               {
                 "group": "Overview",
                 "pages": [
-                  "rewards/sdk",
-                  "rewards/sdk/download",
-                  "rewards/sdk/compatibility",
-                  "rewards/sdk/security",
-                  "rewards/coverage"
+                  "payments/ramp",
+                  "payments/ramp/quickstart",
+                  "payments/ramp/user-flow",
+                  "payments/ramp/faq"
                 ]
               },
               {
-                "group": "Integrating",
+                "group": "SDKs",
                 "pages": [
-                  "rewards/sdk/integration",
-                  "rewards/sdk/video-walkthrough",
-                  {
-                    "group": "Sending Rewards",
-                    "icon": "star",
-                    "pages": [
-                      "rewards/sdk/send-rewards-client",
-                      {
-                        "group": "Send Rewards (Server)",
-                        "icon": "server",
-                        "pages": [
-                          "rewards/sdk/send-rewards-server",
-                          "rewards/sdk/create-api-key",
-                          "rewards/sdk/send-rewards-api",
-                          "rewards/sdk/restrict-client-rewards",
-                          {
-                            "group": "Manage Blocklist Entries",
-                            "icon": "gear",
-                            "pages": [
-                              "rewards/sdk/get-blocklist-entries",
-                              "rewards/sdk/delete-blocklist-entry"
-                            ]
-                          },
-                          {
-                            "group": "Manage API Keys",
-                            "icon": "key",
-                            "pages": [
-                              "rewards/sdk/list-api-keys",
-                              "rewards/sdk/revoke-api-key"
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  "rewards/sdk/user-status",
-                  "rewards/sdk/user-balance",
-                  {
-                    "group": "Retrieving Withdrawal Limit",
-                    "icon": "upload",
-                    "pages": [
-                      "rewards/sdk/user-withdrawal",
-                      "rewards/sdk/increase-withdrawal-limit",
-                      "rewards/sdk/decrease-withdrawal-limit"
-                    ]
-                  },
-                  "rewards/sdk/url-scheme",
-                  "rewards/sdk/attestation-setup",
-                  "rewards/sdk/best-practices",
-                  "rewards/sdk/building",
-                  "rewards/sdk/troubleshoot"
+                  "payments/ramp/sdks/typescript",
+                  "payments/ramp/sdks/react",
+                  "payments/ramp/sdks/react-native",
+                  "payments/ramp/sdks/flutter"
                 ]
               },
               {
-                "group": "Pushing to App Stores",
+                "group": "API",
                 "pages": [
-                  "rewards/sdk/ios-app-store",
-                  "rewards/sdk/android-app-store"
-                ]
-              }
-            ]
-          },
-          {
-            "anchor": "Rewards API",
-            "icon": "code",
-            "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "rewards/api",
-                  "rewards/api/gamertags",
-                  "rewards/api/gamertags/send",
-                  "rewards/api/gamertags/retrieve-reward",
-                  "rewards/api/gamertags/utils",
-                  "rewards/api/gamertags/create-charge",
-                  "rewards/api/gamertags/retrieve-userid",
-                  "rewards/api/gamertags/retrieve-from-userid"
+                  "payments/ramp/session"
                 ]
               },
               {
-                "group": "Knowledge Base",
+                "group": "Customization",
                 "pages": [
-                  "rewards/knowledge-base",
-                  {
-                    "group": "Rewarded Play",
-                    "pages": [
-                      "rewards/knowledge-base/rewarded-play",
-                      "rewards/knowledge-base/rewarded-play/integrating",
-                      {
-                        "group": "Game Security Course",
-                        "pages": [
-                          "rewards/knowledge-base/game-security",
-                          "rewards/knowledge-base/game-security/insecure-game",
-                          "rewards/knowledge-base/game-security/hacking-saved-game",
-                          "rewards/knowledge-base/game-security/hacking-memory-values",
-                          "rewards/knowledge-base/game-security/decompiling-source-code",
-                          "rewards/knowledge-base/game-security/altering-network-traffic",
-                          "rewards/knowledge-base/game-security/securing-game",
-                          "rewards/knowledge-base/game-security/replay-attacks",
-                          "rewards/knowledge-base/game-security/securing-data",
-                          "rewards/knowledge-base/game-security/app-check"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Integration Guides",
-                    "pages": [
-                      "rewards/knowledge-base/integrations/unity",
-                      "rewards/knowledge-base/integrations/beamable"
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "anchor": "Login with ZBD",
-            "icon": "shield-check",
-            "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "rewards/oauth2",
-                  "rewards/oauth2/integration",
-                  "rewards/oauth2/guidelines",
-                  "rewards/oauth2/walkthrough"
+                  "payments/ramp/platform",
+                  "payments/ramp/themes",
+                  "payments/ramp/ai-themes"
                 ]
               },
               {
-                "group": "API Reference",
-                "icon": "code",
+                "group": "Events",
                 "pages": [
-                  "rewards/oauth2/api",
-                  "rewards/oauth2/api/authorization",
-                  "rewards/oauth2/api/retrieve-access-token",
-                  "rewards/oauth2/api/refresh-token",
-                  "rewards/oauth2/api/data-fetching",
-                  "rewards/oauth2/api/retrieve-user",
-                  "rewards/oauth2/api/retrieve-wallet"
-                ]
-              }
-            ]
-          },
-          {
-            "anchor": "ZBD App",
-            "icon": "apple",
-            "pages": [
-              {
-                "group": "Resources",
-                "pages": [
-                  "rewards/app",
-                  "rewards/app/uri-schemes"
+                  "payments/ramp/webhooks",
+                  "payments/ramp/emails"
                 ]
               }
             ]
@@ -532,7 +531,7 @@
   },
   "seo": {
     "metatags": {
-      "og:image": "https://cdn.zbd.gg/zbd/api-seo.png"
+      "og:image": "https://editor.zbdpay.com/wp-content/uploads/2026/01/ZBD-API.webp"
     },
     "indexing": "navigable"
   },
@@ -635,9 +634,17 @@
       "source": "/knowledge-base/guides/*",
       "destination": "/payments"
     },
-    {
-      "source": "/api-reference/introduction",
-      "destination": "/payments/api"
-    }
-  ]
-}
+     {
+       "source": "/api-reference/introduction",
+       "destination": "/payments/api"
+     },
+     {
+       "source": "/rewards/:slug*",
+       "destination": "/earn/:slug*"
+     },
+     {
+       "source": "/rewards",
+       "destination": "/earn"
+     }
+   ]
+ }

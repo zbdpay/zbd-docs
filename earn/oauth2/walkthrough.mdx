@@ -1,0 +1,238 @@
+---
+title: 'Implementation Walkthrough'
+sidebarTitle: 'Walkthrough'
+description: 'Detailed walkthrough of an implementation of ZBD Login.'
+icon: 'person-running'
+
+---
+
+## Client Side
+
+When setting up OAuth2 from client side, you have two options:
+
+- Build the entire flow yourself
+    - Make a request for building the [authorization URL](/earn/oauth2/walkthrough#building-authorization-url)
+    - Handling the Webview with the created URL
+    - Getting the `code` after authenticating with ZEBEDE
+    - Making another request for [getting the token](/earn/oauth2/walkthrough#getting-the-token-and-accessing-zbd-api)
+- Make use of some of the available OAuth libraries available for the language you are working on, which would handle the initial steps of the flow
+    - Install and set up configs accordingly to the library
+        - If PKCE is available on the library you might receive the `code_verifier` from the response, after authenticating.
+        - If PKCE is not available, you might need to [build the code\_challenge and code\_verifier](/earn/oauth2/walkthrough#building-authorization-url) yourself.
+    - Getting `code` as response
+    - Making the request for [getting the token](/earn/oauth2/walkthrough#getting-the-token-and-accessing-zbd-api)
+
+If you chose the second option, there are open-source libraries for handling OAuth2 on Mobile using AppAuth ([iOS](https://github.com/openid/AppAuth-iOS) and [Android](https://github.com/openid/AppAuth-Android)), as well as for React Native using [react-native-app-auth](https://github.com/FormidableLabs/react-native-app-auth).
+
+### iOS Webview Configuration
+
+If you are calling the OAuth flow from an iOS webview integration, you need to add the following to your `Info.plist` file in Xcode:
+
+```xml
+<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>zebedee.oauth2</string>
+  <string>zbd</string>
+</array>
+```
+
+This allows your iOS app to query and open the ZBD app URL schemes required for the OAuth flow. Without this configuration, the OAuth redirect may not work properly on iOS devices.
+
+## Server Side
+
+### Node.js
+
+This flow go over all the steps for Logging in with ZBD, from Building the authorization URL, with proper PKCE Keys, to getting the accessToken and calling ZBD API.
+
+If you are using a library that provides PKCE guidelines, it will most likely be able to handle the initial flow (building auth URL and getting the code) just fine. In this case, feel free to jump to the [Token Section](/earn/oauth2/walkthrough#building-authorization-url).
+
+### Building Authorization URL
+
+In case you are setting up the PKCE flow yourself (no usage of libraries), we will need to setup the `code_challenge` from a `code_verifier` which will be used later on, on token request.
+
+```js
+const crypto = require('crypto');
+import OAuth from 'oauth';
+
+function sha256(buffer) {
+  return crypto.createHash('sha256').update(buffer).digest();
+}
+
+function base64URLEncode(str) {
+  return str
+    .toString('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+}
+
+export function GeneratePKCE() {
+  const verifier = base64URLEncode(crypto.randomBytes(32));
+
+  if (verifier) {
+    const challenge = base64URLEncode(sha256(verifier));
+    return { challenge, verifier };
+  }
+}
+
+const createZBDOauth = () => {
+  const { OAuth2 } = OAuth;
+  const authorizeUrl = 'oauth2/authorize';
+  const tokenPath = 'oauth2/token';
+  const oauth2 = new OAuth2(
+    ZBD_CONSUMER_KEY, // CLient ID
+    ZBD_CONSUMER_SECRET, // Client Secret
+    ZEBEDEE_API_URL, // ZBD API URL: https://api.zbdpay.com/v0/
+    authorizeUrl, // Authorization URL: oauth2/authorize/
+    tokenPath, // Token Path: oauth2/token
+    null,
+  );
+  return oauth2;
+};
+
+// Called by the app to get a url it will open in a webview/or browser
+export const getZBDLoginUrl = async (userId: string) => {
+  // generate the PKCE key
+  const { verifier, challenge } = GeneratePKCE();
+
+  // save the verifier/key to the user object so we can access it when validating in the callback
+  await User.findOneAndUpdate({ userId }, { oauthVerifier: verifier });
+
+  const scope = 'user';
+  const state = userId;
+  const suffix = `&response_type=code&code_challenge=${challenge}&code_challenge_method=S256&state=${state}`;
+
+  const oauth2 = createZBDOauth();
+
+  // use NPM module to create the url
+  const res = await oauth2.getAuthorizeUrl({
+    redirect_uri: ZBD_REDIRECT_URL,
+    scope,
+  });
+
+  // npm module doesnt support PKCE so append the url with the code_challenge info
+  const url = res + suffix;
+  return url;
+};
+```
+
+**Code explanation**
+
+*   `getZBDLoginUrl` function
+    *   In this function, we initially Generate PKCE keys: `verifier` and `code_challenge`
+    *   Then, `findOneAndUpdate` represents an generic ORM call for updating the User model, on the database. This way we can, afterwards, retrieve that value for getting the token.
+    *   We then Build the URL suffix
+    *   Url prefix and generated from `createZBDOauth`, which uses `oauth` library to do so
+*   `generatePKCE`
+    *   This is where we setup PKCE Keys.
+        *   initially we set the code verifier:
+            *   `const verifier = base64URLEncode(crypto.randomBytes(32));`
+        *   From the code verifier, the code\_challenge is created:
+            *   `const challenge = base64URLEncode(sha256(verifier));`
+
+When logging in using the provided URL, you will get a response including `state` and `code` which should be user now for getting the token, and user data:
+
+### Getting the token and accessing ZBD API
+
+```js
+// called by ZBD oauth on login
+export const zbdLoginCallback = async (payload: Object) => {
+  const { code, state } = payload;
+  try {
+    const user = await User.findOne({ userId: state });
+    const { oauthVerifier } = user;
+    // get the verifier generated by the PKCE script
+
+    const res = await getAccessToken({
+      code,
+      client_secret: ZBD_CONSUMER_SECRET,
+      client_id: ZBD_CONSUMER_KEY,
+      code_verifier: oauthVerifier,
+      grant_type: 'authorization_code',
+      redirect_uri: ZBD_REDIRECT_URL,
+    });
+    const { access_token } = res.data;
+
+    // get user data now we have the access token
+    const response = await getUserData(access_token);
+    const { data } = response;
+    const userData = data.data;
+    const { gamertag, email, isVerified, id } = userData;
+    if (!gamertag || !id || !email) {
+      throw new Error('gamer tag not found');
+    }
+    // save the details to the user object so we now know their email, verification etc
+    user.gamerTag = gamertag;
+    user.gamerTagId = id;
+    user.email = email;
+    user.isZBDVerified = isVerified;
+    user.oauthLoginDate = new Date();
+    await user.save();
+    // show a webpage that will redirect back to the app app by calling the app schema url
+    return {
+      html: path.resolve(`${__dirname}/../callback/oauth-callback.html`),
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      html: path.resolve(`${__dirname}/../callback/oauth-callback-error.html`),
+    };
+  }
+};
+```
+
+**Code explanation**
+
+Once the user is successfully authenticated on ZBD Client, there is a redirect back to your app, sending `code` and `state` as query params.
+
+Those values are send as payload on this next request:
+
+*   First of all, remember we registered the verifier on the User (generic ORM update)? now we retrieve that value:
+    *   `const user = await User.findOne({ userId: state });`
+*   With the proper verifier, we can now make a post request to the token endpoint, and we should have the token returned.
+    
+    *   `const res = await getAccessToken({…body})`
+    
+    ```js
+    export const getAccessToken = async (payload: Object) => {
+    const response = await axios({
+        method: 'POST',
+        data: payload,
+        url: `https://api.zbdpay.com/v0/oauth2/token`,
+        headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        },
+    });
+    return response;
+    };
+    ```
+*   Now, by adding the accessToken to request headers, we can fetch data from ZBD API
+    
+    *   `const response = await getUserData(access_token);`
+    
+    ```js
+    export const getUserData = async (accessToken: string) => {
+    const response = await axios({
+        method: 'GET',
+        url: `https://api.zbdpay.com/v0/oauth2/user`,
+        headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    return response;
+    };
+    ```
+
+You are now able to proceed with your login logic and send the user data accordingly ⚡
+
+## Code Examples
+
+<CardGroup cols={2}>
+  <Card title="React Native + ZBD Login" icon="github" color="#000000" href="https://github.com/zebedeeio/login-zbd-react-native-example">
+    See the full source code.
+  </Card>
+  <Card title="Express.js + ZBD Login" icon="github" color="#000000" href="https://github.com/zebedeeio/login-zebedee-express-example">
+    See the full source code.
+  </Card>
+</CardGroup>

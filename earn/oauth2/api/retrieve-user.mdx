@@ -1,0 +1,25 @@
+---
+title: "Get User Data"
+description: "Fetch user-related information about a logged-in ZBD User."
+api: "GET https://api.zbdpay.com/v1/oauth2/user"
+---
+
+## Description
+
+You can use this API endpoint to fetch information about a given ZBD User, granted you can pass the provided `accessToken`.
+
+- [Read here for more details](/earn/oauth2) on how to setup ZBD Login (OAuth2) with your platform.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="usertoken" type="string">
+    OAuth2 Access Token
+</ParamField>
+
+<ParamField required header="apikey" type="string">
+    ZBD Project API Key
+</ParamField>
+
+

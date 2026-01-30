@@ -1,0 +1,85 @@
+---
+title: 'Attestation Set Up'
+sidebarTitle: 'Attestation Set Up'
+description: 'Configure attestation to ensure your app has not been tampered with using required information for Android and iOS.'
+icon: 'shield-check'
+---
+
+
+In order to ensure we have everything we need to detect whether your app has not been tampered with as part of our attestation check, we require a couple of pieces of information.
+
+Here is a handy video guide:
+
+<iframe
+    className="w-full aspect-video rounded-lg"
+    src="https://www.youtube.com/embed/ItXgcd15lLA"
+    title="ZBD Attestation Setup Guide"
+    frameBorder="0"
+    allow="accelerometer; fullscreen; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+></iframe>
+
+## Android
+
+For Android, we need your **Bundle ID** or **package name**, i.e.`com.domain.appname`, which you set in your Unity build settings.
+
+<Warning>
+    This is NOT the appId ZBD provides you.
+</Warning>
+
+We also need the **SHA-256 hash** of your signing key.
+
+To find your app's SHA-256 hash key for Google Play:
+<Steps>
+    <Step title="Access Google Play Console">
+        Sign in to your Google Play Console account.
+    </Step>
+    <Step title="Select your app">
+        Choose the app for which you need the SHA-256 hash.
+    </Step>
+    <Step title="Navigate to Release">
+        Go to the Release section in the left-hand menu.
+    </Step>
+    <Step title="Navigate to Setup">
+        Click on Setup in the submenu.
+    </Step>
+    <Step title="Select App integrity from the options">
+
+    </Step>
+    <Step title=" Click on App signing">
+
+    </Step>
+    <Step title="Find the App signing key certificate">
+    </Step>
+    <Step title="Select and copy the SHA-256 Fingerprint">
+    </Step>
+</Steps>
+
+<Frame>
+    <img src="/img/earn/google-play-attestation.png" alt="Google play attestation setup" />
+</Frame>
+
+During development, you are likely using a custom keystore in Unity, so we will need that **SHA-256 hash** as well. You can generate the SHA-256 hash key for your keystore using the following command:
+```bash
+ keytool -list -v -keystore path/to/your.keystore -alias your_alias -storepass your_keystore_password -keypass your_key_password
+```
+<Note>
+    It should look something like this :
+    EA:A1:69:AA:2F:FC:6D:16:84:ED:06:11:E0:65:2B:E0:BB:9C:5B:E3:41:96:06:E2:3D:85:8F:2C:22:2A:E9:86
+</Note>
+
+## iOS
+For iOS we need your **Bundle ID** i.e.`app id`, e.g.`com.domain.appname` and your **Team ID**.
+To find your app's Team ID for Apple Developer:
+<Steps>
+    <Step title="Access Appel Developer Account">
+        Sign in to your Apple Developer account
+    </Step>
+    <Step title="Click on Membershipt details">
+    </Step>
+    <Step title="Select and copy Team ID">
+    </Step>
+</Steps>
+<Warning>
+    This is NOT the appId ZBD provides you.
+</Warning>
