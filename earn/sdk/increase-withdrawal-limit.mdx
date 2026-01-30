@@ -7,7 +7,7 @@ api: "POST https://api.zebedee.io/api/v1/rewards/user/{rewardsUserId}/withdrawal
 Increase the withdrawal limit for a specific user in your Rewards App from your server. This endpoint allows you to raise the maximum amount a user can withdraw from their rewards balance.
 
 <Note>
-  **Server-Side Authentication**: This endpoint requires a secure API key. Learn how to [create an API key](/rewards/sdk/create-api-key) for your Rewards App. Keep your API key secure and never expose it in client-side code.
+  **Server-Side Authentication**: This endpoint requires a secure API key. Learn how to [create an API key](/earn/sdk/create-api-key) for your Rewards App. Keep your API key secure and never expose it in client-side code.
 </Note>
 
 ## Configuration
@@ -17,7 +17,7 @@ Increase the withdrawal limit for a specific user in your Rewards App from your 
 <ParamField required header="x-api-key" type="string">
   Your Rewards App API key for authentication.
 
-  [Create an API key](/rewards/sdk/create-api-key) if you haven't already.
+  [Create an API key](/earn/sdk/create-api-key) if you haven't already.
 </ParamField>
 
 ### Path Parameters
@@ -315,4 +315,4 @@ func main() {
 
 ## Try It Out
 
-Ready to increase a user's withdrawal limit? Use our API playground on the right to test with your [API key](/rewards/sdk/create-api-key) and user ID.
+Ready to increase a user's withdrawal limit? Use our API playground on the right to test with your [API key](/earn/sdk/create-api-key) and user ID.

@@ -31,7 +31,7 @@ Retrieve all blocklist entries for your Rewards App to see which API routes are 
 <ParamField  header="apiRoute" type="string">
   Filter by API route (optional)
 
-  Example: `/rewards/limited-achievement/reward`
+   Example: `/earn/limited-achievement/reward`
 </ParamField>
 
 ### Path Parameters
@@ -121,7 +121,7 @@ async function getBlocklistEntries(rewardsAppId) {
         'z-client': 'developer-dashboard',
         'Authorization': `Bearer ${jwtToken}`,
         'version': '1',
-        'apiRoute': '/rewards/limited-achievement/reward'
+        'apiRoute': '/earn/limited-achievement/reward'
       }
     }
   );
@@ -147,7 +147,7 @@ const entries = await getBlocklistEntries('b28e0306-2c06-4092-8d56-a1623d6b97fb'
 curl --location 'https://api.zbdpay.com/api/v1/rewards/app/b28e0306-2c06-4092-8d56-a1623d6b97fb/api-version-blocklist' \
 --header 'z-client: developer-dashboard' \
 --header 'version: 1' \
---header 'apiRoute: /rewards/limited-achievement/reward' \
+--header 'apiRoute: /earn/limited-achievement/reward' \
 --header 'Authorization: Bearer {JWT_TOKEN}'
 ```
 
