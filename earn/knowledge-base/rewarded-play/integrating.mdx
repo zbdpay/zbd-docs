@@ -12,7 +12,7 @@ Here's what's in this guide:
 |Section    |What you'll learn|Key points|
 |--------|----|----|
 | [Setting up your account](#setting-up-your-account) |Signing up and funding your account.|- Main wallet holds most of your funds <br/><br/> -Project wallets are connected to games and have API keys attached to them|
-| [Under the hood: ZBD API in your game](#under-the-hood) |The backend part of using ZBD.|- Store API keys on a secure server! <br/><br/> - The two recommended ZBD integration paths: Send to Email vs Log in with ZBD|
+| [Under the hood: ZBD API in your game](#under-the-hood) |The backend part of using ZBD.|- Store API keys on a secure server! <br/><br/> - Recommended ZBD integration: Log in with ZBD (Send to Email is deprecated)|
 | [The front-end: In-game UI/UX](#the-front-end) |The front end part: How players withdraw rewards and how they earn them in the first place.|- Creating a withdrawal flow (with a premade template)|
 |||- Earning mechanics: Simple on-size-fits-all vs custom integrations to fit a specific game|
 
@@ -126,23 +126,26 @@ At the risk of repeating ourselves... you can also do this using [Beamable](http
 
 #### On to the ZBD API
 
-There are a few different ways to integrate the ZBD API. These are the two we recommend for games:
-1. Send to Email - easy to set up, very little friction for gamers.
-    + Ideal for integrating fast, with minimal dev work
-    + Gamers only need to enter their email to withdraw.
-        + If they already have a ZBD account -> they get Bitcoin instantly
-        + If they don't have a ZBD account -> we send them an email with a voucher for the rewards and further instructions
-2. Log in with ZBD - a bit more setup, but more powerful features and controls
+There are a few different ways to integrate the ZBD API. We recommend using Log in with ZBD for new integrations:
+
+1. **Log in with ZBD** - Recommended approach for new integrations
     + Just like "Sign in with Google", but for moving money.
     + Ideal for games that want to build deeper integrations and have more insight into users/who is receiving rewards
+2. ~~Send to Email~~ - **DEPRECATED** (scheduled for removal by end of February 2026)
+    + Not recommended for new integrations
+    + See Log in with ZBD instead
 
-### The simple way: Send to Email
- 
-This is the easiest way to get started with player rewards using the ZBD API.
+### ~~The simple way: Send to Email~~ (DEPRECATED)
+
+<Warning>
+**DEPRECATED:** The Send to Email endpoint is deprecated and scheduled for removal by the end of February 2026. Please use **Log in with ZBD** for new integrations instead.
+</Warning>
+
+This section is maintained for existing integrations only.
 
 <Info>**The user's perspective**: As simple as writing their email!</Info>
 
-#### Using the Send to Email API
+#### Using the Send to Email API (Deprecated)
 
 To send Bitcoin to a given email, all you need to do is call the Send to Email API with a POST call providing the following properties:
 
