@@ -1,0 +1,102 @@
+---
+title: "Manage via Dashboard"
+description: "Create API keys and control reward settings from the ZBD Dashboard"
+icon: "sliders"
+---
+
+Manage your Rewards App settings directly from the ZBD Dashboard.
+
+## Access Your Project's SDK Settings
+
+1. Go to [dashboard.zbdpay.com](https://dashboard.zbdpay.com)
+2. Navigate to **Projects**
+3. Select your project
+4. Click the **SDK** tab
+5. Click the **Controls** sub-tab
+
+Your Rewards App settings will load automatically under **API Key Control** and **Client Send Control** sections.
+
+<Note>
+  If you see "No Rewards App found for this project", contact ZBD support to enable Rewards for your project by adding your project ID to the database.
+</Note>
+
+---
+
+## Create an API Key (Required)
+
+To send rewards from your server, you need an API key for authentication.
+
+### How to Create
+
+1. In the SDK tab → Controls sub-tab, find the **API Key Control** section
+2. Check the **Status** badge:
+   - 🔴 **Disabled** (red) with text "No active API key found" = No API key exists
+   - 🟢 **Enabled** (green) = API key is active
+3. Click **"Create API Key"** button
+4. **Click the copy button** next to the API key to copy it
+5. **Save the API key in a secure place immediately** (environment variables, secrets manager, etc.)
+
+<Warning>
+  The API key is shown only once after creation. If you lose it, you'll need to revoke it and create a new one.
+</Warning>
+
+**What you'll use it for:**
+- Authenticating server-side reward sending requests
+- Required for the [Send Rewards API](/rewards/sdk/send-rewards-api)
+
+---
+
+## Control Client-Side Sending (Recommended)
+
+After creating your API key, you can disable client-side reward sending to enforce server-only rewards.
+
+<Note>
+  **Important**: You must create an API key first before disabling client-side sending. Without an API key, disabling client-side means no rewards can be sent at all.
+</Note>
+
+### How to Disable Client-Side Sending
+
+1. In the SDK tab, find the **Client Send Control** section
+2. Check the **Status** badge:
+   - 🟢 **Enabled** (green) with text "Client sending is enabled" = Client can send rewards
+   - 🔴 **Disabled** (red) with text "Client sending is disabled" = Only server can send
+3. Click **"Disable Client Send"** button to block client-side rewards
+
+**What this does:**
+- Blocks client SDK reward calls
+- Only your server (with the API key) can send rewards
+- Prevents client-side abuse
+
+### How to Enable Client-Side Again
+
+If you need to allow client-side rewards:
+1. In the **Client Send Control** section, click **"Enable Client Send"**
+2. Status will change to 🟢 **Enabled** (green)
+3. Both client SDK and server can send rewards again
+
+---
+
+## Revoke an API Key
+
+If your API key is compromised or no longer needed, revoke it immediately.
+
+### How to Revoke
+
+1. In the SDK tab, find the **API Key Control** section
+2. Make sure the Status is 🟢 **Enabled** (green)
+3. Click **"Revoke Key"** button
+4. Confirm the action in the dialog
+
+**After revoking:**
+- The key is immediately deactivated
+- Status changes to 🔴 **Disabled** (red) with "No active API key found"
+- Server requests using this key will fail
+- Create a new API key if you need to continue sending rewards
+
+---
+
+## Next Steps
+
+Now that you've created your API key and configured your settings, you're ready to send rewards from your server:
+
+- **[Send Rewards from Server](/rewards/sdk/send-rewards-api)** - Use your API key to send rewards securely

@@ -29,29 +29,30 @@ If you exceed this limit, you will receive a `429 Too Many Requests` response. I
 ## How It Works
 
 <Steps>
-    <Step title="Create an API Key for Your Rewards App (Server Authentication)">
-        Generate a dedicated API key to authenticate your backend with the ZBD Rewards API.
-    </Step>
-    
+    <Step title="Access Your Project's SDK Settings">
+        Go to Dashboard → Projects → Select Your Project → SDK tab → Controls sub-tab.
 
-    <Step title="Restrict Client-Side Reward Sending">
-        Use the API version blocklist to disable client-side reward calls, ensuring only your server can issue rewards.
+        Your Rewards App settings will load automatically.
     </Step>
 
-    <Step title="Send a Reward from Your Backend Using the v2 API">
-        Use your backend to issue rewards securely through the v2 API endpoint.
-    </Step>
-    
-    <Step title="Manage Blocklist Entries (List or Delete)">
-        If client restrictions are enabled, you can view or remove entries from your API version blocklist.
+    <Step title="Create an API Key (Required)">
+        Click "Create API Key" in the dashboard and save it securely.
+
+        **Required** for server-side authentication. The key is shown only once.
     </Step>
 
-    <Step title="Manage API Keys (List or Revoke)">
-        Maintain your API keys by listing or revoking them as needed for security.
+    <Step title="Disable Client-Side Sending (Recommended)">
+        Click "Disable Client Send" to block client-side reward sending.
+
+        Ensures only your server can send rewards. Recommended for security.
+    </Step>
+
+    <Step title="Send Rewards from Your Server">
+        Use your API key with the send rewards endpoint to issue rewards securely.
     </Step>
 </Steps>
 
 
 
-Next, let’s begin with **creating your API key**, which authenticates your backend for sending rewards.
+Next, let's begin with **[managing your Rewards App via the dashboard](/rewards/sdk/manage-via-dashboard)**, where you'll create your API key and configure your settings.
 
