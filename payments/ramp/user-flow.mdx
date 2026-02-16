@@ -1,0 +1,269 @@
+---
+title: 'User Flow Walkthrough'
+sidebarTitle: 'User Flow'
+description: 'Visual walkthrough of the complete ZBD Ramp user experience'
+icon: 'route'
+---
+
+This guide walks through the complete user journey in the ZBD Ramp widget, from initial screen to completed purchase. Use this reference to understand what your users will experience when buying Bitcoin through your app.
+
+## 1. Initial Screen
+
+When users first launch the ramp widget, they're greeted with a clean, intuitive interface to begin their purchase journey.
+
+<Frame>
+  <img src="/img/v3/ramp-ui/1. initial-screen.png" alt="ZBD Ramp Initial Screen" />
+</Frame>
+
+The initial screen presents the core functionality and guides users to begin the purchase process.
+
+---
+
+## 2. Email Verification
+
+To ensure account security and compliance, users must verify their email address before proceeding.
+
+<Frame>
+  <img src="/img/v3/ramp-ui/2. email-verification.png" alt="Email Verification Screen" />
+</Frame>
+
+Users receive a verification code via email and enter it to confirm their identity and proceed to KYC.
+
+---
+
+## 3. KYC Flow
+
+The Know Your Customer (KYC) process is streamlined into clear steps. This is required for regulatory compliance and fraud prevention.
+
+### Step 1: Getting Started
+
+<Frame>
+  <img src="/img/v3/ramp-ui/3. kyc-flow/1. initial.png" alt="KYC Initial Screen" />
+</Frame>
+
+Users are introduced to the KYC process and what information they'll need to provide.
+
+### Step 2: Country Selection
+
+<Frame>
+  <img src="/img/v3/ramp-ui/3. kyc-flow/2. country.png" alt="Country Selection" />
+</Frame>
+
+Users select their country of residence. This determines available payment methods and compliance requirements.
+
+### Step 3: Personal Information
+
+<Frame>
+  <img src="/img/v3/ramp-ui/3. kyc-flow/3. personal-info.png" alt="Personal Information Form" />
+</Frame>
+
+Users provide basic personal information including full name, date of birth, and other required details.
+
+### Step 4: Address
+
+<Frame>
+  <img src="/img/v3/ramp-ui/3. kyc-flow/4. address.png" alt="Address Form" />
+</Frame>
+
+Users enter their residential address for identity verification purposes.
+
+### Step 5: Document Selection
+
+<Frame>
+  <img src="/img/v3/ramp-ui/3. kyc-flow/5. document.png" alt="Document Type Selection" />
+</Frame>
+
+Users choose which type of government-issued ID they'll upload (passport, driver's license, etc.).
+
+### Step 6: Document Upload
+
+<Frame>
+  <img src="/img/v3/ramp-ui/3. kyc-flow/6. upload-document.png" alt="Document Upload Screen" />
+</Frame>
+
+Users can upload documents directly or receive a secure link to complete the upload on their phone.
+
+<Tabs>
+  <Tab title="Phone Upload">
+    <Frame>
+      <img src="/img/v3/ramp-ui/3. kyc-flow/6.2 upload document-phone.png" alt="Upload from Phone" />
+    </Frame>
+    Users can scan a QR code or receive a link to upload from their mobile device.
+  </Tab>
+  <Tab title="Secure Link">
+    <Frame>
+      <img src="/img/v3/ramp-ui/3. kyc-flow/6.3 upload-document-secure-link.png" alt="Secure Link Option" />
+    </Frame>
+    A secure, one-time link is generated for mobile document uploads.
+  </Tab>
+  <Tab title="Phone Connected">
+    <Frame>
+      <img src="/img/v3/ramp-ui/3. kyc-flow/6.4. upload-document-phone-connected.png" alt="Phone Connected" />
+    </Frame>
+    Confirmation that the mobile device is connected and ready for upload.
+  </Tab>
+</Tabs>
+
+---
+
+## 4. KYC Processing
+
+After submitting KYC information, users enter the verification stage.
+
+<Tabs>
+  <Tab title="Processing">
+    <Frame>
+      <img src="/img/v3/ramp-ui/4. kyc-processing.png" alt="KYC Processing" />
+    </Frame>
+    Users see a processing screen while their information is being verified. This typically takes just a few moments.
+  </Tab>
+  <Tab title="Success">
+    <Frame>
+      <img src="/img/v3/ramp-ui/5. kyc-success.png" alt="KYC Success" />
+    </Frame>
+    Upon successful verification, users are cleared to proceed with their purchase.
+  </Tab>
+  <Tab title="Failed">
+    <Frame>
+      <img src="/img/v3/ramp-ui/5. kyc-failed.png" alt="KYC Failed" />
+    </Frame>
+    If verification fails, users receive clear guidance on next steps or alternative options.
+  </Tab>
+</Tabs>
+
+---
+
+## 5. Payment Method Selection
+
+Once KYC is approved, users choose how they want to pay for their Bitcoin.
+
+<Frame>
+  <img src="/img/v3/ramp-ui/6. payment-method.png" alt="Payment Method Selection" />
+</Frame>
+
+Users can connect their bank account via Plaid for ACH payments. Additional payment methods are coming soon.
+
+<Info>
+  If a user hasn't linked a bank account yet, they'll see an option to connect via Plaid.
+</Info>
+
+<Frame>
+  <img src="/img/v3/ramp-ui/6.1. payment-method-no-link.png" alt="Payment Method - No Bank Linked" />
+</Frame>
+
+---
+
+## 6. Plaid Bank Connection
+
+To enable bank payments, users securely connect their bank account through Plaid.
+
+### Plaid Flow Steps
+
+<Steps>
+  <Step title="Initiate Connection">
+    <Frame>
+      <img src="/img/v3/ramp-ui/6. plaid-flow/1. initial.png" alt="Plaid Initial Screen" />
+    </Frame>
+    Users are introduced to the secure Plaid connection process.
+  </Step>
+
+  <Step title="Select Institution">
+    <Frame>
+      <img src="/img/v3/ramp-ui/6. plaid-flow/2. institution.png" alt="Bank Institution Selection" />
+    </Frame>
+    Users search for and select their bank from thousands of supported institutions.
+  </Step>
+
+  <Step title="Bank Authentication">
+    <Frame>
+      <img src="/img/v3/ramp-ui/6. plaid-flow/3. bank-connect.png" alt="Bank Authentication" />
+    </Frame>
+    Users log into their bank account securely through Plaid's interface.
+  </Step>
+
+  <Step title="Connection Complete">
+    <Frame>
+      <img src="/img/v3/ramp-ui/6. plaid-flow/4. bank-connected.png" alt="Bank Connected Successfully" />
+    </Frame>
+    Confirmation that the bank account is successfully connected and ready for payments.
+  </Step>
+</Steps>
+
+---
+
+## 7. Payment Confirmation
+
+After payment method setup, users confirm their purchase details.
+
+<Tabs>
+  <Tab title="Success">
+    <Frame>
+      <img src="/img/v3/ramp-ui/7. confirmation-screen.png" alt="Payment Confirmation Success" />
+    </Frame>
+    Users see a success screen confirming their Bitcoin purchase and delivery details.
+  </Tab>
+  <Tab title="Failed">
+    <Frame>
+      <img src="/img/v3/ramp-ui/7. confirmation-fail.png" alt="Payment Confirmation Failed" />
+    </Frame>
+    If the payment fails, users receive clear error messages and options to retry.
+  </Tab>
+</Tabs>
+
+---
+
+## 8. Transaction Management
+
+Users can view their transaction history and details at any time.
+
+### Transaction History
+
+<Frame>
+  <img src="/img/v3/ramp-ui/tx-history.png" alt="Transaction History" />
+</Frame>
+
+A comprehensive list of all past and pending transactions, with status indicators for easy tracking.
+
+### Transaction Details
+
+<Frame>
+  <img src="/img/v3/ramp-ui/tx-details.png" alt="Transaction Details" />
+</Frame>
+
+Detailed view of individual transactions including amounts, timestamps, fees, and destination addresses.
+
+---
+
+## Integration Tips
+
+<CardGroup cols={2}>
+  <Card title="Smooth Transitions" icon="arrow-right">
+    Design your app to seamlessly transition users into the ramp widget. Consider the context and timing of when you present the purchase option.
+  </Card>
+
+  <Card title="Handle Callbacks" icon="webhook">
+    Implement webhook handlers to process purchase events and update your app state in real-time as users progress through the flow.
+  </Card>
+</CardGroup>
+
+---
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Integration Guide" icon="rocket" href="/payments/ramp/quickstart">
+    Learn how to integrate the ZBD Ramp widget into your application
+  </Card>
+
+  <Card title="Customize Appearance" icon="palette" href="/payments/ramp/themes">
+    Customize the widget's theme to match your brand
+  </Card>
+
+  <Card title="Webhook Events" icon="webhook" href="/payments/ramp/webhooks">
+    Handle webhook events to track user progress and purchases
+  </Card>
+
+  <Card title="API Reference" icon="code" href="/payments/ramp/session">
+    Explore the complete API documentation
+  </Card>
+</CardGroup>

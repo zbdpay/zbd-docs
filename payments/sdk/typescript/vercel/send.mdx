@@ -37,7 +37,7 @@ import { NextResponse } from 'next/server';
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
-const ZBD_BASE_URL = 'https://api.zebedee.io';
+const ZBD_BASE_URL = 'https://api.zbdpay.com';
 const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8';
 
 export async function GET() {
@@ -77,12 +77,12 @@ Run function locally:
 npx next dev
 ```
 
-Opening your browser to the following URL: `http://localhost:3000/api/send` should return a JSON response with the payment sent message.
+Opening your browser to the following URL: `https://example.com/api/send` should return a JSON response with the payment sent message.
 
 You can also test this using curl command:
 
 ```bash
-curl http://localhost:3000/api/send
+curl https://example.com/api/send
 ```
 
 You're looking for the `status` of `completed` to know that the payment settled successfully. 

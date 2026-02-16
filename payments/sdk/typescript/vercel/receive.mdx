@@ -38,7 +38,7 @@ import { NextResponse } from 'next/server';
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
-const ZBD_BASE_URL = 'https://api.zebedee.io';
+const ZBD_BASE_URL = 'https://api.zbdpay.com';
 const ZBD_API_KEY = 'b7YW3s2JzZKGcXjIf5Dqof8wjKT2RuWr8';
 
 export async function GET() {
@@ -71,12 +71,12 @@ Run function locally:
 npx next dev
 ```
 
-Opening your browser to the following URL: `http://localhost:3000/api/request` should return a JSON response with a payment request.
+Opening your browser to the following URL: `https://example.com/api/request` should return a JSON response with a payment request.
 
 You can also test this using curl command:
 
 ```bash
-curl http://localhost:3000/api/request
+curl https://example.com/api/request
 ```
 
 You're looking for the `data.invoice.request` property in the JSON response. It starts with `lnbc1` and is the payment request anyone in the Bitcoin Lightning Network can use to pay you.

@@ -1,0 +1,485 @@
+---
+title: 'TypeScript SDK'
+sidebarTitle: 'TypeScript'
+description: 'Core TypeScript/JavaScript SDK for ZBD Ramp integration'
+icon: 'js'
+---
+
+The `@zbdpay/ramp-ts` package is the core TypeScript/JavaScript iframe wrapper for the ZBD Ramp widget that enables Bitcoin purchase interface for web applications.
+
+## Features
+
+- **TypeScript First**: Full type safety with comprehensive TypeScript definitions
+- **PostMessage Communication**: Real-time error handling, logging, and step tracking
+- **Lightweight**: No dependencies, tree-shakeable
+- **Framework Agnostic**: Works with any JavaScript framework or vanilla JS
+
+## Installation
+
+<Tabs>
+  <Tab title="npm">
+    ```bash
+    npm install @zbdpay/ramp-ts
+    ```
+  </Tab>
+  <Tab title="yarn">
+    ```bash
+    yarn add @zbdpay/ramp-ts
+    ```
+  </Tab>
+  <Tab title="pnpm">
+    ```bash
+    pnpm add @zbdpay/ramp-ts
+    ```
+  </Tab>
+  <Tab title="CDN">
+    ```html
+    <script type="module">
+      import { createRamp } from 'https://cdn.jsdelivr.net/npm/@zbdpay/ramp-ts/dist/src/index.js';
+    </script>
+    ```
+  </Tab>
+</Tabs>
+
+## Quick Start
+
+### 1. Create Session Token
+
+First, create a session token using the ZBD API:
+
+```typescript
+import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
+
+const response = await initRampSession({
+  apikey: 'your-zbd-api-key',
+  email: 'user@example.com',
+  destination: 'lightning-address@zbd.gg',
+  quote_currency: QuoteCurrencyEnum.USD,
+  base_currency: BaseCurrencyEnum.BTC,
+  webhook_url: 'https://your-webhook-url.com',
+});
+
+const sessionToken = response.data.session_token;
+```
+
+### 2. Create and Mount Widget
+
+```typescript
+import { createRamp } from '@zbdpay/ramp-ts';
+
+const ramp = createRamp({
+  sessionToken,
+  container: '#ramp-container',
+  onSuccess: (data) => console.log('Success:', data),
+  onError: (error) => console.error('Error:', error),
+  onStepChange: (step) => console.log('Step:', step),
+});
+
+ramp.mount();
+```
+
+## API Reference
+
+### initRampSession
+
+Creates a new session token for the ZBD Ramp widget.
+
+<ParamField body="config" type="InitRampSessionConfig" required>
+  Configuration object for creating a session
+</ParamField>
+
+#### Configuration Parameters
+
+<ParamField body="apikey" type="string" required>
+  Your ZBD API key
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  User's email address
+</ParamField>
+
+<ParamField body="destination" type="string" required>
+  Lightning address or Bitcoin address
+</ParamField>
+
+<ParamField body="quote_currency" type="QuoteCurrencyEnum" required>
+  Quote currency (e.g., USD)
+</ParamField>
+
+<ParamField body="base_currency" type="BaseCurrencyEnum" required>
+  Base currency (e.g., BTC)
+</ParamField>
+
+<ParamField body="webhook_url" type="string">
+  Webhook URL for notifications
+</ParamField>
+
+<ParamField body="reference_id" type="string">
+  Your internal reference ID
+</ParamField>
+
+<ParamField body="metadata" type="Record<string, any>">
+  Additional metadata to attach to the session
+</ParamField>
+
+#### Response
+
+```typescript
+interface InitRampSessionResponse {
+  data: {
+    session_token: string;    // Session token for widget
+    expires_at: string;        // Token expiration time
+    widget_url: string;        // Direct widget URL
+  };
+  error: string | null;       // Error message if failed
+  success: boolean;           // Success status
+  message: string;             // Response message
+}
+```
+
+#### Example
+
+<CodeGroup>
+```typescript Async/Await
+import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
+
+try {
+  const response = await initRampSession({
+    apikey: 'your-zbd-api-key',
+    email: 'user@example.com',
+    destination: 'lightning-address@zbd.gg',
+    quote_currency: QuoteCurrencyEnum.USD,
+    base_currency: BaseCurrencyEnum.BTC,
+    webhook_url: 'https://your-webhook.com',
+    reference_id: 'order-123',
+    metadata: { 
+      userId: '456', 
+      plan: 'premium' 
+    },
+  });
+
+  if (response.success) {
+    const sessionToken = response.data.session_token;
+    console.log('Session created:', sessionToken);
+  } else {
+    console.error('Failed to create session:', response.error);
+  }
+} catch (error) {
+  console.error('Session creation error:', error);
+}
+```
+
+```typescript Promise
+import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-ts';
+
+initRampSession({
+  apikey: 'your-zbd-api-key',
+  email: 'user@example.com',
+  destination: 'lightning-address@zbd.gg',
+  quote_currency: QuoteCurrencyEnum.USD,
+  base_currency: BaseCurrencyEnum.BTC,
+})
+.then(response => {
+  if (response.success) {
+    console.log('Session token:', response.data.session_token);
+  }
+})
+.catch(error => {
+  console.error('Error:', error);
+});
+```
+</CodeGroup>
+
+### createRamp
+
+Creates a new ZBD Ramp widget instance.
+
+<ParamField body="options" type="RampOptions" required>
+  Configuration options for the widget
+</ParamField>
+
+#### Options
+
+<ParamField body="sessionToken" type="string" required>
+  Session token from initRampSession
+</ParamField>
+
+<ParamField body="container" type="HTMLElement | string">
+  Container element or CSS selector
+</ParamField>
+
+<ParamField body="width" type="string | number" default="100%">
+  Widget width
+</ParamField>
+
+<ParamField body="height" type="string | number" default="100%">
+  Widget height (minimum 600px recommended)
+</ParamField>
+
+#### Callback Options
+
+<ParamField body="onSuccess" type="(data: any) => void">
+  Called when payment is successful
+</ParamField>
+
+<ParamField body="onError" type="(error: RampError) => void">
+  Called when an error occurs
+</ParamField>
+
+<ParamField body="onStepChange" type="(step: string) => void">
+  Called when user navigates to a different step
+</ParamField>
+
+<ParamField body="onLog" type="(log: RampLog) => void">
+  Debug/info logging callback
+</ParamField>
+
+<ParamField body="onReady" type="() => void">
+  Called when widget is fully loaded
+</ParamField>
+
+<ParamField body="onClose" type="() => void">
+  Called when user closes the widget
+</ParamField>
+
+#### Returns
+
+```typescript
+interface RampInstance {
+  mount: (container?: HTMLElement | string) => void;
+  unmount: () => void;
+  destroy: () => void;
+}
+```
+
+## Usage Examples
+
+### Basic Implementation
+
+```typescript
+import { createRamp } from '@zbdpay/ramp-ts';
+
+const ramp = createRamp({
+  sessionToken: 'your-session-token',
+  container: document.getElementById('ramp-container'),
+});
+
+ramp.mount();
+```
+
+### With Event Handlers
+
+```typescript
+const ramp = createRamp({
+  sessionToken: 'your-session-token',
+  onSuccess: (data) => {
+    console.log('Payment successful:', data);
+    // Update UI, redirect, etc.
+    window.location.href = '/success';
+  },
+  onError: (error) => {
+    console.error('Payment error:', error);
+    // Show error message to user
+    alert(`Error: ${error.message}`);
+  },
+  onStepChange: (step) => {
+    console.log('Current step:', step);
+    // Track user progress
+    analytics.track('Ramp Step', { step });
+  },
+  onReady: () => {
+    console.log('Widget ready');
+    // Hide loading spinner
+  },
+  onClose: () => {
+    console.log('Widget closed');
+    // Handle user closing widget
+  }
+});
+```
+
+### Custom Dimensions
+
+```typescript
+const ramp = createRamp({
+  sessionToken: 'your-session-token',
+  width: '400px',
+  height: '700px',
+});
+
+// Default iframe styles applied:
+// - border: none
+// - border-radius: 8px
+// - allow: payment
+// - allowtransparency: true
+// - min-height: 600px
+```
+
+### Programmatic Control
+
+```typescript
+const ramp = createRamp({
+  sessionToken: 'your-session-token',
+});
+
+// Mount to specific container
+ramp.mount('#my-container');
+
+// Unmount iframe (keeps instance alive)
+ramp.unmount();
+
+// Remount to different container
+ramp.mount('#another-container');
+
+// Clean up completely
+ramp.destroy();
+```
+
+### Error Handling
+
+```typescript
+const ramp = createRamp({
+  sessionToken: 'your-session-token',
+  onError: (error) => {
+    // Error structure
+    console.error('Error Code:', error.code);
+    console.error('Error Message:', error.message);
+    
+    if (error.details) {
+      console.error('Error Details:', error.details);
+    }
+    
+    // Handle specific error codes
+    switch(error.code) {
+      case 'SESSION_EXPIRED':
+        // Create new session
+        createNewSession();
+        break;
+      case 'KYC_REQUIRED':
+        // Inform user about KYC
+        showKYCMessage();
+        break;
+      default:
+        // Generic error handling
+        showErrorMessage(error.message);
+    }
+  },
+});
+```
+
+## TypeScript Support
+
+The package includes comprehensive TypeScript definitions:
+
+```typescript
+import type {
+  RampConfig,
+  RampCallbacks,
+  RampOptions,
+  RampError,
+  RampLog,
+  RampInstance,
+  PostMessageData,
+  InitRampSessionConfig,
+  InitRampSessionData,
+  InitRampSessionResponse,
+  QuoteCurrencyEnum,
+  BaseCurrencyEnum,
+} from '@zbdpay/ramp-ts';
+```
+
+### Type Examples
+
+```typescript
+// Define typed configuration
+const config: InitRampSessionConfig = {
+  apikey: process.env.ZBD_API_KEY!,
+  email: 'user@example.com',
+  destination: 'lightning-address@zbd.gg',
+  quote_currency: QuoteCurrencyEnum.USD,
+  base_currency: BaseCurrencyEnum.BTC,
+};
+
+// Handle typed responses
+const handleSuccess = (data: any): void => {
+  console.log('Payment completed:', data);
+};
+
+const handleError = (error: RampError): void => {
+  console.error(`Error ${error.code}: ${error.message}`);
+};
+
+// Create typed instance
+const ramp: RampInstance = createRamp({
+  sessionToken: 'token',
+  onSuccess: handleSuccess,
+  onError: handleError,
+});
+```
+
+## Simple Iframe Alternative
+
+If you don't need JavaScript callbacks, you can use a simple iframe:
+
+```html
+<iframe 
+  src="https://ramp.zbdpay.com?session_token=YOUR_SESSION_TOKEN"
+  width="100%" 
+  height="600px"
+  allow="payment"
+  style="border: none; border-radius: 8px;">
+</iframe>
+```
+
+## Framework Integrations
+
+This is the core package. For framework-specific integrations, see:
+
+<CardGroup cols={2}>
+  <Card title="React" icon="react" href="/payments/ramp/sdks/react">
+    React components and hooks
+  </Card>
+  <Card title="React Native" icon="mobile" href="/payments/ramp/sdks/react-native">
+    React Native components
+  </Card>
+  <Card title="Flutter" icon="mobile-screen" href="/payments/ramp/sdks/flutter">
+    Flutter plugin
+  </Card>
+</CardGroup>
+
+## Try It Out
+
+### Interactive Example
+
+To try the interactive example locally:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/zbdpay/ramp-ts.git
+   cd ramp-ts
+   ```
+
+2. Start a local server:
+   ```bash
+   npx http-server . -p 8000 -o /example/js.html
+   ```
+
+3. Fill the form with your API key and user details
+
+4. Click "Create Session & Load Ramp" to see it in action
+
+### CodeSandbox Example
+
+Try it online: [CodeSandbox Demo](https://codesandbox.io/s/zbd-ramp-example)
+
+## Resources
+
+- [GitHub Repository](https://github.com/zbdpay/ramp-ts)
+- [NPM Package](https://www.npmjs.com/package/@zbdpay/ramp-ts)
+- [API Documentation](/payments/ramp/session)
+- [Webhook Events](/payments/ramp/webhooks)
+
+## Support
+
+For support and questions:
+- GitHub Issues: [Create an issue](https://github.com/zbdpay/ramp-ts/issues)

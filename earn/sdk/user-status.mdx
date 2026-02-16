@@ -1,0 +1,64 @@
+---
+title: 'User Status via SDK'
+description: 'Retrieve user status via SDK and manage linking via dashboard'
+icon: 'user-check'
+---
+
+## Retrieving User Status via SDK
+
+Use the `GetUserStatus` method to retrieve a user's current linked status from your client application.
+
+### Implementation
+
+```csharp
+ZBDUtilities.Instance.GetUserStatus(callback =>
+{
+  if (callback.success)
+  {
+    Debug.Log("User status: " + callback.data.status);
+
+    if (callback.data.status == ZBDConstants.ZBD_LINKED_STATUS)
+    {
+      Debug.Log("User is ZBD linked");
+    }
+  }
+  else
+  {
+    Debug.LogError("User status error: " + callback.message);
+  }
+});
+```
+
+### Response Object
+
+This returns a `ZBDUserStatusResponse` object:
+
+```csharp
+public class ZBDUserStatusResponse
+{
+  public bool success { get; set; }
+  public string message { get; set; }
+  public ZBDUserStatus data { get; set; }
+}
+
+public class ZBDUserStatus
+{
+  public string status { get; set; }        // User's linked status
+  public string rewardsUserId { get; set; } // User's SDK ID
+  public string zbdUserId { get; set; }     // User's ZBD ID
+}
+```
+
+### Status Types
+
+The `status` parameter can be:
+
+- **`unlinked`**: User has not signed up for rewards (hasn't clicked Start Earning)
+- **`linked`**: User has signed up for rewards (clicked Start Earning)
+- **`zbdlinked`**: User has signed up and linked their ZBD account
+
+---
+
+## Managing User Linking
+
+To link or unlink users to ZBD gamertags, use the dashboard: **[Manage User Linking via Dashboard](/earn/sdk/manage-user-linking)**

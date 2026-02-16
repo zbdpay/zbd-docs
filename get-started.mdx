@@ -38,14 +38,12 @@ The global payment infrastructure built for the speed and scale of gaming. Proce
   <Tab title="For App Developers">
     **Modern Payment Infrastructure**
     - Instant global settlements
-    - Multi-currency support (USD, EUR, BTC, USDC)
-    - 99.99% uptime SLA
+    - Multi-currency support (USD, EUR, BTC)
     - Developer-first APIs
     
     **Use Cases**
     - Streaming payments
     - Creator economy
-    - API usage billing
     - International payouts
   </Tab>
   <Tab title="For Product Managers">
@@ -62,13 +60,39 @@ The global payment infrastructure built for the speed and scale of gaming. Proce
 
 ## Products
 
+### 🎮 ZBD Earn
+Drive user engagement, boost retention, and unlock new revenue streams by offering real-money rewards and incentives across your experiences.
+
+<CardGroup cols={2}>
+  <Card title="ZBD Earn SDK" horizontal icon='layer-group' href="/earn/sdk">
+    <p>
+      Unity SDK for adding real-money rewards to your games. Drag, drop, monetize.
+    </p>
+  </Card>
+  <Card title="Earn API" horizontal icon='terminal' href="/earn/api">
+    <p>
+      Programmatically distribute rewards. Perfect for tournaments and achievements.
+    </p>
+  </Card>
+  <Card title="Login with ZBD" horizontal icon='shield-check' href="/earn/oauth2">
+    <p>
+      OAuth2 authentication with built-in wallet creation and KYC.
+    </p>
+  </Card>
+  <Card title="ZBD App" horizontal icon='apple' href="/earn/app">
+    <p>
+      ZBD app for players to manage and cash out rewards.
+    </p>
+  </Card>
+</CardGroup>
+
 ### 💳 Payments
 Enable instant global payments in your apps and games with multi-currency support for Bitcoin, Lightning Network, USD, EUR and Stablecoins. We handle the complexity of payments infrastructure so you can focus on building amazing experiences.
 
 <CardGroup cols={2}>
-  <Card title="ZBD Onramp" horizontal icon='circle-dollar-to-slot' href="/payments/onramp">
+  <Card title="ZBD Ramp" horizontal icon='circle-dollar-to-slot' href="/payments/ramp">
     <p>
-      Let users buy Bitcoin and USDC directly in your app. First widget with Lightning Address support.
+      Let users buy Bitcoin directly in your app. First widget with Lightning Address support.
     </p>
   </Card>
   <Card title="Payments API" horizontal icon='code' href="/payments/api">
@@ -101,37 +125,11 @@ cargo add zebedee-rust
 ```
 
 ```bash HTTP
-curl -X GET https://api.zebedee.io/v0/wallet \
+curl -X GET https://api.zbdpay.com/v0/wallet \
   -H "apikey: YOUR_API_KEY"
 ```
 
 </CodeGroup>
-
-### 🎮 Rewards
-Drive user engagement, boost retention, and unlock new revenue streams by offering real-money rewards and incentives across your experiences.
-
-<CardGroup cols={2}>
-  <Card title="ZBD Rewards SDK" horizontal icon='layer-group' href="/rewards/sdk">
-    <p>
-      Unity SDK for adding Bitcoin rewards to your games. Drag, drop, monetize.
-    </p>
-  </Card>
-  <Card title="Rewards API" horizontal icon='terminal' href="/rewards/api">
-    <p>
-      Programmatically distribute rewards. Perfect for tournaments and achievements.
-    </p>
-  </Card>
-  <Card title="Login with ZBD" horizontal icon='shield-check' href="/rewards/oauth2">
-    <p>
-      OAuth2 authentication with built-in wallet creation and KYC.
-    </p>
-  </Card>
-  <Card title="ZBD App" horizontal icon='apple' href="/rewards/app">
-    <p>
-      White-label wallet app for players to manage and cash out rewards.
-    </p>
-  </Card>
-</CardGroup>
 
 ## Quick Start Guides
 
@@ -156,10 +154,10 @@ Drive user engagement, boost retention, and unlock new revenue streams by offeri
   <Card title="5-Minute Quickstart" icon="rocket" href="/get-started/quickstart">
     Send your first payment in minutes
   </Card>
-  <Card title="Onramp Integration" icon="circle-dollar" href="/payments/onramp/quickstart">
+  <Card title="Ramp Integration" icon="circle-dollar" href="/payments/ramp/quickstart">
     Add fiat-to-crypto in your app
   </Card>
-  <Card title="Unity Rewards" icon="gamepad" href="/rewards/sdk/integration">
+  <Card title="Unity Rewards" icon="gamepad" href="/earn/sdk/integration">
     Monetize your Unity game
   </Card>
 </CardGroup>

@@ -131,7 +131,7 @@ npm run dev
 Using an API tool like [Postman](https://postman.com), you should be able to make a POST call to this endpoint and receive a JSON response with a payment request:
 
 ```bash
-http://localhost:3000/api/request
+https://example.com/api/request
 ```
 
 You're looking for the `data.invoice.request` property in the JSON response. It starts with `lnbc1` and is the payment request anyone in the Bitcoin Lightning Network can use to pay you.
@@ -145,7 +145,7 @@ lnbc1u1pjdlax9pp5t7jhkd7h2wntd4f2v7xp22dknmjxp0q8nm7hfcny4p7a5mr7x3rsdp9f4hkuete
 Using an API tool like [Postman](https://postman.com), you should be able to make a POST call to this endpoint and receive a JSON response with the payment success message:
 
 ```bash
-http://localhost:3000/api/send
+https://example.com/api/send
 ```
 
 You're looking for the `status` of `completed` to know that the payment settled successfully. 

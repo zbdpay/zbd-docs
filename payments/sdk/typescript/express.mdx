@@ -102,7 +102,7 @@ app.get("/send", async (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Express server w/ ZBD listening on http://localhost:3000");
+  console.log("Express server w/ ZBD listening on https://example.com");
 });
 ```
 
@@ -120,12 +120,12 @@ npm start
 
 </CodeGroup>
 
-Opening your browser to the following URL: `http://localhost:3000/request` should return a JSON response with a payment request.
+Opening your browser to the following URL: `https://example.com/request` should return a JSON response with a payment request.
 
 You can also test this using curl command:
 
 ```bash
-curl http://localhost:3000/request
+curl https://example.com/request
 ```
 
 You're looking for the `data.invoice.request` property in the JSON response. It starts with `lnbc1` and is the payment request anyone in the Bitcoin Lightning Network can use to pay you.
@@ -136,12 +136,12 @@ lnbc1u1pjdlax9pp5t7jhkd7h2wntd4f2v7xp22dknmjxp0q8nm7hfcny4p7a5mr7x3rsdp9f4hkuete
 
 <Info>Charges and payment requests are usually shown to users as QR codes that can be scanned by mobile apps (e.g. [ZBD](https://zbd.one/download)). Read [Callbacks](/payments/api/callbacks) to understand how to receive updates about your payment asynchronously.</Info>
 
-Opening your browser to the following URL: `http://localhost:3000/send` should return a JSON response with the payment sent message.
+Opening your browser to the following URL: `https://example.com/send` should return a JSON response with the payment sent message.
 
 You can also test this using curl command:
 
 ```bash
-curl http://localhost:3000/send
+curl https://example.com/send
 ```
 
 You're looking for the `status` of `completed` to know that the payment settled successfully. 

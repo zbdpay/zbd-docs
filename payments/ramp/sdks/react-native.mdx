@@ -1,0 +1,702 @@
+---
+title: 'React Native SDK'
+sidebarTitle: 'React Native'
+description: 'React Native wrapper for ZBD Ramp'
+icon: 'mobile'
+---
+
+The `@zbdpay/ramp-react-native` package is a React Native wrapper for the ZBD Ramp widget that enables Buying Bitcoin with USD directly to the Lightning Network.
+
+## Features
+
+- **React Native Optimized**: Built specifically for React Native with WebView
+- **TypeScript Support**: Full type safety with comprehensive TypeScript definitions
+- **Cross-Platform**: Works on iOS and Android
+- **Ref API**: Access to WebView methods and ramp instance
+- **Hook Support**: `useZBDRamp` hook for programmatic usage
+
+## Installation
+
+<Tabs>
+  <Tab title="npm">
+    ```bash
+    npm install @zbdpay/ramp-react-native react-native-webview
+    ```
+  </Tab>
+  <Tab title="yarn">
+    ```bash
+    yarn add @zbdpay/ramp-react-native react-native-webview
+    ```
+  </Tab>
+  <Tab title="pnpm">
+    ```bash
+    pnpm add @zbdpay/ramp-react-native react-native-webview
+    ```
+  </Tab>
+</Tabs>
+
+### iOS Setup
+
+#### 1. Install CocoaPods dependencies
+
+```bash
+cd ios && pod install
+```
+
+#### 2. Add Privacy Permissions
+
+Add the following entries to your `ios/{YourAppName}/Info.plist`:
+
+```xml
+<!-- Essential permissions for ZBD Ramp WebView -->
+<key>NSCameraUsageDescription</key>
+<string>ZBD Ramp needs camera access for document verification and identity verification processes.</string>
+
+<key>NSMicrophoneUsageDescription</key>
+<string>ZBD Ramp needs microphone access for liveness detection during identity verification.</string>
+
+<key>NSPhotoLibraryUsageDescription</key>
+<string>ZBD Ramp needs photo library access to upload documents for verification purposes.</string>
+
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>ZBD Ramp may save verification photos to your photo library.</string>
+```
+
+<Note>
+  These permissions are required for the ZBD Ramp widget to access device features like camera (document verification) and microphone (liveness detection) within the WebView context.
+</Note>
+
+### Android Setup
+
+Add the following permissions to your `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<!-- Essential permissions for ZBD Ramp WebView -->
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+```
+
+These permissions prevent `permissions_unavailable` errors when the ZBD Ramp widget tries to access device features.
+
+## Quick Start
+
+### 1. Create Session Token
+
+First, create a session token using the ZBD API:
+
+```tsx
+import { initRampSession, QuoteCurrencyEnum, BaseCurrencyEnum } from '@zbdpay/ramp-react-native';
+
+const response = await initRampSession({
+  apikey: 'your-zbd-api-key',
+  email: 'user@example.com',
+  destination: 'lightning-address@zbd.gg',
+  quote_currency: QuoteCurrencyEnum.USD,
+  base_currency: BaseCurrencyEnum.BTC,
+  webhook_url: 'https://your-webhook-url.com',
+});
+
+const sessionToken = response.data.session_token;
+```
+
+### 2. Use ZBDRamp Component
+
+```tsx
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { ZBDRamp } from '@zbdpay/ramp-react-native';
+
+function App() {
+  return (
+    <View style={styles.container}>
+      <ZBDRamp
+        sessionToken="your-session-token"
+        onSuccess={(data) => console.log('Success:', data)}
+        onError={(error) => console.error('Error:', error)}
+        onStepChange={(step) => console.log('Step:', step)}
+        style={styles.webview}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  webview: {
+    flex: 1,
+  },
+});
+```
+
+## API Reference
+
+### initRampSession
+
+Creates a new session token for the ZBD Ramp widget.
+
+<ParamField body="config" type="InitRampSessionConfig" required>
+  Configuration object for creating a session
+</ParamField>
+
+#### Configuration Parameters
+
+<ParamField body="apikey" type="string" required>
+  Your ZBD API key
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  User's email address
+</ParamField>
+
+<ParamField body="destination" type="string" required>
+  Lightning address or Bitcoin address
+</ParamField>
+
+<ParamField body="quote_currency" type="QuoteCurrencyEnum" required>
+  Quote currency (e.g., USD)
+</ParamField>
+
+<ParamField body="base_currency" type="BaseCurrencyEnum" required>
+  Base currency (e.g., BTC)
+</ParamField>
+
+<ParamField body="webhook_url" type="string">
+  Webhook URL for notifications
+</ParamField>
+
+<ParamField body="reference_id" type="string">
+  Your internal reference ID
+</ParamField>
+
+<ParamField body="metadata" type="Record<string, any>">
+  Additional metadata to attach to the session
+</ParamField>
+
+### ZBDRamp Component
+
+React Native component that renders the ZBD Ramp widget using WebView.
+
+#### Props
+
+<ParamField body="sessionToken" type="string" required>
+  Session token from ZBD API
+</ParamField>
+
+<ParamField body="style" type="WebViewProps['style']">
+  WebView style
+</ParamField>
+
+<ParamField body="webViewProps" type="Omit<WebViewProps, 'source' | 'onMessage' | 'style'>">
+  Additional WebView props
+</ParamField>
+
+#### Callback Props
+
+<ParamField body="onSuccess" type="(data: any) => void">
+  Called when payment is successful
+</ParamField>
+
+<ParamField body="onError" type="(error: RampError) => void">
+  Called when an error occurs
+</ParamField>
+
+<ParamField body="onStepChange" type="(step: string) => void">
+  Called when user navigates to a different step
+</ParamField>
+
+<ParamField body="onLog" type="(log: RampLog) => void">
+  Debug/info logging callback
+</ParamField>
+
+<ParamField body="onReady" type="() => void">
+  Called when widget is fully loaded
+</ParamField>
+
+<ParamField body="onClose" type="() => void">
+  Called when user closes the widget
+</ParamField>
+
+#### Ref API
+
+```typescript
+interface ZBDRampRef {
+  mount: (container?: HTMLElement | string) => void;
+  unmount: () => void;
+  destroy: () => void;
+}
+```
+
+### useZBDRamp Hook
+
+Hook for managing ZBD Ramp instances programmatically.
+
+```tsx
+const { rampRef, sendMessage, updateConfig, reload } = useZBDRamp(options);
+```
+
+## Usage Examples
+
+### Basic Component
+
+```tsx
+import React from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
+import { ZBDRamp } from '@zbdpay/ramp-react-native';
+
+function PaymentScreen() {
+  const handleSuccess = (data: any) => {
+    Alert.alert('Success', 'Payment completed successfully!');
+    console.log('Payment data:', data);
+  };
+
+  const handleError = (error: any) => {
+    Alert.alert('Error', error.message);
+    console.error('Payment error:', error);
+  };
+
+  return (
+    <View style={styles.container}>
+      <ZBDRamp
+        sessionToken="your-session-token"
+        onSuccess={handleSuccess}
+        onError={handleError}
+        style={styles.webview}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  webview: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+});
+```
+
+### With Ref for Control
+
+```tsx
+import React, { useRef } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { ZBDRamp } from '@zbdpay/ramp-react-native';
+import type { ZBDRampRef } from '@zbdpay/ramp-react-native';
+
+function ControlledPayment() {
+  const rampRef = useRef<ZBDRampRef>(null);
+
+  const unmountWidget = () => {
+    rampRef.current?.unmount();
+  };
+
+  const destroyWidget = () => {
+    rampRef.current?.destroy();
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.controls}>
+        <TouchableOpacity style={styles.button} onPress={unmountWidget}>
+          <Text style={styles.buttonText}>Unmount</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={destroyWidget}>
+          <Text style={styles.buttonText}>Destroy</Text>
+        </TouchableOpacity>
+      </View>
+
+      <ZBDRamp
+        ref={rampRef}
+        sessionToken="your-session-token"
+        onSuccess={(data) => console.log('Success:', data)}
+        onError={(error) => console.error('Error:', error)}
+        style={styles.webview}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  controls: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+    backgroundColor: '#fff',
+  },
+  button: {
+    backgroundColor: '#ff6b35',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 4,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  webview: {
+    flex: 1,
+  },
+});
+```
+
+### Using the Hook
+
+```tsx
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Modal } from 'react-native';
+import { ZBDRamp, useZBDRamp } from '@zbdpay/ramp-react-native';
+
+function HookExample() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const { rampRef, sendMessage, updateConfig, reload } = useZBDRamp({
+    sessionToken: 'your-session-token',
+    onSuccess: (data) => {
+      console.log('Payment successful:', data);
+      setIsVisible(false);
+    },
+    onClose: () => {
+      setIsVisible(false);
+    },
+  });
+
+  const openPayment = () => {
+    setIsVisible(true);
+  };
+
+  const closePayment = () => {
+    setIsVisible(false);
+  };
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.openButton} onPress={openPayment}>
+        <Text style={styles.buttonText}>Open Payment</Text>
+      </TouchableOpacity>
+
+      <Modal visible={isVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity onPress={closePayment}>
+              <Text style={styles.closeButton}>Close</Text>
+            </TouchableOpacity>
+          </View>
+
+          <ZBDRamp
+            ref={rampRef}
+            sessionToken="your-session-token"
+            onSuccess={(data) => {
+              console.log('Success:', data);
+              setIsVisible(false);
+            }}
+            style={styles.webview}
+          />
+        </View>
+      </Modal>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  openButton: {
+    backgroundColor: '#ff6b35',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 15,
+    backgroundColor: '#f8f8f8',
+  },
+  closeButton: {
+    fontSize: 16,
+    color: '#007AFF',
+  },
+  webview: {
+    flex: 1,
+  },
+});
+```
+
+### Custom WebView Configuration
+
+```tsx
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { ZBDRamp } from '@zbdpay/ramp-react-native';
+
+function CustomWebViewRamp() {
+  return (
+    <View style={styles.container}>
+      <ZBDRamp
+        sessionToken="your-session-token"
+        style={styles.webview}
+        webViewProps={{
+          bounces: false,
+          scrollEnabled: false,
+          showsHorizontalScrollIndicator: false,
+          showsVerticalScrollIndicator: false,
+          allowsBackForwardNavigationGestures: false,
+          userAgent: 'MyApp/1.0',
+        }}
+        onSuccess={(data) => console.log('Success:', data)}
+        onError={(error) => console.error('Error:', error)}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  webview: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+});
+```
+
+### Error Handling
+
+```tsx
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { ZBDRamp } from '@zbdpay/ramp-react-native';
+import type { RampError } from '@zbdpay/ramp-react-native';
+
+function PaymentWithErrorHandling() {
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleError = (error: RampError) => {
+    setIsLoading(false);
+    let errorMessage = 'An unexpected error occurred.';
+
+    switch (error.code) {
+      case 'INVALID_CONFIG':
+        errorMessage = 'Configuration error. Please check your settings.';
+        break;
+      case 'NETWORK_ERROR':
+        errorMessage = 'Network error. Please check your connection.';
+        break;
+      case 'PAYMENT_FAILED':
+        errorMessage = 'Payment failed. Please try again.';
+        break;
+    }
+
+    setError(errorMessage);
+    Alert.alert('Payment Error', errorMessage);
+  };
+
+  const handleReady = () => {
+    setIsLoading(false);
+    setError(null);
+  };
+
+  const retry = () => {
+    setError(null);
+    setIsLoading(true);
+  };
+
+  return (
+    <View style={styles.container}>
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <Text>Loading payment widget...</Text>
+        </View>
+      )}
+
+      {error && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={retry}>
+            <Text style={styles.retryButtonText}>Retry</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {!error && (
+        <ZBDRamp
+          sessionToken="your-session-token"
+          onReady={handleReady}
+          onError={handleError}
+          onSuccess={() => {
+            setError(null);
+            Alert.alert('Success', 'Payment completed!');
+          }}
+          style={styles.webview}
+        />
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 20,
+    fontSize: 16,
+  },
+  retryButton: {
+    backgroundColor: '#ff6b35',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  webview: {
+    flex: 1,
+  },
+});
+```
+
+## TypeScript Support
+
+The package includes comprehensive TypeScript definitions:
+
+```typescript
+import type {
+  ZBDRampProps,
+  ZBDRampRef,
+  RampConfig,
+  RampCallbacks,
+  RampOptions,
+  RampError,
+  RampLog,
+  PostMessageData,
+  InitRampSessionConfig,
+  InitRampSessionData,
+  InitRampSessionResponse,
+  QuoteCurrencyEnum,
+  BaseCurrencyEnum,
+} from '@zbdpay/ramp-react-native';
+```
+
+### Type Examples
+
+```typescript
+// Define typed configuration
+const config: InitRampSessionConfig = {
+  apikey: process.env.ZBD_API_KEY!,
+  email: 'user@example.com',
+  destination: 'lightning-address@zbd.gg',
+  quote_currency: QuoteCurrencyEnum.USD,
+  base_currency: BaseCurrencyEnum.BTC,
+};
+
+// Handle typed responses
+const handleSuccess = (data: any): void => {
+  console.log('Payment completed:', data);
+};
+
+const handleError = (error: RampError): void => {
+  console.error(`Error ${error.code}: ${error.message}`);
+};
+
+// Create typed instance
+const ramp: ZBDRampRef = useRef<ZBDRampRef>(null);
+```
+
+## Development Setup
+
+### Running the Example App
+
+The repository includes a complete React Native example app:
+
+```bash
+# Clone the repository
+git clone https://github.com/zbdpay/ramp-react-native.git
+cd ramp-react-native
+
+# Install dependencies
+npm install
+
+# Navigate to example app
+cd example
+npm install
+
+# For iOS
+cd ios && pod install && cd ..
+npm run ios
+
+# For Android
+npm run android
+```
+
+The example app includes:
+- Session token creation
+- Debug logging
+- Full integration with all event handlers
+- Error handling examples
+
+## Related Packages
+
+<CardGroup cols={2}>
+  <Card title="TypeScript" icon="js" href="/payments/ramp/sdks/typescript">
+    Core TypeScript/JavaScript SDK
+  </Card>
+  <Card title="React" icon="react" href="/payments/ramp/sdks/react">
+    React components and hooks
+  </Card>
+  <Card title="Flutter" icon="mobile-screen" href="/payments/ramp/sdks/flutter">
+    Flutter plugin
+  </Card>
+</CardGroup>
+
+## Resources
+
+- [GitHub Repository](https://github.com/zbdpay/ramp-react-native)
+- [NPM Package](https://www.npmjs.com/package/@zbdpay/ramp-react-native)
+- [API Documentation](/payments/ramp/session)
+- [Webhook Events](/payments/ramp/webhooks)
+
+## Support
+
+For support and questions:
+- GitHub Issues: [Create an issue](https://github.com/zbdpay/ramp-react-native/issues)

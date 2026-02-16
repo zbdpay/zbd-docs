@@ -1,0 +1,119 @@
+---
+title: "Create Charge"
+description: "Generate a Lightning payment request for user-initiated payments"
+api: "POST https://api.zbdpay.com/v0/gamertag/charges"
+---
+
+Create Lightning payment requests (invoices) that users can pay to add funds or make purchases. Perfect for user-initiated transactions like deposits, premium upgrades, or marketplace purchases.
+
+<Info>
+  **Lightning Invoices** - This creates a standard Lightning Network invoice that can be paid from any Lightning wallet, not just ZBD.
+</Info>
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Marketplace" icon="store">
+    User-to-user transactions between ZBD users
+  </Card>
+  <Card title="Tournament Entry" icon="trophy">
+    Collect entry fees with payment proof
+  </Card>
+</CardGroup>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD Project API Key
+</ParamField>
+
+<ParamField required header="Content-Type" type="string" initialValue="application/json">
+  Content Type (must be application/json)
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="amount" type="string">
+  Amount to charge in **millisatoshis**
+  
+  Common amounts:
+  - `"10000"` = 10 sats (~$0.005)
+  - `"100000"` = 100 sats (~$0.05)
+  - `"1000000"` = 1,000 sats (~$0.50)
+  - `"10000000"` = 10,000 sats (~$5.00)
+</ParamField>
+
+<ParamField required body="gamertag" type="string">
+  The user's gamertag who will receive credit when paid
+  
+  Note: The invoice can be paid by anyone, but this gamertag gets credited
+</ParamField>
+
+<ParamField body="description" type="string">
+  Description shown in Lightning wallets (max 150 chars)
+  
+  Examples:
+  - "Deposit to GameApp wallet"
+  - "Premium upgrade - 30 days"
+  - "Tournament entry fee"
+</ParamField>
+
+<ParamField body="expiresIn" type="number">
+  Invoice expiration time in seconds (default: 600 = 10 minutes)
+  
+  Range: 60 to 3600 (1 minute to 1 hour)
+</ParamField>
+
+<ParamField body="internalId" type="string">
+  Your internal reference ID for tracking
+  
+  Use for linking to your database records
+</ParamField>
+
+<ParamField body="callbackUrl" type="string">
+  Webhook URL for payment notifications
+  
+  ZBD will POST to this URL when invoice is paid
+</ParamField>
+
+## Response
+
+<ResponseExample>
+```json Success Response
+{
+  "success": true,
+  "data": {
+    "id": "chrg_2n4f8gu3nf",
+    "unit": "msats",
+    "status": "CHARGE_PENDING",
+    "amount": "1000000",
+    "createdAt": "2024-03-14T19:40:13.880Z",
+    "internalId": "deposit_1710441613880",
+    "callbackUrl": "https://yourapp.com/webhooks/charge",
+    "description": "Add funds to wallet",
+    "invoiceRequest": "lnbc10u1pjp8wlxpp5xm2la0q5kqw8w85u4kkz8vnwed8kuhn8d5e2qc8xu3j3jk3vy36sdps2fjhzat9wd6xjmn8yppksctjvajjqmr0wfjjqen0wgsywatvdssyyctdv4e8gct8cqzpgxqzjcsp5e7defq66t8svrpqr37weqpxv6fhskmm4h69hx5qhngrmqxzr0qrq9qyyssqtkxkpqd8hll3fmn7v6mfs7u3pxh5j4mtxp8p8tnrch4nqjm8jt0xm9td9klvlshxkkahnvc2yvrt9l8438u8xz2qc6qzlf9kr46y7cp6lvh0t",
+    "invoiceExpiresAt": "2024-03-14T19:50:13.859Z",
+    "invoiceDescriptionHash": null
+  }
+}
+```
+</ResponseExample>
+
+### Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique charge identifier |
+| `status` | string | Always "CHARGE_PENDING" initially |
+| `amount` | string | Amount in millisatoshis |
+| `invoiceRequest` | string | Lightning invoice (payment request) |
+| `invoiceExpiresAt` | string | When invoice expires (ISO 8601) |
+| `createdAt` | string | Creation timestamp |
+| `internalId` | string | Your reference ID |
+| `callbackUrl` | string | Your webhook URL |
+
+<Note>
+  **Universal Compatibility** - These invoices work with any Lightning wallet, not just ZBD. Users can pay from Cash App, Strike, Phoenix, or any other Lightning-enabled service.
+</Note>

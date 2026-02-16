@@ -1,0 +1,149 @@
+---
+title: 'Integrating Earn SDK'
+sidebarTitle: 'Integration'
+description: 'How to import and initialize the ZBD Earn SDK.'
+icon: 'gamepad'
+---
+
+# Import the SDK
+
+<Steps>
+  <Step title="Download the ZBD SDK">
+    Reach out to your ZBD Customer Success Manager to get access to the Unity SDK package.
+  </Step>
+  <Step title="Import the .unitypackage">
+    To import a package, right-click the assets folder in Unity Editor and choose `"Import Package..."`.
+  </Step>
+  <Step title="Drag and drop the ZBDSDK into your scene">
+    Navigate to the newly imported ZBD folder `Prefabs` and drag and drop the ZBDSDK prefab into your scene.
+  </Step>
+  <Step title="Adjust UI elements (Optional)">
+    Due to your specific scene resolution settings and orientation you may need to resize/adjust the included UI elements. We will explain how to do this in more detail later in this documentation, but for now we are assuming the UI element has imported correctly.
+  </Step>
+</Steps>
+
+# Add your App ID
+
+You should have received your `App ID` from your ZBD Customer Success Manager. You’ll need to set this in the `ZBDController` script which is attached to the `ZBDSDK` game object in the ZBDSDK prefab.
+
+<Frame>
+  <img src="/img/earn/init-sdk.png" alt="Initialize SDK" />
+</Frame>
+
+If you have not been given an App ID, for testing purposes only you can use the following ID: 
+
+```bash
+  sdkdemo.limitedachievementsats
+```
+
+# Initialize the SDK
+
+<Note>
+You must set the `userId` property during initialization of the SDK if you want ZBD to share event data for your users (e.g. `user signed up for ZBD app`).
+
+`userId`: this is **your internal userId** that can be attributed to a ZBD user.
+</Note>
+<Warning>
+  Please reach out to your ZBD Customer Success Manager if you face any issues.
+</Warning>
+
+Once the ZBDSDK prefab is added you can initiate the SDK from another script, such as your main controller, via the following call:
+
+```csharp
+// Initialize the SDK with your internal userId
+
+using ZBD;
+
+ZBDController.Instance.Init(userId, completion =>
+  {
+    if (completion.success) {
+      Debug.Log("success");
+    } else {
+      Debug.LogError(completion.error);
+    }
+  }
+);
+```
+
+### Initializing SDK without `userId`
+
+You can also set the `userId` at any time after initialization by calling:
+
+```csharp
+  ZBDController.Instance.SetUserId("user_id");
+```
+
+```csharp
+using ZBD;
+
+ZBDController.Instance.Init(completion =>
+	{
+	  if (completion.success) {
+	    Debug.Log("success");
+		} else {
+      Debug.LogError(completion.error);
+    }
+  }
+);
+```
+
+<Note>
+This will allow the user to start earning, however **in order to withdraw they will need to download the ZBD app, get their ZBD Gamertag and register it with the ZBD Earn SDK**.
+
+The easiest way to do this is to present the ZBD modal. If the user has not registered their ZBD Gamertag then they will be guided through it inside the modal.
+</Note>
+
+### Presenting SDK Modal
+
+```csharp
+ZBDModalController.Instance.ShowModal();
+```
+
+`ShowModal()` will present a modal prompting the user to enter a ZBD Gamertag, or to sign in if they were not signed in automatically. 
+
+Users can also **view their balance** and **initiate a withdrawal** from this modal.
+
+### Detecting Modal Visibility
+
+You may want to stop the gameplay or trigger some other event when the SDK modal becomes visible. You can **detect when the modal is visible** via 2 methods:
+
+**Subscribe to the `ModalIsVisible` event**
+
+```csharp
+private void Start()
+{
+  ZBDController.Instance.ModalIsVisible += WebViewVisible;
+}
+  
+void WebViewVisible(bool visible)
+{
+  // handle event here
+}
+  
+private void OnDestroy()
+{
+  ZBDController.Instance.ModalIsVisible -= WebViewVisible;
+}
+```
+
+**Invoke `IsModalVisible()`**
+
+You can also call `IsModalVisible()` to check the status of the modal.
+
+```csharp
+ZBDModalController.Instance.IsModalVisible();
+```
+
+**Android Back Button**
+
+In Android you can detect whether the modal is open and close it with the following code snippet. 
+
+```csharp
+if (Input.GetKeyDown(KeyCode.Escape))
+{
+	if (ZBDModalController.Instance.IsModalVisible())
+	{
+    ZBDModalController.Instance.CloseModal();
+	}
+}
+```

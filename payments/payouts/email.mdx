@@ -5,6 +5,10 @@ icon: 'at'
 description: 'Learn how to instantly send Bitcoin to any Email.'
 ---
 
+<Warning>
+**DEPRECATED:** This endpoint is deprecated and is not recommended for new integrations. It is scheduled for removal by the end of February 2026. Please do not build new features using this endpoint.
+</Warning>
+
 ## Send Bitcoin to Email API
 
 To send Bitcoin to a given email, all you need to do is call the [Pay to Email API](/payments/api/email/send) with a POST call providing the following properties:
@@ -20,7 +24,7 @@ To send Bitcoin to a given email, all you need to do is call the [Pay to Email A
 ## Details
 
 - If the email is associated with an existing ZBD App account, then that user account will be credited the sats.
-- Otherwise, the sats will be issued to the email in the form of a valid [ZBD Voucher](/get-started/vouchers) that the recipient can redeem in the [ZBD Mobile App](/rewards/app). 
+- Otherwise, the sats will be issued to the email in the form of a valid [ZBD Voucher](/get-started/vouchers) that the recipient can redeem in the [ZBD Mobile App](/earn/app). 
 
 ## API Response
 

@@ -103,7 +103,7 @@ console.log(`USD Value: $${wallet.balanceUSD}`);
 ```
 
 ```bash cURL
-curl https://api.zebedee.io/v0/wallet \
+curl https://api.zbdpay.com/v0/wallet \
   -H "apikey: YOUR_PROJECT_API_KEY"
 ```
 </CodeGroup>
@@ -120,7 +120,7 @@ const result = await zbd.internalTransfer({
 ```
 
 ```bash cURL
-curl -X POST https://api.zebedee.io/v0/internal-transfer \
+curl -X POST https://api.zbdpay.com/v0/internal-transfer \
   -H "apikey: YOUR_PROJECT_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

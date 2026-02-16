@@ -31,7 +31,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 const ZBD_API_KEY = "b7Ya3s2JZKZcXXX2Dqf8wjKTZZZRuWr8";
 
 const zbdReceive = async (_request: Request): Promise<Response> => {
-  const res = await fetch("https://api.zebedee.io/v0/charges", {
+  const res = await fetch("https://api.zbdpay.com/v0/charges", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

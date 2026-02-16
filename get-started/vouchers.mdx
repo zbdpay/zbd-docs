@@ -141,7 +141,7 @@ qr_url = f"https://zbd.gg/v/{voucher['code']}"
 ```
 
 ```bash cURL
-curl -X POST https://api.zebedee.io/v0/vouchers \
+curl -X POST https://api.zbdpay.com/v0/vouchers \
   -H "apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -201,7 +201,7 @@ async function rewardAchievement(userId, achievement) {
     3. Click "Redeem Voucher"
     4. Funds instantly added to wallet
   </Tab>
-  <Tab title="ZBD Rewards App">
+  <Tab title="ZBD App">
     **Mobile Redemption**:
     1. Tap wallet balance in navbar
     2. Select "Redeem Voucher"
@@ -244,7 +244,7 @@ await zbd.revokeVoucher(voucherId);
 ```
 
 ```bash cURL
-curl -X POST https://api.zebedee.io/v0/vouchers/voucher_id/revoke \
+curl -X POST https://api.zbdpay.com/v0/vouchers/voucher_id/revoke \
   -H "apikey: YOUR_API_KEY"
 ```
 </CodeGroup>
