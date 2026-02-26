@@ -126,13 +126,13 @@ From the agents workspace, run:
 
 ```bash
 npm --prefix agent-fetch run build
-PROTECTED_URL="http://localhost:8787/protected" ZBD_API_KEY=<your_api_key> npm --prefix agent-fetch run example:zbd
+PROTECTED_URL="https://api.example.com/protected" ZBD_API_KEY=<your_api_key> npm --prefix agent-fetch run example:zbd
 ```
 
 If you already have an authorization token:
 
 ```bash
-PROTECTED_URL="http://localhost:8787/protected" L402_AUTHORIZATION="L402 <macaroon>:<preimage>" npm --prefix agent-fetch run example:proof
+PROTECTED_URL="https://api.example.com/protected" L402_AUTHORIZATION="L402 <macaroon>:<preimage>" npm --prefix agent-fetch run example:proof
 ```
 
 <Warning>

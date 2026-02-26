@@ -87,7 +87,7 @@ Then in another terminal:
 
 ```bash
 npm --prefix agent-fetch run build
-PROTECTED_URL="http://localhost:8787/protected" ZBD_API_KEY=<your_api_key> npm --prefix agent-fetch run example:zbd
+PROTECTED_URL="https://api.example.com/protected" ZBD_API_KEY=<your_api_key> npm --prefix agent-fetch run example:zbd
 ```
 
 ## 5) Add a Paid Route with agent-pay
@@ -114,7 +114,7 @@ import { agentFetch, FileTokenCache } from "@zbdpay/agent-fetch";
 
 const tokenCache = new FileTokenCache(`${process.env.HOME}/.zbd-wallet/token-cache.json`);
 
-const response = await agentFetch("https://localhost:3000/premium", {
+const response = await agentFetch("https://api.example.com/premium", {
   tokenCache,
   maxPaymentSats: 100,
   pay: async (challenge) => {
