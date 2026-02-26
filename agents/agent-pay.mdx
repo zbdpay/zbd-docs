@@ -129,6 +129,29 @@ WWW-Authenticate: L402 macaroon="<token>", invoice="<bolt11>"
 | 500 | `pricing_error` | Dynamic pricing function failed |
 | 502 | `invoice_creation_failed` | Upstream invoice creation failed |
 
+## Runnable Example
+
+The repository includes `examples/http-server.mjs` for a minimal paid route.
+
+From the agents workspace, run:
+
+```bash
+npm --prefix agent-pay run build
+ZBD_API_KEY=<your_api_key> npm --prefix agent-pay run example:http-server
+```
+
+Optional verbose logs:
+
+```bash
+ZBD_PAY_DEBUG=1 ZBD_API_KEY=<your_api_key> npm --prefix agent-pay run example:http-server
+```
+
+Then hit the route with your wallet CLI:
+
+```bash
+zbdw fetch "http://localhost:8787/protected" --max-sats 100
+```
+
 ## Storage
 
 By default, settled token metadata is persisted at:

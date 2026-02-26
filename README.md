@@ -31,6 +31,16 @@ We enable businesses and consumers to quickly introduce instantaneous Bitcoin pa
 
 With ZBD, it's easy! Anyone can do it. **[What are YOU building?](https://dashboard.zbdpay.com)**
 
+## Agents Docs Fast Path
+
+If you are documenting or testing the Agents toolkit, start here:
+
+- Overview: `/agents`
+- Quick start: `/agents/quickstart`
+- Runnable examples: `/agents/agent-pay` and `/agents/agent-fetch`
+
+The `agent-pay` and `agent-fetch` repositories include `examples/` scripts that let users run a working paid-request flow in minutes.
+
 ## Contributing
 
 ### Development

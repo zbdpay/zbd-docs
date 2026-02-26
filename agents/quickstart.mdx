@@ -74,6 +74,22 @@ zbdw fetch https://your-paid-api.com/premium --max-sats 100
   If cache is reused, `payment_id` is typically `null` on the second call.
 </Tip>
 
+## 4b) Zero-to-Demo with Included Examples
+
+If you want to see the full paid-route flow with minimal setup, run the maintained examples directly from the monorepo workspace:
+
+```bash
+npm --prefix agent-pay run build
+ZBD_API_KEY=<your_api_key> npm --prefix agent-pay run example:http-server
+```
+
+Then in another terminal:
+
+```bash
+npm --prefix agent-fetch run build
+PROTECTED_URL="http://localhost:8787/protected" ZBD_API_KEY=<your_api_key> npm --prefix agent-fetch run example:zbd
+```
+
 ## 5) Add a Paid Route with agent-pay
 
 ```typescript
