@@ -257,7 +257,8 @@
               {
                 "group": "Quick Start",
                 "pages": [
-                  "agents/quickstart"
+                  "agents/quickstart",
+                  "agents/skills"
                 ]
               }
             ]
