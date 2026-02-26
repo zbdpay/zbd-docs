@@ -51,6 +51,11 @@ zbdw send <destination> <amount_sats>
 zbdw payments
 zbdw payment <id>
 
+zbdw paylink create <amount_sats>
+zbdw paylink get <id>
+zbdw paylink list
+zbdw paylink cancel <id>
+
 zbdw withdraw create <amount_sats>
 zbdw withdraw status <withdraw_id>
 
@@ -85,14 +90,21 @@ Common success examples:
 {"balance_sats":50000}
 {"payment_id":"pay_123","fee_sats":1,"status":"completed"}
 {"status":200,"body":{},"payment_id":"pay_123","amount_paid_sats":21}
+{"id":"pl_001","url":"https://zbd.ai/paylinks/pl_001","status":"active","lifecycle":"active","amount_sats":250}
 ```
+
+<Info>
+  Paylink lifecycle values: `created | active | paid | expired | dead`. Terminal states (`paid`, `expired`, `dead`) are permanent.
+  `zbdw paylink get` also syncs the latest payment attempt to local `payments.json`.
+</Info>
 
 ## Storage Layout
 
 ```text
 ~/.zbd-wallet/
   config.json
-  payments.json
+  payments.json       # includes paylink settlement records with paylink_id, paylink_lifecycle
+  paylinks.json       # local paylink index (ZBD_WALLET_PAYLINKS to override)
   token-cache.json
 ```
 
