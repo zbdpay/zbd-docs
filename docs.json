@@ -258,7 +258,8 @@
                 "group": "Quick Start",
                 "pages": [
                   "agents/quickstart",
-                  "agents/skills"
+                  "agents/skills",
+                  "agents/openclaw-skill-install"
                 ]
               }
             ]
