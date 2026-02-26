@@ -1,0 +1,140 @@
+---
+title: "Agent Pay"
+description: "Protect HTTP routes with L402 payment challenges in Express, Hono, and Next.js."
+---
+
+`@zbdpay/agent-pay` is the server half of the L402 protocol. It creates invoice-backed payment challenges and verifies payment proof before allowing access.
+
+<CardGroup cols={2}>
+  <Card title="Repository" icon="github" href="https://github.com/zbdpay/agent-pay">
+    Full middleware source and adapter tests.
+  </Card>
+  <Card title="NPM Package" icon="cube" href="https://www.npmjs.com/package/@zbdpay/agent-pay">
+    Install and use from Node.js services.
+  </Card>
+</CardGroup>
+
+## Install
+
+```bash
+npm install @zbdpay/agent-pay
+```
+
+## Environment
+
+| Variable | Required | Default |
+|---|---|---|
+| `ZBD_API_KEY` | Yes (unless passed in config) | none |
+| `ZBD_API_BASE_URL` | No | `https://api.zbdpay.com` |
+
+## Quickstarts
+
+<Tabs>
+  <Tab title="Express">
+    ```typescript
+    import express from "express";
+    import { createExpressPaymentMiddleware } from "@zbdpay/agent-pay";
+
+    const app = express();
+
+    app.get(
+      "/protected",
+      createExpressPaymentMiddleware({
+        amount: 21,
+        apiKey: process.env.ZBD_API_KEY,
+      }),
+      (_req, res) => {
+        res.json({ ok: true });
+      },
+    );
+    ```
+  </Tab>
+  <Tab title="Hono">
+    ```typescript
+    import { Hono } from "hono";
+    import { createHonoPaymentMiddleware } from "@zbdpay/agent-pay";
+
+    const app = new Hono();
+
+    app.use(
+      "/protected",
+      createHonoPaymentMiddleware({
+        amount: 21,
+        apiKey: process.env.ZBD_API_KEY,
+      }),
+    );
+    ```
+  </Tab>
+  <Tab title="Next.js">
+    ```typescript
+    import { withPaymentRequired } from "@zbdpay/agent-pay/next";
+
+    export const GET = withPaymentRequired(
+      {
+        amount: 21,
+        apiKey: process.env.ZBD_API_KEY,
+      },
+      async () => Response.json({ ok: true }),
+    );
+    ```
+  </Tab>
+</Tabs>
+
+## PaymentConfig
+
+```typescript
+type PaymentConfig<RequestLike = unknown> = {
+  amount: number | ((request: RequestLike) => number | Promise<number>);
+  currency?: "SAT" | "USD";
+  apiKey?: string;
+  tokenStorePath?: string;
+};
+```
+
+<Note>
+  SAT pricing is the default and the most direct production path.
+</Note>
+
+## 402 Response Shape
+
+```http
+WWW-Authenticate: L402 macaroon="<token>", invoice="<bolt11>"
+```
+
+```json
+{
+  "error": {
+    "code": "payment_required",
+    "message": "Payment required"
+  },
+  "macaroon": "<token>",
+  "invoice": "<bolt11>",
+  "paymentHash": "<hash>",
+  "amountSats": 21,
+  "expiresAt": 1735766400
+}
+```
+
+## Error Codes
+
+| HTTP | Code | Meaning |
+|---|---|---|
+| 402 | `payment_required` | No valid payment proof provided |
+| 401 | `invalid_credential` | Macaroon signature invalid |
+| 401 | `invalid_payment_proof` | Preimage mismatch |
+| 403 | `resource_mismatch` | Proof for different route |
+| 403 | `amount_mismatch` | Proof for different price |
+| 403 | `token_expired` | Proof expired |
+| 500 | `configuration_error` | Missing API key/config |
+| 500 | `pricing_error` | Dynamic pricing function failed |
+| 502 | `invoice_creation_failed` | Upstream invoice creation failed |
+
+## Storage
+
+By default, settled token metadata is persisted at:
+
+```text
+~/.zbd-wallet/server-tokens.json
+```
+
+Override via `tokenStorePath` when needed for your deployment model.

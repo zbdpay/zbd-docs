@@ -1,0 +1,61 @@
+---
+title: "Agent Wallet Dashboard"
+description: "Run a local Next.js dashboard to inspect wallet config, balances, and payment history."
+---
+
+The Agent Wallet Dashboard is a read-only UI for operators and developers who want visibility into `zbdw` state.
+
+<CardGroup cols={2}>
+  <Card title="Repository" icon="github" href="https://github.com/zbdpay/agent-wallet-dashboard">
+    Source code, setup docs, and sample-data fixtures.
+  </Card>
+  <Card title="Works with zbdw files" icon="folder-open">
+    Reads `~/.zbd-wallet/config.json` and `~/.zbd-wallet/payments.json` by default.
+  </Card>
+</CardGroup>
+
+## Run Locally
+
+```bash
+npm install
+npm run dev
+```
+
+Open `http://localhost:3113`.
+
+## Environment Variables
+
+| Variable | Default |
+|---|---|
+| `ZBD_WALLET_CONFIG` | `~/.zbd-wallet/config.json` |
+| `ZBD_WALLET_PAYMENTS` | `~/.zbd-wallet/payments.json` |
+| `ZBD_API_BASE_URL` | `https://api.zbdpay.com` |
+
+## Use Included Sample Data
+
+```bash
+ZBD_WALLET_CONFIG="$PWD/sample-data/config.json" \
+ZBD_WALLET_PAYMENTS="$PWD/sample-data/payments.json" \
+npm run dev
+```
+
+## Built-in Features
+
+<CardGroup cols={2}>
+  <Card title="Auto-refresh" icon="arrows-rotate">
+    Refreshes wallet data every 15 seconds with manual refresh support.
+  </Card>
+  <Card title="CSV Export" icon="file-csv">
+    Export filtered payment ledgers (`All`, `Received`, `Sent`).
+  </Card>
+  <Card title="Transaction Dialog" icon="table-list">
+    Click rows for detailed payload and copy actions.
+  </Card>
+  <Card title="Theme Toggle" icon="circle-half-stroke">
+    Persistent light/dark mode with local preference storage.
+  </Card>
+</CardGroup>
+
+<Info>
+  The dashboard is intentionally read-only. It does not mutate wallet files.
+</Info>

@@ -237,11 +237,57 @@
               }
             ]
           }
-       ]
-     },
+         ]
+       },
       {
-        "tab": "Pay",
+        "tab": "Agents",
         "anchors": [
+          {
+            "anchor": "Overview",
+            "icon": "robot",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "agents",
+                  "agents/architecture",
+                  "agents/repo-map"
+                ]
+              },
+              {
+                "group": "Quick Start",
+                "pages": [
+                  "agents/quickstart"
+                ]
+              }
+            ]
+          },
+          {
+            "anchor": "Agent Toolkit",
+            "icon": "toolbox",
+            "pages": [
+              {
+                "group": "Core Packages",
+                "pages": [
+                  "agents/agent-wallet",
+                  "agents/agent-fetch",
+                  "agents/agent-pay"
+                ]
+              },
+              {
+                "group": "Supporting Apps",
+                "pages": [
+                  "agents/agent-wallet-dashboard",
+                  "agents/registry"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+       {
+         "tab": "Pay",
+         "anchors": [
           {
             "anchor": "Overview",
             "icon": "inbox",
