@@ -1,0 +1,108 @@
+---
+title: "Call Paid APIs"
+description: "Handle 402 challenges and pay invoices automatically with agent-fetch or zbdw fetch."
+---
+
+Any HTTP client can call an L402-protected endpoint. In practice, `@zbdpay/agent-fetch` gives you the full challenge-pay-retry loop in one function.
+
+## Programmatic Flow (Node.js)
+
+```typescript
+import { agentFetch, FileTokenCache } from "@zbdpay/agent-fetch";
+
+const tokenCache = new FileTokenCache(`${process.env.HOME}/.zbd-wallet/token-cache.json`);
+
+const response = await agentFetch("https://api.example.com/premium", {
+  tokenCache,
+  maxPaymentSats: 100,
+  pay: async (challenge) => {
+    const payment = await fetch("https://api.zbdpay.com/v0/payments", {
+      method: "POST",
+      headers: {
+        apikey: process.env.ZBD_API_KEY!,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        invoice: challenge.invoice,
+        amount: challenge.amountSats,
+      }),
+    });
+
+    const body = await payment.json();
+
+    return {
+      preimage: body?.preimage ?? body?.data?.preimage,
+      paymentId: body?.id ?? body?.data?.id,
+      amountPaidSats: challenge.amountSats,
+    };
+  },
+});
+
+console.log(response.status, await response.text());
+```
+
+## What agentFetch Handles
+
+<Steps>
+  <Step title="Checks token cache first">
+    If a valid token exists for the URL, it retries immediately with authorization proof.
+  </Step>
+  <Step title="Passes through non-402 responses">
+    Normal endpoints return untouched.
+  </Step>
+  <Step title="Parses challenge from header and/or JSON body">
+    Accepts both `L402` and `LSAT`, and both `macaroon` or `token` challenge keys.
+  </Step>
+  <Step title="Runs your payment hook and retries">
+    Builds `Authorization: &lt;scheme&gt; &lt;macaroon&gt;:&lt;preimage&gt;`.
+  </Step>
+  <Step title="Caches proof for future calls">
+    Reuses proof until it expires or the server rejects it.
+  </Step>
+</Steps>
+
+## Manual Primitives (Advanced)
+
+```typescript
+import { requestChallenge, payChallenge, fetchWithProof } from "@zbdpay/agent-fetch";
+
+const challenge = requestChallenge({
+  status: res.status,
+  headers: res.headers,
+  bodyText: await res.text(),
+});
+
+const paid = await pay(challenge);
+const authorization = payChallenge(challenge, paid);
+
+const retried = await fetchWithProof(
+  "https://api.example.com/premium",
+  { method: "GET" },
+  authorization,
+  fetch,
+);
+```
+
+## CLI Flow with zbdw
+
+`zbdw fetch` uses `agent-fetch` internally:
+
+```bash
+zbdw fetch "https://api.example.com/premium" --max-sats 100
+```
+
+Call it a second time to confirm cache reuse:
+
+```bash
+zbdw fetch "https://api.example.com/premium" --max-sats 100
+```
+
+When cache is reused, `payment_id` is typically `null` on the second call.
+
+## Authorization Format
+
+```http
+Authorization: L402 <macaroon>:<preimage>
+```
+
+`LSAT` is also accepted as a legacy scheme.

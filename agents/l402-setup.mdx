@@ -1,0 +1,83 @@
+---
+title: "L402 Setup"
+description: "Install and configure the ZBD pay-per-call stack with agent-pay, agent-fetch, and agent-wallet."
+---
+
+Use this page to stand up the full pay-per-call flow quickly.
+
+## 1) Install Packages
+
+<Tabs>
+  <Tab title="Server">
+    ```bash
+    npm install @zbdpay/agent-pay
+    ```
+  </Tab>
+  <Tab title="Client">
+    ```bash
+    npm install @zbdpay/agent-fetch
+    ```
+  </Tab>
+  <Tab title="CLI Wallet">
+    ```bash
+    npm install -g @zbdpay/agent-wallet
+    ```
+  </Tab>
+</Tabs>
+
+## 2) Configure Environment
+
+| Variable | Required | Default | Used By |
+| --- | --- | --- | --- |
+| `ZBD_API_KEY` | Yes | none | `agent-pay`, `agent-fetch` example, `zbdw` |
+| `ZBD_API_BASE_URL` | No | `https://api.zbdpay.com` | `agent-pay`, `agent-wallet` |
+| `ZBD_WALLET_TOKEN_CACHE` | No | `~/.zbd-wallet/token-cache.json` | `zbdw fetch` |
+
+<Info>
+  `agent-pay` can also take `apiKey` directly in `PaymentConfig`. If omitted, it falls back to `ZBD_API_KEY`.
+</Info>
+
+## 3) Initialize Wallet Identity (Optional but Recommended)
+
+```bash
+zbdw init --key <your_api_key>
+zbdw info
+zbdw balance
+```
+
+## 4) Run the End-to-End Local Demo
+
+From `/Users/andreneves/Code/zbd/agents`:
+
+```bash
+npm --prefix agent-pay run build
+ZBD_API_KEY=<your_api_key> npm --prefix agent-pay run example:http-server
+```
+
+In a second terminal:
+
+```bash
+npm --prefix agent-fetch run build
+PROTECTED_URL="http://localhost:8787/protected" ZBD_API_KEY=<your_api_key> npm --prefix agent-fetch run example:zbd
+```
+
+Or use wallet CLI directly:
+
+```bash
+zbdw fetch "http://localhost:8787/protected" --max-sats 100
+```
+
+## 5) Understand Package Roles
+
+- `@zbdpay/agent-pay`: generates invoice challenge + verifies payment proof on incoming requests.
+- `@zbdpay/agent-fetch`: handles `402` parsing, invoice payment hook, retry with proof, and token caching.
+- `@zbdpay/agent-wallet`: CLI workflows (`zbdw`) including `zbdw fetch` powered by `agent-fetch`.
+
+<CardGroup cols={2}>
+  <Card title="Protect Routes" icon="server" href="/agents/l402-server">
+    Add L402 middleware in Express, Hono, and Next.js.
+  </Card>
+  <Card title="Client Calls" icon="bolt" href="/agents/l402-client">
+    Implement automatic challenge payment and retry.
+  </Card>
+</CardGroup>

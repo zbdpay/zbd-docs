@@ -1,0 +1,150 @@
+---
+title: "Protect Routes with agent-pay"
+description: "Require Lightning payment on HTTP routes using Express, Hono, or Next.js adapters."
+---
+
+`@zbdpay/agent-pay` is the server side of the L402 flow. It returns a `402` challenge when proof is missing, then verifies the retry proof before allowing your handler.
+
+## Basic Usage
+
+<Tabs>
+  <Tab title="Express">
+    ```typescript
+    import express from "express";
+    import { createExpressPaymentMiddleware } from "@zbdpay/agent-pay";
+
+    const app = express();
+
+    app.get(
+      "/premium",
+      createExpressPaymentMiddleware({
+        amount: 100,
+        apiKey: process.env.ZBD_API_KEY,
+      }),
+      (_req, res) => {
+        res.json({ content: "Premium data" });
+      },
+    );
+    ```
+  </Tab>
+  <Tab title="Hono">
+    ```typescript
+    import { Hono } from "hono";
+    import { createHonoPaymentMiddleware } from "@zbdpay/agent-pay";
+
+    const app = new Hono();
+
+    app.use(
+      "/premium",
+      createHonoPaymentMiddleware({
+        amount: 100,
+        apiKey: process.env.ZBD_API_KEY,
+      }),
+    );
+    ```
+  </Tab>
+  <Tab title="Next.js">
+    ```typescript
+    import { withPaymentRequired } from "@zbdpay/agent-pay/next";
+
+    export const GET = withPaymentRequired(
+      {
+        amount: 100,
+        apiKey: process.env.ZBD_API_KEY,
+      },
+      async () => Response.json({ content: "Premium data" }),
+    );
+    ```
+  </Tab>
+</Tabs>
+
+## PaymentConfig
+
+```typescript
+type PaymentConfig<RequestLike = unknown> = {
+  amount: number | ((request: RequestLike) => number | Promise<number>);
+  currency?: "SAT" | "USD";
+  apiKey?: string;
+  tokenStorePath?: string;
+};
+```
+
+| Field | Description |
+| --- | --- |
+| `amount` | Fixed sats/cents amount, or a function that computes price from request context |
+| `currency` | Pricing unit: `SAT` (default) or `USD` |
+| `apiKey` | Optional override for `ZBD_API_KEY` |
+| `tokenStorePath` | File path for settled-token cache on server |
+
+## Dynamic Pricing
+
+Use a function for request-based pricing:
+
+```typescript
+app.get(
+  "/premium",
+  createExpressPaymentMiddleware({
+    amount: (req) => {
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const tier = url.searchParams.get("tier");
+      return tier === "pro" ? 500 : 100;
+    },
+    currency: "SAT",
+    apiKey: process.env.ZBD_API_KEY,
+  }),
+  (_req, res) => res.json({ premium: true }),
+);
+```
+
+`agent-pay` evaluates pricing at challenge time and verification time. If the token amount no longer matches current route price, it returns `amount_mismatch`.
+
+## Fiat Pricing
+
+If you prefer cent-based pricing:
+
+```typescript
+createExpressPaymentMiddleware({
+  amount: 50,
+  currency: "USD",
+  apiKey: process.env.ZBD_API_KEY,
+});
+```
+
+`50` with `USD` means $0.50 (50 cents). The upstream charge is still settled over Lightning.
+
+## Token Lifetime
+
+Challenge responses include `expiresAt`. This value is tied to charge expiry from the payment provider.
+
+<Note>
+  Unlike some SDKs, `agent-pay` does not currently expose an explicit `expirySeconds` field in `PaymentConfig`.
+</Note>
+
+## 402 Challenge Shape
+
+```http
+WWW-Authenticate: L402 macaroon="<token>", invoice="<bolt11>"
+```
+
+```json
+{
+  "error": {
+    "code": "payment_required",
+    "message": "Payment required"
+  },
+  "macaroon": "<token>",
+  "invoice": "<bolt11>",
+  "paymentHash": "<hash>",
+  "amountSats": 100,
+  "expiresAt": 1735766400
+}
+```
+
+<CardGroup cols={2}>
+  <Card title="Client Integration" icon="bolt" href="/agents/l402-client">
+    Use agent-fetch or zbdw to solve challenges and retry automatically.
+  </Card>
+  <Card title="Error Codes" icon="circle-exclamation" href="/agents/l402-errors">
+    Review all status codes and middleware error semantics.
+  </Card>
+</CardGroup>

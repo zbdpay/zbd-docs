@@ -284,6 +284,32 @@
                 ]
               }
             ]
+          },
+          {
+            "anchor": "Pay Per Call (L402)",
+            "icon": "lock",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "agents/l402",
+                  "agents/l402-setup"
+                ]
+              },
+              {
+                "group": "Server Integration",
+                "pages": [
+                  "agents/l402-server",
+                  "agents/l402-errors"
+                ]
+              },
+              {
+                "group": "Client Integration",
+                "pages": [
+                  "agents/l402-client"
+                ]
+              }
+            ]
           }
         ]
       },
