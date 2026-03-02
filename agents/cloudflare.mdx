@@ -92,7 +92,7 @@ export class ZBDPaymentAgent extends Agent<Env, AgentState> {
 
 A few things worth noting:
 
-- `zbdPayL402Invoice` takes three arguments: `(challenge, context, options)`. The `options` object is where `apiKey` lives. This is **not** a factory function — don't call it as `zbdPayL402Invoice({ apiKey })`.
+- `zbdPayL402Invoice` takes three arguments: `(challenge, context, options)`. The `options` object is where `apiKey` lives. This is **not** a factory function — do not call it with a single config object instead of the three positional arguments.
 - `this.env.ZBD_API_KEY` is the correct access pattern inside the Agent class. `process.env` is not available in Workers.
 - `DurableObjectTokenCache` wraps `this.ctx.storage` directly — no HTTP stub needed. The agent's own Durable Object storage is the cache.
 
