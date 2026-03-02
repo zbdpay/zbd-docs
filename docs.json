@@ -259,7 +259,9 @@
                 "pages": [
                   "agents/quickstart",
                   "agents/skills",
-                  "agents/openclaw-skill-install"
+                  "agents/openclaw-skill-install",
+                  "agents/vercel",
+                  "agents/cloudflare"
                 ]
               }
             ]

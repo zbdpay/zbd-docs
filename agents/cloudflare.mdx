@@ -1,0 +1,263 @@
+---
+title: "Cloudflare Workers"
+description: "Add ZBD agent payments to any Cloudflare Workers app with the Agents SDK."
+---
+
+Cloudflare Workers run at the edge with near-zero cold starts, making them a great fit for agent payment workflows. The template wires up buy-side L402 fetching, sell-side paywalls, and Durable Object token persistence in one repo — no Node.js runtime required.
+
+## Quick Start
+
+<Steps>
+  <Step title="Clone and install">
+    ```bash
+    git clone https://github.com/zbdpay/cloudflare-template
+    cd cloudflare-template
+    npm install
+    ```
+  </Step>
+  <Step title="Configure Wrangler">
+    Copy the example config and fill in your Worker name:
+
+    ```bash
+    cp wrangler.jsonc.example wrangler.jsonc
+    ```
+
+    The config already includes `nodejs_compat` compatibility flag and the Durable Object binding for token storage. Don't remove either.
+  </Step>
+  <Step title="Set environment variables">
+    Add your ZBD API key as a Wrangler secret so it's never committed to source:
+
+    ```bash
+    wrangler secret put ZBD_API_KEY
+    ```
+
+    <Warning>
+      Cloudflare Workers don't use `process.env`. Access secrets via `this.env` inside a Durable Object class or `c.env` inside a Hono route handler. The template wires this up for you — just don't copy `process.env.ZBD_API_KEY` patterns from Node.js examples.
+    </Warning>
+  </Step>
+  <Step title="Initialize your wallet">
+    ```bash
+    npx @zbdpay/agent-wallet init --key $ZBD_API_KEY
+    ```
+
+    This creates a Lightning address for your agent and prints it. Save it as `ZBD_LIGHTNING_ADDRESS` if you want to receive payments at a static address.
+  </Step>
+</Steps>
+
+## Buy Side — Paying L402 APIs
+
+The template ships a `zbdFetch` helper in `src/zbd.ts` that wraps `agentFetch` with a configured payment function and a Durable Object-backed token cache.
+
+```typescript src/zbd.ts
+import { agentFetch, zbdPayL402Invoice } from "@zbdpay/agent-fetch";
+import { DurableObjectTokenCache } from "./do-token-cache";
+
+export function makeZbdFetch(env: Env, stub: DurableObjectStub) {
+  const tokenCache = new DurableObjectTokenCache(stub);
+
+  return function zbdFetch(url: string, init?: RequestInit) {
+    return agentFetch(url, {
+      tokenCache,
+      maxPaymentSats: 1000,
+      pay: (challenge, context) =>
+        zbdPayL402Invoice(challenge, context ?? { url: "" }, {
+          apiKey: env.ZBD_API_KEY,
+        }),
+      waitForPayment: async (paymentId) => {
+        const maxAttempts = 10;
+        for (let i = 0; i < maxAttempts; i++) {
+          await new Promise((r) => setTimeout(r, 2000));
+          const res = await fetch(
+            `https://api.zbdpay.com/v0/payments/${paymentId}`,
+            { headers: { apikey: env.ZBD_API_KEY } },
+          );
+          const body = await res.json();
+          const status = body?.data?.status ?? body?.status;
+          if (
+            status === "completed" ||
+            status === "paid" ||
+            status === "settled"
+          ) {
+            return {
+              status: "completed" as const,
+              paymentId,
+              preimage: body?.data?.preimage ?? body?.preimage,
+              amountPaidSats: body?.data?.amount_sats ?? body?.amount_sats,
+            };
+          }
+          if (
+            status === "failed" ||
+            status === "error" ||
+            status === "cancelled"
+          ) {
+            return {
+              status: "failed" as const,
+              paymentId,
+              failureReason: `payment_${status}`,
+            };
+          }
+        }
+        return { status: "pending" as const, paymentId };
+      },
+      ...(init && { requestInit: init }),
+    });
+  };
+}
+```
+
+A few things worth noting:
+
+- `zbdPayL402Invoice` takes three arguments: `(challenge, context, options)`. The `options` object is where `apiKey` lives. This is **not** a factory function — don't call it as `zbdPayL402Invoice({ apiKey })`.
+- `env.ZBD_API_KEY` is the correct access pattern inside Workers. `process.env` is not available.
+- `DurableObjectTokenCache` persists tokens in a Durable Object so your Worker reuses the cached proof instead of paying again on the next request.
+
+Use `zbdFetch` anywhere you'd use `fetch`:
+
+```typescript
+const zbdFetch = makeZbdFetch(env, stub);
+const res = await zbdFetch("https://some-l402-api.example.com/data");
+const data = await res.json();
+```
+
+## Sell Side — Monetizing Your API
+
+`withPaymentRequired` from `@zbdpay/agent-pay/hono` wraps a Hono route handler and returns a `402` challenge to any caller that hasn't paid yet.
+
+<Warning>
+  The import path is `@zbdpay/agent-pay/hono`, not `@zbdpay/agent-pay`. The `/hono` subpath export includes the Hono-specific adapter for Cloudflare Workers.
+</Warning>
+
+```typescript src/index.ts
+import { Hono } from "hono";
+import { withPaymentRequired } from "@zbdpay/agent-pay/hono";
+
+const app = new Hono<{ Bindings: Env }>();
+
+// Lazy-init: withPaymentRequired reads ZBD_API_KEY at call time via c.env,
+// so we defer handler creation to the first request. Initializing at module
+// load time fails because env bindings aren't available until a request arrives.
+let handler: ReturnType<typeof withPaymentRequired> | null = null;
+
+app.get("/premium", async (c) => {
+  if (!handler) {
+    handler = withPaymentRequired(
+      { amount: 100, currency: "SAT" },
+      async () => {
+        return Response.json({
+          data: "Premium content unlocked. Thanks for the sats!",
+          timestamp: new Date().toISOString(),
+        });
+      },
+      { apiKey: c.env.ZBD_API_KEY },
+    );
+  }
+  return handler(c);
+});
+
+export default app;
+```
+
+<Info>
+  The lazy-init pattern is required for Cloudflare Workers. Unlike Node.js servers, Workers don't have a startup phase where env vars are available — bindings only exist on the request context. Initializing `withPaymentRequired` at module scope will throw because `c.env` doesn't exist yet.
+</Info>
+
+## Token Storage
+
+`DurableObjectTokenCache` implements the `TokenCache` interface from `@zbdpay/agent-fetch` using a Durable Object as the backing store.
+
+```typescript src/do-token-cache.ts
+import type { TokenCache, TokenRecord } from "@zbdpay/agent-fetch";
+
+export class DurableObjectTokenCache implements TokenCache {
+  constructor(private stub: DurableObjectStub) {}
+
+  async get(url: string): Promise<TokenRecord | null> {
+    const res = await this.stub.fetch(
+      new Request(`https://do/token/${encodeURIComponent(url)}`),
+    );
+    if (!res.ok) return null;
+    return res.json<TokenRecord>();
+  }
+
+  async set(url: string, record: TokenRecord): Promise<void> {
+    await this.stub.fetch(
+      new Request(`https://do/token/${encodeURIComponent(url)}`, {
+        method: "PUT",
+        body: JSON.stringify(record),
+      }),
+    );
+  }
+
+  async delete(url: string): Promise<void> {
+    await this.stub.fetch(
+      new Request(`https://do/token/${encodeURIComponent(url)}`, {
+        method: "DELETE",
+      }),
+    );
+  }
+}
+```
+
+Inside the Durable Object class itself, tokens are stored with the key pattern `token:${url}` and settled payment records use `settled:${chargeId}:${paymentHash}`. Both are accessed via `this.ctx.storage`.
+
+<Info>
+  The `token:` key prefix keeps token records namespaced in your Durable Object storage. You can change it to avoid collisions with other data your DO manages.
+</Info>
+
+## Agent Class
+
+The template's `AgentWorker` Durable Object extends the base class and wires up both buy-side and sell-side logic. Access `this.env` for secrets inside any method:
+
+```typescript src/agent.ts
+import { DurableObject } from "cloudflare:workers";
+import { makeZbdFetch } from "./zbd";
+
+export class AgentWorker extends DurableObject<Env> {
+  private zbdFetch: ReturnType<typeof makeZbdFetch>;
+
+  constructor(ctx: DurableObjectState, env: Env) {
+    super(ctx, env);
+    // env is available here — safe to initialize at construction time
+    this.zbdFetch = makeZbdFetch(env, ctx.id.toString() as unknown as DurableObjectStub);
+  }
+
+  async fetch(request: Request): Promise<Response> {
+    // Use this.env for secrets, this.ctx.storage for persistence
+    const data = await this.zbdFetch("https://some-l402-api.example.com/data");
+    return data;
+  }
+}
+```
+
+## Deploying
+
+```bash
+wrangler deploy
+```
+
+Add or update secrets at any time without redeploying:
+
+```bash
+wrangler secret put ZBD_API_KEY
+```
+
+Check your Worker's logs in real time:
+
+```bash
+wrangler tail
+```
+
+<CardGroup cols={2}>
+  <Card title="agent-fetch" icon="bolt" href="/agents/agent-fetch">
+    Full client options, async settlement, and token caching.
+  </Card>
+  <Card title="agent-pay" icon="lock" href="/agents/agent-pay">
+    Add L402 to Express, Hono, and Next.js.
+  </Card>
+  <Card title="L402 Overview" icon="circle-info" href="/agents/l402-overview">
+    How the challenge-pay-retry protocol works.
+  </Card>
+  <Card title="Cloudflare Workers Docs" icon="cloud" href="https://developers.cloudflare.com/workers/">
+    Runtime APIs, Durable Objects, and Wrangler CLI reference.
+  </Card>
+</CardGroup>
