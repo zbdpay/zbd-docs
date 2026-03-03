@@ -92,40 +92,37 @@
                         "icon": "server",
                         "pages": [
                           "earn/sdk/send-rewards-server",
-                          "earn/sdk/create-api-key",
-                          "earn/sdk/send-rewards-api",
-                          "earn/sdk/restrict-client-rewards",
-                          {
-                            "group": "Manage Blocklist Entries",
-                            "icon": "gear",
-                            "pages": [
-                              "earn/sdk/get-blocklist-entries",
-                              "earn/sdk/delete-blocklist-entry"
-                            ]
-                          },
-                          {
-                            "group": "Manage API Keys",
-                            "icon": "key",
-                            "pages": [
-                              "earn/sdk/list-api-keys",
-                              "earn/sdk/revoke-api-key"
-                            ]
-                          }
+                          "earn/sdk/manage-via-dashboard",
+                          "earn/sdk/send-rewards-api"
                         ]
                       }
                     ]
                   },
-                  "earn/sdk/user-status",
-                  "earn/sdk/user-balance",
                   {
-                    "group": "Retrieving Withdrawal Limit",
-                    "icon": "upload",
+                    "group": "User Status",
+                    "icon": "circle-user",
                     "pages": [
-                      "earn/sdk/user-withdrawal",
-                      "earn/sdk/increase-withdrawal-limit",
-                      "earn/sdk/decrease-withdrawal-limit"
+                      "earn/sdk/user-status",
+                      "earn/sdk/manage-user-linking"
                     ]
                   },
+                  {
+                    "group": "User Balance",
+                    "icon": "coins",
+                    "pages": [
+                      "earn/sdk/user-balance",
+                      "earn/sdk/manage-rewards-balance"
+                    ]
+                  },
+                  {
+                    "group": "User Withdrawal Limits",
+                    "icon": "gauge-high",
+                    "pages": [
+                      "earn/sdk/user-withdrawal",
+                      "earn/sdk/manage-withdrawal-limits"
+                    ]
+                  },
+                  "earn/sdk/manage-controls-dashboard",
                   "earn/sdk/url-scheme",
                   "earn/sdk/attestation-setup",
                   "earn/sdk/best-practices",

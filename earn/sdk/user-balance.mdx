@@ -1,22 +1,34 @@
 ---
-title: 'Retrieving User Balance'
-description: 'Instructions for retrieving user balances from the ZBD Earn SDK.'
-icon: 'coins'
+title: 'User Balance via SDK'
+description: 'Retrieve user balance via SDK and manage it via dashboard'
+icon: 'wallet'
 ---
 
-To check the balance of a user you can invoke `GetBalance()`:
+## Retrieving User Balance via SDK
+
+Use the `GetBalance` SDK method to retrieve a user's current balance from your client application.
+
+### Implementation
 
 ```csharp
-ZBDController.Instance.GetBalance(callback=>
+ZBDController.Instance.GetBalance(callback =>
 {
   if (callback.success)
-  { 
-    // the users balance in satoshis (not millisatoshis)
+  {
+    // User's balance in satoshis (not millisatoshis)
     Debug.Log(callback.balance);
   }
   else
   {
-    Debug.LogError("get balance error " + callback.message);
+    Debug.LogError("Get balance error: " + callback.message);
   }
 });
 ```
+
+The balance represents the user's current rewards available for withdrawal.
+
+---
+
+## Managing Rewards Balance
+
+To increase or decrease user rewards balance, use the dashboard: **[Manage Rewards Balance via Dashboard](/earn/sdk/manage-rewards-balance)**
