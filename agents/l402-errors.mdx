@@ -1,0 +1,58 @@
+---
+title: "L402 Error Codes"
+description: "Reference for HTTP status and error codes returned by agent-pay middleware."
+---
+
+All middleware denials return JSON in this shape:
+
+```json
+{
+  "error": {
+    "code": "error_code",
+    "message": "Human-readable message"
+  }
+}
+```
+
+## Server Error Reference (`@zbdpay/agent-pay`)
+
+| HTTP | `error.code` | Meaning |
+| --- | --- | --- |
+| 402 | `payment_required` | No valid credential provided. Client must pay invoice and retry. |
+| 401 | `invalid_credential` | Token signature is invalid or malformed. |
+| 401 | `invalid_payment_proof` | Preimage does not match the payment hash. |
+| 403 | `resource_mismatch` | Token was issued for a different route. |
+| 403 | `amount_mismatch` | Token was issued for a different price. |
+| 403 | `token_expired` | Token is past `expiresAt`. |
+| 500 | `configuration_error` | Missing middleware configuration (for example `ZBD_API_KEY`). |
+| 500 | `pricing_error` | Dynamic pricing function failed. |
+| 502 | `invoice_creation_failed` | Upstream invoice creation failed. |
+
+## Common Client-Side Failures (`@zbdpay/agent-fetch`)
+
+These are thrown as runtime errors (not structured HTTP middleware errors):
+
+- `requestChallenge expects a 402 response`
+- `Invalid payment challenge`
+- `Payment required: <amount> sats exceeds limit of <max> sats`
+- `Payment response missing preimage and no settlement poller is configured`
+- `Payment <id> failed: <reason>`
+- `Payment <id> did not settle within <timeout>ms`
+
+<Tip>
+  For robust clients, catch these errors and map them to retries, budget policies, or user-visible payment actions.
+</Tip>
+
+## Related Pages
+
+<CardGroup cols={2}>
+  <Card title="Overview" icon="lock" href="/agents/l402">
+    Understand the full L402 protocol flow in the ZBD stack.
+  </Card>
+  <Card title="Protect Routes" icon="server" href="/agents/l402-server">
+    Implement server-side route protection and challenge issuance.
+  </Card>
+  <Card title="Call Paid APIs" icon="bolt" href="/agents/l402-client">
+    Build clients that solve 402 challenges automatically.
+  </Card>
+</CardGroup>

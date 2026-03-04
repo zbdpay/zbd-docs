@@ -1,0 +1,96 @@
+---
+title: "ZBD Agents"
+sidebarTitle: "Overview"
+description: "Build agent-native Bitcoin flows with zbdw, agent-pay, and agent-fetch."
+---
+
+The ZBD Agents toolkit gives you an end-to-end stack for agentic payments: a wallet CLI (`zbdw`), an L402 client (`agent-fetch`), an L402 server middleware (`agent-pay`), and supporting apps for identity and operations.
+
+<Info>
+  Want the fastest hands-on path? Start with the runnable scripts in `agent-pay/examples/http-server.mjs` and `agent-fetch/examples/zbd-agent-fetch.mjs`.
+</Info>
+
+<CardGroup cols={2}>
+  <Card title="Start in Minutes" icon="rocket" href="/agents/quickstart">
+    Install one package, run `zbdw init`, and execute your first paid request.
+  </Card>
+  <Card title="Monetize Any Endpoint" icon="lock" href="/agents/agent-pay">
+    Add payment gates to Express, Hono, and Next.js route handlers.
+  </Card>
+  <Card title="Pay 402 Automatically" icon="bolt" href="/agents/agent-fetch">
+    Auto-handle L402 challenges with max payment guardrails and token caching.
+  </Card>
+  <Card title="Learn Pay Per Call (L402)" icon="coins" href="/agents/l402">
+    Follow the complete server + client pattern for Lightning-gated API calls.
+  </Card>
+  <Card title="Operate with Confidence" icon="chart-line" href="/agents/agent-wallet-dashboard">
+    Use the dashboard to inspect balances, payment history, and local wallet state.
+  </Card>
+  <Card title="Ship Agent Skills" icon="wand-magic-sparkles" href="/agents/skills">
+    Package `zbdw` workflows into reusable skills for IDE agents and OpenClaw-compatible runtimes.
+  </Card>
+</CardGroup>
+
+## Choose Your Path
+
+<Tabs>
+  <Tab title="Developer">
+    **Goal:** launch a working agent payment flow fast.
+
+    1. Start with the [Quick Start](/agents/quickstart)
+    2. Add payment-gated routes with [agent-pay](/agents/agent-pay)
+    3. Pay those routes with [agent-fetch](/agents/agent-fetch) or `zbdw fetch`
+  </Tab>
+  <Tab title="Product & PM">
+    **Goal:** validate monetization and ops fit.
+
+    - Map capabilities in [Architecture](/agents/architecture)
+    - Review deployment surfaces in [Repo Map](/agents/repo-map)
+    - Track live wallet activity in [Agent Wallet Dashboard](/agents/agent-wallet-dashboard)
+  </Tab>
+  <Tab title="Platform Team">
+    **Goal:** standardize identity and payments infrastructure.
+
+    - Set up [zbd.ai Registry](/agents/registry) for stable Lightning addresses
+    - Standardize env vars and shared file paths
+    - Adopt workspace verification scripts for CI
+  </Tab>
+</Tabs>
+
+## Core Repositories
+
+<CardGroup cols={2}>
+  <Card title="agent-wallet" icon="github" href="https://github.com/zbdpay/agent-wallet">
+    CLI wallet and command router for ZBD agent payments (`zbdw`).
+  </Card>
+  <Card title="agent-fetch" icon="github" href="https://github.com/zbdpay/agent-fetch">
+    L402-aware fetch client for paid HTTP resources.
+  </Card>
+  <Card title="agent-pay" icon="github" href="https://github.com/zbdpay/agent-pay">
+    L402 middleware for Express, Hono, and Next.js.
+  </Card>
+  <Card title="agent-wallet-dashboard" icon="github" href="https://github.com/zbdpay/agent-wallet-dashboard">
+    Local dashboard for wallet balances and payments history.
+  </Card>
+</CardGroup>
+
+<Info>
+  `zbdw` is the binary shipped by `@zbdpay/agent-wallet`. It is designed for JSON-first CLI interoperability with agent runners.
+</Info>
+
+## What You Can Build
+
+<AccordionGroup>
+  <Accordion title="Paid API products" icon="server">
+    Gate premium API routes with `agent-pay`, then let autonomous clients unlock access via `agent-fetch`.
+  </Accordion>
+  <Accordion title="Autonomous data acquisition" icon="database">
+    Use `zbdw fetch` to allow agents to pay per request and retrieve premium content in one command.
+  </Accordion>
+  <Accordion title="Agent-to-agent commerce" icon="arrow-right-arrow-left">
+    Combine wallet send/receive primitives with L402 middleware to create closed-loop service economies.
+  </Accordion>
+  <Accordion title="Operations and observability" icon="gauge-high">
+    Track local wallet activity in `~/.zbd-wallet` and visualize it with the dashboard.
+  </Accordion>
+</AccordionGroup>

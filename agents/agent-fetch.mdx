@@ -1,0 +1,140 @@
+---
+title: "Agent Fetch"
+description: "Use agentFetch to parse 402 challenges, pay invoices, and retry automatically with L402 proof."
+---
+
+`@zbdpay/agent-fetch` is the client half of the L402 flow. It accepts a payment hook, handles challenge parsing, enforces guards, and retries with proof.
+
+<CardGroup cols={2}>
+  <Card title="Repository" icon="github" href="https://github.com/zbdpay/agent-fetch">
+    Source, tests, and engineering contract.
+  </Card>
+  <Card title="NPM Package" icon="cube" href="https://www.npmjs.com/package/@zbdpay/agent-fetch">
+    Install and integrate into existing runtimes.
+  </Card>
+</CardGroup>
+
+## Install
+
+```bash
+npm install @zbdpay/agent-fetch
+```
+
+## Minimal Integration
+
+```typescript
+import { agentFetch, FileTokenCache } from "@zbdpay/agent-fetch";
+
+const tokenCache = new FileTokenCache(`${process.env.HOME}/.zbd-wallet/token-cache.json`);
+
+const response = await agentFetch("https://example.com/protected", {
+  tokenCache,
+  maxPaymentSats: 100,
+  pay: async (challenge) => {
+    // Pay challenge.invoice with your wallet implementation.
+    return {
+      preimage: "<payment-preimage>",
+      paymentId: "<payment-id>",
+      amountPaidSats: challenge.amountSats,
+    };
+  },
+});
+
+console.log(response.status, await response.json());
+```
+
+## API Surface
+
+```typescript
+import {
+  agentFetch,
+  requestChallenge,
+  payChallenge,
+  fetchWithProof,
+  FileTokenCache,
+} from "@zbdpay/agent-fetch";
+```
+
+## Core Options
+
+| Option | Required | Purpose |
+|---|---|---|
+| `pay(challenge)` | Yes | Pays parsed challenge and returns preimage or payment ID |
+| `waitForPayment(paymentId)` | No | Polls async settlement when preimage is not immediate |
+| `tokenCache` | No | Cache for URL-scoped authorization proofs |
+| `maxPaymentSats` | No | Hard cap to reject expensive challenges |
+| `requestInit` | No | Base request options forwarded to `fetch` |
+| `paymentTimeoutMs` | No | Async settlement timeout |
+| `paymentPollIntervalMs` | No | Poll interval for async settlement |
+
+## Manual Flow (Advanced)
+
+<CodeGroup>
+```typescript requestChallenge + payChallenge
+import { requestChallenge, payChallenge } from "@zbdpay/agent-fetch";
+
+const challenge = requestChallenge({
+  status: 402,
+  headers: response.headers,
+  bodyText: await response.text(),
+});
+
+const paid = await pay(challenge);
+const authorization = payChallenge(challenge, paid);
+```
+
+```typescript fetchWithProof
+import { fetchWithProof } from "@zbdpay/agent-fetch";
+
+const res = await fetchWithProof(
+  "https://example.com/protected",
+  { method: "GET" },
+  authorization,
+  fetch,
+);
+```
+</CodeGroup>
+
+## Behavior Guarantees
+
+<Steps>
+  <Step title="Cache lookup first">
+    If a valid token exists for the URL, request is sent with proof immediately.
+  </Step>
+  <Step title="Pass-through for non-402">
+    Non-paid endpoints are returned untouched.
+  </Step>
+  <Step title="Challenge parsing">
+    Supports both `L402` and `LSAT` challenge schemes.
+  </Step>
+  <Step title="Payment and retry">
+    Runs caller-provided payment logic, then retries with authorization proof.
+  </Step>
+  <Step title="Proof caching">
+    Stores token and optional expiry for reuse.
+  </Step>
+</Steps>
+
+## Runnable Examples
+
+The repository includes maintained scripts under `examples/`:
+
+- `examples/zbd-agent-fetch.mjs`: end-to-end paid fetch using ZBD API payment hooks
+- `examples/fetch-with-known-proof.mjs`: fetch with a precomputed L402 authorization token
+
+From the agents workspace, run:
+
+```bash
+npm --prefix agent-fetch run build
+PROTECTED_URL="https://api.example.com/protected" ZBD_API_KEY=<your_api_key> npm --prefix agent-fetch run example:zbd
+```
+
+If you already have an authorization token:
+
+```bash
+PROTECTED_URL="https://api.example.com/protected" L402_AUTHORIZATION="L402 <macaroon>:<preimage>" npm --prefix agent-fetch run example:proof
+```
+
+<Warning>
+  `pay` is mandatory. `agent-fetch` does not call ZBD directly unless you implement that behavior in your payment hook.
+</Warning>

@@ -1,0 +1,104 @@
+---
+title: "Install zbdw Skill on OpenClaw"
+description: "Step-by-step install and verification for using the zbdw skill on an OpenClaw instance."
+---
+
+Use this guide when you want an OpenClaw instance to use the `zbdw` wallet skill end to end.
+
+<Warning>
+  Use Node.js 22+ and make sure your OpenClaw workspace is set before installing skills.
+</Warning>
+
+## Prerequisites
+
+- A working OpenClaw instance
+- `npx` available on your machine
+- ZBD API key for wallet initialization
+- Agent workspace with a `skills/` folder (or permission to create one)
+
+## 1) Install the skill into your OpenClaw workspace
+
+From the root of your OpenClaw workspace:
+
+```bash
+npx skills add https://github.com/zbdpay/agent-wallet --full-depth --skill zbdw
+```
+
+This installs `zbdw` into your local workspace skills so OpenClaw can discover it.
+
+<Tip>
+  You can preview discovery without installing by adding `--list`.
+</Tip>
+
+## 2) Confirm OpenClaw can see the skill
+
+```bash
+openclaw skills list
+openclaw skills list --eligible
+openclaw skills info zbdw
+```
+
+If `zbdw` is missing from `--eligible`, run:
+
+```bash
+openclaw skills check
+```
+
+## 3) Ensure `zbdw` binary is available
+
+The skill is eligible when OpenClaw can find one of the required binaries (`zbdw` or `npx`).
+
+```bash
+zbdw --help
+```
+
+If `zbdw` is not installed globally yet:
+
+```bash
+npm install -g @zbdpay/agent-wallet
+zbdw --help
+```
+
+## 4) Initialize wallet identity
+
+```bash
+zbdw init --key <your_api_key>
+zbdw info
+zbdw balance
+```
+
+## 5) Validate the skill in an agent session
+
+Start a new OpenClaw session and ask for a wallet action, for example:
+
+- "Use zbdw to show my wallet balance"
+- "Use zbdw to create a 1000 sat receive invoice"
+- "Use zbdw fetch on this paid endpoint with max 100 sats"
+
+<Info>
+  OpenClaw snapshots eligible skills at session start. If you just installed the skill, start a new session to pick it up.
+</Info>
+
+## Shared install for multiple agents (optional)
+
+If you want all local agents to reuse the same skill set, install/copy the skill under:
+
+```text
+~/.openclaw/skills/zbdw/SKILL.md
+```
+
+Workspace skills still take precedence over shared skills when names conflict.
+
+## Troubleshooting
+
+- `zbdw` not eligible: run `openclaw skills check` and install `@zbdpay/agent-wallet` globally.
+- Skill installed but not used: start a new session so OpenClaw refreshes the skill snapshot.
+- API key errors: re-run `zbdw init --key <your_api_key>` and verify with `zbdw info`.
+- Command not found in sandboxed runs: ensure required binaries are also available in the sandbox image.
+
+## Related Docs
+
+- [Agent Skills](/agents/skills)
+- [Agent Wallet CLI](/agents/agent-wallet)
+- [OpenClaw Skills reference](https://docs.openclaw.ai/tools/skills)
+- [OpenClaw skills CLI reference](https://docs.openclaw.ai/cli/skills)

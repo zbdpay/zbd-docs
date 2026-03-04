@@ -1,0 +1,114 @@
+---
+title: "Agent Skills"
+description: "Package zbdw workflows as reusable skills for skills.sh and OpenClaw-compatible agents."
+---
+
+Skills let agent runners call proven `zbdw` flows with better defaults, safer guardrails, and faster onboarding.
+
+<CardGroup cols={2}>
+  <Card title="zbdw Skill Source" icon="github" href="https://github.com/zbdpay/agent-wallet/tree/main/skills/zbdw">
+    Official skill files, references, and OpenClaw metadata for `zbdw` operations.
+  </Card>
+  <Card title="skills.sh" icon="globe" href="https://skills.sh">
+    Discovery and installation index for agent skills.
+  </Card>
+  <Card title="Skills CLI" icon="terminal" href="https://skills.sh/docs">
+    Install, list, and validate skills with `npx skills`.
+  </Card>
+  <Card title="OpenClaw Skill Format" icon="book" href="https://docs.openclaw.ai/tools/skills">
+    Runtime-compatible format for metadata and install requirements.
+  </Card>
+</CardGroup>
+
+<Info>
+  Need a direct OpenClaw walkthrough? Use [Install zbdw Skill on OpenClaw](/agents/openclaw-skill-install).
+</Info>
+
+## Quick Install
+
+<CodeGroup>
+```bash From GitHub repository
+npx skills add https://github.com/zbdpay/agent-wallet --full-depth --skill zbdw
+```
+
+```bash From local clone
+npx skills add ./agent-wallet/skills/zbdw
+```
+</CodeGroup>
+
+<Tip>
+  Use `npx skills add <source> --list` to verify discovery without installing.
+</Tip>
+
+## What the Skill Covers
+
+<Tabs>
+  <Tab title="Wallet Ops">
+    - `zbdw init`, `info`, `balance`
+    - `zbdw receive`, `send`, `payments`, `payment`
+    - `zbdw paylink create|get|list|cancel`
+    - `zbdw withdraw create|status`
+  </Tab>
+  <Tab title="L402 Fetch">
+    - `zbdw fetch <url> --max-sats <n>`
+    - payment-cap enforcement
+    - token-cache reuse behavior
+  </Tab>
+  <Tab title="Troubleshooting">
+    - maps JSON errors to recovery actions
+    - enforces destination and amount validation
+    - documents API key precedence
+  </Tab>
+</Tabs>
+
+## Skill Layout
+
+```text
+skills/zbdw/
+  SKILL.md
+  references/
+    command-reference.md
+    troubleshooting.md
+```
+
+## Authoring Notes for High Discovery
+
+<Steps>
+  <Step title="Describe triggers clearly">
+    Include natural language triggers users actually type: `send sats`, `withdraw`, `payment id`, `L402`, `paywall`.
+  </Step>
+  <Step title="Document exact JSON contracts">
+    Keep examples machine-readable so agents can parse fields like `payment_id`, `amount_paid_sats`, and `error`.
+  </Step>
+  <Step title="Keep references close">
+    Place task mappings and troubleshooting in a local `references/` folder and link them from `SKILL.md`.
+  </Step>
+  <Step title="Include runtime metadata">
+    Add OpenClaw metadata for required binaries and install instructions so runners can self-heal setup.
+  </Step>
+</Steps>
+
+## OpenClaw Metadata Example
+
+```yaml
+metadata:
+  openclaw:
+    emoji: "⚡"
+    requires:
+      anyBins:
+        - zbdw
+        - npx
+    install:
+      - id: node-global
+        kind: node
+        package: "@zbdpay/agent-wallet"
+        bins:
+          - zbdw
+```
+
+## Publish Checklist
+
+- Run package checks in `agent-wallet`: `npm run typecheck && npm run build && npm test`
+- Verify skill discovery: `npx skills add <source> --list`
+- Ensure `SKILL.md` links resolve and references exist
+- Push to GitHub and validate install from a clean machine/user profile

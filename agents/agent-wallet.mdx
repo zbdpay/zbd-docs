@@ -1,0 +1,134 @@
+---
+title: "Agent Wallet"
+description: "Use zbdw for wallet setup, send/receive operations, withdraw flows, and paid fetch."
+---
+
+`@zbdpay/agent-wallet` ships the `zbdw` CLI and is the fastest way to operationalize agent payments.
+
+<CardGroup cols={2}>
+  <Card title="Repository" icon="github" href="https://github.com/zbdpay/agent-wallet">
+    Source code, release history, and examples.
+  </Card>
+  <Card title="NPM Package" icon="cube" href="https://www.npmjs.com/package/@zbdpay/agent-wallet">
+    Install globally or execute with npx.
+  </Card>
+</CardGroup>
+
+## Install
+
+```bash
+npm install -g @zbdpay/agent-wallet
+```
+
+Or run directly:
+
+```bash
+npx @zbdpay/agent-wallet init --key <your_api_key>
+```
+
+## Environment Variables
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `ZBD_API_KEY` | none | API key for wallet and payments requests |
+| `ZBD_API_BASE_URL` | `https://api.zbdpay.com` | Override ZBD API host |
+| `ZBD_AI_BASE_URL` | `https://zbd.ai` | Registration service host |
+| `ZBD_WALLET_CONFIG` | `~/.zbd-wallet/config.json` | Wallet config path |
+| `ZBD_WALLET_PAYMENTS` | `~/.zbd-wallet/payments.json` | Local payments log path |
+| `ZBD_WALLET_TOKEN_CACHE` | `~/.zbd-wallet/token-cache.json` | L402 token cache path |
+
+## Command Reference
+
+```bash
+zbdw init [--key <apiKey>]
+zbdw info
+zbdw balance
+
+zbdw receive <amount_sats>
+zbdw receive --static
+
+zbdw send <destination> <amount_sats>
+zbdw payments
+zbdw payment <id>
+
+zbdw paylink create <amount_sats>
+zbdw paylink get <id>
+zbdw paylink list
+zbdw paylink cancel <id>
+
+zbdw withdraw create <amount_sats>
+zbdw withdraw status <withdraw_id>
+
+zbdw fetch <url> [--method <method>] [--data <json>] [--max-sats <amount>]
+```
+
+## Destination Types (`send`)
+
+| Destination | Example | Route |
+|---|---|---|
+| BOLT11 invoice | `lnbc...` | `/v0/payments` |
+| Lightning Address | `name@domain.com` | `/v0/ln-address/send-payment` |
+| ZBD Gamertag | `@player` | `/v0/gamertag/send-payment` |
+| LNURL | `lnurl...` | `/v0/ln-address/send-payment` |
+
+## JSON Output Contract
+
+Success and failure responses are always JSON on stdout.
+
+```json
+{
+  "error": "error_code",
+  "message": "Human-readable message",
+  "details": {}
+}
+```
+
+Common success examples:
+
+```json
+{"lightningAddress":"name@zbd.ai","status":"ok"}
+{"balance_sats":50000}
+{"payment_id":"pay_123","fee_sats":1,"status":"completed"}
+{"status":200,"body":{},"payment_id":"pay_123","amount_paid_sats":21}
+{"id":"pl_001","url":"https://zbd.ai/paylinks/pl_001","status":"active","lifecycle":"active","amount_sats":250}
+```
+
+<Info>
+  Paylink lifecycle values: `created | active | paid | expired | dead`. Terminal states (`paid`, `expired`, `dead`) are permanent.
+  `zbdw paylink get` also syncs the latest payment attempt to local `payments.json`.
+</Info>
+
+## Storage Layout
+
+```text
+~/.zbd-wallet/
+  config.json
+  payments.json       # includes paylink settlement records with paylink_id, paylink_lifecycle
+  paylinks.json       # local paylink index (ZBD_WALLET_PAYLINKS to override)
+  token-cache.json
+```
+
+<Info>
+  `zbdw fetch` uses `@zbdpay/agent-fetch` under the hood, including token caching and max payment guardrails.
+</Info>
+
+## Companion Runnable Examples
+
+`agent-wallet` does not currently ship its own `examples/` directory. For a full runnable flow, pair it with:
+
+- `agent-pay/examples/http-server.mjs`
+- `agent-fetch/examples/zbd-agent-fetch.mjs`
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Command not found: zbdw" icon="terminal">
+    Build and alias the local binary, or install globally with `npm install -g @zbdpay/agent-wallet`.
+  </Accordion>
+  <Accordion title="register_failed during init" icon="at">
+    Confirm `ZBD_AI_BASE_URL` points to a reachable `zbd-ai` service and your API key is valid.
+  </Accordion>
+  <Accordion title="wallet_response_invalid" icon="triangle-exclamation">
+    Verify your configured API base URL returns wallet balance fields in expected shape.
+  </Accordion>
+</AccordionGroup>

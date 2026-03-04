@@ -1,0 +1,73 @@
+---
+title: "zbd.ai Registry"
+description: "Register agent identities and resolve Lightning Addresses through LNURL endpoints."
+---
+
+The registry service powers the identity layer behind `zbdw init`, returning stable Lightning addresses like `<username>@zbd.ai`.
+
+## What It Does
+
+<Steps>
+  <Step title="Validates your project API key">
+    Calls ZBD wallet endpoint to verify key validity.
+  </Step>
+  <Step title="Creates or updates static charge linkage">
+    Creates LNURL-backed payment destination for your identity.
+  </Step>
+  <Step title="Returns stable Lightning Address">
+    Responds with `{ "lightningAddress": "name@zbd.ai" }`.
+  </Step>
+</Steps>
+
+## API Endpoints
+
+| Method | Route | Purpose |
+|---|---|---|
+| `POST` | `/api/register` | Register or refresh agent identity |
+| `GET` | `/.well-known/lnurlp/:username` | LNURL metadata resolution |
+| `GET` | `/.well-known/lnurlp/:username?amount=<msat>` | Invoice generation callback |
+
+## Request + Response
+
+<CodeGroup>
+```json Register request
+{ "apiKey": "<zbd-project-api-key>" }
+```
+
+```json Register success
+{ "lightningAddress": "swift-tiger@zbd.ai" }
+```
+
+```json Error example
+{ "error": "invalid_key", "message": "API key rejected" }
+```
+</CodeGroup>
+
+## Storage Backends
+
+<Tabs>
+  <Tab title="File">
+    Local development and VPS-friendly.
+
+    - Backend: `file`
+    - Path: `~/.zbd-ai/agents.json` (default)
+  </Tab>
+  <Tab title="Vercel KV">
+    Serverless persistence path.
+
+    - Backend: `vercel-kv`
+    - Env vars: `KV_REST_API_URL` / `KV_REST_API_TOKEN`
+  </Tab>
+</Tabs>
+
+## Key Environment Variables
+
+| Variable | Default |
+|---|---|
+| `ZBD_API_BASE_URL` | `https://api.zbdpay.com` |
+| `ZBD_AI_STORE_BACKEND` | auto-select |
+| `ZBD_AI_STORE_PATH` | `~/.zbd-ai/agents.json` |
+
+<Warning>
+  In serverless deployments, avoid relying on local filesystem persistence. Use a durable backend such as Vercel KV.
+</Warning>

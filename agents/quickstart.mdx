@@ -1,0 +1,148 @@
+---
+title: "Quick Start"
+description: "Launch your first agent payment workflow with zbdw, L402 middleware, and paid fetch."
+---
+
+This quickstart gets you from zero to a working paid request flow.
+
+<Warning>
+  Use Node.js 22+ for all packages in this toolkit.
+</Warning>
+
+## 1) Install Wallet CLI
+
+<CodeGroup>
+```bash Global install
+npm install -g @zbdpay/agent-wallet
+```
+
+```bash One-shot installless
+npx @zbdpay/agent-wallet init --key <your_api_key>
+```
+</CodeGroup>
+
+## 2) Initialize Wallet Identity
+
+```bash
+zbdw init --key <your_api_key>
+# {"lightningAddress":"your-name@zbd.ai","status":"ok"}
+```
+
+Then verify balance and metadata:
+
+```bash
+zbdw info
+zbdw balance
+```
+
+## 3) Try Core Wallet Actions
+
+<Tabs>
+  <Tab title="Receive">
+    ```bash
+    zbdw receive 1000
+    zbdw receive --static
+    ```
+  </Tab>
+  <Tab title="Send">
+    ```bash
+    zbdw send andre@zbd.gg 500
+    zbdw send @gamertag 500
+    ```
+  </Tab>
+  <Tab title="History">
+    ```bash
+    zbdw payments
+    zbdw payment <payment_id>
+    ```
+  </Tab>
+</Tabs>
+
+## 4) Fetch a Paid Endpoint (L402)
+
+```bash
+zbdw fetch https://your-paid-api.com/premium --max-sats 100
+```
+
+Run the same command again to reuse the token cache when valid.
+
+```bash
+zbdw fetch https://your-paid-api.com/premium --max-sats 100
+```
+
+<Tip>
+  If cache is reused, `payment_id` is typically `null` on the second call.
+</Tip>
+
+## 4b) Zero-to-Demo with Included Examples
+
+If you want to see the full paid-route flow with minimal setup, run the maintained examples directly from the monorepo workspace:
+
+```bash
+npm --prefix agent-pay run build
+ZBD_API_KEY=<your_api_key> npm --prefix agent-pay run example:http-server
+```
+
+Then in another terminal:
+
+```bash
+npm --prefix agent-fetch run build
+PROTECTED_URL="https://api.example.com/protected" ZBD_API_KEY=<your_api_key> npm --prefix agent-fetch run example:zbd
+```
+
+## 5) Add a Paid Route with agent-pay
+
+```typescript
+import express from "express";
+import { createExpressPaymentMiddleware } from "@zbdpay/agent-pay";
+
+const app = express();
+
+app.get(
+  "/premium",
+  createExpressPaymentMiddleware({ amount: 21, apiKey: process.env.ZBD_API_KEY }),
+  (_req, res) => res.json({ premium: true }),
+);
+
+app.listen(3000);
+```
+
+## 6) Use agent-fetch in App Code
+
+```typescript
+import { agentFetch, FileTokenCache } from "@zbdpay/agent-fetch";
+
+const tokenCache = new FileTokenCache(`${process.env.HOME}/.zbd-wallet/token-cache.json`);
+
+const response = await agentFetch("https://api.example.com/premium", {
+  tokenCache,
+  maxPaymentSats: 100,
+  pay: async (challenge) => {
+    // Implement invoice payment with your wallet API call.
+    return {
+      preimage: "<payment-preimage>",
+      paymentId: "<payment-id>",
+      amountPaidSats: challenge.amountSats,
+    };
+  },
+});
+
+console.log(response.status, await response.json());
+```
+
+## Next Guides
+
+<CardGroup cols={2}>
+  <Card title="Agent Wallet" icon="wallet" href="/agents/agent-wallet">
+    CLI command reference, env vars, and JSON output contract.
+  </Card>
+  <Card title="Agent Pay" icon="lock" href="/agents/agent-pay">
+    Add L402 to Express, Hono, and Next.js.
+  </Card>
+  <Card title="Agent Fetch" icon="bolt" href="/agents/agent-fetch">
+    Full client options, async settlement, and caching.
+  </Card>
+  <Card title="Repo Map" icon="sitemap" href="/agents/repo-map">
+    Canonical repositories and package boundaries.
+  </Card>
+</CardGroup>

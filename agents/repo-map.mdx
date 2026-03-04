@@ -1,0 +1,72 @@
+---
+title: "Repo Map"
+description: "Canonical repositories, packages, and ownership surfaces for the ZBD Agents stack."
+---
+
+Use this page to orient engineering and product teams across the agent toolkit.
+
+## Canonical Repositories
+
+<CardGroup cols={2}>
+  <Card title="agent-wallet" icon="github" href="https://github.com/zbdpay/agent-wallet">
+    `@zbdpay/agent-wallet` package, `zbdw` binary, CLI workflows.
+  </Card>
+  <Card title="agent-fetch" icon="github" href="https://github.com/zbdpay/agent-fetch">
+    `@zbdpay/agent-fetch` package, L402 client flow and token cache.
+  </Card>
+  <Card title="agent-pay" icon="github" href="https://github.com/zbdpay/agent-pay">
+    `@zbdpay/agent-pay` package, middleware adapters for Express, Hono, Next.js.
+  </Card>
+  <Card title="agent-wallet-dashboard" icon="github" href="https://github.com/zbdpay/agent-wallet-dashboard">
+    Local read-only dashboard for wallet files and operational checks.
+  </Card>
+</CardGroup>
+
+<Info>
+  The `zbd.ai` service underpins registration and Lightning Address resolution. The source repository may be private in some environments.
+</Info>
+
+## Package + Runtime Matrix
+
+| Surface | Type | Runtime | NPM |
+|---|---|---|---|
+| `@zbdpay/agent-wallet` | CLI | Node.js >= 22 | Yes |
+| `@zbdpay/agent-fetch` | Library | Node.js >= 22 | Yes |
+| `@zbdpay/agent-pay` | Library | Node.js >= 22 | Yes |
+| `agent-wallet-dashboard` | Next.js app | Node.js >= 22 | No |
+| `zbd-ai` | Next.js app/service | Node.js >= 22 | No |
+
+## Runnable Examples Coverage
+
+| Repository | `examples/` directory | Fastest demo script |
+|---|---|---|
+| `agent-fetch` | Yes | `examples/zbd-agent-fetch.mjs` |
+| `agent-pay` | Yes | `examples/http-server.mjs` |
+| `agent-wallet` | No | Use `zbdw fetch` against `agent-pay` example |
+| `agent-wallet-dashboard` | No | Use `sample-data/` quick demo |
+| `zbd-ai` | No | Use `POST /api/register` smoke test |
+
+## Workspace Helpers
+
+At the top-level agents workspace, these scripts are useful for full-suite verification:
+
+```bash
+npm run install:all
+npm run build:all
+npm run test:all
+npm run verify:all
+```
+
+## Where to Go Next
+
+<CardGroup cols={3}>
+  <Card title="Quick Start" icon="rocket" href="/agents/quickstart">
+    Start with a first-run path across setup, payment, and fetch.
+  </Card>
+  <Card title="Architecture" icon="diagram-project" href="/agents/architecture">
+    Understand request lifecycle and data boundaries.
+  </Card>
+  <Card title="Agent Wallet" icon="wallet" href="/agents/agent-wallet">
+    Command reference and operational patterns.
+  </Card>
+</CardGroup>

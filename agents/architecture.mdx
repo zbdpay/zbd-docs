@@ -1,0 +1,68 @@
+---
+title: "Architecture"
+description: "How wallet, fetch, pay, and registry components fit together for agent-native payments."
+---
+
+The ZBD Agents architecture is built around a simple split: `agent-pay` issues payment challenges, and `agent-fetch` or `zbdw fetch` solves them automatically.
+
+```mermaid
+graph LR
+    A[Agent Runtime] -->|zbdw fetch / agentFetch| B[Paid API]
+    B -->|402 challenge| A
+    A -->|Pay invoice via ZBD| C[ZBD API]
+    A -->|Retry with L402 proof| B
+    B -->|200 premium response| A
+
+    A --> D[zbd.ai Registry]
+    D --> E[Lightning Address Resolution]
+```
+
+## Components
+
+<CardGroup cols={2}>
+  <Card title="@zbdpay/agent-wallet" icon="wallet" href="/agents/agent-wallet">
+    CLI interface (`zbdw`) for wallet operations, payment history, withdraw flows, and paid fetch.
+  </Card>
+  <Card title="@zbdpay/agent-fetch" icon="bolt" href="/agents/agent-fetch">
+    Client-side L402 flow manager with cache reuse and max payment guardrails.
+  </Card>
+  <Card title="@zbdpay/agent-pay" icon="lock" href="/agents/agent-pay">
+    Server middleware that returns 402 challenges and verifies payment proof.
+  </Card>
+  <Card title="zbd.ai Registry" icon="at" href="/agents/registry">
+    Identity layer for stable Lightning addresses and LNURL resolution.
+  </Card>
+</CardGroup>
+
+## Request Lifecycle
+
+<Steps>
+  <Step title="Client requests protected resource">
+    A request hits an endpoint wrapped by `agent-pay`.
+  </Step>
+  <Step title="Server returns 402 challenge">
+    `agent-pay` creates an invoice and returns `WWW-Authenticate: L402 ...` plus challenge JSON.
+  </Step>
+  <Step title="Client pays challenge">
+    `agent-fetch` (or `zbdw fetch`) pays the invoice and retrieves the preimage.
+  </Step>
+  <Step title="Client retries with proof">
+    The request is retried with `Authorization: L402 <macaroon>:<preimage>`.
+  </Step>
+  <Step title="Server verifies and allows">
+    `agent-pay` validates signature, hash, amount, expiry, and settlement state before returning 200.
+  </Step>
+</Steps>
+
+## Shared Local State
+
+| Path | Primary Writer | Primary Reader |
+|---|---|---|
+| `~/.zbd-wallet/config.json` | `zbdw init` | `zbdw`, dashboard |
+| `~/.zbd-wallet/payments.json` | `zbdw send/receive` | `zbdw`, dashboard |
+| `~/.zbd-wallet/token-cache.json` | `zbdw fetch` | `zbdw fetch` |
+| `~/.zbd-wallet/server-tokens.json` | `agent-pay` | `agent-pay` |
+
+<Tip>
+  The toolkit is optimized for Node.js 22+ across all core packages.
+</Tip>
