@@ -24,12 +24,36 @@ ZBDController.Instance.SendReward(1, callback =>
   {
     // reward sent
   }
+  else if (callback.maintenance)
+  {
+    // Platform is in maintenance mode
+    Debug.Log("Rewards are temporarily unavailable. Please try again later.");
+  }
   else
   {
     Debug.LogError("send reward error " + callback.message);
   }
 });
 ```
+
+The `SendReward` response object contains the following fields:
+
+```csharp
+public class ZBDSendRewardResponse
+{
+    public bool success;
+    public string message;
+    public bool needsAuthentication;
+    public bool maintenance;
+    public ZBDTransactionData[] data;
+}
+```
+
+<Warning>
+Maintenance mode can start while players are actively in a session. Even if `Init` succeeded normally, `SendReward` can return `maintenance = true` at any point during gameplay. Always check the `maintenance` flag on every reward call and display a user-friendly message when it is active. Do not queue or retry rewards during maintenance.
+</Warning>
+
+See [Handling Maintenance Mode](/earn/sdk/integration#handling-maintenance-mode) for the full list of affected methods.
 
 <Note>
     For enhanced security and validation, we recommend handling reward distribution from your backend server.
