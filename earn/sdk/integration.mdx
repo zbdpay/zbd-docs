@@ -39,9 +39,7 @@ If you have not been given an App ID, for testing purposes only you can use the 
 # Initialize the SDK
 
 <Note>
-You must set the `userId` property during initialization of the SDK if you want ZBD to share event data for your users (e.g. `user signed up for ZBD app`).
-
-`userId`: this is **your internal userId** that can be attributed to a ZBD user.
+You can optionally pass a `userId` during initialization — this is your own internal identifier for the user. It's used for various analytics and user linking features, but it is not essential.
 </Note>
 <Warning>
   Please reach out to your ZBD Customer Success Manager if you face any issues.
@@ -58,6 +56,9 @@ ZBDController.Instance.Init(userId, completion =>
   {
     if (completion.success) {
       Debug.Log("success");
+    } else if (completion.maintenance) {
+      // Platform is in maintenance mode — display a message to the user
+      Debug.Log("ZBD is currently under maintenance. Please try again later.");
     } else {
       Debug.LogError(completion.error);
     }
@@ -80,7 +81,9 @@ ZBDController.Instance.Init(completion =>
 	{
 	  if (completion.success) {
 	    Debug.Log("success");
-		} else {
+	  } else if (completion.maintenance) {
+	    Debug.Log("ZBD is currently under maintenance. Please try again later.");
+	  } else {
       Debug.LogError(completion.error);
     }
   }
@@ -92,6 +95,41 @@ This will allow the user to start earning, however **in order to withdraw they w
 
 The easiest way to do this is to present the ZBD modal. If the user has not registered their ZBD Gamertag then they will be guided through it inside the modal.
 </Note>
+
+### Handling Maintenance Mode
+
+The ZBD platform may occasionally enter maintenance mode. When this happens, the SDK response will include a `maintenance` flag set to `true`. You should check for this flag during initialization and display an appropriate message to your users.
+
+The `Init` response object contains the following fields:
+
+```csharp
+public class ZBDInitResponse
+{
+    public bool success;
+    public bool maintenance;
+    public string userId;
+    public string error;
+    public string type;
+}
+```
+
+When `maintenance` is `true`:
+- The SDK will not be fully operational
+- Reward sending will be unavailable
+- You should display a user-friendly message (e.g. *"Rewards are temporarily unavailable. Please try again later."*)
+- You should **not** treat this as an error — maintenance periods are temporary
+
+<Warning>
+Maintenance mode can begin at any time, including while players are actively in a session. This means `Init` may succeed normally, but subsequent calls to `SendReward` or `GetBalance` can return `maintenance = true` during gameplay. You must handle the maintenance flag on **every** SDK response, not just during initialization.
+</Warning>
+
+The following SDK methods can return the `maintenance` flag:
+
+| Method | Response Class |
+|---|---|
+| `Init` | `ZBDInitResponse` |
+| `SendReward` | `ZBDSendRewardResponse` |
+| `GetBalance` | `ZBDBalanceResponse` |
 
 ### Presenting SDK Modal
 

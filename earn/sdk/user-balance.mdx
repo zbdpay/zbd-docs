@@ -18,6 +18,11 @@ ZBDController.Instance.GetBalance(callback =>
     // User's balance in satoshis (not millisatoshis)
     Debug.Log(callback.balance);
   }
+  else if (callback.maintenance)
+  {
+    // Platform is in maintenance mode
+    Debug.Log("Balance is temporarily unavailable. Please try again later.");
+  }
   else
   {
     Debug.LogError("Get balance error: " + callback.message);
@@ -26,6 +31,10 @@ ZBDController.Instance.GetBalance(callback =>
 ```
 
 The balance represents the user's current rewards available for withdrawal.
+
+<Note>
+The `maintenance` flag can return `true` at any point, including mid-session. When active, display a user-friendly message instead of the balance. See [Handling Maintenance Mode](/earn/sdk/integration#handling-maintenance-mode) for more details.
+</Note>
 
 ---
 
