@@ -52,3 +52,37 @@ The Unity Editor’s WebView may influence how input is handled, so setting **Ac
     </Step>
 
 </Steps>
+
+# Testing from an Unsupported Region or Unity Editor
+
+If your game is configured to reward players only in specific regions, but you as a developer are located outside of those regions, or if you are testing directly in the Unity Editor, you may run into issues with the SDK's anti-fraud system.
+
+The anti-fraud system may block sign-ups or gameplay from the Unity Editor or from unsupported regions. To work around this during development and testing:
+
+<Steps>
+    <Step title="Use a VPN to Sign Up">
+        Connect to a VPN set to one of your game's supported regions and sign up for a ZBD account from within the game. This ensures your account is created in a supported region.
+    </Step>
+
+    <Step title="Handle Limited Earnings Mode">
+        Signing up through a VPN may place your account in **limited earnings mode**. This is expected behavior from the anti-fraud system.
+    </Step>
+
+    <Step title="Find Your Support ID">
+        Your Support ID is logged to the console when the SDK is initialized. Look for the following log entry:
+
+        ```
+        ZBD: SupportId: <your-support-id>
+        ```
+    </Step>
+
+    <Step title="Whitelist Your Device">
+        To remove the limited earnings restriction, you have two options:
+        - **Contact your ZBD account manager** — Send them your Support ID so they can whitelist your device.
+        - **Use the Developer Dashboard** — If you have been granted access to the device whitelisting feature, you can whitelist your device directly from the dashboard.
+    </Step>
+</Steps>
+
+<Note>
+This process is only necessary for development and testing purposes. Your end users in supported regions will not encounter these restrictions during normal gameplay.
+</Note>
