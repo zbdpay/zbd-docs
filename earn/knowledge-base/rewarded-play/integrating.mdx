@@ -126,49 +126,12 @@ At the risk of repeating ourselves... you can also do this using [Beamable](http
 
 #### On to the ZBD API
 
-There are a few different ways to integrate the ZBD API. We recommend using Log in with ZBD for new integrations:
+We recommend using **Log in with ZBD** for integrating the ZBD API:
 
-1. **Log in with ZBD** - Recommended approach for new integrations
-    + Just like "Sign in with Google", but for moving money.
-    + Ideal for games that want to build deeper integrations and have more insight into users/who is receiving rewards
-2. ~~Send to Email~~ - **DEPRECATED** (scheduled for removal by end of February 2026)
-    + Not recommended for new integrations
-    + See Log in with ZBD instead
+- Just like "Sign in with Google", but for moving money.
+- Ideal for games that want to build deeper integrations and have more insight into users/who is receiving rewards
 
-### ~~The simple way: Send to Email~~ (DEPRECATED)
-
-<Warning>
-**DEPRECATED:** The Send to Email endpoint is deprecated and scheduled for removal by the end of February 2026. Please use **Log in with ZBD** for new integrations instead.
-</Warning>
-
-This section is maintained for existing integrations only.
-
-<Info>**The user's perspective**: As simple as writing their email!</Info>
-
-#### Using the Send to Email API (Deprecated)
-
-To send Bitcoin to a given email, all you need to do is call the Send to Email API with a POST call providing the following properties:
-
-**Header**
-Your ZBD Project API key
-
-**Body**
-- The Email of the intended recipient (e.g. info@zebedee.io)
-- The amount for the Payment -> in millisatoshis
-- Note / description of this Payment (will be shown to recipient)
-
-To learn more about using Send to Email, please check our docs [here](https://docs.zbdpay.com/api-reference/email/send).
-
-<CardGroup cols={2}>
- <Card title="Request">
-   <img src="/img/courses/rewarded-play/send-payment.png" alt="Sending a payment request" />
- </Card>
- <Card title="Response">
-   <img src="/img/courses/rewarded-play/response.png" alt="Payment request response" />
- </Card>
-</CardGroup>
-
-### The advanced way: Log in with ZBD
+### Log in with ZBD
 
 Similar to Log in with Google/Apple/Facebook. But for moving money.
 Gives you access to more detail about your users, which enables advanced controls, like separate settings for ID verified users, querying a user's balance and more.
@@ -188,7 +151,7 @@ First, you need to integrate Log in with ZBD - this is built on the OAuth2 proto
 
 Log in with ZBD is a way to get user data. You can use it to fetch a user's ZBD Gamertag (basically their username on our system). To make payments, you just use our standard Send to Gamertag API.
 
-It's similar to sending to email. To learn how to Send to Gamertag, check our docs [here](https://docs.zbdpay.com/api-reference/zbd-gamertag/send).
+To learn how to Send to Gamertag, check our docs [here](https://docs.zbdpay.com/api-reference/zbd-gamertag/send).
 
 ## The front-end
 
