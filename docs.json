@@ -267,8 +267,7 @@
                       "payments/payouts/lightning-address",
                       "payments/payouts/gamertags",
                       "payments/payouts/withdrawal-requests",
-                      "payments/payouts/lightning-charges",
-                      "payments/payouts/email"
+                      "payments/payouts/lightning-charges"
                     ]
                   }
                 ]
@@ -404,13 +403,6 @@
                   "payments/api/vouchers/retrieve",
                   "payments/api/vouchers/redeem",
                   "payments/api/vouchers/revoke"
-                ]
-              },
-              {
-                "group": "Email Payments (Deprecated)",
-                "pages": [
-                  "payments/api/email",
-                  "payments/api/email/send"
                 ]
               },
               {
