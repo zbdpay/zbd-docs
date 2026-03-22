@@ -14,7 +14,7 @@ All middleware denials return JSON in this shape:
 }
 ```
 
-## Server Error Reference (`@zbdpay/agent-pay`)
+## Server Error Reference (`@axobot/pay`)
 
 | HTTP | `error.code` | Meaning |
 | --- | --- | --- |
@@ -28,7 +28,7 @@ All middleware denials return JSON in this shape:
 | 500 | `pricing_error` | Dynamic pricing function failed. |
 | 502 | `invoice_creation_failed` | Upstream invoice creation failed. |
 
-## Common Client-Side Failures (`@zbdpay/agent-fetch`)
+## Common Client-Side Failures (`@axobot/fetch`)
 
 These are thrown as runtime errors (not structured HTTP middleware errors):
 

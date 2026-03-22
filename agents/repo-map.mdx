@@ -9,13 +9,13 @@ Use this page to orient engineering and product teams across the agent toolkit.
 
 <CardGroup cols={2}>
   <Card title="agent-wallet" icon="github" href="https://github.com/zbdpay/agent-wallet">
-    `@zbdpay/agent-wallet` package, `zbdw` binary, CLI workflows.
+    `@axobot/cli` package, `axo` binary, CLI workflows.
   </Card>
   <Card title="agent-fetch" icon="github" href="https://github.com/zbdpay/agent-fetch">
-    `@zbdpay/agent-fetch` package, L402 client flow and token cache.
+    `@axobot/fetch` package, L402 client flow and token cache.
   </Card>
   <Card title="agent-pay" icon="github" href="https://github.com/zbdpay/agent-pay">
-    `@zbdpay/agent-pay` package, middleware adapters for Express, Hono, Next.js.
+    `@axobot/pay` package, middleware adapters for Express, Hono, Next.js.
   </Card>
   <Card title="agent-wallet-dashboard" icon="github" href="https://github.com/zbdpay/agent-wallet-dashboard">
     Local read-only dashboard for wallet files and operational checks.
@@ -30,9 +30,9 @@ Use this page to orient engineering and product teams across the agent toolkit.
 
 | Surface | Type | Runtime | NPM |
 |---|---|---|---|
-| `@zbdpay/agent-wallet` | CLI | Node.js >= 22 | Yes |
-| `@zbdpay/agent-fetch` | Library | Node.js >= 22 | Yes |
-| `@zbdpay/agent-pay` | Library | Node.js >= 22 | Yes |
+| `@axobot/cli` | CLI | Node.js >= 22 | Yes |
+| `@axobot/fetch` | Library | Node.js >= 22 | Yes |
+| `@axobot/pay` | Library | Node.js >= 22 | Yes |
 | `agent-wallet-dashboard` | Next.js app | Node.js >= 22 | No |
 | `zbd-ai` | Next.js app/service | Node.js >= 22 | No |
 
@@ -40,15 +40,15 @@ Use this page to orient engineering and product teams across the agent toolkit.
 
 | Repository | `examples/` directory | Fastest demo script |
 |---|---|---|
-| `agent-fetch` | Yes | `examples/zbd-agent-fetch.mjs` |
-| `agent-pay` | Yes | `examples/http-server.mjs` |
-| `agent-wallet` | No | Use `zbdw fetch` against `agent-pay` example |
+| `axobot-fetch` | Yes | `examples/zbd-agent-fetch.mjs` |
+| `axobot-pay` | Yes | `examples/http-server.mjs` |
+| `axobot-cli` | No | Use `axo fetch` against `axobot-pay` example |
 | `agent-wallet-dashboard` | No | Use `sample-data/` quick demo |
 | `zbd-ai` | No | Use `POST /api/register` smoke test |
 
 ## Workspace Helpers
 
-At the top-level agents workspace, these scripts are useful for full-suite verification:
+At the top-level agents workspace, these wrapper scripts forward to the sibling `agents-e2e` workspace for full-suite verification:
 
 ```bash
 npm run install:all
@@ -66,7 +66,7 @@ npm run verify:all
   <Card title="Architecture" icon="diagram-project" href="/agents/architecture">
     Understand request lifecycle and data boundaries.
   </Card>
-  <Card title="Agent Wallet" icon="wallet" href="/agents/agent-wallet">
+  <Card title="Agent Wallet" icon="wallet" href="/agents/axobot-cli">
     Command reference and operational patterns.
   </Card>
 </CardGroup>

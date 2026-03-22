@@ -1,18 +1,18 @@
 ---
 title: "ZBD Agents"
 sidebarTitle: "Overview"
-description: "Build agent-native Bitcoin flows with zbdw, agent-pay, and agent-fetch."
+description: "Build agent-native Bitcoin flows with axo, agent-pay, and agent-fetch."
 ---
 
-The ZBD Agents toolkit gives you an end-to-end stack for agentic payments: a wallet CLI (`zbdw`), an L402 client (`agent-fetch`), an L402 server middleware (`agent-pay`), and supporting apps for identity and operations.
+The ZBD Agents toolkit gives you an end-to-end stack for agentic payments: a wallet CLI (`axo`), an L402 client (`agent-fetch`), an L402 server middleware (`agent-pay`), and supporting apps for identity and operations.
 
 <Info>
-  Want the fastest hands-on path? Start with the runnable scripts in `agent-pay/examples/http-server.mjs` and `agent-fetch/examples/zbd-agent-fetch.mjs`.
+  Want the fastest hands-on path? Start with the runnable scripts in `axobot-pay/examples/http-server.mjs` and `axobot-fetch/examples/zbd-agent-fetch.mjs`.
 </Info>
 
 <CardGroup cols={2}>
   <Card title="Start in Minutes" icon="rocket" href="/agents/quickstart">
-    Install one package, run `zbdw init`, and execute your first paid request.
+    Install one package, run `axo init`, and execute your first paid request.
   </Card>
   <Card title="Monetize Any Endpoint" icon="lock" href="/agents/agent-pay">
     Add payment gates to Express, Hono, and Next.js route handlers.
@@ -27,7 +27,7 @@ The ZBD Agents toolkit gives you an end-to-end stack for agentic payments: a wal
     Use the dashboard to inspect balances, payment history, and local wallet state.
   </Card>
   <Card title="Ship Agent Skills" icon="wand-magic-sparkles" href="/agents/skills">
-    Package `zbdw` workflows into reusable skills for IDE agents and OpenClaw-compatible runtimes.
+    Package `axo` workflows into reusable skills for IDE agents and OpenClaw-compatible runtimes.
   </Card>
 </CardGroup>
 
@@ -38,8 +38,8 @@ The ZBD Agents toolkit gives you an end-to-end stack for agentic payments: a wal
     **Goal:** launch a working agent payment flow fast.
 
     1. Start with the [Quick Start](/agents/quickstart)
-    2. Add payment-gated routes with [agent-pay](/agents/agent-pay)
-    3. Pay those routes with [agent-fetch](/agents/agent-fetch) or `zbdw fetch`
+  2. Add payment-gated routes with [agent-pay](/agents/axobot-pay)
+  3. Pay those routes with [agent-fetch](/agents/axobot-fetch) or `axo fetch`
   </Tab>
   <Tab title="Product & PM">
     **Goal:** validate monetization and ops fit.
@@ -61,7 +61,7 @@ The ZBD Agents toolkit gives you an end-to-end stack for agentic payments: a wal
 
 <CardGroup cols={2}>
   <Card title="agent-wallet" icon="github" href="https://github.com/zbdpay/agent-wallet">
-    CLI wallet and command router for ZBD agent payments (`zbdw`).
+    CLI wallet and command router for ZBD agent payments (`axo`).
   </Card>
   <Card title="agent-fetch" icon="github" href="https://github.com/zbdpay/agent-fetch">
     L402-aware fetch client for paid HTTP resources.
@@ -75,7 +75,7 @@ The ZBD Agents toolkit gives you an end-to-end stack for agentic payments: a wal
 </CardGroup>
 
 <Info>
-  `zbdw` is the binary shipped by `@zbdpay/agent-wallet`. It is designed for JSON-first CLI interoperability with agent runners.
+  `axo` is the binary shipped by `@axobot/cli`. It is designed for JSON-first CLI interoperability with agent runners.
 </Info>
 
 ## What You Can Build
@@ -85,7 +85,7 @@ The ZBD Agents toolkit gives you an end-to-end stack for agentic payments: a wal
     Gate premium API routes with `agent-pay`, then let autonomous clients unlock access via `agent-fetch`.
   </Accordion>
   <Accordion title="Autonomous data acquisition" icon="database">
-    Use `zbdw fetch` to allow agents to pay per request and retrieve premium content in one command.
+    Use `axo fetch` to allow agents to pay per request and retrieve premium content in one command.
   </Accordion>
   <Accordion title="Agent-to-agent commerce" icon="arrow-right-arrow-left">
     Combine wallet send/receive primitives with L402 middleware to create closed-loop service economies.

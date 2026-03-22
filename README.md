@@ -37,9 +37,9 @@ If you are documenting or testing the Agents toolkit, start here:
 
 - Overview: `/agents`
 - Quick start: `/agents/quickstart`
-- Runnable examples: `/agents/agent-pay` and `/agents/agent-fetch`
+- Runnable examples: `/agents/axobot-pay` and `/agents/axobot-fetch`
 
-The `agent-pay` and `agent-fetch` repositories include `examples/` scripts that let users run a working paid-request flow in minutes.
+The `axobot-pay` and `axobot-fetch` repositories include `examples/` scripts that let users run a working paid-request flow in minutes.
 
 ## Contributing
 

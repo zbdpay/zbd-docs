@@ -1,13 +1,13 @@
 ---
 title: "Agent Skills"
-description: "Package zbdw workflows as reusable skills for skills.sh and OpenClaw-compatible agents."
+description: "Package axo workflows as reusable skills for skills.sh and OpenClaw-compatible agents."
 ---
 
-Skills let agent runners call proven `zbdw` flows with better defaults, safer guardrails, and faster onboarding.
+Skills let agent runners call proven `axo` flows with better defaults, safer guardrails, and faster onboarding.
 
 <CardGroup cols={2}>
-  <Card title="zbdw Skill Source" icon="github" href="https://github.com/zbdpay/agent-wallet/tree/main/skills/zbdw">
-    Official skill files, references, and OpenClaw metadata for `zbdw` operations.
+  <Card title="axo Skill Source" icon="github" href="https://github.com/zbdpay/agent-wallet/tree/main/skills/axo">
+    Official skill files, references, and OpenClaw metadata for `axo` operations.
   </Card>
   <Card title="skills.sh" icon="globe" href="https://skills.sh">
     Discovery and installation index for agent skills.
@@ -21,18 +21,18 @@ Skills let agent runners call proven `zbdw` flows with better defaults, safer gu
 </CardGroup>
 
 <Info>
-  Need a direct OpenClaw walkthrough? Use [Install zbdw Skill on OpenClaw](/agents/openclaw-skill-install).
+  Need a direct OpenClaw walkthrough? Use [Install axo Skill on OpenClaw](/agents/openclaw-skill-install).
 </Info>
 
 ## Quick Install
 
 <CodeGroup>
 ```bash From GitHub repository
-npx skills add https://github.com/zbdpay/agent-wallet --full-depth --skill zbdw
+npx skills add https://github.com/zbdpay/agent-wallet --full-depth --skill axo
 ```
 
 ```bash From local clone
-npx skills add ./agent-wallet/skills/zbdw
+npx skills add ./axobot-cli/skills/axo
 ```
 </CodeGroup>
 
@@ -44,13 +44,16 @@ npx skills add ./agent-wallet/skills/zbdw
 
 <Tabs>
   <Tab title="Wallet Ops">
-    - `zbdw init`, `info`, `balance`
-    - `zbdw receive`, `send`, `payments`, `payment`
-    - `zbdw paylink create|get|list|cancel`
-    - `zbdw withdraw create|status`
+    - `axo init`, `info`, `balance`
+    - `axo receive`, `send`, `payments`, `payment`
+    - `axo paylink create|get|list|cancel`
+    - `axo withdraw create|status`
+    - `axo receive`, `send`, `payments`, `payment`
+    - `axo paylink create|get|list|cancel`
+    - `axo withdraw create|status`
   </Tab>
   <Tab title="L402 Fetch">
-    - `zbdw fetch <url> --max-sats <n>`
+    - `axo fetch <url> --max-sats <n>`
     - payment-cap enforcement
     - token-cache reuse behavior
   </Tab>
@@ -64,7 +67,7 @@ npx skills add ./agent-wallet/skills/zbdw
 ## Skill Layout
 
 ```text
-skills/zbdw/
+skills/axo/
   SKILL.md
   references/
     command-reference.md
@@ -96,19 +99,19 @@ metadata:
     emoji: "⚡"
     requires:
       anyBins:
-        - zbdw
+        - axo
         - npx
     install:
       - id: node-global
         kind: node
-        package: "@zbdpay/agent-wallet"
+        package: "@axobot/cli"
         bins:
-          - zbdw
+        - axo
 ```
 
 ## Publish Checklist
 
-- Run package checks in `agent-wallet`: `npm run typecheck && npm run build && npm test`
+- Run package checks in `axobot-cli`: `npm run typecheck && npm run build && npm test`
 - Verify skill discovery: `npx skills add <source> --list`
 - Ensure `SKILL.md` links resolve and references exist
 - Push to GitHub and validate install from a clean machine/user profile

@@ -1,15 +1,15 @@
 ---
 title: "Agent Wallet"
-description: "Use zbdw for wallet setup, send/receive operations, withdraw flows, and paid fetch."
+description: "Use axo for wallet setup, send/receive operations, withdraw flows, and paid fetch."
 ---
 
-`@zbdpay/agent-wallet` ships the `zbdw` CLI and is the fastest way to operationalize agent payments.
+`@axobot/cli` ships the `axo` CLI and is the fastest way to operationalize agent payments.
 
 <CardGroup cols={2}>
   <Card title="Repository" icon="github" href="https://github.com/zbdpay/agent-wallet">
     Source code, release history, and examples.
   </Card>
-  <Card title="NPM Package" icon="cube" href="https://www.npmjs.com/package/@zbdpay/agent-wallet">
+  <Card title="NPM Package" icon="cube" href="https://www.npmjs.com/package/@axobot/cli">
     Install globally or execute with npx.
   </Card>
 </CardGroup>
@@ -17,13 +17,13 @@ description: "Use zbdw for wallet setup, send/receive operations, withdraw flows
 ## Install
 
 ```bash
-npm install -g @zbdpay/agent-wallet
+npm install -g @axobot/cli
 ```
 
 Or run directly:
 
 ```bash
-npx @zbdpay/agent-wallet init --key <your_api_key>
+npx @axobot/cli init --key <your_api_key>
 ```
 
 ## Environment Variables
@@ -39,27 +39,46 @@ npx @zbdpay/agent-wallet init --key <your_api_key>
 
 ## Command Reference
 
-```bash
-zbdw init [--key <apiKey>]
-zbdw info
-zbdw balance
+axo init [--key <apiKey>]
+axo info
+axo balance
 
-zbdw receive <amount_sats>
-zbdw receive --static
+axo receive <amount_sats>
+axo receive --static
 
-zbdw send <destination> <amount_sats>
-zbdw payments
-zbdw payment <id>
+axo send <destination> <amount_sats>
+axo payments
+axo payment <id>
 
-zbdw paylink create <amount_sats>
-zbdw paylink get <id>
-zbdw paylink list
-zbdw paylink cancel <id>
+axo paylink create <amount_sats>
+axo paylink get <id>
+axo paylink list
+axo paylink cancel <id>
 
-zbdw withdraw create <amount_sats>
-zbdw withdraw status <withdraw_id>
+axo withdraw create <amount_sats>
+axo withdraw status <withdraw_id>
 
-zbdw fetch <url> [--method <method>] [--data <json>] [--max-sats <amount>]
+axo fetch <url> [--method <method>] [--data <json>] [--max-sats <amount>]
+axo init [--key <apiKey>]
+axo info
+axo balance
+
+axo receive <amount_sats>
+axo receive --static
+
+axo send <destination> <amount_sats>
+axo payments
+axo payment <id>
+
+axo paylink create <amount_sats>
+axo paylink get <id>
+axo paylink list
+axo paylink cancel <id>
+
+axo withdraw create <amount_sats>
+axo withdraw status <withdraw_id>
+
+axo fetch <url> [--method <method>] [--data <json>] [--max-sats <amount>]
 ```
 
 ## Destination Types (`send`)
@@ -95,7 +114,7 @@ Common success examples:
 
 <Info>
   Paylink lifecycle values: `created | active | paid | expired | dead`. Terminal states (`paid`, `expired`, `dead`) are permanent.
-  `zbdw paylink get` also syncs the latest payment attempt to local `payments.json`.
+  `axo paylink get` also syncs the latest payment attempt to local `payments.json`.
 </Info>
 
 ## Storage Layout
@@ -109,7 +128,7 @@ Common success examples:
 ```
 
 <Info>
-  `zbdw fetch` uses `@zbdpay/agent-fetch` under the hood, including token caching and max payment guardrails.
+  `axo fetch` uses `@axobot/fetch` under the hood, including token caching and max payment guardrails.
 </Info>
 
 ## Companion Runnable Examples
@@ -122,8 +141,8 @@ Common success examples:
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Command not found: zbdw" icon="terminal">
-    Build and alias the local binary, or install globally with `npm install -g @zbdpay/agent-wallet`.
+  <Accordion title="Command not found: axo" icon="terminal">
+    Build and alias the local binary, or install globally with `npm install -g @axobot/cli`.
   </Accordion>
   <Accordion title="register_failed during init" icon="at">
     Confirm `ZBD_AI_BASE_URL` points to a reachable `zbd-ai` service and your API key is valid.

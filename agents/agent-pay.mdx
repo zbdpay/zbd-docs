@@ -3,13 +3,13 @@ title: "Agent Pay"
 description: "Protect HTTP routes with L402 payment challenges in Express, Hono, and Next.js."
 ---
 
-`@zbdpay/agent-pay` is the server half of the L402 protocol. It creates invoice-backed payment challenges and verifies payment proof before allowing access.
+`@axobot/pay` is the server half of the L402 protocol. It creates invoice-backed payment challenges and verifies payment proof before allowing access.
 
 <CardGroup cols={2}>
   <Card title="Repository" icon="github" href="https://github.com/zbdpay/agent-pay">
     Full middleware source and adapter tests.
   </Card>
-  <Card title="NPM Package" icon="cube" href="https://www.npmjs.com/package/@zbdpay/agent-pay">
+  <Card title="NPM Package" icon="cube" href="https://www.npmjs.com/package/@axobot/pay">
     Install and use from Node.js services.
   </Card>
 </CardGroup>
@@ -17,7 +17,7 @@ description: "Protect HTTP routes with L402 payment challenges in Express, Hono,
 ## Install
 
 ```bash
-npm install @zbdpay/agent-pay
+npm install @axobot/pay
 ```
 
 ## Environment
@@ -33,7 +33,7 @@ npm install @zbdpay/agent-pay
   <Tab title="Express">
     ```typescript
     import express from "express";
-    import { createExpressPaymentMiddleware } from "@zbdpay/agent-pay";
+    import { createExpressPaymentMiddleware } from "@axobot/pay";
 
     const app = express();
 
@@ -52,7 +52,7 @@ npm install @zbdpay/agent-pay
   <Tab title="Hono">
     ```typescript
     import { Hono } from "hono";
-    import { createHonoPaymentMiddleware } from "@zbdpay/agent-pay";
+    import { createHonoPaymentMiddleware } from "@axobot/pay";
 
     const app = new Hono();
 
@@ -67,7 +67,7 @@ npm install @zbdpay/agent-pay
   </Tab>
   <Tab title="Next.js">
     ```typescript
-    import { withPaymentRequired } from "@zbdpay/agent-pay/next";
+    import { withPaymentRequired } from "@axobot/pay/next";
 
     export const GET = withPaymentRequired(
       {
@@ -136,20 +136,20 @@ The repository includes `examples/http-server.mjs` for a minimal paid route.
 From the agents workspace, run:
 
 ```bash
-npm --prefix agent-pay run build
-ZBD_API_KEY=<your_api_key> npm --prefix agent-pay run example:http-server
+npm --prefix axobot-pay run build
+ZBD_API_KEY=<your_api_key> npm --prefix axobot-pay run example:http-server
 ```
 
 Optional verbose logs:
 
 ```bash
-ZBD_PAY_DEBUG=1 ZBD_API_KEY=<your_api_key> npm --prefix agent-pay run example:http-server
+ZBD_PAY_DEBUG=1 ZBD_API_KEY=<your_api_key> npm --prefix axobot-pay run example:http-server
 ```
 
 Then hit the route with your wallet CLI:
 
 ```bash
-zbdw fetch "https://api.example.com/protected" --max-sats 100
+axo fetch "https://api.example.com/protected" --max-sats 100
 ```
 
 ## Storage

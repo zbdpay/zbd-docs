@@ -3,13 +3,13 @@ title: "Agent Fetch"
 description: "Use agentFetch to parse 402 challenges, pay invoices, and retry automatically with L402 proof."
 ---
 
-`@zbdpay/agent-fetch` is the client half of the L402 flow. It accepts a payment hook, handles challenge parsing, enforces guards, and retries with proof.
+`@axobot/fetch` is the client half of the L402 flow. It accepts a payment hook, handles challenge parsing, enforces guards, and retries with proof.
 
 <CardGroup cols={2}>
   <Card title="Repository" icon="github" href="https://github.com/zbdpay/agent-fetch">
     Source, tests, and engineering contract.
   </Card>
-  <Card title="NPM Package" icon="cube" href="https://www.npmjs.com/package/@zbdpay/agent-fetch">
+  <Card title="NPM Package" icon="cube" href="https://www.npmjs.com/package/@axobot/fetch">
     Install and integrate into existing runtimes.
   </Card>
 </CardGroup>
@@ -17,13 +17,13 @@ description: "Use agentFetch to parse 402 challenges, pay invoices, and retry au
 ## Install
 
 ```bash
-npm install @zbdpay/agent-fetch
+npm install @axobot/fetch
 ```
 
 ## Minimal Integration
 
 ```typescript
-import { agentFetch, FileTokenCache } from "@zbdpay/agent-fetch";
+import { agentFetch, FileTokenCache } from "@axobot/fetch";
 
 const tokenCache = new FileTokenCache(`${process.env.HOME}/.zbd-wallet/token-cache.json`);
 
@@ -52,7 +52,7 @@ import {
   payChallenge,
   fetchWithProof,
   FileTokenCache,
-} from "@zbdpay/agent-fetch";
+} from "@axobot/fetch";
 ```
 
 ## Core Options
@@ -71,7 +71,7 @@ import {
 
 <CodeGroup>
 ```typescript requestChallenge + payChallenge
-import { requestChallenge, payChallenge } from "@zbdpay/agent-fetch";
+import { requestChallenge, payChallenge } from "@axobot/fetch";
 
 const challenge = requestChallenge({
   status: 402,
@@ -84,7 +84,7 @@ const authorization = payChallenge(challenge, paid);
 ```
 
 ```typescript fetchWithProof
-import { fetchWithProof } from "@zbdpay/agent-fetch";
+import { fetchWithProof } from "@axobot/fetch";
 
 const res = await fetchWithProof(
   "https://example.com/protected",
@@ -125,14 +125,14 @@ The repository includes maintained scripts under `examples/`:
 From the agents workspace, run:
 
 ```bash
-npm --prefix agent-fetch run build
-PROTECTED_URL="https://api.example.com/protected" ZBD_API_KEY=<your_api_key> npm --prefix agent-fetch run example:zbd
+npm --prefix axobot-fetch run build
+PROTECTED_URL="https://api.example.com/protected" ZBD_API_KEY=<your_api_key> npm --prefix axobot-fetch run example:zbd
 ```
 
 If you already have an authorization token:
 
 ```bash
-PROTECTED_URL="https://api.example.com/protected" L402_AUTHORIZATION="L402 <macaroon>:<preimage>" npm --prefix agent-fetch run example:proof
+PROTECTED_URL="https://api.example.com/protected" L402_AUTHORIZATION="L402 <macaroon>:<preimage>" npm --prefix axobot-fetch run example:proof
 ```
 
 <Warning>

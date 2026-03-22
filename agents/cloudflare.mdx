@@ -17,7 +17,7 @@ Cloudflare Workers run at the edge with near-zero cold starts, making them a gre
   </Step>
   <Step title="Initialize your wallet">
     ```bash
-    npx @zbdpay/agent-wallet init --key $ZBD_API_KEY
+    npx @axobot/cli init --key $ZBD_API_KEY
     ```
 
     This creates a Lightning address for your agent and prints it. You'll use both values in the next step.
@@ -48,7 +48,7 @@ Cloudflare Workers run at the edge with near-zero cold starts, making them a gre
 The Agent class handles buy-side payments directly via `agentFetch` and `zbdPayL402Invoice`. Token caching is backed by Durable Object storage so the agent never re-pays for a resource it already has a valid token for.
 
 ```typescript src/agent.ts (excerpt)
-import { agentFetch, zbdPayL402Invoice } from "@zbdpay/agent-fetch";
+import { agentFetch, zbdPayL402Invoice } from "@axobot/fetch";
 import { Agent, callable } from "agents";
 import { DurableObjectTokenCache } from "./do-token-cache";
 
@@ -98,16 +98,16 @@ A few things worth noting:
 
 ## Sell Side — Monetizing Your API
 
-`createHonoPaymentMiddleware` from `@zbdpay/agent-pay` wraps a Hono route and returns a `402` challenge to any caller that hasn't paid yet.
+`createHonoPaymentMiddleware` from `@axobot/pay` wraps a Hono route and returns a `402` challenge to any caller that hasn't paid yet.
 
 <Warning>
-  Import from `@zbdpay/agent-pay` (the main entry point), not from a subpath like `@zbdpay/agent-pay/hono`. The package exports `createHonoPaymentMiddleware` directly.
+  Import from `@axobot/pay` (the main entry point), not from a subpath like `@axobot/pay/hono`. The package exports `createHonoPaymentMiddleware` directly.
 </Warning>
 
 ```typescript worker/index.ts
 import { Hono } from "hono";
 import { routeAgentRequest } from "agents";
-import { createHonoPaymentMiddleware } from "@zbdpay/agent-pay";
+import { createHonoPaymentMiddleware } from "@axobot/pay";
 import { ZBDPaymentAgent } from "../src/agent";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -148,11 +148,11 @@ export { ZBDPaymentAgent };
 
 The template uses two separate storage classes backed by Durable Object storage:
 
-**`DurableObjectTokenCache`** — buy-side L402 token cache. Implements `TokenCache` from `@zbdpay/agent-fetch`. Stores tokens under the key `token:${url}` and checks expiry on every read.
+**`DurableObjectTokenCache`** — buy-side L402 token cache. Implements `TokenCache` from `@axobot/fetch`. Stores tokens under the key `token:${url}` and checks expiry on every read.
 
 ```typescript src/do-token-cache.ts
 import type { DurableObjectStorage } from "@cloudflare/workers-types";
-import type { TokenCache, TokenRecord } from "@zbdpay/agent-fetch";
+import type { TokenCache, TokenRecord } from "@axobot/fetch";
 
 export class DurableObjectTokenCache implements TokenCache {
   constructor(private readonly storage: DurableObjectStorage) {}
@@ -178,11 +178,11 @@ export class DurableObjectTokenCache implements TokenCache {
 }
 ```
 
-**`DurableObjectTokenStore`** — sell-side settled payment store. Implements `TokenStore` from `@zbdpay/agent-pay`. Stores records under the key `settled:${chargeId}:${paymentHash}` so the middleware can verify a payment was made before serving protected content.
+**`DurableObjectTokenStore`** — sell-side settled payment store. Implements `TokenStore` from `@axobot/pay`. Stores records under the key `settled:${chargeId}:${paymentHash}` so the middleware can verify a payment was made before serving protected content.
 
 ```typescript src/do-token-store.ts
 import type { DurableObjectStorage } from "@cloudflare/workers-types";
-import type { TokenStore } from "@zbdpay/agent-pay";
+import type { TokenStore } from "@axobot/pay";
 
 export class DurableObjectTokenStore implements TokenStore {
   constructor(private readonly storage: DurableObjectStorage) {}
@@ -290,10 +290,10 @@ wrangler tail
 ```
 
 <CardGroup cols={2}>
-  <Card title="agent-fetch" icon="bolt" href="/agents/agent-fetch">
+  <Card title="agent-fetch" icon="bolt" href="/agents/axobot-fetch">
     Full client options, async settlement, and token caching.
   </Card>
-  <Card title="agent-pay" icon="lock" href="/agents/agent-pay">
+  <Card title="agent-pay" icon="lock" href="/agents/axobot-pay">
     Add L402 to Express, Hono, and Next.js.
   </Card>
   <Card title="L402 Overview" icon="circle-info" href="/agents/l402-overview">

@@ -3,11 +3,11 @@ title: "Architecture"
 description: "How wallet, fetch, pay, and registry components fit together for agent-native payments."
 ---
 
-The ZBD Agents architecture is built around a simple split: `agent-pay` issues payment challenges, and `agent-fetch` or `zbdw fetch` solves them automatically.
+The ZBD Agents architecture is built around a simple split: `agent-pay` issues payment challenges, and `agent-fetch` or `axo fetch` solves them automatically.
 
 ```mermaid
 graph LR
-    A[Agent Runtime] -->|zbdw fetch / agentFetch| B[Paid API]
+    A[Agent Runtime] -->|axo fetch / agentFetch| B[Paid API]
     B -->|402 challenge| A
     A -->|Pay invoice via ZBD| C[ZBD API]
     A -->|Retry with L402 proof| B
@@ -20,13 +20,13 @@ graph LR
 ## Components
 
 <CardGroup cols={2}>
-  <Card title="@zbdpay/agent-wallet" icon="wallet" href="/agents/agent-wallet">
-    CLI interface (`zbdw`) for wallet operations, payment history, withdraw flows, and paid fetch.
+  <Card title="@axobot/cli" icon="wallet" href="/agents/axobot-cli">
+    CLI interface (`axo`) for wallet operations, payment history, withdraw flows, and paid fetch.
   </Card>
-  <Card title="@zbdpay/agent-fetch" icon="bolt" href="/agents/agent-fetch">
+  <Card title="@axobot/fetch" icon="bolt" href="/agents/axobot-fetch">
     Client-side L402 flow manager with cache reuse and max payment guardrails.
   </Card>
-  <Card title="@zbdpay/agent-pay" icon="lock" href="/agents/agent-pay">
+  <Card title="@axobot/pay" icon="lock" href="/agents/axobot-pay">
     Server middleware that returns 402 challenges and verifies payment proof.
   </Card>
   <Card title="zbd.ai Registry" icon="at" href="/agents/registry">
@@ -44,7 +44,7 @@ graph LR
     `agent-pay` creates an invoice and returns `WWW-Authenticate: L402 ...` plus challenge JSON.
   </Step>
   <Step title="Client pays challenge">
-    `agent-fetch` (or `zbdw fetch`) pays the invoice and retrieves the preimage.
+    `agent-fetch` (or `axo fetch`) pays the invoice and retrieves the preimage.
   </Step>
   <Step title="Client retries with proof">
     The request is retried with `Authorization: L402 <macaroon>:<preimage>`.
@@ -58,9 +58,9 @@ graph LR
 
 | Path | Primary Writer | Primary Reader |
 |---|---|---|
-| `~/.zbd-wallet/config.json` | `zbdw init` | `zbdw`, dashboard |
-| `~/.zbd-wallet/payments.json` | `zbdw send/receive` | `zbdw`, dashboard |
-| `~/.zbd-wallet/token-cache.json` | `zbdw fetch` | `zbdw fetch` |
+| `~/.zbd-wallet/config.json` | `axo init` | `axo`, dashboard |
+| `~/.zbd-wallet/payments.json` | `axo send/receive` | `axo`, dashboard |
+| `~/.zbd-wallet/token-cache.json` | `axo fetch` | `axo fetch` |
 | `~/.zbd-wallet/server-tokens.json` | `agent-pay` | `agent-pay` |
 
 <Tip>

@@ -1,14 +1,14 @@
 ---
 title: "Call Paid APIs"
-description: "Handle 402 challenges and pay invoices automatically with agent-fetch or zbdw fetch."
+description: "Handle 402 challenges and pay invoices automatically with agent-fetch or axo fetch."
 ---
 
-Any HTTP client can call an L402-protected endpoint. In practice, `@zbdpay/agent-fetch` gives you the full challenge-pay-retry loop in one function.
+Any HTTP client can call an L402-protected endpoint. In practice, `@axobot/fetch` gives you the full challenge-pay-retry loop in one function.
 
 ## Programmatic Flow (Node.js)
 
 ```typescript
-import { agentFetch, FileTokenCache } from "@zbdpay/agent-fetch";
+import { agentFetch, FileTokenCache } from "@axobot/fetch";
 
 const tokenCache = new FileTokenCache(`${process.env.HOME}/.zbd-wallet/token-cache.json`);
 
@@ -64,7 +64,7 @@ console.log(response.status, await response.text());
 ## Manual Primitives (Advanced)
 
 ```typescript
-import { requestChallenge, payChallenge, fetchWithProof } from "@zbdpay/agent-fetch";
+import { requestChallenge, payChallenge, fetchWithProof } from "@axobot/fetch";
 
 const challenge = requestChallenge({
   status: res.status,
@@ -83,18 +83,18 @@ const retried = await fetchWithProof(
 );
 ```
 
-## CLI Flow with zbdw
+## CLI Flow with axo
 
-`zbdw fetch` uses `agent-fetch` internally:
+`axo fetch` uses `agent-fetch` internally:
 
 ```bash
-zbdw fetch "https://api.example.com/premium" --max-sats 100
+axo fetch "https://api.example.com/premium" --max-sats 100
 ```
 
 Call it a second time to confirm cache reuse:
 
 ```bash
-zbdw fetch "https://api.example.com/premium" --max-sats 100
+axo fetch "https://api.example.com/premium" --max-sats 100
 ```
 
 When cache is reused, `payment_id` is typically `null` on the second call.
