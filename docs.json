@@ -55,7 +55,41 @@
                    "get-started/login-with-zbd",
                    "get-started/zbd-app"
                  ]
-               }
+               },
+              {
+                "group": "Knowledge Base",
+                "pages": [
+                  "earn/knowledge-base",
+                  {
+                    "group": "Rewarded Play",
+                    "pages": [
+                      "earn/knowledge-base/rewarded-play",
+                      "earn/knowledge-base/rewarded-play/integrating",
+                      {
+                        "group": "Game Security Course",
+                        "pages": [
+                          "earn/knowledge-base/game-security",
+                          "earn/knowledge-base/game-security/insecure-game",
+                          "earn/knowledge-base/game-security/hacking-saved-game",
+                          "earn/knowledge-base/game-security/hacking-memory-values",
+                          "earn/knowledge-base/game-security/decompiling-source-code",
+                          "earn/knowledge-base/game-security/altering-network-traffic",
+                          "earn/knowledge-base/game-security/securing-game",
+                          "earn/knowledge-base/game-security/replay-attacks",
+                          "earn/knowledge-base/game-security/securing-data",
+                          "earn/knowledge-base/game-security/app-check"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Integration Guides",
+                    "pages": [
+                      "earn/knowledge-base/integrations/unity"
+                    ]
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -119,6 +153,7 @@
                     "group": "User Withdrawal Limits",
                     "icon": "gauge-high",
                     "pages": [
+                      "earn/sdk/revenue-based-earning",
                       "earn/sdk/user-withdrawal",
                       "earn/sdk/manage-withdrawal-limits"
                     ]
@@ -137,88 +172,6 @@
                 "pages": [
                   "earn/sdk/ios-app-store",
                   "earn/sdk/android-app-store"
-                ]
-              }
-            ]
-          },
-           {
-             "anchor": "Earn API",
-             "icon": "code",
-            "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "earn/api",
-                  "earn/api/gamertags",
-                  "earn/api/gamertags/send",
-                  "earn/api/gamertags/retrieve-reward",
-                  "earn/api/gamertags/utils",
-                  "earn/api/gamertags/create-charge",
-                  "earn/api/gamertags/retrieve-userid",
-                  "earn/api/gamertags/retrieve-from-userid"
-                ]
-              },
-              {
-                "group": "Knowledge Base",
-                "pages": [
-                  "earn/knowledge-base",
-                  {
-                    "group": "Rewarded Play",
-                    "pages": [
-                      "earn/knowledge-base/rewarded-play",
-                      "earn/knowledge-base/rewarded-play/integrating",
-                      {
-                        "group": "Game Security Course",
-                        "pages": [
-                          "earn/knowledge-base/game-security",
-                          "earn/knowledge-base/game-security/insecure-game",
-                          "earn/knowledge-base/game-security/hacking-saved-game",
-                          "earn/knowledge-base/game-security/hacking-memory-values",
-                          "earn/knowledge-base/game-security/decompiling-source-code",
-                          "earn/knowledge-base/game-security/altering-network-traffic",
-                          "earn/knowledge-base/game-security/securing-game",
-                          "earn/knowledge-base/game-security/replay-attacks",
-                          "earn/knowledge-base/game-security/securing-data",
-                          "earn/knowledge-base/game-security/app-check"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Integration Guides",
-                    "pages": [
-                      "earn/knowledge-base/integrations/unity",
-                      "earn/knowledge-base/integrations/beamable"
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "anchor": "Login with ZBD",
-            "icon": "shield-check",
-            "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "earn/oauth2",
-                  "earn/oauth2/integration",
-                  "earn/oauth2/guidelines",
-                  "earn/oauth2/walkthrough"
-                ]
-              },
-              {
-                "group": "API Reference",
-                "icon": "code",
-                "pages": [
-                  "earn/oauth2/api",
-                  "earn/oauth2/api/authorization",
-                  "earn/oauth2/api/retrieve-access-token",
-                  "earn/oauth2/api/refresh-token",
-                  "earn/oauth2/api/data-fetching",
-                  "earn/oauth2/api/retrieve-user",
-                  "earn/oauth2/api/retrieve-wallet"
                 ]
               }
             ]
@@ -485,6 +438,34 @@
                 ]
               }
             ]
+          },
+          {
+            "anchor": "Login with ZBD",
+            "icon": "shield-check",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "earn/oauth2",
+                  "earn/oauth2/integration",
+                  "earn/oauth2/guidelines",
+                  "earn/oauth2/walkthrough"
+                ]
+              },
+              {
+                "group": "API Reference",
+                "icon": "code",
+                "pages": [
+                  "earn/oauth2/api",
+                  "earn/oauth2/api/authorization",
+                  "earn/oauth2/api/retrieve-access-token",
+                  "earn/oauth2/api/refresh-token",
+                  "earn/oauth2/api/data-fetching",
+                  "earn/oauth2/api/retrieve-user",
+                  "earn/oauth2/api/retrieve-wallet"
+                ]
+              }
+            ]
           }
         ]
       }
@@ -636,6 +617,22 @@
      {
        "source": "/rewards",
        "destination": "/earn"
+     },
+     {
+       "source": "/earn/api",
+       "destination": "/earn/sdk"
+     },
+     {
+       "source": "/earn/api/gamertags",
+       "destination": "/earn/sdk"
+     },
+     {
+       "source": "/earn/api/gamertags/:slug*",
+       "destination": "/earn/sdk"
+     },
+     {
+       "source": "/earn/knowledge-base/integrations/beamable",
+       "destination": "/earn/knowledge-base/integrations/unity"
      }
    ]
  }

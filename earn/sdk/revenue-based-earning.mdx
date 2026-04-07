@@ -1,0 +1,74 @@
+---
+title: 'Revenue-Based Earning'
+description: 'Tie a user''s earning potential to the revenue they generate for your app.'
+icon: 'chart-line-up'
+---
+
+## Overview
+
+With the ZBD Earn SDK, a user's ability to withdraw rewards is tied to the value they generate for your app. Rather than letting users earn unlimited rewards, withdrawal limits act as a cap that scales with revenue — whether that's from ad impressions, in-app purchases, or time spent engaging with your app.
+
+This keeps your reward economy sustainable: users only withdraw what they've helped you earn.
+
+## How It Works Automatically
+
+When the ZBD Earn SDK is active on the client, the device pings the server every 20 seconds. Based on the reward schedule configured for your app, the player's withdrawal limit automatically increases every minute by a set amount.
+
+This time-based model works as a rough proxy for revenue — the longer a user is engaged, the more ad impressions and in-app interactions they likely generate, and the more they can withdraw. However, this is a crude estimation. Engagement time doesn't always correlate directly with revenue — a user could be active for a long time without watching ads or making purchases.
+
+For more precise control, use the server-side API to [increase withdrawal limits based on actual revenue events](#increasing-limits-based-on-actual-revenue).
+
+<Note>
+  The reward schedule and per-minute increase amount are configured by your ZBD Customer Success Manager.
+</Note>
+
+## Increasing Limits Based on Actual Revenue
+
+The automatic time-based increase covers most cases, but you may want to increase a user's withdrawal limit based on confirmed revenue events from your server. For example:
+
+- An **MMP callback** confirms an ad impression or completed ad view
+- A validated **in-app purchase receipt** confirms the user spent money
+- Any other server-side event where a user directly monetized for you
+
+When you receive one of these events, call the withdrawal limit API to increase the user's limit accordingly:
+
+<CodeGroup>
+```bash Bitcoin (sats)
+curl --request POST \
+  --url https://api.zbdpay.com/api/v1/rewards/user/<rewardsUserId>/withdrawal-limit \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: <x-api-key>' \
+  --data '{
+    "amount": 5000,
+    "currency": "MSATS"
+  }'
+```
+
+```bash Points
+curl --request POST \
+  --url https://api.zbdpay.com/api/v1/rewards/user/<rewardsUserId>/withdrawal-limit \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: <x-api-key>' \
+  --data '{
+    "amount": 5000,
+    "currency": "POINT"
+  }'
+```
+</CodeGroup>
+
+This gives you precise control — users who monetize more can withdraw more.
+
+## Recommended Revenue Share
+
+As a starting point, we recommend giving **10-20% of your ad-generated revenue** back to players through rewards. The exact sweet spot varies by game and geography.
+
+Some partners go deeper and set reward amounts per user based on how much that specific user is earning them. As a simpler starting point, you can take the LTV for each country you're live in and give out a percentage based on the player's location.
+
+For more detail on structuring your reward economy, see the [Introduction to Rewarded Play](/earn/knowledge-base/rewarded-play) guide.
+
+## Best Practices
+
+- **Keep earn rate aligned with withdrawal capacity.** Avoid situations where users earn significantly more than they can withdraw — this leads to frustration. For example, crediting 1,000 sats but only allowing 100 sats to be withdrawn is a poor experience.
+- **Scale difficulty over time.** Make early rewards easy to earn, then gradually slow down progression as the session continues.
+- **Check limits before rewarding.** Use `ZBDController.Instance.GetBalance` to retrieve the user's current balance and withdrawal cap, and adjust your reward flow based on this data.
+- **Use revenue events to boost limits.** When a user watches a rewarded ad or makes an in-app purchase, increase their withdrawal limit from your server to reflect the value they generated.
