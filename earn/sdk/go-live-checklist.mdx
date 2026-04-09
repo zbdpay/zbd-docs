@@ -15,6 +15,13 @@ Before releasing your game to production, make sure you have completed the follo
     Your game should gracefully handle ZBD platform maintenance periods by checking the `maintenance` flag on **every** SDK response. See [Handling Maintenance Mode](/earn/sdk/integration#handling-maintenance-mode).
   </Step>
   <Step title="Test your game">
-    Make sure you have thoroughly tested your game with the ZBD team or your QA team before going live.
+    Make sure you have thoroughly tested your game before going live. At a minimum, verify the following:
+    - **Test init** — confirm the SDK initializes successfully.
+    - **Test modal shows** — confirm the ZBD modal appears correctly.
+    - **Test linking ZBD** — if cashout is an option, confirm users can link their ZBD account.
+    - **Test earning** — confirm rewards are sent and received.
+    - **Test withdrawal limit increases** — confirm your withdrawal limit increases as you play.
+    - **Test cashout** — confirm the cashout flow completes successfully.
+    - **Test attestation** — confirm attestation is working correctly. To do this, verify with your account manager that attestation is enabled for your app, then check that your withdrawal limit increases as you play. If attestation is failing, the withdrawal limit will not increase and you will see errors in Android Logcat or the iOS Console.
   </Step>
 </Steps>

@@ -86,3 +86,26 @@ The anti-fraud system may block sign-ups or gameplay from the Unity Editor or fr
 <Note>
 This process is only necessary for development and testing purposes. Your end users in supported regions will not encounter these restrictions during normal gameplay.
 </Note>
+
+# Integrity Check Failures
+
+If you receive either of the following errors:
+
+```
+{"success":false,"message":"Failed progress validation.","errorCode":"400P4V"}
+```
+
+```
+ZBD: Error sending reward: {"success":false,"message":"Failed reward validation.","errorCode":"400R5V"}
+```
+
+This means your editor or device is failing ZBD's integrity checks. This typically happens because:
+
+- You are testing from a **non-mobile device** (e.g. Unity Editor on desktop) rather than a real mobile device.
+- Your **attestation has not been set up** correctly. Refer to the [Attestation Setup](/earn/sdk/attestation-setup) guide.
+
+To resolve this, contact your ZBD account manager and provide your **Support ID** so they can whitelist it. You can find your Support ID in the console logs when the SDK initializes:
+
+```
+ZBD: SupportId: <your-support-id>
+```
