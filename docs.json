@@ -503,7 +503,7 @@
   },
   "seo": {
     "metatags": {
-      "og:image": "https://editor.zbdpay.com/wp-content/uploads/2026/01/ZBD-API.webp"
+      "og:image": "/img/og-preview.png"
     },
     "indexing": "navigable"
   },
