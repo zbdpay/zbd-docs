@@ -36,7 +36,6 @@
                       "get-started/manage-project"
                     ]
                   },
-                  "get-started/vouchers"
                 ]
               },
               {
@@ -348,16 +347,6 @@
                   "payments/api/withdrawal-requests",
                   "payments/api/withdrawal-requests/create",
                   "payments/api/withdrawal-requests/retrieve"
-                ]
-              },
-              {
-                "group": "Vouchers",
-                "pages": [
-                  "payments/api/vouchers",
-                  "payments/api/vouchers/create",
-                  "payments/api/vouchers/retrieve",
-                  "payments/api/vouchers/redeem",
-                  "payments/api/vouchers/revoke"
                 ]
               },
               {
