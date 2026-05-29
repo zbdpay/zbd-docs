@@ -35,8 +35,7 @@
                       "get-started/project-wallet",
                       "get-started/manage-project"
                     ]
-                  },
-                  "get-started/vouchers"
+                  }
                 ]
               },
               {
@@ -351,16 +350,6 @@
                 ]
               },
               {
-                "group": "Vouchers",
-                "pages": [
-                  "payments/api/vouchers",
-                  "payments/api/vouchers/create",
-                  "payments/api/vouchers/retrieve",
-                  "payments/api/vouchers/redeem",
-                  "payments/api/vouchers/revoke"
-                ]
-              },
-              {
                 "group": "Gamertags",
                 "pages": [
                   "payments/api/gamertags",
@@ -463,6 +452,32 @@
                   "earn/oauth2/api/data-fetching",
                   "earn/oauth2/api/retrieve-user",
                   "earn/oauth2/api/retrieve-wallet"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Widgets",
+        "anchors": [
+          {
+            "anchor": "Cashout Widget",
+            "icon": "grid-2",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "widget"
+                ]
+              },
+              {
+                "group": "API Reference",
+                "pages": [
+                  "widget/create-user",
+                  "widget/get-user",
+                  "widget/create-session",
+                  "widget/fund-user"
                 ]
               }
             ]

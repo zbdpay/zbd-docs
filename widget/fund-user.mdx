@@ -1,0 +1,85 @@
+---
+title: "Fund User"
+description: "Transfer funds from your publisher balance to a user's cashout wallet."
+api: "POST https://api.zebedee.io/v1/cashout/funding-transfers"
+---
+
+## Description
+
+Credits a user's cashout balance from your project's funded pool. The user can then withdraw these funds via the widget. Amount is in **currency minor units** — for USD, `100` equals `$1.00`.
+
+This endpoint is idempotent on `idempotency_key`.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="zbd_user_id" type="string">
+  The ZBD user ID returned by Create User.
+</ParamField>
+
+<ParamField required body="amount" type="integer">
+  Amount in currency minor units. For USD: `100` = $1.00, `1000` = $10.00.
+</ParamField>
+
+<ParamField required body="currency" type="string">
+  Currency code. Currently only `USD` is supported.
+</ParamField>
+
+<ParamField required body="idempotency_key" type="string">
+  Unique key to prevent duplicate transfers. Use a UUID.
+</ParamField>
+
+<ParamField body="external_id" type="string">
+  Optional: your internal transaction identifier for reconciliation.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Optional: human-readable description shown in transaction history.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zebedee.io/v1/cashout/funding-transfers \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "zbd_user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "amount": 1000,
+    "currency": "USD",
+    "idempotency_key": "90f9371e-c48a-4bc9-9075-ef7a4c6816ec",
+    "external_id": "game-match-123",
+    "description": "Level 37 reward"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Publisher fund completed successfully.",
+  "data": {
+    "transfer_id": "f4ba94c1-1234-5678-abcd-ef0123456789",
+    "zbd_user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "amount": 1000,
+    "currency": "USD",
+    "status": "COMPLETED",
+    "external_id": "game-match-123",
+    "description": "Level 37 reward",
+    "created_at": "2026-05-28T22:21:02.987Z",
+    "updated_at": "2026-05-28T22:21:03.067Z"
+  }
+}
+```
+</ResponseExample>

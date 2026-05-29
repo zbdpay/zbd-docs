@@ -1,0 +1,58 @@
+---
+title: "Create User"
+description: "Create or fetch a publisher-linked cashout user."
+api: "POST https://api.zebedee.io/api/v1/cashout/users"
+---
+
+## Description
+
+Provisions a user in ZBD for your project. Idempotent — if a user with the same `reference_id` or `email` already exists for your project, the existing user is returned.
+
+Call this from your server before creating a widget session.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="reference_id" type="string">
+  Your stable internal user identifier. Must be unique per project.
+</ParamField>
+
+<ParamField required body="email" type="string">
+  User's email address. Used for OTP verification in the widget.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zebedee.io/api/v1/cashout/users \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "reference_id": "player-42",
+    "email": "player@example.com"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "data": {
+    "id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "reference_id": "player-42",
+    "email": "player@example.com"
+  }
+}
+```
+</ResponseExample>
