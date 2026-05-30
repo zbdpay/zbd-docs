@@ -275,12 +275,6 @@
                 ]
               },
               {
-                "group": "Python",
-                "pages": [
-                  "payments/sdk/python"
-                ]
-              },
-              {
                 "group": "Go",
                 "pages": [
                   "payments/sdk/go"
