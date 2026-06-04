@@ -1,0 +1,18 @@
+/*
+ * Hide the Widgets top tab before the client-side route script runs.
+ * widget-tab.js adds .zbd-widget-route on /widget routes so the tab can show there.
+ */
+html:not(.zbd-widget-route) header a[href="/widget"],
+html:not(.zbd-widget-route) header a[href="/widget/"],
+html:not(.zbd-widget-route) header a[href$="/widget"],
+html:not(.zbd-widget-route) header a[href$="/widget/"],
+html:not(.zbd-widget-route) nav a[href="/widget"],
+html:not(.zbd-widget-route) nav a[href="/widget/"],
+html:not(.zbd-widget-route) nav a[href$="/widget"],
+html:not(.zbd-widget-route) nav a[href$="/widget/"],
+html:not(.zbd-widget-route) [role="tablist"] a[href="/widget"],
+html:not(.zbd-widget-route) [role="tablist"] a[href="/widget/"],
+html:not(.zbd-widget-route) [role="tablist"] a[href$="/widget"],
+html:not(.zbd-widget-route) [role="tablist"] a[href$="/widget/"] {
+  display: none !important;
+}

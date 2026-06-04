@@ -1,0 +1,44 @@
+---
+title: "Get User"
+description: "Retrieve a cashout user's details and verification status."
+api: "GET https://api.zebedee.io/api/v1/cashout/users/{user_id}"
+---
+
+## Description
+
+Returns the user's details including their current identity verification status. Use this to check if a user has completed KYC before showing cashout options.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="user_id" type="string">
+  The ZBD user ID returned by Create User.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zebedee.io/api/v1/cashout/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652 \
+  -H "apikey: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "data": {
+    "id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "reference_id": "player-42",
+    "email": "player@example.com",
+    "is_id_verified": true
+  }
+}
+```
+</ResponseExample>

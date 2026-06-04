@@ -1,0 +1,72 @@
+---
+title: "Create Session"
+description: "Mint a widget session and get the embeddable URL."
+api: "POST https://api.zebedee.io/api/v1/cashout-widget"
+---
+
+## Description
+
+Creates a widget session for a user. Returns a `session_token` (JWT) and a `widget_url` that you embed as an iframe. The session is valid for the duration specified in `expires_at`.
+
+The widget handles OTP email verification, KYC (Onfido), bank linking (Plaid), and cashout initiation internally.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="email" type="string">
+  User's email address. Required when `access_token` is not supplied.
+</ParamField>
+
+<ParamField required body="webhook_url" type="string">
+  Your server URL to receive cashout lifecycle webhooks (initiated, completed, failed).
+</ParamField>
+
+<ParamField body="reference_id" type="string">
+  Optional publisher reference for the session.
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Optional key-value metadata to attach to the session.
+</ParamField>
+
+<ParamField body="access_token" type="string">
+  Existing access token. When supplied, `email` is not required and OTP is skipped.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zebedee.io/api/v1/cashout-widget \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "player@example.com",
+    "webhook_url": "https://your-server.com/zbd/webhooks",
+    "reference_id": "player-42",
+    "metadata": { "source": "your-game" }
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "data": {
+    "session_token": "eyJhbGciOiJSUzI1NiIs...",
+    "expires_at": "2026-06-01T00:00:00.000Z",
+    "widget_url": "https://ramp.zbdpay.com?session_token=eyJhbGci..."
+  }
+}
+```
+</ResponseExample>
