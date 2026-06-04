@@ -7,12 +7,22 @@ description: "Embed a hosted cashout experience so your users can withdraw earne
 
 The ZBD Widget is an embeddable iframe that handles the full cashout flow for your users — identity verification (KYC), bank account linking (Plaid), and ACH payouts. Your backend handles user creation, session minting, and balance funding; the widget handles everything else.
 
+## Webhooks
+
+ZBD sends publisher webhooks when a widget cashout or reversal changes status. Use the webhook reference for endpoint setup, signing, retries, event types, and payload examples.
+
+<CardGroup cols={1}>
+  <Card title="Webhook Events" icon="webhook" href="/widget/webhooks">
+    Review the full ZBD Widget webhook reference.
+  </Card>
+</CardGroup>
+
 ## Integration Flow
 
 ```
-1. Create User        POST /api/v1/cashout/users              (your server → ZBD API)
-2. Fund User          POST /v1/cashout/funding-transfers       (your server → ZBD API)
-3. Create Session     POST /api/v1/cashout-widget              (your server → ZBD API)
+1. Create User        POST /api/v1/widget/users                (your server → ZBD API)
+2. Fund User          POST /api/v1/widget/users/fund           (your server → ZBD API)
+3. Create Session     POST /api/v1/widget/users/session        (your server → ZBD API)
 4. Embed Widget       <iframe src="{widget_url}" />            (your frontend)
 5. Listen for Events  window.addEventListener("message", ...)  (your frontend)
 ```
@@ -85,85 +95,3 @@ Pass these as URL query parameters on the widget URL:
 | `theme` | No | `zbd-default`, `zbd-light` |
 | `embed` | No | `true` for chrome-less mode (no header/footer) |
 | `component` | No | `balance`, `history`, `method-picker` for standalone components |
-
-## Webhooks
-
-After a cashout is initiated, ZBD sends lifecycle webhooks to the `webhook_url` you provided when creating the session. The `webhook_url` must be HTTPS.
-
-### Initiated
-
-Sent immediately after the cashout is submitted and the user's balance is debited. Includes `fee_amount`.
-
-```json
-{
-  "event": "ZBD_WIDGET.V1.CASHOUT.INITIATED",
-  "timestamp": "2026-05-28T22:21:03.067Z",
-  "data": {
-    "payout_id": "f4ba94c1-...",
-    "user_account_id": "4ac4fd8a-...",
-    "amount": "10.00",
-    "currency": "USD",
-    "payment_method": "ach",
-    "status": "initiated",
-    "reference_id": "player-42",
-    "fee_amount": "0.50"
-  }
-}
-```
-
-### Completed
-
-Sent when the ACH transfer settles at the bank (typically 1–3 business days).
-
-```json
-{
-  "event": "ZBD_WIDGET.V1.CASHOUT.COMPLETED",
-  "timestamp": "2026-05-30T14:12:00.000Z",
-  "data": {
-    "payout_id": "f4ba94c1-...",
-    "user_account_id": "4ac4fd8a-...",
-    "amount": "10.00",
-    "currency": "USD",
-    "payment_method": "ach",
-    "status": "completed",
-    "reference_id": "player-42"
-  }
-}
-```
-
-### Failed
-
-Sent when the ACH transfer is rejected by the bank or payment processor. Includes `error_reason`.
-
-```json
-{
-  "event": "ZBD_WIDGET.V1.CASHOUT.FAILED",
-  "timestamp": "2026-05-30T14:12:00.000Z",
-  "data": {
-    "payout_id": "f4ba94c1-...",
-    "user_account_id": "4ac4fd8a-...",
-    "amount": "10.00",
-    "currency": "USD",
-    "payment_method": "ach",
-    "status": "failed",
-    "reference_id": "player-42",
-    "error_reason": "Insufficient funds at receiving bank"
-  }
-}
-```
-
-### Payload Fields
-
-| Field | Type | Description |
-|---|---|---|
-| `payout_id` | UUID | Unique cashout identifier |
-| `user_account_id` | UUID | ZBD user ID |
-| `amount` | string | Decimal in major units (e.g. `"9.50"` = $9.50) |
-| `currency` | string | Always `USD` |
-| `payment_method` | string | Always `ach` |
-| `status` | string | `initiated`, `completed`, or `failed` |
-| `reference_id` | string | Your `reference_id` from Create User (null if not linked) |
-| `fee_amount` | string | Fee deducted (only on `initiated`) |
-| `error_reason` | string | Failure reason (only on `failed`) |
-
-<Note>ACH returns (post-settlement reversals) do not trigger a webhook. They are handled internally by ZBD.</Note>

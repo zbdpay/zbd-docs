@@ -36,7 +36,7 @@ In the [ZBD Developer Dashboard](https://dashboard.zebedee.io), navigate to your
 ### 2. Create a Test User
 
 ```bash
-curl -X POST https://api.zebedee.io/api/v1/cashout/users \
+curl -X POST https://api.zebedee.io/api/v1/widget/users \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -48,7 +48,7 @@ curl -X POST https://api.zebedee.io/api/v1/cashout/users \
 ### 3. Fund the Test User
 
 ```bash
-curl -X POST https://api.zebedee.io/v1/cashout/funding-transfers \
+curl -X POST https://api.zebedee.io/api/v1/widget/users/fund \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -67,7 +67,7 @@ curl -X POST https://api.zebedee.io/v1/cashout/funding-transfers \
 ### 4. Create a Widget Session
 
 ```bash
-curl -X POST https://api.zebedee.io/api/v1/cashout-widget \
+curl -X POST https://api.zebedee.io/api/v1/widget/users/session \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -86,22 +86,16 @@ Sandbox webhooks fire to your `webhook_url` with the same payload structure as p
 
 ```json
 {
-  "event": "ZBD_WIDGET.V1.CASHOUT.INITIATED",
-  "timestamp": "2026-06-01T12:00:00.000Z",
-  "data": {
-    "payout_id": "f4ba94c1-...",
-    "user_account_id": "4ac4fd8a-...",
-    "amount": "50.00",
-    "currency": "USD",
-    "payment_method": "ach",
-    "status": "initiated",
-    "reference_id": "test-player-1",
-    "fee_amount": "2.50"
-  }
+  "event_id": "evt_sandbox_123",
+  "event_type": "cashout.initiated",
+  "user_reference_id": "test-player-1",
+  "amount_cents": 5000,
+  "status": "initiated",
+  "occurred_at": "2026-06-01T12:00:00Z"
 }
 ```
 
-In sandbox, the `COMPLETED` webhook fires shortly after `INITIATED` since there's no real ACH settlement delay.
+In sandbox, the `cashout.completed` webhook fires shortly after `cashout.initiated` since there's no real ACH settlement delay. See [Webhook Events](/widget/webhooks) for the full event reference.
 
 ## Sandbox Limitations
 
@@ -133,5 +127,5 @@ When you're ready to go live:
 </Steps>
 
 <Warning>
-  Production cashouts move real money. Make sure your webhook handler correctly processes `COMPLETED` and `FAILED` events before going live.
+  Production cashouts move real money. Make sure your webhook handler correctly processes `cashout.completed`, `cashout.failed`, and `cashout.returned` events before going live.
 </Warning>

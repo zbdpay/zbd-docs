@@ -1,7 +1,7 @@
 ---
 title: "Create Session"
 description: "Mint a widget session and get the embeddable URL."
-api: "POST https://api.zebedee.io/api/v1/cashout-widget"
+api: "POST https://api.zebedee.io/api/v1/widget/users/session"
 ---
 
 ## Description
@@ -29,7 +29,7 @@ The widget handles OTP email verification, KYC (Onfido), bank linking (Plaid), a
 </ParamField>
 
 <ParamField required body="webhook_url" type="string">
-  Your server URL to receive cashout lifecycle webhooks (initiated, completed, failed).
+  Your HTTPS server URL to receive widget webhook events.
 </ParamField>
 
 <ParamField body="reference_id" type="string">
@@ -46,7 +46,7 @@ The widget handles OTP email verification, KYC (Onfido), bank linking (Plaid), a
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zebedee.io/api/v1/cashout-widget \
+curl -X POST https://api.zebedee.io/api/v1/widget/users/session \
   -H "apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

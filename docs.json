@@ -466,6 +466,12 @@
                 ]
               },
               {
+                "group": "Events",
+                "pages": [
+                  "widget/webhooks"
+                ]
+              },
+              {
                 "group": "API Reference",
                 "pages": [
                   "widget/create-user",
