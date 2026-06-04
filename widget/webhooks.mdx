@@ -1,0 +1,224 @@
+---
+title: "Events"
+sidebarTitle: "Events"
+description: "Reference for ZBD Widget iframe events and publisher webhook events."
+icon: "webhook"
+---
+
+## Overview
+
+The ZBD Widget exposes two event channels:
+
+| Channel | Delivered to | Use for |
+|---|---|---|
+| Iframe events | Your frontend via `postMessage` | Widget UI state, close actions, and successful user actions |
+| Webhook events | Your backend as signed HTTPS requests | Cashout status changes, reversal status changes, and server-side reconciliation |
+
+## Iframe Events
+
+The widget communicates with your page via `postMessage`. Listen for events on the parent window:
+
+```javascript
+window.addEventListener("message", (event) => {
+  const { type, payload } = event.data ?? {};
+  if (!type?.startsWith("ZBD_")) return;
+
+  switch (type) {
+    case "ZBD_WIDGET_READY":
+      console.log("Widget loaded", payload?.user);
+      break;
+    case "ZBD_CASHOUT_SUCCESS":
+      console.log("Cashout submitted", payload);
+      // Close the widget iframe, refresh balances
+      break;
+    case "ZBD_WIDGET_CLOSE":
+      // User closed the widget — remove the iframe
+      break;
+  }
+});
+```
+
+| Event | Payload | Description |
+|---|---|---|
+| `ZBD_WIDGET_READY` | `{ user? }` | Widget loaded and authenticated |
+| `ZBD_WIDGET_CLOSE` | — | User closed the widget |
+| `ZBD_CASHOUT_SUCCESS` | `{ cashout_id, amount, currency_code, usd_equivalent }` | Cashout submitted successfully |
+| `ZBD_KYC_COMPLETE` | `{ tier }` | Identity verification approved |
+| `ZBD_METHOD_ADDED` | `{ payout_method_id, type, label }` | Bank account linked via Plaid |
+| `ZBD_AUTH_TOKEN_READY` | `{ auth_token, user? }` | OTP verified, auth JWT available |
+| `ZBD_WIDGET_ERROR` | `{ code, message }` | An error occurred |
+
+## Webhook Events
+
+ZBD sends webhook events to your configured HTTPS endpoint when a widget cashout or reversal changes status. Your endpoint validates the signature, acknowledges receipt, and processes the event asynchronously.
+
+Webhook configuration is completed with ZBD during publisher onboarding. ZBD provides the shared signing secret used to sign each webhook request.
+
+The MVP does not support subscribing to individual event types. ZBD sends all widget webhook event types to the configured endpoint, and your system should filter by the `event_type` field.
+
+## Webhook Delivery Request
+
+ZBD sends each event as an HTTP POST request:
+
+```http
+POST <publisher webhook endpoint>
+X-ZBD-Signature: <HMAC-SHA256 of request body using shared secret>
+X-ZBD-Event-Id: <unique event identifier>
+X-ZBD-Event-Type: <event type>
+Content-Type: application/json
+```
+
+Your endpoint should return HTTP `200` within 10 seconds to acknowledge receipt. Any non-200 response, timeout, 5xx response, or connection failure triggers retry.
+
+<Warning>
+  Validate the webhook signature against the raw request body before processing the event.
+</Warning>
+
+## Webhook Event Types
+
+| Event type | Description |
+|---|---|
+| `cashout.initiated` | The user initiated a cashout against the publisher-funded balance, and ZBD submitted the ACH to the partner bank. |
+| `cashout.completed` | The ACH settled successfully and funds landed in the user's external bank account. |
+| `cashout.failed` | The ACH was rejected before settlement, such as a closed account, invalid routing, or NSF response. |
+| `cashout.returned` | The ACH was reversed after settlement within the return window. |
+| `reversal.status_changed` | A reversal request previously submitted by the publisher changed status. |
+
+## Cashout Webhook Events
+
+Cashout lifecycle webhooks identify the event, reference the publisher's user identifier, include the current status, include the amount, and include the time the event occurred at the bank or inside ZBD.
+
+### Cashout Initiated
+
+```json
+{
+  "event_id": "evt_a1b2c3",
+  "event_type": "cashout.initiated",
+  "user_reference_id": "1047-player-42",
+  "amount_cents": 500,
+  "status": "initiated",
+  "occurred_at": "2026-07-15T17:45:00Z"
+}
+```
+
+### Cashout Completed
+
+```json
+{
+  "event_id": "evt_d4e5f6",
+  "event_type": "cashout.completed",
+  "user_reference_id": "1047-player-42",
+  "amount_cents": 500,
+  "status": "completed",
+  "occurred_at": "2026-07-17T14:20:00Z"
+}
+```
+
+### Cashout Failed
+
+```json
+{
+  "event_id": "evt_g7h8i9",
+  "event_type": "cashout.failed",
+  "user_reference_id": "1047-player-42",
+  "amount_cents": 500,
+  "status": "failed",
+  "reason_code": "R02",
+  "reason_description": "account_closed",
+  "occurred_at": "2026-07-16T09:12:00Z"
+}
+```
+
+### Cashout Returned
+
+```json
+{
+  "event_id": "evt_j1k2l3",
+  "event_type": "cashout.returned",
+  "user_reference_id": "1047-player-42",
+  "amount_cents": 500,
+  "status": "returned",
+  "reason_code": "R10",
+  "reason_description": "unauthorized_by_customer",
+  "occurred_at": "2026-07-25T11:30:00Z"
+}
+```
+
+### Cashout Payload Fields
+
+| Field | Type | Description |
+|---|---|---|
+| `event_id` | string | Unique event identifier. Use this value for deduplication. |
+| `event_type` | string | One of `cashout.initiated`, `cashout.completed`, `cashout.failed`, or `cashout.returned`. |
+| `user_reference_id` | string | Your stable user identifier from Create User. |
+| `amount_cents` | integer | Cashout amount in USD cents. |
+| `status` | string | Current cashout status. |
+| `reason_code` | string | Bank reason code. Present on failed and returned events. |
+| `reason_description` | string | Human-readable bank reason. Present on failed and returned events. |
+| `occurred_at` | string | ISO 8601 timestamp for when the event occurred. |
+
+## Reversal Webhook Events
+
+Reversal status webhooks identify the reversal action, the new status, the reversal method, the amount, and the timestamp.
+
+### Reversal Completed
+
+```json
+{
+  "event_id": "evt_m4n5o6",
+  "event_type": "reversal.status_changed",
+  "reversal_id": "R-002",
+  "amount_cents": 500,
+  "status": "completed",
+  "method": "bank_reversal",
+  "occurred_at": "2026-07-20T15:45:00Z"
+}
+```
+
+### Reversal Failed
+
+```json
+{
+  "event_id": "evt_p7q8r9",
+  "event_type": "reversal.status_changed",
+  "reversal_id": "R-002",
+  "amount_cents": 500,
+  "status": "failed",
+  "method": "bank_reversal",
+  "occurred_at": "2026-07-20T15:45:00Z"
+}
+```
+
+### Reversal Payload Fields
+
+| Field | Type | Description |
+|---|---|---|
+| `event_id` | string | Unique event identifier. Use this value for deduplication. |
+| `event_type` | string | Always `reversal.status_changed`. |
+| `reversal_id` | string | Unique reversal identifier. |
+| `amount_cents` | integer | Reversal amount in USD cents. |
+| `status` | string | New reversal status, such as `completed` or `failed`. |
+| `method` | string | Reversal method, such as `bank_reversal` for bank-level reversals. |
+| `occurred_at` | string | ISO 8601 timestamp for when the status changed. |
+
+## Webhook Event Sources
+
+`cashout.initiated` events are generated when the user submits a cashout through the ZBD Widget and ZBD submits the ACH to the partner bank.
+
+`cashout.completed`, `cashout.failed`, and `cashout.returned` events are generated from partner bank webhook callbacks. ZBD translates the bank-level status update into the publisher-facing event.
+
+`reversal.status_changed` events are generated when a reversal transitions between states. Instant reversals emit on completion. Queued bank-level reversals emit when ZBD records the final outcome from the partner bank.
+
+## Retries
+
+ZBD attempts initial delivery within seconds of event generation. If your endpoint does not return HTTP `200`, ZBD retries with exponential backoff: roughly 1 minute, 5 minutes, 30 minutes, 2 hours, then 12 hours between attempts.
+
+After approximately five failed delivery attempts over roughly 15 hours, the event moves to a dead-letter queue and ZBD operations is alerted to investigate.
+
+## Idempotency
+
+Webhook delivery is at least once. The same event may be delivered more than once if a retry happens. Store and deduplicate by `event_id`.
+
+## Auditability
+
+ZBD logs each webhook delivery attempt, including the attempt timestamp, response or timeout reason, and final outcome.

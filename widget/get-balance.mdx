@@ -1,0 +1,47 @@
+---
+title: "Get User Balance"
+description: "Retrieve a widget user's available and total reward balance."
+api: "GET https://api.zebedee.io/api/v1/widget/users/{user_id}/balance"
+---
+
+## Description
+
+Returns the user's widget reward balance for your project. Use this from your server when you need to show a user's cashout-ready balance outside the widget.
+
+Amounts are returned in **currency minor units**. For USD, `100` equals `$1.00`.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="user_id" type="string">
+  The ZBD user ID returned by Create User.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zebedee.io/api/v1/widget/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652/balance \
+  -H "apikey: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "userId": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+  "balances": [
+    {
+      "currency": "USD",
+      "availableBalance": 5000,
+      "totalBalance": 5000
+    }
+  ]
+}
+```
+</ResponseExample>

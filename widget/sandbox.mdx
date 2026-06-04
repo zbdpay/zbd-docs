@@ -11,16 +11,18 @@ Every ZBD project includes a **sandbox environment** for testing the ZBD Widget 
   **Sandbox API keys** are separate from production keys. Make sure you're using the right key for the right environment.
 </Info>
 
+**Sandbox API base URL:** `https://sandbox-api.zbdpay.com`
+
 ## What Sandbox Does
 
 | Feature | Sandbox | Production |
 |---|---|---|
-| **User creation** | Creates real user records | Same |
-| **Balance funding** | Credits test balance (no real money) | Debits partner's CRB pool |
-| **KYC / Identity** | Skipped — users can cashout without Onfido | Required for bank cashouts |
+| **User creation** | Creates sandbox-scoped widget users | Creates production widget users |
+| **Balance funding** | Credits test reward balance; no live pool is debited | Transfers publisher points from your live pool |
+| **KYC / Identity** | Controlled through sandbox KYC status helpers; no live Onfido review | Required for bank cashouts |
 | **Bank linking (Plaid)** | Full Plaid sandbox flow | Real bank connections |
-| **ACH payout** | Simulated — completes instantly, no real transfer | Real ACH via banking partner |
-| **Webhooks** | Fires normally to your `webhook_url` | Same |
+| **ACH payout** | Simulated when sandbox bypass is enabled; no real transfer | Real ACH via banking partner |
+| **Webhooks** | Fire normally to your `webhook_url` | Same |
 | **Widget UI** | Identical to production | Same |
 
 ## Getting Started
@@ -36,7 +38,7 @@ In the [ZBD Developer Dashboard](https://dashboard.zebedee.io), navigate to your
 ### 2. Create a Test User
 
 ```bash
-curl -X POST https://api.zebedee.io/api/v1/cashout/users \
+curl -X POST https://sandbox-api.zbdpay.com/api/v1/cashout/sandbox/users \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -45,10 +47,14 @@ curl -X POST https://api.zebedee.io/api/v1/cashout/users \
   }'
 ```
 
+<Note>
+  Sandbox user creation uses a sandbox-only endpoint. Use the returned `data.id` as `zbd_user_id` when funding the user and as the user ID when setting KYC status. Use `POST /api/v1/widget/users` only for production widget users.
+</Note>
+
 ### 3. Fund the Test User
 
 ```bash
-curl -X POST https://api.zebedee.io/v1/cashout/funding-transfers \
+curl -X POST https://sandbox-api.zbdpay.com/api/v1/widget/users/fund \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -67,7 +73,7 @@ curl -X POST https://api.zebedee.io/v1/cashout/funding-transfers \
 ### 4. Create a Widget Session
 
 ```bash
-curl -X POST https://api.zebedee.io/api/v1/cashout-widget \
+curl -X POST https://sandbox-api.zbdpay.com/api/v1/widget/users/session \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -80,35 +86,43 @@ curl -X POST https://api.zebedee.io/api/v1/cashout-widget \
 
 Embed the returned `widget_url` in an iframe. The widget behaves identically to production — same UI, same flows — but cashouts complete without real bank transfers.
 
+## Sandbox Controls
+
+Use these sandbox-only controls on `https://sandbox-api.zbdpay.com` with `apikey: YOUR_SANDBOX_API_KEY` to put a test user or monetary account into a known state before opening the widget.
+
+For user rewards, use `POST /api/v1/widget/users/fund`. The monetary-account helpers below are for state setup when you already have the monetary account ID.
+
+| Control | Endpoint | Request body |
+|---|---|---|
+| Create sandbox user | `POST /api/v1/cashout/sandbox/users` | `{ "reference_id": "test-player-1", "email": "test@yourcompany.com" }` |
+| Set user KYC status | `POST /api/v1/principal-accounts/{zbd_user_id}/kyc-status` | `{ "status": "approved", "country_code": "US" }` |
+| Add sandbox balance | `POST /api/v1/monetary-accounts/{monetary_account_id}/fund` | `{ "amount": 5000 }` |
+| Remove sandbox balance | `POST /api/v1/monetary-accounts/{monetary_account_id}/deplete` | `{ "amount": 5000 }` |
+
+KYC `status` must be `approved`, `rejected`, or `processing`. Include `country_code` when setting `approved`.
+
+Balance helper amounts use currency minor units. For USD, `5000` means `$50.00`.
+
+<Note>
+  ACH return-code simulation and explicit payout failure-mode controls are still being wired for sandbox. Until those controls are available, use the webhook examples to prepare your handler for `cashout.failed` and `cashout.returned` events.
+</Note>
+
 ## Sandbox Webhooks
 
 Sandbox webhooks fire to your `webhook_url` with the same payload structure as production:
 
 ```json
 {
-  "event": "ZBD_WIDGET.V1.CASHOUT.INITIATED",
-  "timestamp": "2026-06-01T12:00:00.000Z",
-  "data": {
-    "payout_id": "f4ba94c1-...",
-    "user_account_id": "4ac4fd8a-...",
-    "amount": "50.00",
-    "currency": "USD",
-    "payment_method": "ach",
-    "status": "initiated",
-    "reference_id": "test-player-1",
-    "fee_amount": "2.50"
-  }
+  "event_id": "evt_sandbox_123",
+  "event_type": "cashout.initiated",
+  "user_reference_id": "test-player-1",
+  "amount_cents": 5000,
+  "status": "initiated",
+  "occurred_at": "2026-06-01T12:00:00Z"
 }
 ```
 
-In sandbox, the `COMPLETED` webhook fires shortly after `INITIATED` since there's no real ACH settlement delay.
-
-## Sandbox Limitations
-
-- **No real ACH transfers** — cashouts are simulated and settle instantly
-- **No real KYC** — identity verification is bypassed
-- **Plaid sandbox banks** — use [Plaid's sandbox credentials](https://plaid.com/docs/sandbox/) for bank linking
-- **Sandbox balance is not real money** — cannot be withdrawn to a real bank account
+In sandbox, the `cashout.completed` webhook can fire shortly after `cashout.initiated` since there's no real ACH settlement delay. See [Events](/widget/webhooks) for the full event reference.
 
 ## Moving to Production
 
@@ -133,5 +147,5 @@ When you're ready to go live:
 </Steps>
 
 <Warning>
-  Production cashouts move real money. Make sure your webhook handler correctly processes `COMPLETED` and `FAILED` events before going live.
+  Production cashouts move real money. Make sure your webhook handler correctly processes `cashout.completed`, `cashout.failed`, and `cashout.returned` events before going live.
 </Warning>

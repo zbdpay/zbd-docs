@@ -1,12 +1,12 @@
 ---
 title: "Fund User"
-description: "Transfer funds from your publisher balance to a user's cashout wallet."
-api: "POST https://api.zebedee.io/v1/cashout/funding-transfers"
+description: "Transfer publisher points to a user's reward account."
+api: "POST https://api.zebedee.io/api/v1/widget/users/fund"
 ---
 
 ## Description
 
-Credits a user's cashout balance from your project's funded pool. The user can then withdraw these funds via the widget. Amount is in **currency minor units** — for USD, `100` equals `$1.00`.
+Transfer publisher points to a user's reward account. The user can then withdraw the balance through the widget. Amount is in **currency minor units** — for USD, `100` equals `$1.00`.
 
 This endpoint is idempotent on `idempotency_key`.
 
@@ -50,7 +50,7 @@ This endpoint is idempotent on `idempotency_key`.
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zebedee.io/v1/cashout/funding-transfers \
+curl -X POST https://api.zebedee.io/api/v1/widget/users/fund \
   -H "apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
