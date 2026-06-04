@@ -1,54 +1,11 @@
 ---
-title: "Events"
-sidebarTitle: "Events"
-description: "Reference for ZBD Widget iframe events and publisher webhook events."
+title: "Server Webhooks"
+sidebarTitle: "Server Webhooks"
+description: "Reference for ZBD Widget publisher webhook events, delivery, signing, retries, and payloads."
 icon: "webhook"
 ---
 
 ## Overview
-
-The ZBD Widget exposes two event channels:
-
-| Channel | Delivered to | Use for |
-|---|---|---|
-| Iframe events | Your frontend via `postMessage` | Widget UI state, close actions, and successful user actions |
-| Webhook events | Your backend as signed HTTPS requests | Cashout status changes, reversal status changes, and server-side reconciliation |
-
-## Iframe Events
-
-The widget communicates with your page via `postMessage`. Listen for events on the parent window:
-
-```javascript
-window.addEventListener("message", (event) => {
-  const { type, payload } = event.data ?? {};
-  if (!type?.startsWith("ZBD_")) return;
-
-  switch (type) {
-    case "ZBD_WIDGET_READY":
-      console.log("Widget loaded", payload?.user);
-      break;
-    case "ZBD_CASHOUT_SUCCESS":
-      console.log("Cashout submitted", payload);
-      // Close the widget iframe, refresh balances
-      break;
-    case "ZBD_WIDGET_CLOSE":
-      // User closed the widget — remove the iframe
-      break;
-  }
-});
-```
-
-| Event | Payload | Description |
-|---|---|---|
-| `ZBD_WIDGET_READY` | `{ user? }` | Widget loaded and authenticated |
-| `ZBD_WIDGET_CLOSE` | — | User closed the widget |
-| `ZBD_CASHOUT_SUCCESS` | `{ cashout_id, amount, currency_code, usd_equivalent }` | Cashout submitted successfully |
-| `ZBD_KYC_COMPLETE` | `{ tier }` | Identity verification approved |
-| `ZBD_METHOD_ADDED` | `{ payout_method_id, type, label }` | Bank account linked via Plaid |
-| `ZBD_AUTH_TOKEN_READY` | `{ auth_token, user? }` | OTP verified, auth JWT available |
-| `ZBD_WIDGET_ERROR` | `{ code, message }` | An error occurred |
-
-## Webhook Events
 
 ZBD sends webhook events to your configured HTTPS endpoint when a widget cashout or reversal changes status. Your endpoint validates the signature, acknowledges receipt, and processes the event asynchronously.
 
