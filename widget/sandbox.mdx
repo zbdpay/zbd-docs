@@ -11,13 +11,7 @@ Every ZBD project includes a **sandbox environment** for testing the ZBD Widget 
   **Sandbox API keys** are separate from production keys. Make sure you're using the right key for the right environment.
 </Info>
 
-Use the sandbox API host for sandbox-only routes:
-
-```bash
-SANDBOX_API_BASE_URL=https://sandbox.zbdpay.com
-```
-
-For environment-specific testing, use the matching sandbox host, such as `https://sandbox-x1.zbdpay.com`.
+**Sandbox API base URL:** `https://sandbox-api.zbdpay.com`
 
 ## What Sandbox Does
 
@@ -44,7 +38,7 @@ In the [ZBD Developer Dashboard](https://dashboard.zebedee.io), navigate to your
 ### 2. Create a Test User
 
 ```bash
-curl -X POST $SANDBOX_API_BASE_URL/api/v1/cashout/sandbox/users \
+curl -X POST https://sandbox-api.zbdpay.com/api/v1/cashout/sandbox/users \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -60,7 +54,7 @@ curl -X POST $SANDBOX_API_BASE_URL/api/v1/cashout/sandbox/users \
 ### 3. Fund the Test User
 
 ```bash
-curl -X POST $SANDBOX_API_BASE_URL/api/v1/widget/users/fund \
+curl -X POST https://sandbox-api.zbdpay.com/api/v1/widget/users/fund \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -79,7 +73,7 @@ curl -X POST $SANDBOX_API_BASE_URL/api/v1/widget/users/fund \
 ### 4. Create a Widget Session
 
 ```bash
-curl -X POST $SANDBOX_API_BASE_URL/api/v1/widget/users/session \
+curl -X POST https://sandbox-api.zbdpay.com/api/v1/widget/users/session \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -94,7 +88,7 @@ Embed the returned `widget_url` in an iframe. The widget behaves identically to 
 
 ## Sandbox Controls
 
-Use these sandbox-only controls with `SANDBOX_API_BASE_URL` and `apikey: YOUR_SANDBOX_API_KEY` to put a test user or monetary account into a known state before opening the widget.
+Use these sandbox-only controls on `https://sandbox-api.zbdpay.com` with `apikey: YOUR_SANDBOX_API_KEY` to put a test user or monetary account into a known state before opening the widget.
 
 For user rewards, use `POST /api/v1/widget/users/fund`. The monetary-account helpers below are for state setup when you already have the monetary account ID.
 
