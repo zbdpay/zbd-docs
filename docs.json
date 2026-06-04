@@ -468,6 +468,7 @@
               {
                 "group": "Events",
                 "pages": [
+                  "widget/browser-events",
                   "widget/webhooks"
                 ]
               },

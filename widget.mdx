@@ -9,11 +9,14 @@ The ZBD Widget is an embeddable iframe that handles the full cashout flow for yo
 
 ## Events
 
-The ZBD Widget emits iframe events to your frontend and webhook events to your backend. Use the events reference for iframe callbacks, webhook setup, signing, retries, event types, and payload examples.
+The ZBD Widget emits browser events to your frontend and server webhooks to your backend.
 
-<CardGroup cols={1}>
-  <Card title="Events" icon="webhook" href="/widget/webhooks">
-    Review iframe events and publisher webhook events.
+<CardGroup cols={2}>
+  <Card title="Browser Events" icon="window" href="/widget/browser-events">
+    Handle iframe callbacks in your frontend.
+  </Card>
+  <Card title="Server Webhooks" icon="webhook" href="/widget/webhooks">
+    Process signed backend webhook deliveries.
   </Card>
 </CardGroup>
 
@@ -41,15 +44,62 @@ Widget endpoints use two auth patterns:
 
 ## Embedding the Widget
 
-After creating a session, embed the widget URL as an iframe:
+After creating a session, load the returned `widget_url` in your client. Your backend should create the session; your game or web client only receives the `widget_url`.
 
-```html
-<iframe
-  src="https://ramp.zbdpay.com?session_token=eyJhbGci..."
-  style="width: 100%; height: 600px; border: none;"
-  allow="camera; microphone"
-></iframe>
-```
+<Tabs>
+  <Tab title="Web">
+    ```html
+    <iframe
+      src="https://ramp.zbdpay.com?session_token=eyJhbGci..."
+      style="width: 100%; height: 600px; border: none;"
+      allow="camera; microphone"
+    ></iframe>
+    ```
+  </Tab>
+
+  <Tab title="Unity">
+    Use a native WebView package for your Unity target and load the `widget_url` returned by your backend.
+
+    ```csharp
+    using UnityEngine;
+
+    public class ZbdWidgetLauncher : MonoBehaviour
+    {
+        [SerializeField] private GameObject webViewContainer;
+
+        public void OpenWidget(string widgetUrl)
+        {
+            // Replace this with your Unity WebView package API.
+            var webView = webViewContainer.GetComponent<IWebView>();
+            webView.LoadUrl(widgetUrl);
+            webView.SetVisible(true);
+        }
+    }
+
+    public interface IWebView
+    {
+        void LoadUrl(string url);
+        void SetVisible(bool visible);
+    }
+    ```
+  </Tab>
+
+  <Tab title="Unreal">
+    Enable Unreal's **Web Browser** plugin, add a Web Browser widget to your UMG screen, and load the `widget_url` returned by your backend.
+
+    ```cpp
+    #include "Components/WebBrowser.h"
+
+    void UCashoutScreen::OpenZbdWidget(const FString& WidgetUrl)
+    {
+        if (ZbdWidgetBrowser)
+        {
+            ZbdWidgetBrowser->LoadURL(WidgetUrl);
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
 
 ## Embed Parameters
 

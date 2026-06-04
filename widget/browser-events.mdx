@@ -1,0 +1,48 @@
+---
+title: "Browser Events"
+sidebarTitle: "Browser Events"
+description: "Reference for ZBD Widget iframe events sent to your frontend with postMessage."
+icon: "window"
+---
+
+## Overview
+
+The ZBD Widget communicates with your page from the iframe using browser `postMessage` events. Use these events for frontend state such as widget readiness, close actions, cashout submission, identity verification, and linked payout methods.
+
+Server-side cashout status updates are delivered separately as signed webhooks. See [Server Webhooks](/widget/webhooks).
+
+## Listening for Events
+
+Listen for events on the parent window:
+
+```javascript
+window.addEventListener("message", (event) => {
+  const { type, payload } = event.data ?? {};
+  if (!type?.startsWith("ZBD_")) return;
+
+  switch (type) {
+    case "ZBD_WIDGET_READY":
+      console.log("Widget loaded", payload?.user);
+      break;
+    case "ZBD_CASHOUT_SUCCESS":
+      console.log("Cashout submitted", payload);
+      // Close the widget iframe, refresh balances
+      break;
+    case "ZBD_WIDGET_CLOSE":
+      // User closed the widget — remove the iframe
+      break;
+  }
+});
+```
+
+## Event Types
+
+| Event | Payload | Description |
+|---|---|---|
+| `ZBD_WIDGET_READY` | `{ user? }` | Widget loaded and authenticated |
+| `ZBD_WIDGET_CLOSE` | — | User closed the widget |
+| `ZBD_CASHOUT_SUCCESS` | `{ cashout_id, amount, currency_code, usd_equivalent }` | Cashout submitted successfully |
+| `ZBD_KYC_COMPLETE` | `{ tier }` | Identity verification approved |
+| `ZBD_METHOD_ADDED` | `{ payout_method_id, type, label }` | Bank account linked via Plaid |
+| `ZBD_AUTH_TOKEN_READY` | `{ auth_token, user? }` | OTP verified, auth JWT available |
+| `ZBD_WIDGET_ERROR` | `{ code, message }` | An error occurred |
