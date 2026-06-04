@@ -130,13 +130,6 @@ Sandbox webhooks fire to your `webhook_url` with the same payload structure as p
 
 In sandbox, the `cashout.completed` webhook can fire shortly after `cashout.initiated` since there's no real ACH settlement delay. See [Webhook Events](/widget/webhooks) for the full event reference.
 
-## Sandbox Limitations
-
-- **No real ACH transfers** — cashouts are simulated and can settle faster than production
-- **No real KYC** — use sandbox controls to set KYC states
-- **Plaid sandbox banks** — use [Plaid's sandbox credentials](https://plaid.com/docs/sandbox/) for bank linking
-- **Sandbox balance is not real money** — cannot be withdrawn to a real bank account
-
 ## Moving to Production
 
 When you're ready to go live:
