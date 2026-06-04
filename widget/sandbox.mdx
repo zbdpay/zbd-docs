@@ -1,0 +1,137 @@
+---
+title: "Sandbox"
+description: "Test the full ZBD Widget flow without real money, real KYC, or real bank transfers."
+---
+
+## Overview
+
+Every ZBD project includes a **sandbox environment** for testing the ZBD Widget integration end-to-end. Sandbox mode simulates the entire flow — funding users, initiating cashouts, and receiving webhooks — without moving real money through ACH or requiring real identity verification.
+
+<Info>
+  **Sandbox API keys** are separate from production keys. Make sure you're using the right key for the right environment.
+</Info>
+
+## What Sandbox Does
+
+| Feature | Sandbox | Production |
+|---|---|---|
+| **User creation** | Creates real user records | Same |
+| **Balance funding** | Credits test balance (no real money) | Debits partner's CRB pool |
+| **KYC / Identity** | Skipped — users can cashout without Onfido | Required for bank cashouts |
+| **Bank linking (Plaid)** | Full Plaid sandbox flow | Real bank connections |
+| **ACH payout** | Simulated — completes instantly, no real transfer | Real ACH via banking partner |
+| **Webhooks** | Fires normally to your `webhook_url` | Same |
+| **Widget UI** | Identical to production | Same |
+
+## Getting Started
+
+### 1. Get Your Sandbox API Key
+
+In the [ZBD Developer Dashboard](https://dashboard.zebedee.io), navigate to your project's **API** tab and copy the **Sandbox** key.
+
+<Warning>
+  Never use sandbox keys in production or production keys in sandbox. The endpoints will reject mismatched keys.
+</Warning>
+
+### 2. Create a Test User
+
+```bash
+curl -X POST https://api.zebedee.io/api/v1/cashout/users \
+  -H "apikey: YOUR_SANDBOX_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "reference_id": "test-player-1",
+    "email": "test@yourcompany.com"
+  }'
+```
+
+### 3. Fund the Test User
+
+```bash
+curl -X POST https://api.zebedee.io/v1/cashout/funding-transfers \
+  -H "apikey: YOUR_SANDBOX_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "zbd_user_id": "USER_ID_FROM_STEP_2",
+    "amount": 5000,
+    "currency": "USD",
+    "idempotency_key": "UNIQUE_UUID",
+    "description": "Test reward"
+  }'
+```
+
+<Note>
+  In sandbox, funding transfers don't debit a real pool. The balance is credited for testing purposes.
+</Note>
+
+### 4. Create a Widget Session
+
+```bash
+curl -X POST https://api.zebedee.io/api/v1/cashout-widget \
+  -H "apikey: YOUR_SANDBOX_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@yourcompany.com",
+    "webhook_url": "https://your-server.com/zbd/webhooks"
+  }'
+```
+
+### 5. Open the Widget
+
+Embed the returned `widget_url` in an iframe. The widget behaves identically to production — same UI, same flows — but cashouts complete without real bank transfers.
+
+## Sandbox Webhooks
+
+Sandbox webhooks fire to your `webhook_url` with the same payload structure as production:
+
+```json
+{
+  "event": "ZBD_WIDGET.V1.CASHOUT.INITIATED",
+  "timestamp": "2026-06-01T12:00:00.000Z",
+  "data": {
+    "payout_id": "f4ba94c1-...",
+    "user_account_id": "4ac4fd8a-...",
+    "amount": "50.00",
+    "currency": "USD",
+    "payment_method": "ach",
+    "status": "initiated",
+    "reference_id": "test-player-1",
+    "fee_amount": "2.50"
+  }
+}
+```
+
+In sandbox, the `COMPLETED` webhook fires shortly after `INITIATED` since there's no real ACH settlement delay.
+
+## Sandbox Limitations
+
+- **No real ACH transfers** — cashouts are simulated and settle instantly
+- **No real KYC** — identity verification is bypassed
+- **Plaid sandbox banks** — use [Plaid's sandbox credentials](https://plaid.com/docs/sandbox/) for bank linking
+- **Sandbox balance is not real money** — cannot be withdrawn to a real bank account
+
+## Moving to Production
+
+When you're ready to go live:
+
+<Steps>
+  <Step title="Complete Testing">
+    Verify all flows work: funding, cashout, webhooks, error handling
+  </Step>
+  <Step title="Register Webhook URL">
+    Set your production webhook endpoint in the dashboard
+  </Step>
+  <Step title="Switch API Key">
+    Replace your sandbox API key with the production key
+  </Step>
+  <Step title="Fund Your Pool">
+    Contact ZBD to fund your production CRB pool
+  </Step>
+  <Step title="Go Live">
+    Deploy and monitor your first real cashouts
+  </Step>
+</Steps>
+
+<Warning>
+  Production cashouts move real money. Make sure your webhook handler correctly processes `COMPLETED` and `FAILED` events before going live.
+</Warning>

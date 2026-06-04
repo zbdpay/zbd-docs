@@ -462,7 +462,7 @@
         "tab": "Widgets",
         "anchors": [
           {
-            "anchor": "Cashout Widget",
+            "anchor": "ZBD Widget",
             "icon": "grid-2",
             "pages": [
               {
@@ -478,6 +478,12 @@
                   "widget/get-user",
                   "widget/create-session",
                   "widget/fund-user"
+                ]
+              },
+              {
+                "group": "Testing",
+                "pages": [
+                  "widget/sandbox"
                 ]
               }
             ]
