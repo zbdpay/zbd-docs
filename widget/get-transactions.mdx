@@ -1,0 +1,78 @@
+---
+title: "Get User Transactions"
+description: "Retrieve a paginated transaction history for a widget user."
+api: "GET https://api.zebedee.io/api/v1/widget/users/{user_id}/transactions"
+---
+
+## Description
+
+Returns a widget user's transaction history for your project. Use this from your server when you need to show reward funding and cashout activity outside the widget.
+
+Amounts are returned in **currency minor units**. For USD, `100` equals `$1.00`.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="user_id" type="string">
+  The ZBD user ID returned by Create User.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="skip" type="integer">
+  Number of transactions to skip. Defaults to `0`.
+</ParamField>
+
+<ParamField query="limit" type="integer">
+  Maximum number of transactions to return. Defaults to `20`; maximum is `100`.
+</ParamField>
+
+<ParamField query="type" type="string">
+  Optional transaction type filter.
+</ParamField>
+
+<ParamField query="startDate" type="string">
+  Optional ISO 8601 start date filter.
+</ParamField>
+
+<ParamField query="endDate" type="string">
+  Optional ISO 8601 end date filter.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl "https://api.zebedee.io/api/v1/widget/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652/transactions?skip=0&limit=20" \
+  -H "apikey: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "userId": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+  "transactions": [
+    {
+      "id": "f4ba94c1-1234-5678-abcd-ef0123456789",
+      "type": "reward",
+      "status": "completed",
+      "description": "Level 37 reward",
+      "amount": 1000,
+      "currency": "USD",
+      "fee": 0,
+      "counterparty": "Game Rewards",
+      "createdAt": "2026-05-28T22:21:03.067Z"
+    }
+  ],
+  "total": 1,
+  "skip": 0,
+  "limit": 20
+}
+```
+</ResponseExample>

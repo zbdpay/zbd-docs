@@ -22,9 +22,10 @@ The ZBD Widget emits iframe events to your frontend and webhook events to your b
 ```
 1. Create User        POST /api/v1/widget/users                (your server → ZBD API)
 2. Fund User          POST /api/v1/widget/users/fund           (your server → ZBD API)
-3. Create Session     POST /api/v1/widget/users/session        (your server → ZBD API)
-4. Embed Widget       <iframe src="{widget_url}" />            (your frontend)
-5. Listen for Events  window.addEventListener("message", ...)  (your frontend)
+3. Get Balance        GET /api/v1/widget/users/{userId}/balance (your server → ZBD API)
+4. Create Session     POST /api/v1/widget/users/session        (your server → ZBD API)
+5. Embed Widget       <iframe src="{widget_url}" />            (your frontend)
+6. Listen for Events  window.addEventListener("message", ...)  (your frontend)
 ```
 
 ## Authentication

@@ -476,6 +476,8 @@
                 "pages": [
                   "widget/create-user",
                   "widget/get-user",
+                  "widget/get-balance",
+                  "widget/get-transactions",
                   "widget/create-session",
                   "widget/fund-user"
                 ]
