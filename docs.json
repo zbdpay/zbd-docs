@@ -484,6 +484,12 @@
                 ]
               },
               {
+                "group": "Widget Runtime",
+                "pages": [
+                  "widget/get-session-user"
+                ]
+              },
+              {
                 "group": "Testing",
                 "pages": [
                   "widget/sandbox"

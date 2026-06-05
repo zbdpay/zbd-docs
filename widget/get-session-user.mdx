@@ -1,0 +1,50 @@
+---
+title: "Get Session User"
+description: "Retrieve the current ZBD Widget session user's status."
+api: "GET https://api.zebedee.io/api/v2/session/me"
+---
+
+## Description
+
+Returns the authenticated widget session user's account status, including KYC status and capabilities. The hosted ZBD Widget calls this endpoint automatically through its runtime session; most publisher backends do not need to call it directly.
+
+Use this endpoint only with a widget session JWT, such as the `session_token` returned by Create Session. Publisher API keys are not accepted for this route.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="Authorization" type="string">
+  Bearer widget session JWT: `Bearer {session_token}`.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zebedee.io/api/v2/session/me \
+  -H "Authorization: Bearer YOUR_WIDGET_SESSION_TOKEN"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Session account status retrieved successfully.",
+  "data": {
+    "id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "email": "player@example.com",
+    "is_id_verified": true,
+    "kyc_tier": 1,
+    "kyc_status": "approved",
+    "capabilities": ["CAN_EARN"]
+  }
+}
+```
+</ResponseExample>
+
+## Errors
+
+| Status | Description |
+|---|---|
+| `403` | The session user is not linked to the current project. |
+| `503` | Verification status is temporarily unavailable. |
