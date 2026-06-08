@@ -13,6 +13,17 @@ Before integrating, create a [ZBD Developer Dashboard account](/get-started/crea
 
 <Note>Contact ZBD support or your ZBD account team to enable the Widget for your project before starting the integration.</Note>
 
+## Integration Flow
+
+```
+1. Create User        POST /api/v1/widget/users                (your server → ZBD API)
+2. Fund User          POST /api/v1/widget/users/fund           (your server → ZBD API)
+3. Get Balance        GET /api/v1/widget/users/{userId}/balance (your server → ZBD API)
+4. Create Session     POST /api/v1/widget/users/session        (your server → ZBD API)
+5. Embed Widget       <iframe src="{widget_url}" />            (your frontend)
+6. Listen for Events  window.addEventListener("message", ...)  (your frontend)
+```
+
 ## Events
 
 The ZBD Widget emits browser events to your frontend and server webhooks to your backend.
@@ -25,17 +36,6 @@ The ZBD Widget emits browser events to your frontend and server webhooks to your
     Process signed backend webhook deliveries.
   </Card>
 </CardGroup>
-
-## Integration Flow
-
-```
-1. Create User        POST /api/v1/widget/users                (your server → ZBD API)
-2. Fund User          POST /api/v1/widget/users/fund           (your server → ZBD API)
-3. Get Balance        GET /api/v1/widget/users/{userId}/balance (your server → ZBD API)
-4. Create Session     POST /api/v1/widget/users/session        (your server → ZBD API)
-5. Embed Widget       <iframe src="{widget_url}" />            (your frontend)
-6. Listen for Events  window.addEventListener("message", ...)  (your frontend)
-```
 
 ## Authentication
 
