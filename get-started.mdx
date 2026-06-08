@@ -1,185 +1,73 @@
 ---
-title: 'ZBD Documentation'
+title: 'Getting Started with the ZBD Earn SDK'
 sidebarTitle: 'Overview'
-description: 'Global Payment Service Provider for Gaming and Interactive Entertainment'
+description: 'Ship rewarded gameplay in Unity — onboard your studio, integrate the SDK, and run your first reward.'
 ---
 
-import { BtcEurRate } from "/snippets/btc-eur-rate.jsx";
 import { Footer } from '/snippets/footer.mdx';
 
-The global payment infrastructure built for the speed and scale of gaming. Process thousands of transactions per second, enable true micropayments, and unlock new monetization models – all through a single API.
+Ship rewarded gameplay in Unity. Onboard your studio, integrate the SDK, and credit your first reward — typically in a single afternoon.
 
-<CardGroup cols={3}>
-  <Card title="Sub-second Payments" icon="bolt">
-    Lightning-fast global settlements that keep pace with gameplay
-  </Card>
-  <Card title="True Micropayments" icon="coins">
-    Finally make 1 cent transactions profitable with fees under $0.0001
-  </Card>
-  <Card title="Global Coverage" icon="globe">
-    One API for global payments. No banking relationships needed.
-  </Card>
-</CardGroup>
+The **ZBD Earn SDK** is a drop-in Unity package that lets you reward players with real money for playing your game. You credit players in your own in-game soft currency, and the SDK handles the cash-out flow — identity, balances, and withdrawal limits — so you never have to build payment infrastructure yourself. It's built for Unity mobile studios shipping on iOS and Android.
 
-## Why Developers Choose ZBD
-
-<Tabs>
-  <Tab title="For Gaming Studios">
-    **Built for Gaming Scale**
-    - Handle millions of transactions for players
-    - Microtransactions that actually make economical sense
-    
-    **New Monetization Models**
-    - Pay-per-minute gameplay
-    - Real-money tournaments
-    - Cross-game economies
-    - Player-to-player trading
-
-  </Tab>
-  <Tab title="For App Developers">
-    **Modern Payment Infrastructure**
-    - Instant global settlements
-    - Multi-currency support (USD, EUR, BTC)
-    - Developer-first APIs
-    
-    **Use Cases**
-    - Streaming payments
-    - Creator economy
-    - International payouts
-  </Tab>
-  <Tab title="For Product Managers">
-    **Increase Revenue**
-    - Higher conversion with lower payment friction
-    - Unlock previously unprofitable price points
-    - Expand to Tier 1 global markets compliantly instantly
-    
-    **Reduce Costs**
-    - 90% lower fees than cards for small payments
-    - Eliminate chargeback losses
-  </Tab>
-</Tabs>
-
-## Products
-
-### 🎮 ZBD Earn
-Drive user engagement, boost retention, and unlock new revenue streams by offering real-money rewards and incentives across your experiences.
+Rather than dealing in raw Bitcoin amounts, you set the value of your soft currency and credit players as they play. How much a player can withdraw scales with the value they generate for your game, which keeps your reward economy sustainable. See [Revenue-Based Earning](/earn/sdk/revenue-based-earning) for how that model works.
 
 <CardGroup cols={2}>
-  <Card title="ZBD Earn SDK" horizontal icon='layer-group' href="/earn/sdk">
-    <p>
-      Unity SDK for adding real-money rewards to your games. Drag, drop, monetize.
-    </p>
+  <Card title="Start integrating" icon="rocket" href="/earn/sdk/integration" cta="Open the integration guide">
+    Jump straight into dropping the SDK into your Unity build.
   </Card>
-  <Card title="Earn API" horizontal icon='terminal' href="/earn/api">
-    <p>
-      Programmatically distribute rewards. Perfect for tournaments and achievements.
-    </p>
-  </Card>
-  <Card title="Login with ZBD" horizontal icon='shield-check' href="/earn/oauth2">
-    <p>
-      OAuth2 authentication with built-in wallet creation and KYC.
-    </p>
-  </Card>
-  <Card title="ZBD App" horizontal icon='apple' href="/earn/app">
-    <p>
-      ZBD app for players to manage and cash out rewards.
-    </p>
+  <Card title="Talk to BD" icon="comments" href="https://zbd.one/sales" cta="Get in touch">
+    Not set up yet? Talk to our team to get your studio onboarded.
   </Card>
 </CardGroup>
 
-### 💳 Payments
-Enable instant global payments in your apps and games with multi-currency support for Bitcoin, Lightning Network, USD, EUR and Stablecoins. We handle the complexity of payments infrastructure so you can focus on building amazing experiences.
+## Two tracks, one goal
+
+There are two things to do before players can earn: **onboard your studio with ZBD**, and **integrate the SDK** into your game. They can happen in parallel.
 
 <CardGroup cols={2}>
-  <Card title="ZBD Ramp" horizontal icon='circle-dollar-to-slot' href="/payments/ramp">
-    <p>
-      Let users buy Bitcoin directly in your app. First widget with Lightning Address support.
-    </p>
+  <Card title="1 · Onboard with ZBD" icon="building">
+    Get your studio set up — account, verification, funds, and a project with a wallet ID.
+
+    - [Create a ZBD developer account](/get-started/create-account)
+    - [Complete KYB verification](/get-started/verify-identity)
+    - [Add funds](/get-started/add-funds)
+    - [Create your first project](/get-started/create-project)
+    - [Get your wallet ID](/get-started/project-wallet)
   </Card>
-  <Card title="Payments API" horizontal icon='code' href="/payments/api">
-    <p>
-      Send and receive instant payments globally. Lightning, on-chain, and fiat settlements.
-    </p>
-  </Card>
-  <Card title="TypeScript SDK" horizontal icon='layer-group' href="/payments/sdk/typescript">
-    <p>
-      Production-ready SDK with TypeScript examples and starter templates.
-    </p>
-  </Card>
-  <Card title="MCP Server" horizontal icon='robot' href="/payments/mcp">
-    <p>
-      Enable AI agents and LLMs to process payments autonomously.
-    </p>
+  <Card title="2 · Integrate the SDK" icon="layer-group">
+    Drop the Unity SDK into your build and credit your first reward.
+
+    - [Download the Unity SDK](/earn/sdk/download)
+    - [Configure attestation & URL scheme](/earn/sdk/attestation-setup)
+    - [Follow the step-by-step guide](/earn/sdk/integration)
+    - [Set withdrawal limits & currency value](/earn/sdk/withdrawal-limits)
+    - [Run through the go-live checklist](/earn/sdk/go-live-checklist)
   </Card>
 </CardGroup>
 
-Getting started with ZBD Payments is as simple as:
+<Note>
+  **KYB verification isn't fully self-serve.** New studios are onboarded with help from a ZBD contact, so reach out to [BD](https://zbd.one/sales) to get your verification moving in parallel with your integration work.
+</Note>
 
-<CodeGroup>
+## Need help?
 
-```bash TypeScript / Node.js
-pnpm install @zbdpay/payments-sdk
-```
+Questions during integration — withdrawal limits, currency configuration, or testing on a VPN — are answered fastest by our team. Reach out to BD and we'll get you to the right person.
 
-```bash Rust
-cargo add zebedee-rust
-```
-
-```bash HTTP
-curl -X GET https://api.zbdpay.com/v0/wallet \
-  -H "apikey: YOUR_API_KEY"
-```
-
-</CodeGroup>
-
-## Quick Start Guides
-
-<Steps>
-  <Step title="Get Your API Keys">
-    [Schedule a 15-minute call](https://zbd.one/sales) with our team to discuss your use case and get access
-  </Step>
-  <Step title="Choose Your Integration">
-    Pick the products that fit your needs - Payments, Rewards, or both
-  </Step>
-  <Step title="Follow Our Guides">
-    Use our comprehensive documentation and SDKs to integrate in hours, not weeks
-  </Step>
-  <Step title="Launch & Scale">
-    Go live with production access and our team's support
-  </Step>
-</Steps>
-
-### Start with These Guides
-
-<CardGroup cols={3}>
-  <Card title="5-Minute Quickstart" icon="rocket" href="/get-started/quickstart">
-    Send your first payment in minutes
-  </Card>
-  <Card title="Ramp Integration" icon="circle-dollar" href="/payments/ramp/quickstart">
-    Add fiat-to-crypto in your app
-  </Card>
-  <Card title="Unity Rewards" icon="gamepad" href="/earn/sdk/integration">
-    Monetize your Unity game
-  </Card>
-</CardGroup>
-
-## Developer Resources
-
-<CardGroup cols={2}>
-  <Card title="API Reference" icon="code" href="/payments/api">
-    Complete API documentation with examples
-  </Card>
-  <Card title="SDKs & Libraries" icon="cube" href="/payments/sdk">
-    TypeScript, Go, Rust, C# and more
-  </Card>
-</CardGroup>
-
-## Ready to Transform Your Payment Experience?
-
-<Card title="Get Started Today" icon="calendar" href="https://zbd.one/sales">
-  **Schedule a Demo** - Talk to our team about your use case and get your API keys. Most developers are up and running within 24 hours.
+<Card title="Contact BD" icon="headset" href="https://zbd.one/sales" cta="Reach out">
+  Get hands-on help onboarding your studio and integrating the SDK.
 </Card>
 
-<BtcEurRate />
+{/*
+  V0 OPEN ITEMS — resolve with Chris & Remi before publishing (see Get Started deck, slide 9):
+  - Hero/quickstart: deck CTA is "Start the Quickstart →" but no /get-started/quickstart page exists.
+    Pointed at /earn/sdk/integration for now. Decide whether to build a dedicated Quickstart page.
+  - "Soft-currency model": deck calls for a dedicated end-to-end page (Kati's economics benchmarks).
+    Linked to /earn/sdk/revenue-based-earning as the closest existing page until that ships.
+  - "Test placement": terminology flagged as TBD (Flag 2 — check against Jure's integration guide).
+    Omitted as a discrete step for now; folded into the integration guide link.
+  - "Need help?" copy: intentionally does NOT reference the "68 Slack messages" internal stat (Flag 1).
+  - Nav (docs.json) intentionally untouched — IA / left-nav diet is a separate, sign-off-gated decision.
+*/}
 
 <Footer />
