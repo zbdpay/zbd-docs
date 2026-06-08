@@ -9,10 +9,6 @@ icon: "webhook"
 
 ZBD sends webhook events to your configured HTTPS endpoint when a widget cashout or reversal changes status. Your endpoint validates the signature, acknowledges receipt, and processes the event asynchronously.
 
-<Warning>
-  The ZBD Widget requires a webhook URL. ZBD sends signed cashout status updates to this endpoint, and Create Session requires `webhook_url`.
-</Warning>
-
 Webhook configuration is completed with ZBD during publisher onboarding. ZBD provides the shared signing secret used to sign each webhook request.
 
 The MVP does not support subscribing to individual event types. ZBD sends all widget webhook event types to the configured endpoint, and your system should filter by the `event_type` field.
