@@ -7,6 +7,12 @@ description: "Embed a hosted cashout experience so your users can withdraw earne
 
 The ZBD Widget is an embeddable iframe that handles the full cashout flow for your users — identity verification (KYC), bank account linking (Plaid), and ACH payouts. Your backend handles user creation, session minting, and balance funding; the widget handles everything else.
 
+## Quick Start
+
+Before integrating, create a [ZBD Developer Dashboard account](/get-started/create-account), [create a project](/get-started/create-project), and copy your project API key from the project's [API section](/get-started/api-keys). You also need an HTTPS webhook endpoint ready for widget server events.
+
+<Warning>The ZBD Widget requires a webhook URL. ZBD sends signed cashout status updates to this endpoint, and Create Session requires `webhook_url`.</Warning>
+
 ## Events
 
 The ZBD Widget emits browser events to your frontend and server webhooks to your backend.
