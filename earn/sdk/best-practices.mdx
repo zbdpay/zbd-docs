@@ -1,51 +1,52 @@
 ---
 title: 'Best Practices'
 sidebarTitle: 'Best Practices'
-description: 'Optimize rewards and initialization with best practices for earn rates, withdrawal limits, and SDK failures.'
+description: 'How to balance earn rates with withdrawal limits, handle SDK failures gracefully, and keep the player experience smooth.'
 icon: 'lightbulb'
 ---
 
-# Balancing Earn Rate with Withdrawal Limit
+## Balancing earn rate with withdrawal limit
 
-It’s possible to assign more Bitcoin to a user than they are currently allowed to withdraw.
-As outlined in the **Security** section, the TL;DR is: for fraud prevention,
-a user's withdrawal limit is tied to how long their device has been continuously online.
+A player's rewards balance and their withdrawal limit are two separate values. It's possible to credit a player more than they can currently withdraw — and if that gap gets too large, it creates a frustrating experience.
 
-Because of this, it’s **recommended to keep a user’s earn rate roughly aligned with their withdrawal capacity**. It's okay to occasionally let users earn more than they can immediately withdraw, this can encourage them to return to your game later and improves retention. However, avoid creating situations where users earn significantly more than they can access. For example, assigning 1,000 sats but allowing only 100 sats to be withdrawn will likely result in a frustrating user experience.
-
-## Ways to Balance Earn and Withdrawal:
+Keep the earn rate roughly aligned with the player's withdrawal capacity. Occasionally letting players earn ahead of their limit is fine and can drive return visits. Consistently crediting far more than they can access is not — a player who earns 1,000 units but can only withdraw 100 will disengage.
 
 <Steps>
-    <Step title="Limit reward frequency ">
-        Avoid giving out rewards too often
-    </Step>
-    <Step title="Scale difficulty or rarity">
-        Make early rewards easy (e.g. the first 10 sats), then gradually slow down progression.
-    </Step>
-    <Step title="Check user withdrawal limits ">
-        Use`ZBDController.Instance.GetBalance`to retrieve the user's current balance and withdrawal cap. Adjust the reward flow based on this data.
-    </Step>
+  <Step title="Limit reward frequency">
+    Avoid giving out rewards too often or at passive moments. Rewards tied to skill or effort feel earned; passive rewards feel arbitrary and train players to expect them without engagement.
+  </Step>
+  <Step title="Scale difficulty over time">
+    Make early rewards easy to earn, then gradually slow down progression as the session continues. This mirrors good game economy design and keeps withdrawal limits in sync with balance growth.
+  </Step>
+  <Step title="Check balance before sending">
+    Use `ZBDController.Instance.GetBalance` to retrieve the player's current balance and daily withdrawal cap before issuing a reward. Adjust the reward amount based on how much headroom they have.
+  </Step>
 </Steps>
 
-### Example: MergeMonsters
-In the game [MergeMonsters](https://play.google.com/store/apps/details?id=com.fumbgames.monstermerge&hl=en_US&pli=1), rewards are balanced dynamically:
-- If the user's balance exceeds 100 sats, the game stops showing coin rewards on tiles.
-- If the balance is too high, Bitcoin rewards in boss battles are shown less frequently.
+### Example
 
-## Handling Initialization Success/Failure
+In a game with a daily task chest mechanic, rewards are balanced dynamically:
 
-The `ZBDController.Instance.Init` function can take a few seconds to complete, so it's recommended to call it as early as possible ideally when your game first launches. Keep the instance alive using a singleton or a `DontDestroyOnLoad` object that persists across scenes.
+- If the player's balance is already above their daily limit, the chest reward is reduced or deferred until tomorrow.
+- Early in a session, rewards are more generous. Later in the session, as the balance builds, rewards taper off.
 
-In most cases, the SDK initializes successfully. However, initialization may fail due to network issues or security checks, for example, if the user is on a VPN or proxy. When this happens, `Init` will return `false`.
+This pattern keeps the balance/limit relationship healthy and avoids the frustration of a player who can see they've earned rewards but can't withdraw them.
 
-To ensure a smooth user experience, you should still display a call-to-action button that triggers ZBDModalController.Instance.ShowModal(). This gives users the opportunity to:
+## Handling SDK initialization failures
 
-<Steps>
-    <Step title="Understand why initialization failed">
-        e.g. VPN detected or no network
-    </Step>
-    <Step title="Retry sign-in through a button provided in the modal">
-    </Step>
-    <Step title="View their support ID and contact ZBD support for further assistance">
-    </Step>
-</Steps>
+Call `ZBDController.Instance.Init` as early as possible — ideally on game launch. Keep the instance alive with a singleton or `DontDestroyOnLoad` so it persists across scenes.
+
+Initialization can fail due to network issues, VPN/proxy detection, or attestation failures. When it does, `Init` returns `false`. Always respond by calling `ShowModal()` — never fail silently. The modal surfaces the reason to the player and gives them a retry path.
+
+```csharp
+ZBDController.Instance.Init(completion =>
+{
+    if (!completion.success && !completion.maintenance)
+    {
+        // Always show the modal on failure — let it explain and offer retry
+        ZBDModalController.Instance.ShowModal();
+    }
+});
+```
+
+See [Error Handling](/earn/sdk/error-handling) for the full matrix of failure states and correct responses.

@@ -104,42 +104,58 @@
                 "group": "Overview",
                 "pages": [
                   "earn/sdk",
-                  "earn/sdk/download",
-                  "earn/sdk/compatibility",
-                  "earn/sdk/security",
+                  "earn/sdk/planning",
                   "earn/coverage"
                 ]
               },
               {
-                "group": "Integrating",
+                "group": "Concepts",
                 "pages": [
+                  "earn/sdk/reward-economics",
+                  "earn/sdk/soft-currency",
+                  "earn/sdk/best-practices",
+                  "earn/sdk/player-comms",
+                  "earn/sdk/customization"
+                ]
+              },
+              {
+                "group": "Setup",
+                "pages": [
+                  "earn/sdk/download",
+                  "earn/sdk/compatibility",
                   "earn/sdk/integration",
-                  "earn/sdk/video-walkthrough",
                   {
-                    "group": "Sending Rewards",
-                    "icon": "star",
+                    "group": "Advanced Configuration",
+                    "icon": "sliders",
                     "pages": [
-                      "earn/sdk/send-rewards-client",
-                      {
-                        "group": "Send Rewards (Server)",
-                        "icon": "server",
-                        "pages": [
-                          "earn/sdk/send-rewards-server",
-                          "earn/sdk/manage-via-dashboard",
-                          "earn/sdk/send-rewards-api"
-                        ]
-                      }
+                      "earn/sdk/url-scheme",
+                      "earn/sdk/attestation-setup"
                     ]
                   },
-                  "earn/sdk/withdrawal-limits",
+                  "earn/sdk/video-walkthrough"
+                ]
+              },
+              {
+                "group": "Sending Rewards",
+                "pages": [
+                  "earn/sdk/send-rewards-client",
                   {
-                    "group": "User Status",
-                    "icon": "circle-user",
+                    "group": "Send Rewards (Server)",
+                    "icon": "server",
                     "pages": [
-                      "earn/sdk/user-status",
-                      "earn/sdk/manage-user-linking"
+                      "earn/sdk/send-rewards-server",
+                      "earn/sdk/manage-via-dashboard",
+                      "earn/sdk/restrict-client-rewards",
+                      "earn/sdk/revenue-based-earning",
+                      "earn/sdk/send-rewards-api"
                     ]
                   },
+                  "earn/sdk/withdrawal-limits"
+                ]
+              },
+              {
+                "group": "Balances & Limits",
+                "pages": [
                   {
                     "group": "User Balance",
                     "icon": "coins",
@@ -149,25 +165,42 @@
                     ]
                   },
                   {
-                    "group": "User Withdrawal Limits",
+                    "group": "Withdrawal Limits",
                     "icon": "gauge-high",
                     "pages": [
-                      "earn/sdk/revenue-based-earning",
                       "earn/sdk/user-withdrawal",
                       "earn/sdk/manage-withdrawal-limits"
                     ]
                   },
-                  "earn/sdk/manage-controls-dashboard",
-                  "earn/sdk/url-scheme",
-                  "earn/sdk/attestation-setup",
-                  "earn/sdk/best-practices",
-                  "earn/sdk/building",
-                  "earn/sdk/go-live-checklist",
-                  "earn/sdk/troubleshoot"
+                  {
+                    "group": "User Status",
+                    "icon": "circle-user",
+                    "pages": [
+                      "earn/sdk/user-status",
+                      "earn/sdk/manage-user-linking"
+                    ]
+                  },
+                  "earn/sdk/manage-controls-dashboard"
                 ]
               },
               {
-                "group": "Pushing to App Stores",
+                "group": "Go Live",
+                "pages": [
+                  "earn/sdk/error-handling",
+                  "earn/sdk/go-live-checklist",
+                  {
+                    "group": "Reference",
+                    "icon": "book",
+                    "pages": [
+                      "earn/sdk/troubleshoot",
+                      "earn/sdk/building"
+                    ]
+                  }
+
+                ]
+              },
+              {
+                "group": "App Stores",
                 "pages": [
                   "earn/sdk/ios-app-store",
                   "earn/sdk/android-app-store"

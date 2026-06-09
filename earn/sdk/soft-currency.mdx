@@ -1,0 +1,106 @@
+---
+title: 'Soft Currency Model'
+sidebarTitle: 'Displaying Rewards'
+description: 'Show players virtual units, not dollar amounts. This page covers how to display rewards throughout your game and why it matters.'
+icon: 'coins'
+---
+
+<Note>
+  This page covers the **in-game currency (Points)** reward model. If you are rewarding players in Bitcoin (sats), the balance display and UX rules are similar — you show sats rather than virtual units, and players cash out to a Lightning wallet (ZBD App, Speed Wallet, or other compatible options). The critical UX rules and IAP compliance guidance on this page apply regardless of reward currency.
+</Note>
+
+The ZBD Earn SDK is built around a soft-currency model: players accumulate virtual units in your game's own currency (coins, gems, tokens, whatever fits your universe) and convert them to real money only at the point of withdrawal. ZBD handles the conversion.
+
+This isn't just cosmetic. "You earned 2,500 coins" feels more rewarding than "You earned $0.025." Virtual units let you be generous with the numbers while keeping real-world exposure in check.
+
+## What to show where
+
+| Context | Show this | Not this |
+|---------|-----------|----------|
+| Reward notification during gameplay | "You earned 500 coins!" | "You earned $0.05" |
+| Persistent balance display | "Your balance: 12,400 coins" | "Your balance: $1.24" |
+| Onboarding hook | "Earn real money while you play" | "Earn up to $X per day" |
+| Daily limit reached | "You've hit today's limit. Come back tomorrow!" | "Daily withdrawal limit: $0.20" |
+| Withdrawal screen | ZBD modal handles this. Don't build a custom screen. | n/a |
+
+<Note>
+  Never promise specific dollar amounts in your UI copy. "Earn up to $X per day" creates expectations you can't control and may violate app store guidelines. "Earn real money while you play" is accurate and doesn't set a specific expectation.
+</Note>
+
+## Creating your rewards currency
+
+You will need to create a new in-game currency specifically for ZBD rewards. This currency has one purpose: it can be withdrawn as real money via the ZBD modal. Players cannot spend it inside the game.
+
+Name it something that fits your game's universe. The currency name appears in your UI; ZBD never shows it externally. Some examples:
+
+- A pirate game: Doubloons
+- A space game: Credits
+- A fantasy game: Gold Coins
+- A generic implementation: Reward Points
+
+You do not need to build a store or spend mechanic for this currency. Just a balance display and a button that opens the ZBD modal.
+
+## Required UI elements
+
+Two UI components are required:
+
+### 1. Rewards counter (P0)
+
+A persistent display of the player's current rewards balance. Treat it like any other in-game currency display. Always visible, on the home screen and in gameplay.
+
+Tapping the counter opens the ZBD modal directly. Do not add an intermediate screen.
+
+### 2. Rewards button (optional, recommended)
+
+A secondary entry point from the main menu or store page. Some players won't realize the counter is tappable. The button makes the entry point explicit.
+
+Both the counter and the button should open the modal with a single call:
+
+```csharp
+ZBDModalController.Instance.ShowModal();
+```
+
+## Critical UX rules
+
+Breaking any of these measurably reduces account linking rates and player engagement.
+
+**1. Entry point goes directly to withdrawal.** Do not add screens between your entry point and the ZBD modal. One extra screen drops account linking rates. The modal is the product. Get players there fast.
+
+**2. Balance is always visible.** Home screen, store page, during gameplay. Players who can't see their balance disengage. Treat it the same as your gem or coin counter.
+
+**3. Introduce rewards in session 1.** Don't wait for players to discover the feature on their own. Surface a one-screen introduction before the first reward fires. Players who engage with rewards early retain significantly better.
+
+**4. On init failure, always call `ShowModal()`.** Silent failures destroy trust before any reward is delivered. The modal explains what went wrong and gives the player a retry path. See [Error Handling](/earn/sdk/error-handling).
+
+**5. Frame the withdrawal limit as a daily return mechanic.** When a player hits their daily limit, the correct message is "Come back tomorrow to earn more," not "You've reached your limit." The limit resets daily. Frame it as an opportunity, not a cap.
+
+## Reward moment design
+
+Tie reward triggers to high-emotion gameplay moments, the places where a player already feels a rush of satisfaction. Real-money rewards amplify that feeling. A reward that arrives when a player just cleared all their daily missions feels like recognition. A reward that arrives at an arbitrary moment feels like a pop-up.
+
+Good trigger placements:
+- Level completions and milestone unlocks
+- Daily mission chest rewards
+- Skill combos or streak achievements
+- Refer-a-friend conversions
+
+Avoid:
+- Passive or arbitrary placements (watching an ad, launching the app)
+- Direct rewards tied to purchases (use time-limited boosts instead, see below)
+
+## IAP and subscription rewards
+
+<Warning>
+  Never tie a specific reward amount directly to a purchase. Saying "Buy this item and earn 2,000 coins" violates both Apple App Store and Google Play policies. Use time-limited boosts instead.
+</Warning>
+
+If you want to use ZBD rewards as part of an IAP or subscription offer, the reward must be a **time-limited earning boost**, not a fixed currency grant.
+
+| Do this | Not this |
+|---------|---------|
+| "+20% Reward Coins for 24h with this purchase" | "Earn 2,000 Reward Coins when you buy this upgrade" |
+| "VIP members earn 50% more rewards" | "Get $1.00 in rewards with your subscription" |
+
+A boost accelerates earning. It doesn't guarantee a specific withdrawal amount. This keeps your game compliant with both app stores and limits your financial exposure.
+
+If you want to offer rewards as a subscription benefit, we recommend testing the boost percentage (typically +20–50%) once your base integration is stable and your reward economics are well understood.

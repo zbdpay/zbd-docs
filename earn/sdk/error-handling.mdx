@@ -1,0 +1,126 @@
+---
+title: 'Error Handling'
+sidebarTitle: 'Error Handling'
+description: 'How to handle every failure state the ZBD Earn SDK can return, and what your game should do in each case.'
+icon: 'triangle-exclamation'
+---
+
+The SDK surfaces three types of failure: initialization failures, reward delivery failures, and maintenance mode. Each requires a different response. The guiding principle is the same in all cases: **never let a ZBD failure break your game.**
+
+## Initialization failures
+
+`Init` can fail for several reasons. Always call `ShowModal()` when init fails. The modal explains the reason to the player and provides a retry path. Never silently fail.
+
+```csharp
+ZBDController.Instance.Init(completion =>
+{
+    if (completion.success)
+    {
+        // SDK ready, proceed normally
+    }
+    else if (completion.maintenance)
+    {
+        // See Maintenance Mode section below
+    }
+    else
+    {
+        // Init failed, show modal so the player can see why and retry
+        ZBDModalController.Instance.ShowModal();
+        Debug.LogWarning("ZBD init failed: " + completion.error);
+    }
+});
+```
+
+### Common init failure causes
+
+| Cause | What happens | What to do |
+|-------|-------------|------------|
+| VPN or proxy detected | `completion.success = false` | Call `ShowModal()`. The modal tells the player their VPN was detected and gives them a retry path. |
+| No network connection | `completion.success = false` | Call `ShowModal()`. The modal surfaces a retry option. Do not prevent gameplay. |
+| Unsupported region | `completion.success = false` | Call `ShowModal()`. Do not show rewards-related UI. See [Global Support](/earn/coverage). |
+| Attestation failure | `completion.success = false` | Call `ShowModal()`. Indicates a potentially modified device or app. |
+| ZBD maintenance | `completion.maintenance = true` | See [Maintenance Mode](#maintenance-mode) below. |
+
+<Warning>
+  Do not tie SDK initialization to any core gameplay logic. If `Init` fails, the game must continue working normally. Players who cannot earn rewards should not be blocked from playing.
+</Warning>
+
+## Maintenance mode
+
+The ZBD platform occasionally enters maintenance mode. This is surfaced as a `maintenance` flag on SDK responses. It is not an error.
+
+```csharp
+public class ZBDInitResponse
+{
+    public bool success;
+    public bool maintenance;
+    public string userId;
+    public string error;
+    public string type;
+}
+```
+
+Maintenance mode can begin at any time, including mid-session. Handle it on every SDK response, not just during initialization.
+
+| Scenario | Correct behavior |
+|----------|-----------------|
+| `Init` returns `maintenance = true` | If the player has not started earning yet: hide all rewards-related UI and do not mention ZBD. If the player has already been earning: surface a message that rewards are temporarily unavailable. |
+| `SendReward` returns `maintenance = true` | Silently skip the reward. Do not show an error to the player. |
+| `GetBalance` returns `maintenance = true` | Do not update the displayed balance. Retry when the next natural trigger occurs. |
+
+<Note>
+  Maintenance periods are temporary. Do not log them as errors or alert your on-call. They are expected operational events.
+</Note>
+
+## Reward delivery failures
+
+Reward delivery can fail independently of initialization. The most common causes are network interruptions and maintenance mode.
+
+```csharp
+ZBDController.Instance.SendReward(amount, completion =>
+{
+    if (completion.success)
+    {
+        // Reward delivered, update UI
+    }
+    else if (completion.maintenance)
+    {
+        // Silently skip, do not surface to player
+    }
+    else
+    {
+        // Delivery failed, silently skip and optionally log
+        Debug.LogWarning("Reward delivery failed: " + completion.error);
+    }
+});
+```
+
+<Warning>
+  Do not show reward failure messages to players. A failed reward is invisible to the player. The gameplay moment should feel the same whether the reward was delivered or not.
+</Warning>
+
+## Full error scenario matrix
+
+| Scenario | SDK response | Correct behavior |
+|----------|-------------|-----------------|
+| Init — VPN detected | `success = false` | `ShowModal()`. Game continues. |
+| Init — no network | `success = false` | `ShowModal()`. Game continues. |
+| Init — unsupported region | `success = false` | `ShowModal()`. Hide rewards UI. |
+| Init — maintenance | `maintenance = true` | Hide rewards UI for new players. Message existing earners. |
+| Init — attestation failure | `success = false` | `ShowModal()`. Game continues. |
+| App backgrounded mid-reward | n/a | Handle gracefully on foreground return. Do not retry automatically. |
+| No internet during reward trigger | `success = false` | Skip or queue the reward. Do not crash. |
+| `SendReward` — maintenance | `maintenance = true` | Silently skip. No player-facing message. |
+| `SendReward` — network error | `success = false` | Silently skip. Log internally. |
+| `GetBalance` — maintenance | `maintenance = true` | Do not update balance display. |
+| iOS vs. Android behavior difference | Varies | Always test both platforms separately. SDK behavior can differ between them. |
+
+## Platform differences
+
+Test iOS and Android separately. The SDK's attestation behavior, WebView rendering, and modal presentation can differ between platforms in ways that are not always obvious during development.
+
+Pay particular attention to:
+
+- **Android back button**: Handle the back button to close the modal if it's open. See [Integration](/earn/sdk/integration#android-back-button).
+- **iOS foreground transitions**: The modal may need explicit handling when the app returns from background.
+- **VPN detection**: VPN behavior differs between iOS and Android network stacks. A VPN that passes on one platform may be flagged on the other.

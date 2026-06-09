@@ -1,44 +1,50 @@
 ---
-title: "Manage SDK Controls via Dashboard"
-description: "Update user country codes and manage your project whitelist"
+title: "SDK Controls (Dashboard)"
+sidebarTitle: "SDK Controls"
+description: "Override a player's detected country and manage your project whitelist from the ZBD Developer Dashboard."
 icon: "users-gear"
 ---
 
-Manage individual user settings through the ZBD Dashboard, including updating country codes and adding users to your project whitelist.
+ZBD detects a player's country automatically from their IP address. This determines which payout options they see and what withdrawal limits apply. In most cases this works correctly — but there are situations where you'll need to override it manually:
 
-## Access
+- A player is using a VPN and their detected country is wrong
+- A player is traveling and their IP doesn't match their home country
+- A player is in an unsupported region but you want to whitelist them for testing
+- Your QA team needs to test from a region other than their own
 
-1. Go to [dashboard.zbdpay.com](https://dashboard.zbdpay.com)
-2. Navigate to **SDK User Support** in the sidebar
+Use this page for those cases. Access it via [dashboard.zbdpay.com](https://dashboard.zbdpay.com) under **SDK User Support**.
 
-## Search Users
+## Find a player
 
-Enter one of the following in the search field:
+Search by any of the following:
 
-- **SDK User ID** → Loads user data directly
-- **Support ID** → Shows list of users with that linked ID → select one
-- **Gamertag** → Shows list of users with that gamertag → select one
+- **`rewardsUserId`** — the player's SDK identifier, returned by `GetUserStatus`. Loads the player directly.
+- **Support ID** — a player-facing identifier shown in the ZBD modal, used when a player contacts your support team.
+- **Gamertag** — the player's ZBD gamertag.
 
-Click **"Load Data"** to search.
+Click **Load Data** to search. The User Data card shows the player's withdrawal limit, rewards balance, detected country, and transaction history.
 
-After loading, the **User Data** card appears displaying user information such as Withdrawal Limit, Rewards Balance, country code, and more. Below the card, a table displays all user transactions. Click any row to view full transaction details.
+## Change country code
 
----
+Override a player's detected country — for example if their IP is flagged incorrectly due to a VPN or proxy, or if they're traveling.
 
-## Change Country Code
-
-Once the User Data card loads:
-
-1. Click the **Change** button next to the country code
-2. Search for the desired country
+1. Click **Change** next to the country code field
+2. Search for the correct country
 3. Click **Save**
 
----
+<Warning>
+  Changing a player's country code affects their payout options and withdrawal limits immediately. Only override when you're confident the detected country is incorrect.
+</Warning>
 
-## Whitelist Users
+## Whitelist a player
 
-Use the **Whitelist User** card (below SDK User ID card):
+Whitelisting allows a specific player to access your rewards program from a region that would otherwise be blocked — for example, a member of your QA team based in an unsupported country.
 
-1. Enter the **Support ID** in the input field
-2. Select a **Rewards App Name** tied to that support ID
-3. Click the **Whitelist** button
+1. Go to the **Whitelist User** card below the SDK User ID card
+2. Enter the player's **Support ID**
+3. Select the **Rewards App Name** tied to that Support ID
+4. Click **Whitelist**
+
+<Note>
+  Whitelisting bypasses regional restrictions for that player only. Use it for testing and support purposes, not as a general workaround for regional coverage. See the [coverage page](/earn/coverage) for the full list of supported regions.
+</Note>
