@@ -1,43 +1,36 @@
 ---
-title: 'User Balance via SDK'
-description: 'Retrieve user balance via SDK and manage it via dashboard'
+title: 'Player Balance'
+sidebarTitle: 'Player Balance'
+description: 'Retrieve a player''s current rewards balance from your game client using the SDK.'
 icon: 'wallet'
 ---
 
-## Retrieving User Balance via SDK
-
-Use the `GetBalance` SDK method to retrieve a user's current balance from your client application.
-
-### Implementation
+Use `GetBalance` to retrieve a player's current rewards balance and withdrawal limit from your game client.
 
 ```csharp
 ZBDController.Instance.GetBalance(callback =>
 {
   if (callback.success)
   {
-    // User's balance in satoshis (not millisatoshis)
-    Debug.Log(callback.balance);
+    // Balance in satoshis (not millisatoshis)
+    Debug.Log("Balance: " + callback.balance);
+    // Withdrawal limit in satoshis (not millisatoshis)
+    Debug.Log("Withdrawal limit: " + callback.withdrawalLimit);
   }
   else if (callback.maintenance)
   {
-    // Platform is in maintenance mode
-    Debug.Log("Balance is temporarily unavailable. Please try again later.");
+    // Platform is in maintenance mode — do not update the displayed balance
+    Debug.Log("Balance temporarily unavailable.");
   }
   else
   {
-    Debug.LogError("Get balance error: " + callback.message);
+    Debug.LogError("GetBalance failed: " + callback.message);
   }
 });
 ```
 
-The balance represents the user's current rewards available for withdrawal.
+`GetBalance` returns both values in a single call — the player's accumulated rewards balance and their current daily withdrawal limit. Use this before sending rewards to avoid crediting more than the player can currently withdraw.
 
 <Note>
-The `maintenance` flag can return `true` at any point, including mid-session. When active, display a user-friendly message instead of the balance. See [Handling Maintenance Mode](/earn/sdk/integration#handling-maintenance-mode) for more details.
+  The `maintenance` flag can return `true` at any point, including mid-session. When active, do not update the displayed balance. See [Error Handling](/earn/sdk/error-handling) for full maintenance mode guidance.
 </Note>
-
----
-
-## Managing Rewards Balance
-
-To increase or decrease user rewards balance, use the dashboard: **[Manage Rewards Balance via Dashboard](/earn/sdk/manage-rewards-balance)**

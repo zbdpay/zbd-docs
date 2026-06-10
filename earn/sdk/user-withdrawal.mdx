@@ -1,14 +1,13 @@
 ---
-title: 'Withdrawal Limits'
-description: 'Retrieve user withdrawal limits via SDK and manage them via dashboard'
-icon: 'circle-info'
+title: 'Player Withdrawal Limits'
+sidebarTitle: 'Withdrawal Limits'
+description: 'Retrieve a player''s current withdrawal limit using the SDK.'
+icon: 'gauge-high'
 ---
 
-## Retrieving Withdrawal Limit via SDK
+A player's withdrawal limit determines the maximum they can withdraw in a 24-hour window. It accrues automatically as they play, and can be increased from your server based on revenue events.
 
-Use the `GetBalance` SDK method to retrieve a user's current withdrawal limit from your client application.
-
-### Implementation
+Use `GetBalance` to retrieve both the rewards balance and the current withdrawal limit in a single call:
 
 ```csharp
 ZBDController.Instance.GetBalance(callback =>
@@ -16,8 +15,12 @@ ZBDController.Instance.GetBalance(callback =>
   if (callback.success)
   {
     // Withdrawal limit in satoshis (not millisatoshis)
-    long withdrawalLimitSats = callback.withdrawalLimit;
-    Debug.Log($"Withdrawal limit: {withdrawalLimitSats} sats");
+    long withdrawalLimit = callback.withdrawalLimit;
+    // Balance in satoshis (not millisatoshis)
+    long rewardsBalance = callback.balance;
+
+    Debug.Log($"Withdrawal limit: {withdrawalLimit}");
+    Debug.Log($"Rewards balance: {rewardsBalance}");
   }
   else
   {
@@ -26,10 +29,4 @@ ZBDController.Instance.GetBalance(callback =>
 });
 ```
 
-The withdrawal limit is included in the callback response along with the user's current balance.
-
----
-
-## Managing Withdrawal Limits
-
-To increase or decrease user withdrawal limits, use the dashboard: **[Manage Withdrawal Limits via Dashboard](/earn/sdk/manage-withdrawal-limits)**
+If a player's rewards balance exceeds their withdrawal limit, the excess carries forward. They can access it as the limit resets daily or is increased from your server. See [Reward Economics](/earn/sdk/reward-economics) for guidance on configuring withdrawal limits.

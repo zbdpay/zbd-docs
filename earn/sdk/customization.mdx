@@ -1,0 +1,59 @@
+---
+title: 'Modal Customization'
+sidebarTitle: 'Modal Customization'
+description: 'Customize the colors, graphics, and copy of the in-game rewards modal to match your game.'
+icon: 'palette'
+---
+
+The ZBD rewards modal is a WebView delivered inside your game. You control the visual branding — colors, background, graphics, and logo — while ZBD controls the layout and functionality.
+
+Customization assets are submitted to your ZBD Customer Success Manager before go-live. The modal is not self-serve configurable from the dashboard.
+
+<Note>
+  You can customize colors and graphics. You cannot customize layouts, screen structure, or the cashout flows.
+</Note>
+
+## Colors
+
+Eight color parameters control the look of the modal. All accept hex values.
+
+| Parameter | What it affects |
+|-----------|----------------|
+| **Background** | Main background of the modal. Accepts a color or image. |
+| **Primary Font Color** | Main body text color. |
+| **Primary CTA Color** | Background color of primary buttons (e.g. "Cash Out"). |
+| **Primary CTA Font Color** | Text color on primary buttons. |
+| **Secondary Background Color** | Background color of cards and panels within the modal. |
+| **Secondary Font Color** | Secondary and label text color. |
+| **Secondary CTA Color** | Background color of secondary buttons. |
+| **Secondary CTA Font Color** | Text color on secondary buttons. |
+
+## Graphics
+
+Four image assets can be provided. Supply these at the specified dimensions for best results.
+
+| Asset | Dimensions | Notes |
+|-------|-----------|-------|
+| **Background Image** | 1200 × 1200px | Used as the modal background. Overrides the background color if provided. |
+| **Tutorial Image** | 500 × 500px | Shown in the first-time user experience (FTUE) screen. |
+| **Current Balance Coin Graphic** | 280 × 400px | Displayed on the balance screen alongside the player's current balance. |
+| **Coin Graphic** | 100 × 100px | Used inline throughout the modal to represent your reward currency. |
+
+## Copy
+
+| Element | Limit | Notes |
+|---------|-------|-------|
+| **Tutorial copy** | 50 characters | Text shown on the FTUE screen introducing the rewards feature to the player. |
+
+## Other
+
+| Element | Notes |
+|---------|-------|
+| **Logo** | Square format. Displayed within the modal header. |
+| **Deep link URL** | Your game's URL scheme (e.g. `mygame://`). Used to redirect players back to the game after account linking. See [URL Scheme](/earn/sdk/url-scheme). |
+
+## How to submit
+
+Send your assets to your ZBD Customer Success Manager using the template they provide. Allow time for the modal to be configured and tested in sandbox before your go-live date.
+
+If you haven't been assigned a Customer Success Manager yet, [contact us](https://zbdpay.com/contact).

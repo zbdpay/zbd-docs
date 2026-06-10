@@ -1,32 +1,60 @@
 ---
-title: 'Download ZBD App'
-sidebarTitle: 'Download'
-icon: 'arrow-down'
-description: 'Get ZBD App for all your favorite platforms.'
+title: 'ZBD App'
+sidebarTitle: 'ZBD App'
+description: 'How Bitcoin cashout works for your players, and what you need to configure as a publisher.'
+icon: 'mobile'
 ---
 
-## ZBD App
+The ZBD App is a Bitcoin Lightning wallet players can use to receive and manage their rewards. It is one of several Bitcoin cashout options available in the modal alongside Speed Wallet and other Lightning-compatible methods.
 
-The ZBD App is your key to becoming a true Internet Citizen. It is available for [iOS](https://apps.apple.com/us/app/zbd-earn-bitcoin-rewards/id1484394401?mt=8) and [Android](https://play.google.com/store/apps/details?id=io.zebedee.wallet&hl=en_US&pli=1) mobile devices.
+<Info>
+  The ZBD App handles Bitcoin (Lightning) cashout only. Other payout methods (bank transfer, gift cards, Cash App, Speed Wallet) are handled directly within the in-game modal without requiring a separate app download.
+</Info>
+
+## What this means for your integration
+
+The ZBD Earn SDK is a white-labeled experience. Your in-game rewards UI — the balance counter, reward notifications, currency name — carries your game's branding. Players interact with your brand throughout the earning experience.
+
+When a player chooses the ZBD App as their Bitcoin cashout method, they are redirected to it to link their gamertag and initiate a withdrawal. After linking, they are returned to your game via a deep link. Players who choose Speed Wallet or another Lightning option follow a similar flow within the modal.
+
+As a publisher, you don't build or maintain any of this flow. Your responsibilities are:
+
+1. Configure your game's [URL scheme](/earn/sdk/url-scheme) so the ZBD App can redirect players back after account linking.
+2. Surface the cashout entry point clearly in your game UI — tapping it opens the modal where players choose their cashout method.
+
+## The player flow
+
+<Steps>
+  <Step title="Player taps the cashout entry point">
+    The in-game rewards counter or button opens the ZBD modal.
+  </Step>
+  <Step title="Player selects ZBD App as their cashout method">
+    The modal presents available cashout methods for the player's region and reward currency. Player selects ZBD App.
+  </Step>
+  <Step title="Player is redirected to the ZBD App">
+    If the player doesn't have a ZBD account, they are prompted to create one. If they do, they log in and link their gamertag.
+  </Step>
+  <Step title="Withdrawal is initiated">
+    The player initiates a withdrawal from within the ZBD App. Funds are sent via Lightning Network.
+  </Step>
+  <Step title="Player returns to the game">
+    The ZBD App deep-links back to your game using the URL scheme you configured.
+  </Step>
+</Steps>
+
+## ZBD App availability
+
+The ZBD App is available on iOS and Android. Availability varies by region — see the [coverage page](/earn/coverage) for the full list.
 
 <CardGroup cols={2}>
-  <Card title="Download for iOS" icon="apple" color="#000000" href="https://apps.apple.com/us/app/zbd-earn-bitcoin-rewards/id1484394401?mt=8">
-    Get ZBD Now!
+  <Card title="iOS" icon="apple" href="https://apps.apple.com/us/app/zbd-earn-bitcoin-rewards/id1484394401?mt=8">
+    Available on the App Store
   </Card>
-  <Card title="Download for Android" icon="android" color="#000000" href="https://play.google.com/store/apps/details?id=io.zebedee.wallet&hl=en_US&pli=1">
-    Get ZBD Now!
+  <Card title="Android" icon="android" href="https://play.google.com/store/apps/details?id=io.zebedee.wallet&hl=en_US&pli=1">
+    Available on Google Play
   </Card>
 </CardGroup>
 
-## ZBD Bots
-
-ZBD is available for your favorite chat apps Discord and Telegram. Add ZBD to your groups and servers and start zapping your friends as easily as sending a text.
-
-<CardGroup cols={2}>
-  <Card title="Install on Discord" icon="discord" color="#000000" href="https://zbd.one/dsc-bot">
-    Get ZBD Bots for Discord Now!
-  </Card>
-  <Card title="Install on Telegram" icon="telegram" color="#000000" href="https://zbd.one/tg-bot">
-    Get ZBD Bots for Telegram Now!
-  </Card>
-</CardGroup>
+<Note>
+  The ZBD App is not available on Google Play in Canada, Israel, South Africa, Switzerland, and the United Arab Emirates. Players in these countries can still access Bitcoin cashout via Speed Wallet or other available methods.
+</Note>

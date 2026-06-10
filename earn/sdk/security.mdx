@@ -1,89 +1,62 @@
 ---
 title: 'Security'
-description: 'Security features and best practices for the ZBD Earn SDK.'
+sidebarTitle: 'Security'
+description: 'How ZBD protects against reward farming and fraud, and what you can do to strengthen those protections.'
 icon: 'shield'
 ---
 
-It’s important to explain the security assumptions of the SDK and to reiterate that no game is 100% secure—especially when real-money rewards are involved.
+No rewards system is 100% fraud-proof — but ZBD builds multiple layers of protection into the SDK so you don't have to build them yourself. Here's how they work and where the limits are.
 
-If you do not call the **`SendReward`** endpoint from your own backend server, it must be called from the client, which exposes it to abuse. A malicious attacker could potentially call this endpoint multiple times to reward themselves the maximum amount of Bitcoin.
+## Geolocation
 
-To mitigate this, **we limit how much a user can withdraw based on how long their device has been online.**
+ZBD detects a player's country from their IP address on SDK initialization. This determines:
+
+- Which payout methods are shown to the player
+- What withdrawal limits apply (Tier 1 countries like the US, UK, and DE have higher limits than Tier 2 countries)
+- Whether the player is in a supported region at all
+
+If a player's detected country is incorrect — due to a VPN, travel, or a bad IP lookup — you can override it from the developer dashboard. See [SDK Controls](/earn/sdk/manage-controls-dashboard).
+
+## VPN and proxy detection
+
+If a player is detected as using a VPN or proxy during SDK initialization, `Init` returns `false`. This is a fraud signal: VPNs are commonly used to spoof locations and bypass regional restrictions.
+
+When this happens, always call `ShowModal()` — the modal surfaces the reason to the player and gives them a path to retry. Do not silently fail. See [Error Handling](/earn/sdk/error-handling).
+
+## Time Alive
+
+The SDK sends a ping to ZBD servers approximately every 20 seconds while your app is open. This builds up a "Time Alive" value that gates how much a player can withdraw.
+
+A player can earn rewards faster than they can withdraw them — but they can only access what their Time Alive allows. This means a bad actor who calls `SendReward` repeatedly can inflate their balance, but can't immediately withdraw it. The withdrawal limit accrues slowly enough to make farming unprofitable.
 
 <Info>
-For example, a user may attempt to reward themselves 10,000 sats, but they will only be able to withdraw 2 sats per 5 minutes of "Time Alive", effectively slowing down withdrawals to prevent farming.
+  For example: a player might earn 10,000 units in a session, but their withdrawal limit may only allow 200 units per hour of genuine gameplay. Farming requires real time, which limits the economics of an attack.
 </Info>
 
-# Time Alive
+## Device attestation
 
-When your app/game is open, the SDK sends a “ping” to the ZBD backend roughly every 20 seconds. This allows the SDK to calculate how long it has been online in a way that cannot be easily spoofed.
+ZBD uses Apple and Google attestation systems to verify that the device running your game is genuine and unmodified — not rooted, jailbroken, or running in an emulator.
 
-Additionally, we use Apple and Google attestation systems to verify that the device is genuine and is running a non-rooted and non-jailbroken OS.
+This restricts farming operations that use modified devices or emulators. A sophisticated attacker using genuine devices can still pass attestation, which is why Time Alive and server-side reward delivery are additional layers rather than a substitute.
 
-This further restricts malicious users, as they are only able to withdraw a maximum of **X sats every Y minutes per Z real devices**.
+To enable attestation, you'll need to provide ZBD with your app's Bundle ID and signing key details. See [Attestation Setup](/earn/sdk/attestation-setup).
 
-However, a more sophisticated operation may involve hundreds of genuine devices kept online in an attempt to farm rewards while passing attestation checks.
+## Bot and emulator detection
 
-To help mitigate this, we can toggle additional verification steps such as CAPTCHAs or facial recognition at the point of withdrawal. We also monitor network and IP address activity —- but none of these measures are foolproof. A determined attacker may still find ways to bypass them.
+ZBD monitors network behavior and device signals to detect automated reward farming — bots running at scale, emulators, and coordinated IP patterns. This runs server-side and requires no configuration from you.
 
-This is why we **strongly recommend (almost require) calling the `SendReward` method from your own secure backend servers** and providing us with the IP address of that server, so we can restrict access to only trusted sources.
+For higher-risk integrations, additional verification steps can be enabled at the point of withdrawal, including CAPTCHAs. Talk to your Customer Success Manager if you're concerned about large-scale farming.
 
-# Attestation
+## What you can do
 
-In order to make sure we have everything we need to detect your app/game has not been tampered with as part of our attestation check, we require a couple of pieces of information.
+The single most effective thing you can do is move to server-side reward delivery:
 
-### Android
+- Your server sends rewards, not the client — so the reward path is never exposed
+- Disable client-side `SendReward` entirely in the dashboard
+- Provide ZBD with your server's IP address so we can allowlist it
 
-For Android we need your Bundle ID or package name i.e. `com.domain.appname` -- this is what you set in your Unity build settings.
+A bad actor who reverse-engineers your game client finds nothing useful if rewards can only be issued from a trusted server. See [Send Rewards (Server)](/earn/sdk/send-rewards-server) for setup.
 
-We also need the SHA256 hash of your app signing key.
+## Honest assessment
 
-To find your app's SHA256 hash key for Google Play:
-
-<Steps>
-  <Step title="Go to the Google Play Console and select your app">
-  </Step>
-  <Step title="Navigate to 'Release'">
-  </Step>
-  <Step title="Click on 'Setup'">
-  </Step>
-  <Step title="Navigate to 'App Integrity'">
-  </Step>
-  <Step title="Select 'App Signing'">
-  </Step>
-  <Step title="Get the SHA256 hash key">
-    Find the `App signing key certificate` section and copy the SHA-256 fingerprint.
-  </Step>
-</Steps>
-
-For development purposes you can generate a SHA256 hash key for your keystore using the following command:
-
-```bash
-keytool -list -v -keystore path/to/your.keystore -alias your_alias -storepass your_keystore_password -keypass your_key
-```
-
-It should look something like this
-
-```bash
-EA:A1:69:AA:2F:FC:6D:16:84:ED:06:11:E0:65:2B:E0:BB:9C:5B:E3:41:96:06:E2:3D:85:8F:2C:22:2A:E9:86
-```
-
-### iOS
-
-For iOS we need your Bundle ID (`com.domain.appname`) and your Team ID.
-
-To find your app's Team ID:
-
-<Steps>
-  <Step title="Go to the Apple Developer Portal">
-  </Step>
-  <Step title="Navigate to 'Certificates, Identifiers & Profiles'">
-  </Step>
-  <Step title="Select 'Identifiers'">
-  </Step>
-  <Step title="Select your app">
-  </Step>
-  <Step title="Get the Team ID">
-    Copy the code from the `Team ID` section.
-  </Step>
-</Steps>
+No system is foolproof. A sophisticated operation running hundreds of genuine, attested devices with real time-alive can still farm rewards — slowly. The economics of doing so at scale are unattractive given the low withdrawal limits, but it's worth knowing the limits of these protections. ZBD monitors for patterns at the platform level and will flag anomalies with you.

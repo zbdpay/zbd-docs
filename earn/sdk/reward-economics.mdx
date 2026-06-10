@@ -1,0 +1,127 @@
+---
+title: 'Reward Economics'
+sidebarTitle: 'Reward Economics'
+description: 'Lock in these decisions before writing any code. Most are tunable server-side after launch, but getting them roughly right from the start avoids significant iteration.'
+icon: 'chart-line'
+---
+
+This page is for the PM or tech lead handling pre-integration setup. It covers the parameters that govern how your reward program works: how much players can earn, how fast they can withdraw, and how your reward currency maps to real-world value.
+
+<Note>
+  The parameters on this page apply to the **in-game currency (Points)** reward model. If you are rewarding in Bitcoin (sats), the core concepts are the same but amounts are denominated in MSATS. Contact your ZBD Customer Success Manager for Bitcoin-mode starting values.
+</Note>
+
+## Core parameters
+
+| Parameter | Recommended starting value | Notes |
+|-----------|---------------------------|-------|
+| **Reward budget** | 10% of cumulative player LTV | Covers all revenue (IAP + ads). Adjustable server-side at any time. In practice, players earn 30–50% of their total possible budget. Few players reach the ceiling. |
+| **New player baseline** | 10% of average LTV for that GEO | Players in days 0–7 have zero LTV. They still need a starting reward amount. Suggested range: \$0.005–\$0.01 per trigger. |
+| **Daily withdrawal limit** | 20% of average LTV for that GEO | Must be set from day one. Caps your fraud exposure and creates a daily return habit ("come back tomorrow to earn more"). |
+| **Minimum withdrawal** | \$0.01 | Minimum amount a player can withdraw in a single transaction. |
+| **Reward ceiling per trigger** | \$0.10 | Maximum reward amount per single event. Caps exposure from any one gameplay moment. |
+| **Virtual currency exchange rate** | \$0.0001 per unit | Determines how granular your rewards feel. At this rate, 1,000 units = \$0.10. See [Soft Currency Model](/earn/sdk/soft-currency). |
+
+<Note>
+  None of these values need to be perfect at launch. The reward budget and per-trigger ceiling are adjustable from your server without a client build. Focus on setting the daily withdrawal limit correctly from day one. It's the most important fraud control and the hardest to change retroactively.
+</Note>
+
+## Reward delivery: client-side vs. server-side
+
+You have two options for how rewards reach players.
+
+### Client-side (simple setup)
+
+Call `SendReward` directly from the Unity client. No backend required. This is the fastest way to get started.
+
+The tradeoff: reward delivery is visible and potentially exploitable on the client. ZBD's withdrawal limit system acts as the primary fraud layer. A player who abuses client-side sends can earn an unlimited balance, but they can only withdraw up to their daily limit.
+
+Use client-side delivery if you're in early development or your reward amounts are low enough that client-side exposure is acceptable.
+
+### Server-side (recommended for production)
+
+Your backend calls the ZBD Earn API to issue rewards. The client never touches the `SendReward` path. You can disable client-side sending entirely in the dashboard.
+
+Server-side delivery is required if you want to:
+
+- Tie reward amounts to actual player LTV (see [LTV-Based Rewards](/earn/sdk/revenue-based-earning))
+- Issue rewards based on IAP receipts or MMP revenue events
+- Eliminate client-side abuse entirely
+
+```bash
+curl --request POST \
+  --url https://api.zbdpay.com/api/v1/rewards/user/<rewardsUserId>/send \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: <YOUR_API_KEY>' \
+  --data '{
+    "amount": 1000,
+    "currency": "POINT"
+  }'
+```
+
+See [Send Rewards (Server)](/earn/sdk/send-rewards-server) for the full setup guide.
+
+## Withdrawal limits in depth
+
+Every player has two values:
+
+1. **Rewards balance**: what they've earned and not yet withdrawn. You add to this with `SendReward`.
+2. **Withdrawal limit**: the maximum they can withdraw in a 24-hour window.
+
+The withdrawal limit accrues automatically from the SDK's time-alive signal (a ping every ~20 seconds while the app is open). The accrual rate is set per country tier. A Tier 1 country (US, UK, DE) accrues faster than a Tier 2 country.
+
+### Increasing the withdrawal limit from your server
+
+You can increase a player's withdrawal limit at any time from your backend, for example when your MMP confirms a revenue event.
+
+```bash
+curl --request POST \
+  --url https://api.zbdpay.com/api/v1/rewards/user/<rewardsUserId>/withdrawal-limit \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: <YOUR_API_KEY>' \
+  --data '{
+    "amount": 5000,
+    "currency": "POINT"
+  }'
+```
+
+<Warning>
+  If you use server-side reward delivery and send a large reward, you must also increase the withdrawal limit by a matching amount. Otherwise the reward sits in the player's balance and they cannot withdraw it. The default time-based accrual rate is designed for small, gradual rewards; it is not sufficient for backend-driven reward events.
+</Warning>
+
+### Checking a player's current balance and limit
+
+Before sending a reward, check the player's current state to avoid over-rewarding:
+
+```bash
+curl --request GET \
+  --url https://api.zbdpay.com/api/v1/rewards/users/<rewardsUserId>/balance \
+  --header 'x-api-key: <YOUR_API_KEY>'
+```
+
+```json
+{
+  "success": true,
+  "data": {
+    "rewardsBalance": 30000,
+    "withdrawableLimit": 1000,
+    "currency": "MSATS"
+  }
+}
+```
+
+The `withdrawableLimit` field tells you how much of the balance can currently be withdrawn. If the limit is lower than the balance, the player has earned more than they can currently access.
+
+## In-game currency: exchange rate
+
+_This section applies to Points mode only. Bitcoin mode rewards are denominated in MSATS; no exchange rate configuration is required._
+
+The exchange rate you set determines how granular your rewards feel in the UI. At $0.0001 per unit:
+
+| Player earns | Displayed as | Real-world value |
+|-------------|-------------|-----------------|
+| First trigger reward | ~50–100 units | ~\$0.005–\$0.01 |
+| Daily session | ~500–2,000 units | ~\$0.05–\$0.20 |
+| Monthly engagement | ~10,000–30,000 units | ~\$1–\$3 |
+
+You define the name and appearance of the virtual currency unit. ZBD handles the conversion when the player withdraws. See [Soft Currency Model](/earn/sdk/soft-currency) for display guidelines.

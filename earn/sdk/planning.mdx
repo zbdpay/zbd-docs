@@ -1,0 +1,68 @@
+---
+title: 'Before You Build'
+sidebarTitle: 'Before You Build'
+description: 'Three decisions to make before writing any code: reward currency, delivery method, and payout options.'
+icon: 'map'
+---
+
+These are the decisions that shape your integration. Most are configurable after launch, but getting them right upfront means less iteration once you're live.
+
+## Reward currency
+
+The first decision is which currency you reward players in. This is set at the project level and affects how rewards are displayed, what payout options are available, and how you configure amounts.
+
+<CardGroup cols={2}>
+  <Card title="In-game currency (Points)" icon="coins">
+    You define a virtual currency unit (coins, gems, tokens) that fits your game. Players see familiar numbers ("2,500 coins") and cash out via bank transfer, gift cards, or Bitcoin. Most studios use this model.
+  </Card>
+  <Card title="Bitcoin (sats)" icon="bitcoin-sign">
+    Rewards are denominated in satoshis. Players see their balance in sats and cash out to a Bitcoin Lightning wallet. Best suited for Bitcoin-native games or audiences already familiar with crypto.
+  </Card>
+</CardGroup>
+
+Both modes use the same SDK methods (`SendReward`, `GetBalance`, `ShowModal`). The difference is the `currency` field in API calls and the payout options available to players.
+
+| | In-game currency | Bitcoin |
+|---|---|---|
+| Reward unit | Virtual units you define | Millisatoshis (MSATS) |
+| Balance display | "12,400 coins" | "12,400 sats" (UI in sats; API unit is MSATS) |
+| Player payout options | Bank transfer (ACH), gift cards, Cash App, Speed Wallet, Bitcoin | Bitcoin via Lightning only |
+| Audience fit | Mainstream mobile, casual | Bitcoin-native, crypto-native |
+| `currency` field | `POINT` | `MSATS` |
+
+<Info>
+  The rest of the Earn SDK documentation uses in-game currency as the default. Where behavior differs for Bitcoin rewards, it is called out explicitly.
+</Info>
+
+For display guidelines and UX rules for each mode, see [Displaying Rewards](/earn/sdk/soft-currency).
+
+## Reward delivery
+
+You have two options for how rewards reach players. Most studios start with client-side and migrate to server-side for production.
+
+<CardGroup cols={2}>
+  <Card title="Client-side" icon="mobile" href="/earn/sdk/send-rewards-client">
+    Call `SendReward` directly from Unity. No backend required. Withdrawal limits act as the fraud layer. Best for early development or studios without a backend.
+  </Card>
+  <Card title="Server-side (recommended)" icon="server" href="/earn/sdk/send-rewards-server">
+    Your backend calls the Earn API. Required for LTV-based reward sizing. Disables client-side abuse entirely. Recommended for production.
+  </Card>
+</CardGroup>
+
+See [Reward Economics](/earn/sdk/reward-economics) for guidance on how delivery method affects your reward budget and fraud exposure.
+
+## Payout options
+
+Players cash out through the ZBD modal — a WebView you surface with a single method call. You don't build any payout UI.
+
+Available methods depend on the player's region and your reward currency:
+
+- Bank transfer (ACH)
+- Gift cards
+- Cash App
+- Speed Wallet
+- Bitcoin via Lightning (ZBD App, Speed Wallet, or other Lightning-compatible options)
+
+<Info>
+  ZBD is available in 40+ countries. Check the [coverage page](/earn/coverage) to confirm your target regions are supported before integrating.
+</Info>
