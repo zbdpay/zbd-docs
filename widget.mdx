@@ -24,6 +24,8 @@ Before integrating, create a [ZBD Developer Dashboard account](/get-started/crea
 6. Listen for Events  window.addEventListener("message", ...)  (your frontend)
 ```
 
+Use `POST /api/v1/widget/users/deplete` when your server needs to debit points back from a widget user's point balance.
+
 ## Events
 
 The ZBD Widget emits browser events to your frontend and server webhooks to your backend.
@@ -56,7 +58,7 @@ After creating a session, load the returned `widget_url` in your client. Your ba
   <Tab title="Web">
     ```html
     <iframe
-      src="https://ramp.zbdpay.com?session_token=eyJhbGci..."
+      src="https://widget.zbd.gg/?session_token=eyJhbGci..."
       style="width: 100%; height: 600px; border: none;"
       allow="camera; microphone"
     ></iframe>

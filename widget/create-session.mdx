@@ -1,7 +1,7 @@
 ---
 title: "Create Session"
 description: "Mint a widget session and get the embeddable URL."
-api: "POST https://api.zebedee.io/api/v1/widget/users/session"
+api: "POST https://api.zbdpay.com/api/v1/widget/users/session"
 ---
 
 ## Description
@@ -46,7 +46,7 @@ The widget handles OTP email verification, KYC (Onfido), bank linking (Plaid), a
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zebedee.io/api/v1/widget/users/session \
+curl -X POST https://api.zbdpay.com/api/v1/widget/users/session \
   -H "apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -65,7 +65,7 @@ curl -X POST https://api.zebedee.io/api/v1/widget/users/session \
   "data": {
     "session_token": "eyJhbGciOiJSUzI1NiIs...",
     "expires_at": "2026-06-01T00:00:00.000Z",
-    "widget_url": "https://ramp.zbdpay.com?session_token=eyJhbGci..."
+    "widget_url": "https://widget.zbd.gg?session_token=eyJhbGci..."
   }
 }
 ```

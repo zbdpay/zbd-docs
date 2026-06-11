@@ -58,11 +58,10 @@ curl -X POST https://sandbox-api.zbdpay.com/api/v1/widget/users/fund \
   -H "apikey: YOUR_SANDBOX_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "zbd_user_id": "USER_ID_FROM_STEP_2",
+    "user_id": "USER_ID_FROM_STEP_2",
     "amount": 5000,
-    "currency": "USD",
-    "idempotency_key": "UNIQUE_UUID",
-    "description": "Test reward"
+    "currency": "USDZ",
+    "idempotency_key": "UNIQUE_UUID"
   }'
 ```
 
@@ -84,13 +83,13 @@ curl -X POST https://sandbox-api.zbdpay.com/api/v1/widget/users/session \
 
 ### 5. Open the Widget
 
-Embed the returned `widget_url` in an iframe. The widget behaves identically to production — same UI, same flows — but cashouts complete without real bank transfers.
+Embed the returned `widget_url` in an iframe. In sandbox, the URL should point at `https://widget.sandbox.zbd.gg`. The widget behaves identically to production — same UI, same flows — but cashouts complete without real bank transfers.
 
 ## Sandbox Controls
 
 Use these sandbox-only controls on `https://sandbox-api.zbdpay.com` with `apikey: YOUR_SANDBOX_API_KEY` to put a test user or monetary account into a known state before opening the widget.
 
-For user rewards, use `POST /api/v1/widget/users/fund`. The monetary-account helpers below are for state setup when you already have the monetary account ID.
+For user rewards, use `POST /api/v1/widget/users/fund` and `POST /api/v1/widget/users/deplete`. The monetary-account helpers below are for state setup when you already have the monetary account ID.
 
 | Control | Endpoint | Request body |
 |---|---|---|

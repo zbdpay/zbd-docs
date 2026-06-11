@@ -1,7 +1,7 @@
 ---
 title: "Get User Transactions"
 description: "Retrieve a paginated transaction history for a widget user."
-api: "GET https://api.zebedee.io/api/v1/widget/users/{user_id}/transactions"
+api: "GET https://api.zbdpay.com/api/v1/widget/users/{user_id}/transactions"
 ---
 
 ## Description
@@ -48,7 +48,7 @@ Amounts are returned in **currency minor units**. For USD, `100` equals `$1.00`.
 
 <RequestExample>
 ```bash cURL
-curl "https://api.zebedee.io/api/v1/widget/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652/transactions?skip=0&limit=20" \
+curl "https://api.zbdpay.com/api/v1/widget/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652/transactions?skip=0&limit=20" \
   -H "apikey: YOUR_API_KEY"
 ```
 </RequestExample>

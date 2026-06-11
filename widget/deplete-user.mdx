@@ -1,14 +1,14 @@
 ---
-title: "Fund User"
-description: "Credit USDZ points to a widget user's point balance."
-api: "POST https://api.zbdpay.com/api/v1/widget/users/fund"
+title: "Deplete User"
+description: "Debit USDZ points from a widget user's point balance."
+api: "POST https://api.zbdpay.com/api/v1/widget/users/deplete"
 ---
 
 ## Description
 
-Credit publisher points to a widget user's point balance. Amount is in **currency minor units**. For USDZ, `100` equals `$1.00` worth of points.
+Debit publisher points from a widget user's point balance and return them to the project's configured sink/source account. Amount is in **currency minor units**. For USDZ, `100` equals `$1.00` worth of points.
 
-This endpoint is idempotent on `idempotency_key`.
+This endpoint is idempotent on `idempotency_key`. The user must already have enough point balance for the debit.
 
 ## Configuration
 
@@ -42,14 +42,14 @@ This endpoint is idempotent on `idempotency_key`.
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zbdpay.com/api/v1/widget/users/fund \
+curl -X POST https://api.zbdpay.com/api/v1/widget/users/deplete \
   -H "apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
-    "amount": 1000,
+    "amount": 500,
     "currency": "USDZ",
-    "idempotency_key": "90f9371e-c48a-4bc9-9075-ef7a4c6816ec"
+    "idempotency_key": "551d1b1b-c387-4e16-9a7a-c15be30d0d62"
   }'
 ```
 </RequestExample>
@@ -64,6 +64,20 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users/fund \
     "status": "COMPLETED"
   },
   "error": null
+}
+```
+</ResponseExample>
+
+<ResponseExample>
+```json 400
+{
+  "success": false,
+  "message": "Insufficient point balance.",
+  "data": null,
+  "error": {
+    "code": "TX3017",
+    "message": "Insufficient point balance."
+  }
 }
 ```
 </ResponseExample>
