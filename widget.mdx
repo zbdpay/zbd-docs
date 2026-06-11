@@ -7,7 +7,7 @@ description: "Embed a hosted cashout experience so your users can withdraw earne
 
 The ZBD Widget is an embeddable iframe that handles the full cashout flow for your users — identity verification (KYC), bank account linking (Plaid), and ACH payouts. Your backend handles user creation, session minting, and balance funding; the widget handles everything else.
 
-## Quick Start
+## Prerequisites
 
 Before integrating:
 
@@ -15,6 +15,16 @@ Before integrating:
 2. Copy the project API key from the project's [API section](/get-started/api-keys).
 3. Open the **Widget** tab in the Developer Dashboard to configure sandbox balance and webhook settings.
 4. If the Widget tab is not available yet, contact ZBD support to enable it for your project.
+
+## Quick Start
+
+To get sandbox running quickly, start with the [sandbox guide](/widget/sandbox):
+
+1. Create a sandbox user.
+2. Fund the sandbox user.
+3. Create a widget session.
+4. Embed the returned `widget_url` in your frontend.
+5. Listen for widget events and webhook deliveries.
 
 ## Integration Flow
 
