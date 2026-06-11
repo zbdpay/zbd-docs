@@ -9,19 +9,22 @@ The ZBD Widget is an embeddable iframe that handles the full cashout flow for yo
 
 ## Quick Start
 
-Before integrating, create a [ZBD Developer Dashboard account](/get-started/create-account), [create a project](/get-started/create-project), and copy your project API key from the project's [API section](/get-started/api-keys).
+Before integrating, you should already have a [ZBD Developer Dashboard account](/get-started/create-account) and [project](/get-started/create-project), plus the project API key from the project's [API section](/get-started/api-keys).
 
-<Note>Contact ZBD support or your ZBD account team to enable the Widget for your project before starting the integration.</Note>
+<Note>Contact ZBD support to enable the Widget for your project before starting the integration.</Note>
+
+If you are looking for the Widget controls in the Developer Dashboard, open the **Widget** tab on your project. That is where sandbox balance and webhook settings live.
 
 ## Integration Flow
 
 ```
 1. Create User        POST /api/v1/widget/users                (your server → ZBD API)
 2. Fund User          POST /api/v1/widget/users/fund           (your server → ZBD API)
-3. Get Balance        GET /api/v1/widget/users/{userId}/balance (your server → ZBD API)
-4. Create Session     POST /api/v1/widget/users/session        (your server → ZBD API)
-5. Embed Widget       <iframe src="{widget_url}" />            (your frontend)
-6. Listen for Events  window.addEventListener("message", ...)  (your frontend)
+3. Deplete User       POST /api/v1/widget/users/deplete        (your server → ZBD API)
+4. Get Balance        GET /api/v1/widget/users/{userId}/balance (your server → ZBD API)
+5. Create Session     POST /api/v1/widget/users/session        (your server → ZBD API)
+6. Embed Widget       <iframe src="{widget_url}" />            (your frontend)
+7. Listen for Events  window.addEventListener("message", ...)  (your frontend)
 ```
 
 Use `POST /api/v1/widget/users/deplete` when your server needs to debit points back from a widget user's point balance.
