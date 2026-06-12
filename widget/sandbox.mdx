@@ -85,6 +85,14 @@ curl -X POST https://sandbox-api.zbdpay.com/api/v1/widget/users/session \
 
 Embed the returned `widget_url` in an iframe. In sandbox, the URL should point at `https://widget.sandbox.zbd.gg`. The widget behaves identically to production — same UI, same flows — but cashouts complete without real bank transfers.
 
+<Note>
+  When you reach bank linking in sandbox, you can use the Plaid sandbox institution **Platypus First Bank** with the credentials `user_good` / `pass_good`. If Plaid asks for a phone number step, you can bypass it in the sandbox flow.
+</Note>
+
+<Note>
+  When you reach KYC in sandbox, use a **US address** so the approval path can complete successfully.
+</Note>
+
 ## Sandbox Controls
 
 Use these sandbox-only controls on `https://sandbox-api.zbdpay.com` with `apikey: YOUR_SANDBOX_API_KEY` to put a test user or monetary account into a known state before opening the widget.
