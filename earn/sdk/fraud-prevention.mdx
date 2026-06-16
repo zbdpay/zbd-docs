@@ -1,0 +1,72 @@
+---
+title: 'Fraud Prevention'
+sidebarTitle: 'Fraud Prevention'
+description: 'How ZBD protects your reward economy from fraud and farming — and the controls you can tune.'
+icon: 'shield-halved'
+---
+
+Rewarding real money attracts bad actors. ZBD gives you several layers of protection against fraud and farming. Some apply automatically; others you can tune to your game's risk tolerance.
+
+## Enforcement actions
+
+When a user trips a fraud check, ZBD can place them in one of the following states. Each restricts what the user can do, without necessarily cutting them off entirely.
+
+| State | SDK initializes | Earns rewards | Sending rewards works | Can withdraw |
+|-------|:---:|:---:|:---:|:---:|
+| **Normal** | Yes | Yes | Yes | Yes |
+| **Limited earnings** | Yes | Yes (slower limit growth) | Yes | Yes (reduced) |
+| **Withdrawal lock** | Yes | Yes | Yes | No — contact support |
+| **Disabled** | No | No | No | No |
+
+- **Limited earnings** — the user can still earn and withdraw, but their [withdrawal limit](/earn/sdk/withdrawal-limits) increases much more slowly, so they can't earn as much as a normal user over time.
+- **Withdrawal lock** — the user can initialize the SDK and earn normally, but when they try to withdraw they're prompted to contact support. ZBD (or you) can lift the lock once the user is judged not to be suspicious.
+- **Disabled** — the SDK will not initialize for this user. They cannot earn, send rewards, or withdraw.
+
+## Device attestation
+
+[Device attestation](/earn/sdk/attestation-setup) is the foundation. When attestation is set up correctly, only users running a legitimate build of your app on a genuine device can increase their withdrawal limit and receive rewards. This blocks tampered apps and fake devices before they can extract value.
+
+<Note>
+Attestation only protects you when it's configured correctly for both Android and iOS. See the [Attestation Setup guide](/earn/sdk/attestation-setup).
+</Note>
+
+## Automatic protections
+
+ZBD applies these out of the box — no configuration needed:
+
+- **Emulators and jailbroken / rooted devices** — users who attempt to sign up from an emulator or a jailbroken or rooted device are **disabled** automatically.
+- **VPN usage** — users on a VPN are placed into **limited earnings mode**. This is reversible: the SDK modal tells the user to reach out to support, and their normal earning rate can be restored once it's resolved.
+
+## Configurable protections
+
+Some signals are more prone to false positives, so ZBD treats them conservatively by default. You can tighten them for your game if you see abuse — just let us know and we'll adjust your configuration.
+
+### Datacenter connections
+
+Most real players connect from a home or mobile network. A datacenter connection is unusual for a genuine player and is far more common among bots and gaming farms.
+
+That said, legitimate users do sometimes appear on a datacenter connection — for example, university or airport Wi-Fi that routes through one. Because of that, **ZBD allows datacenter sign-ups by default.**
+
+If you notice increased fraud or farming, you can ask ZBD to **disable** or **withdrawal-lock** users on datacenter connections.
+
+<Note>
+**Default: off.** Datacenter users are allowed unless you tell us otherwise. Reach out if you'd like them disabled or placed into withdrawal lock.
+</Note>
+
+### Factory reset
+
+Most users never factory reset their phones. When they do, it's often legitimate — a second-hand phone, or occasionally a major system update that sets the factory-reset flag.
+
+But factory resets are also a common evasion tactic: a user resets the device to give it a new identity, then plays as a "new" user to escape a disable or a withdrawal limit.
+
+We recommend placing a user into **withdrawal lock** if their device was factory reset within the **last 2 weeks**. You can adjust this threshold — for example, loosen it if you start seeing an increase in support requests.
+
+### Minimum app version
+
+You can require a minimum supported version of your game for withdrawals. Users on anything below it won't be able to withdraw and will be prompted to upgrade — for example, blocking withdrawals below `v1.1.2`.
+
+This protects you when an older build has a known bug or exploit that could be used to farm rewards.
+
+## Configuring these controls
+
+The configurable protections above are managed by ZBD. To turn any of them on, change a threshold, or set your minimum app version, reach out to your ZBD contact with your preferences. They're off by default, and we can adjust them as your needs change.
