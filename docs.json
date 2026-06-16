@@ -115,6 +115,7 @@
                   "earn/sdk/soft-currency",
                   "earn/sdk/best-practices",
                   "earn/sdk/security",
+                  "earn/sdk/fraud-prevention",
                   "earn/sdk/player-comms",
                   "earn/sdk/customization"
                 ]
