@@ -1,0 +1,76 @@
+---
+title: "Update User"
+description: "Update a widget user's email address."
+api: "PATCH https://api.zbdpay.com/api/v1/widget/users/{user_id}"
+---
+
+## Description
+
+Updates a widget user's details. This is a partial update — only the fields you send are changed. Today `email` is the only updatable field.
+
+Use this when a user changes the email tied to their account. The new email becomes the recipient for OTP verification codes in the widget, so any code requested after the update is sent to the new address.
+
+Updating the email is idempotent: sending the user's current email (or a body with no updatable fields) succeeds without making a change. Emails are normalized (trimmed and lowercased) before they are compared and stored.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="user_id" type="string">
+  The ZBD user ID returned by Create User.
+</ParamField>
+
+### Body Parameters
+
+<ParamField body="email" type="string">
+  The user's new email address. Must be a valid email. Used for OTP verification in the widget.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X PATCH https://api.zbdpay.com/api/v1/widget/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652 \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "new-email@example.com"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Cashout user updated successfully.",
+  "data": {
+    "id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "reference_id": "player-42",
+    "email": "new-email@example.com"
+  }
+}
+```
+</ResponseExample>
+
+## Errors
+
+<ResponseField name="400 Bad Request">
+  The `email` is not a valid email address.
+</ResponseField>
+
+<ResponseField name="404 Not Found">
+  No user with this `user_id` exists in your project.
+</ResponseField>
+
+<ResponseField name="409 Conflict">
+  The email is already in use by another ZBD user. A ZBD user's identity is global by email, so an email can belong to only one user.
+</ResponseField>
