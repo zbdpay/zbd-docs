@@ -36,14 +36,26 @@ This pattern keeps the balance/limit relationship healthy and avoids the frustra
 
 Call `ZBDController.Instance.Init` as early as possible — ideally on game launch. Keep the instance alive with a singleton or `DontDestroyOnLoad` so it persists across scenes.
 
-Initialization can fail due to network issues, VPN/proxy detection, or attestation failures. When it does, `Init` returns `false`. Always respond by calling `ShowModal()` — never fail silently. The modal surfaces the reason to the player and gives them a retry path.
+Initialization can fail due to network issues, VPN/proxy detection, or attestation failures. When it does, `Init` returns `false`. For these failures, always call `ShowModal()` — never fail silently. The modal surfaces the reason to the player and gives them a retry path.
+
+One failure is different: an **unsupported region**. When `completion.type == "region"`, the player is in a region where Earn isn't available, and there is no retry path — showing the modal won't help. Instead, **hide all Earn-related UI and functionality** (recommended), or show a message letting the player know Earn isn't available in their region. Hiding is usually the better experience.
 
 ```csharp
 ZBDController.Instance.Init(completion =>
 {
-    if (!completion.success && !completion.maintenance)
+    if (completion.success || completion.maintenance) return;
+
+    if (completion.type == "region")
     {
-        // Always show the modal on failure — let it explain and offer retry
+        // Unsupported region — there is no retry path.
+        // Hide all Earn-related UI and functionality (recommended), or
+        // inform the player that Earn isn't available in their region.
+        HideEarnUI();
+    }
+    else
+    {
+        // Network, VPN/proxy, or attestation failure —
+        // show the modal so it can explain the reason and offer a retry.
         ZBDModalController.Instance.ShowModal();
     }
 });

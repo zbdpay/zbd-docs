@@ -14,6 +14,9 @@ Before releasing your game to production, make sure you have completed the follo
   <Step title="Handle maintenance mode">
     Your game should gracefully handle ZBD platform maintenance periods by checking the `maintenance` flag on **every** SDK response. See [Handling Maintenance Mode](/earn/sdk/integration#handling-maintenance-mode).
   </Step>
+  <Step title="Handle unsupported regions">
+    Confirm your game handles initialization failures gracefully when a player is in an unsupported region (`completion.type == "region"`). Hide all Earn-related UI and functionality, or show a message that Earn isn't available in their region — do not show the retry modal, as there is no retry path. See [Handling SDK initialization failures](/earn/sdk/best-practices#handling-sdk-initialization-failures).
+  </Step>
   <Step title="Test your game">
     Make sure you have thoroughly tested your game before going live. At a minimum, verify the following:
     - **Test init** — confirm the SDK initializes successfully.
