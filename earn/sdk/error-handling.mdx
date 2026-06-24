@@ -9,7 +9,7 @@ The SDK surfaces three types of failure: initialization failures, reward deliver
 
 ## Initialization failures
 
-`Init` can fail for several reasons. Always call `ShowModal()` when init fails. The modal explains the reason to the player and provides a retry path. Never silently fail.
+`Init` can fail for several reasons. For network, VPN/proxy, and attestation failures, call `ShowModal()` — it explains the reason to the player and provides a retry path. **Maintenance** and **unsupported region** are handled differently (see below), because neither has a retry path. Never silently fail.
 
 ```csharp
 ZBDController.Instance.Init(completion =>
@@ -20,11 +20,18 @@ ZBDController.Instance.Init(completion =>
     }
     else if (completion.maintenance)
     {
-        // See Maintenance Mode section below
+        // Not an error — ZBD is in maintenance. See Maintenance Mode section below.
+        ShowMaintenanceMessage();
+    }
+    else if (completion.type == "region")
+    {
+        // Unsupported region — no retry path.
+        // Hide all Earn UI/functionality, or show a "not available in your region" message.
+        HideEarnUI();
     }
     else
     {
-        // Init failed, show modal so the player can see why and retry
+        // Network, VPN, or attestation failure — show modal so the player can see why and retry
         ZBDModalController.Instance.ShowModal();
         Debug.LogWarning("ZBD init failed: " + completion.error);
     }
@@ -37,7 +44,7 @@ ZBDController.Instance.Init(completion =>
 |-------|-------------|------------|
 | VPN or proxy detected | `completion.success = false` | Call `ShowModal()`. The modal tells the player their VPN was detected and gives them a retry path. |
 | No network connection | `completion.success = false` | Call `ShowModal()`. The modal surfaces a retry option. Do not prevent gameplay. |
-| Unsupported region | `completion.success = false` | Call `ShowModal()`. Do not show rewards-related UI. See [Global Support](/earn/coverage). |
+| Unsupported region | `completion.success = false`, `completion.type = "region"` | Do **not** call `ShowModal()` — there is no retry path. Hide all Earn-related UI and functionality, or show a message that Earn isn't available in their region. See [Global Support](/earn/coverage). |
 | Attestation failure | `completion.success = false` | Call `ShowModal()`. Indicates a potentially modified device or app. |
 | ZBD maintenance | `completion.maintenance = true` | See [Maintenance Mode](#maintenance-mode) below. |
 
@@ -105,7 +112,7 @@ ZBDController.Instance.SendReward(amount, completion =>
 |----------|-------------|-----------------|
 | Init — VPN detected | `success = false` | `ShowModal()`. Game continues. |
 | Init — no network | `success = false` | `ShowModal()`. Game continues. |
-| Init — unsupported region | `success = false` | `ShowModal()`. Hide rewards UI. |
+| Init — unsupported region | `success = false`, `type = "region"` | Hide rewards UI (or show "not available in your region"). No `ShowModal()` — no retry path. |
 | Init — maintenance | `maintenance = true` | Hide rewards UI for new players. Message existing earners. |
 | Init — attestation failure | `success = false` | `ShowModal()`. Game continues. |
 | App backgrounded mid-reward | n/a | Handle gracefully on foreground return. Do not retry automatically. |

@@ -36,14 +36,39 @@ This pattern keeps the balance/limit relationship healthy and avoids the frustra
 
 Call `ZBDController.Instance.Init` as early as possible — ideally on game launch. Keep the instance alive with a singleton or `DontDestroyOnLoad` so it persists across scenes.
 
-Initialization can fail due to network issues, VPN/proxy detection, or attestation failures. When it does, `Init` returns `false`. Always respond by calling `ShowModal()` — never fail silently. The modal surfaces the reason to the player and gives them a retry path.
+`Init` reports its result on the `completion` object. Handle each outcome distinctly — never fail silently:
+
+- **Success** (`completion.success`) — the SDK is ready; proceed normally.
+- **Maintenance** (`completion.maintenance`) — ZBD is temporarily down for maintenance. This is **not** an error and has no retry path, so don't show the modal. For players who haven't started earning, hide all Earn UI; for players who have already earned, show a "rewards temporarily unavailable" message. See [Maintenance Mode](/earn/sdk/error-handling#maintenance-mode).
+- **Unsupported region** (`completion.type == "region"`) — the player is in a region where Earn isn't available, and there's no retry path, so the modal won't help. Hide all Earn-related UI and functionality (recommended), or show a message that Earn isn't available in their region.
+- **Other failures** (network, VPN/proxy, attestation) — call `ShowModal()`. The modal surfaces the reason and gives the player a retry path.
 
 ```csharp
 ZBDController.Instance.Init(completion =>
 {
-    if (!completion.success && !completion.maintenance)
+    if (completion.success)
     {
-        // Always show the modal on failure — let it explain and offer retry
+        // SDK ready — proceed normally
+        return;
+    }
+
+    if (completion.maintenance)
+    {
+        // Not an error — ZBD is in maintenance, no retry path.
+        // New players: hide Earn UI. Existing earners: show a
+        // "rewards temporarily unavailable" message.
+        ShowMaintenanceMessage();
+    }
+    else if (completion.type == "region")
+    {
+        // Unsupported region — no retry path.
+        // Hide all Earn UI/functionality, or show a "not available in your region" message.
+        HideEarnUI();
+    }
+    else
+    {
+        // Network, VPN/proxy, or attestation failure —
+        // show the modal so the player can see why and retry.
         ZBDModalController.Instance.ShowModal();
     }
 });
