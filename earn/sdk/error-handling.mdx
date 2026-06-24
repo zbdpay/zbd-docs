@@ -9,7 +9,7 @@ The SDK surfaces three types of failure: initialization failures, reward deliver
 
 ## Initialization failures
 
-`Init` can fail for several reasons. Always call `ShowModal()` when init fails. The modal explains the reason to the player and provides a retry path. Never silently fail.
+`Init` can fail for several reasons. For network, VPN/proxy, and attestation failures, call `ShowModal()` — it explains the reason to the player and provides a retry path. **Maintenance** and **unsupported region** are handled differently (see below), because neither has a retry path. Never silently fail.
 
 ```csharp
 ZBDController.Instance.Init(completion =>
@@ -20,11 +20,18 @@ ZBDController.Instance.Init(completion =>
     }
     else if (completion.maintenance)
     {
-        // See Maintenance Mode section below
+        // Not an error — ZBD is in maintenance. See Maintenance Mode section below.
+        ShowMaintenanceMessage();
+    }
+    else if (completion.type == "region")
+    {
+        // Unsupported region — no retry path.
+        // Hide all Earn UI/functionality, or show a "not available in your region" message.
+        HideEarnUI();
     }
     else
     {
-        // Init failed, show modal so the player can see why and retry
+        // Network, VPN, or attestation failure — show modal so the player can see why and retry
         ZBDModalController.Instance.ShowModal();
         Debug.LogWarning("ZBD init failed: " + completion.error);
     }
