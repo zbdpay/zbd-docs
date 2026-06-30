@@ -10,6 +10,8 @@ Creates a widget session for a user. Returns a `session_token` (JWT) and a `widg
 
 The widget handles OTP email verification, KYC (Onfido), bank linking (Plaid), and cashout initiation internally.
 
+The widget also checks whether the user has any outstanding session disclosures. Cashout-specific disclosures are enforced when a cashout is submitted. See [Disclosure Agreements](/widget/disclosures).
+
 ## Configuration
 
 ### Header Parameters

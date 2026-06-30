@@ -1,0 +1,104 @@
+---
+title: "Disclosure Agreements"
+description: "Understand how widget user disclosure acceptance works before cashout."
+---
+
+## Overview
+
+Some widget flows require the user to accept the latest legal disclosure before continuing. ZBD tracks acceptance by disclosure type and version, so a user may need to accept a new version even if they accepted an older version before.
+
+The widget session exposes outstanding session disclosures, and the cashout backend separately verifies cashout-specific disclosures before a payout is submitted.
+
+## End-to-end Flow
+
+```
+1. Your server creates or resolves the widget user.
+2. Your server creates a widget session.
+3. Your frontend opens the returned widget_url.
+4. The widget loads the user's session status, including outstanding_disclosures.
+5. If a session disclosure is outstanding, the widget asks the user to accept it.
+6. ZBD records the acceptance against the latest disclosure version.
+7. The user can continue to bank linking, KYC, and cashout.
+```
+
+<Info>
+  If your integration only embeds the hosted widget, the disclosure prompt and acceptance flow are handled inside the widget. Your backend still creates users, funds balances, creates sessions, and processes webhooks as usual.
+</Info>
+
+## Disclosure Types
+
+The publisher disclosure endpoints can check and record acceptance for all current disclosure types.
+
+| Disclosure type | Type ID | Used for |
+|---|---:|---|
+| Terms of Service | `2` | General ZBD terms |
+| Privacy Policy | `3` | General privacy disclosure |
+| Electronic Funds Transfer | `6` | ACH bank payout authorization |
+
+<Note>
+  ACH cashout submission requires the current Electronic Funds Transfer disclosure to be accepted. If the user has not accepted the latest Electronic Funds Transfer disclosure, the cashout request is rejected until acceptance is recorded.
+</Note>
+
+## Session Status
+
+During a widget session, ZBD returns outstanding session disclosure information to the widget runtime. The field is named `outstanding_disclosures`.
+
+Today this session response includes Terms of Service and Privacy Policy disclosure checks. Cashout-specific checks, such as Electronic Funds Transfer acceptance for ACH, are enforced when the user submits the cashout.
+
+Example session status shape:
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "email": "player@example.com",
+    "is_id_verified": true,
+    "kyc_tier": 2,
+    "kyc_status": "approved",
+    "capabilities": [],
+    "outstanding_disclosures": [
+      {
+        "id": 12,
+        "type_id": 2,
+        "name": "Terms of Service",
+        "description": "ZBD Terms of Service Document.",
+        "version": "1.4.0",
+        "content_uri": "https://...",
+        "created_at": "2026-06-24T20:11:45Z",
+        "due_date": "2025-08-11T00:00:00"
+      }
+    ]
+  },
+  "message": "Session account status retrieved successfully.",
+  "error": null
+}
+```
+
+If `outstanding_disclosures` is empty, the user is current on all session disclosures returned by this endpoint.
+
+## Recording Acceptance Outside the Widget
+
+Most integrations should let the hosted widget collect the user's acceptance. If your integration collects disclosure acceptance before the widget opens, use the publisher disclosure APIs from your server.
+
+<Warning>
+  Disclosure endpoints require your server-side API key. Do not call these endpoints directly from a browser, mobile client, game client, or WebView.
+</Warning>
+
+Use [Get Disclosure Status](/widget/get-disclosure-status) to check current disclosure acceptance and [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) to record acceptance for the latest version of one or more disclosure types.
+
+## Existing Users
+
+Disclosure acceptance is versioned. If a user already exists and needs to accept a current disclosure, submit the acceptance with the disclosure endpoint above.
+
+Do not rely on an idempotent user-create call to update disclosure acceptance for an existing user. User creation can return an existing user without recording new disclosure acceptance.
+
+## Sandbox
+
+Sandbox uses the same disclosure status and acceptance model as production. When testing disclosure handling, use your sandbox API key and sandbox API base URL:
+
+```text
+https://sandbox-api.zbdpay.com
+```
+
+Some sandbox bypass settings can skip cashout checks for faster testing. If you specifically need to verify cashout disclosure blocking behavior, make sure your sandbox setup is not bypassing the cashout disclosure gate.

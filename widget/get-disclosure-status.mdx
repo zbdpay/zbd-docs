@@ -1,0 +1,75 @@
+---
+title: "Get Disclosure Status"
+description: "Check a widget user's current disclosure acceptance status."
+api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/users/{userId}/disclosures"
+---
+
+## Description
+
+Returns the user's acceptance status for each current disclosure type.
+
+Use this from your server only if your integration needs to check disclosure acceptance outside the hosted widget. Most integrations can let the widget handle disclosure prompts during the session.
+
+`publisherId` must be the publisher account ID that owns the API key. `userId` is the ZBD user ID returned when the widget user is created or resolved.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="publisherId" type="string">
+  Publisher account ID provided during onboarding. This must match the owner of the API key.
+</ParamField>
+
+<ParamField required path="userId" type="string">
+  The ZBD user ID returned when the widget user is created or resolved.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/publishers/{publisherId}/users/{userId}/disclosures \
+  -H "apikey: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Publisher user ToS status retrieved successfully.",
+  "data": [
+    {
+      "type_id": 2,
+      "name": "Terms of Service",
+      "version": "1.4.0",
+      "tos_current": true,
+      "accepted_at": "2026-01-15T12:00:00Z"
+    },
+    {
+      "type_id": 6,
+      "name": "Electronic Funds Transfer",
+      "version": "1.0.0",
+      "tos_current": false,
+      "accepted_at": null
+    }
+  ],
+  "error": null
+}
+```
+</ResponseExample>
+
+`tos_current` means the user has accepted the current version of that disclosure type. A value of `false` means there is no acceptance on record, or the user's latest acceptance is for an older version.
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `401` | Missing or invalid API key |
+| `403` | `publisherId` does not match the API key owner |
+| `404` | `userId` does not belong to this publisher |
+

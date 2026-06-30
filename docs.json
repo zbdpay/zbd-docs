@@ -497,7 +497,8 @@
               {
                 "group": "Overview",
                 "pages": [
-                  "widget"
+                  "widget",
+                  "widget/disclosures"
                 ]
               },
               {
@@ -511,12 +512,14 @@
                 "group": "API Reference",
                 "pages": [
                   "widget/create-user",
-                  "widget/get-user",
                   "widget/update-user",
-                  "widget/get-balance",
-                  "widget/get-transactions",
-                  "widget/create-session",
                   "widget/fund-user",
+                  "widget/get-balance",
+                  "widget/create-session",
+                  "widget/get-disclosure-status",
+                  "widget/submit-disclosure-acceptance",
+                  "widget/get-user",
+                  "widget/get-transactions",
                   "widget/deplete-user"
                 ]
               },
