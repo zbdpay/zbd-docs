@@ -1,0 +1,80 @@
+---
+title: "Submit Disclosure Acceptance"
+description: "Record disclosure acceptance for a widget user."
+api: "POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures"
+---
+
+## Description
+
+Records the user's acceptance of the latest version of each disclosure type in `acceptedDisclosureTypeIds`.
+
+Use this from your server only if your integration collects disclosure acceptance outside the hosted widget. Do not call this endpoint from a browser, mobile client, game client, or WebView.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="userId" type="string">
+  The ZBD user ID returned when the widget user is created or resolved.
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="acceptedDisclosureTypeIds" type="array">
+  Disclosure type IDs accepted by the user. ZBD records acceptance for the latest version of each type.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "acceptedDisclosureTypeIds": [6]
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "Publisher user disclosure agreements recorded successfully.",
+  "data": {
+    "acceptedDisclosureTypeIds": [6]
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Disclosure Type IDs
+
+| Disclosure type | Type ID |
+|---|---:|
+| Terms of Service | `2` |
+| Privacy Policy | `3` |
+| Electronic Funds Transfer | `6` |
+
+## Existing Users
+
+If a user already exists and needs to accept a current disclosure, call this endpoint. Do not rely on an idempotent user-create call to update disclosure acceptance for an existing user.
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `400` | `acceptedDisclosureTypeIds` is empty, missing, or contains an unknown disclosure type |
+| `401` | Missing or invalid API key |
+| `403` | The API key is not allowed to access widget disclosure APIs |
+| `404` | `userId` does not belong to the project associated with the API key |
