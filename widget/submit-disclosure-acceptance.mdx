@@ -1,7 +1,7 @@
 ---
 title: "Submit Disclosure Acceptance"
 description: "Record disclosure acceptance for a widget user."
-api: "POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/users/{userId}/disclosures"
+api: "POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures"
 ---
 
 ## Description
@@ -24,10 +24,6 @@ Use this from your server only if your integration collects disclosure acceptanc
 
 ### Path Parameters
 
-<ParamField required path="publisherId" type="string">
-  Publisher account ID provided during onboarding. This must match the owner of the API key.
-</ParamField>
-
 <ParamField required path="userId" type="string">
   The ZBD user ID returned when the widget user is created or resolved.
 </ParamField>
@@ -40,7 +36,7 @@ Use this from your server only if your integration collects disclosure acceptanc
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/users/{userId}/disclosures \
+curl -X POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
   -H "apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -80,6 +76,5 @@ If a user already exists and needs to accept a current disclosure, call this end
 |---|---|
 | `400` | `acceptedDisclosureTypeIds` is empty, missing, or contains an unknown disclosure type |
 | `401` | Missing or invalid API key |
-| `403` | `publisherId` does not match the API key owner |
-| `404` | `userId` does not belong to this publisher |
-
+| `403` | The API key is not allowed to access widget disclosure APIs |
+| `404` | `userId` does not belong to the project associated with the API key |

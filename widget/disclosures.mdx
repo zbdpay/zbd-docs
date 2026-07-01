@@ -27,7 +27,7 @@ The widget session exposes outstanding session disclosures, and the cashout back
 
 ## Disclosure Types
 
-The publisher disclosure endpoints can check and record acceptance for all current disclosure types.
+The widget disclosure endpoints can check and record acceptance for all current disclosure types.
 
 | Disclosure type | Type ID | Used for |
 |---|---:|---|
@@ -79,7 +79,7 @@ If `outstanding_disclosures` is empty, the user is current on all session disclo
 
 ## Recording Acceptance Outside the Widget
 
-Most integrations should let the hosted widget collect the user's acceptance. If your integration collects disclosure acceptance before the widget opens, use the publisher disclosure APIs from your server.
+Most integrations should let the hosted widget collect the user's acceptance. If your integration collects disclosure acceptance before the widget opens, use the widget disclosure APIs from your server. The API key determines the project context, so these endpoints only require the widget user ID in the path.
 
 <Warning>
   Disclosure endpoints require your server-side API key. Do not call these endpoints directly from a browser, mobile client, game client, or WebView.
