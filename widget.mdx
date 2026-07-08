@@ -77,6 +77,7 @@ After creating a session, load the returned `widget_url` in your client. Your ba
       src="https://widget.zbd.gg/?session_token=eyJhbGci..."
       style="width: 100%; height: 600px; border: none;"
       allow="camera; microphone"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
     ></iframe>
     ```
   </Tab>
@@ -124,6 +125,10 @@ After creating a session, load the returned `widget_url` in your client. Your ba
     ```
   </Tab>
 </Tabs>
+
+<Warning>
+  **Allow document downloads.** The widget lets users download documents (disclosure PDFs, cashout receipts/statements). Browsers only permit a framed page to start a download if the iframe explicitly allows it. If you apply a `sandbox` attribute — as in the example above — it **must** include **`allow-downloads`** (alongside `allow-scripts allow-same-origin allow-forms allow-popups`). Without `allow-downloads`, the browser blocks the in-frame download and the widget falls back to opening the document in a **new browser tab**. If you do not set a `sandbox` attribute at all, downloads work by default.
+</Warning>
 
 ## Embed Parameters
 

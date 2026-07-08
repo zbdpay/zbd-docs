@@ -48,6 +48,18 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users \
 ```
 </RequestExample>
 
+## Response
+
+The response `data` includes the new (or existing) user plus an `outstanding_disclosures` array — the disclosure versions this user still needs to accept. This is returned on the **first user request**, so you have the user's outstanding disclosures immediately, with no extra call.
+
+<ResponseField name="outstanding_disclosures" type="array">
+  Disclosure versions the user has not yet accepted. Empty when the user is current on all disclosures. Each entry includes `id`, `type_id`, `name`, `description`, `version`, `content_uri`, `created_at`, and `due_date`.
+</ResponseField>
+
+<Note>
+  `outstanding_disclosures` lists only what is still outstanding. To list a user's full acceptance state (including what they have **already accepted**), call [Get Disclosure Status](/widget/get-disclosure-status) at any time. See [Disclosure Agreements](/widget/disclosures) for the full model.
+</Note>
+
 <ResponseExample>
 ```json 201
 {
@@ -55,7 +67,19 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users \
   "data": {
     "id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
     "reference_id": "player-42",
-    "email": "player@example.com"
+    "email": "player@example.com",
+    "outstanding_disclosures": [
+      {
+        "id": 12,
+        "type_id": 2,
+        "name": "Terms of Service",
+        "description": "ZBD Terms of Service Document.",
+        "version": "1.4.0",
+        "content_uri": "https://...",
+        "created_at": "2026-06-24T20:11:45Z",
+        "due_date": "2025-08-11T00:00:00"
+      }
+    ]
   }
 }
 ```
