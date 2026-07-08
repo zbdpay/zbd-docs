@@ -61,6 +61,18 @@ But factory resets are also a common evasion tactic: a user resets the device to
 
 We recommend placing a user into **withdrawal lock** if their device was factory reset within the **last 2 weeks**. You can adjust this threshold — for example, loosen it if you start seeing an increase in support requests.
 
+### Developer tools
+
+We can detect when a device has developer tooling enabled — developer options, debugging, and similar low-level access. Plenty of legitimate power users turn these on, but the same tooling is also what's used to inspect, hook, and manipulate an app, so it's a useful signal when weighing other risk factors.
+
+Because developer tooling on its own isn't proof of abuse, **ZBD allows these devices by default.** If you see abuse from devices with developer tooling enabled, you can ask ZBD to **disable** or **withdrawal-lock** them.
+
+### Device model
+
+Fraud farms often run large numbers of the same cheap, low-cost device model. When you notice farming concentrated on a particular device model, ZBD can automatically place users on that model into **withdrawal lock** (or **disable** them).
+
+Because a popular budget phone can also be used by many genuine players, this control is targeted and **off by default** — you tell ZBD which device model(s) to action.
+
 ### Minimum app version
 
 You can require a minimum supported version of your game for withdrawals. Users on anything below it won't be able to withdraw and will be prompted to upgrade — for example, blocking withdrawals below `v1.1.2`.
