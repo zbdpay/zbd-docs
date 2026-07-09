@@ -25,6 +25,19 @@ The widget session exposes outstanding session disclosures, and the cashout back
   If your integration only embeds the hosted widget, the disclosure prompt and acceptance flow are handled inside the widget. Your backend still creates users, funds balances, creates sessions, and processes webhooks as usual.
 </Info>
 
+## Outstanding Disclosures on User Creation
+
+You do not need a separate call to discover what a user still owes. The [Create User](/widget/create-user) response (`POST /api/v1/widget/users`) already includes an **`outstanding_disclosures`** array on that **first user request** — the disclosure versions this user has not yet accepted. Surface or record them right away; if the array is empty, the user is current.
+
+`outstanding_disclosures` only lists what is **still outstanding**. When you need the complete picture — including which disclosures a user has **already accepted** and when — use the dedicated endpoints:
+
+- [Get Disclosure Status](/widget/get-disclosure-status) — list every current disclosure type with the user's acceptance state (`is_current`, `accepted_at`), so you can show accepted vs. outstanding.
+- [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) — record acceptance of the latest version from your server.
+
+<Note>
+  The same `outstanding_disclosures` shape also appears in the widget session status during a session (see [Session Status](#session-status)). Create User is the initial snapshot at provisioning time; Get Disclosure Status is the source of truth for the full, up-to-date acceptance state.
+</Note>
+
 ## Disclosure Types
 
 The widget disclosure endpoints can check and record acceptance for all current disclosure types.
