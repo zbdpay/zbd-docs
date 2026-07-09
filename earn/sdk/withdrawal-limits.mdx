@@ -12,7 +12,33 @@ When the ZBD Earn SDK is active on the client, the device pings the server every
 
 You may want to increase a user's withdrawal limit by a fixed amount at any time from your server. For example, if you receive a callback from your MMP or an in-app purchase receipt confirming that a user monetized, you can increase their withdrawal limit accordingly.
 
+### Choosing the right currency
+
+The `currency` field must match the reward currency your game uses:
+
+| Your game | `currency` |
+|-----------|------------|
+| In-game points / soft currency (most games) | `POINT` |
+| Bitcoin-denominated | `MSATS` |
+
+Most games use `POINT`, so that's the default. Only set `MSATS` if your game is Bitcoin-denominated.
+
+<Note>
+If you're not sure which currency applies to your game, reach out to your account manager to clarify before setting withdrawal limits.
+</Note>
+
 <CodeGroup>
+```bash Points (default)
+curl --request POST \
+  --url https://api.zbdpay.com/api/v1/rewards/user/<rewardsUserId>/withdrawal-limit \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: <x-api-key>' \
+  --data '{
+    "amount": 5000,
+    "currency": "POINT"
+  }'
+```
+
 ```bash Bitcoin (sats)
 curl --request POST \
   --url https://api.zbdpay.com/api/v1/rewards/user/<rewardsUserId>/withdrawal-limit \
@@ -21,17 +47,6 @@ curl --request POST \
   --data '{
     "amount": 5000,
     "currency": "MSATS"
-  }'
-```
-
-```bash Points
-curl --request POST \
-  --url https://api.zbdpay.com/api/v1/rewards/user/<rewardsUserId>/withdrawal-limit \
-  --header 'Content-Type: application/json' \
-  --header 'x-api-key: <x-api-key>' \
-  --data '{
-    "amount": 5000,
-    "currency": "POINT"
   }'
 ```
 </CodeGroup>
