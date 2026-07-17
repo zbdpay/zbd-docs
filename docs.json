@@ -208,6 +208,12 @@
                   "earn/sdk/ios-app-store",
                   "earn/sdk/android-app-store"
                 ]
+              },
+              {
+                "group": "Releases",
+                "pages": [
+                  "earn/sdk/releases"
+                ]
               }
             ]
           },
