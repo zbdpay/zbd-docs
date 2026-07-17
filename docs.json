@@ -166,6 +166,7 @@
                       "earn/sdk/manage-rewards-balance"
                     ]
                   },
+                  "earn/sdk/gift-cards",
                   {
                     "group": "Withdrawal Limits",
                     "icon": "gauge-high",
