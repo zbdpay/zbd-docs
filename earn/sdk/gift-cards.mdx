@@ -1,0 +1,118 @@
+---
+title: 'Gift Cards'
+sidebarTitle: 'Gift Cards'
+description: 'Retrieve the gift cards available to a player and how close they are to unlocking each one.'
+icon: 'gift'
+---
+
+Use `GetGiftCards` to retrieve the top gift cards available to a player in the ZBD rewards web app, along with each card's price in satoshis and the player's progress toward unlocking it. This lets you show players how close they are to earning a specific gift card.
+
+```csharp
+ZBDController.Instance.GetGiftCards(response =>
+{
+    if (!response.success)
+    {
+        Debug.LogError("GetGiftCards failed: " + response.message);
+        return;
+    }
+
+    if (response.giftCards == null || response.giftCards.Length == 0)
+    {
+        // No gift cards available for this player's region
+        return;
+    }
+
+    Debug.Log($"Available balance: {response.availableBalanceInSats} sats");
+
+    foreach (ZBDGiftCard card in response.giftCards)
+    {
+        // e.g. "Amazon.com United States: 1.7% toward a 5 USD card"
+        Debug.Log($"{card.name}: {card.unlockedPercent}% toward " +
+                  $"{card.denomination} {card.denominationCurrency} ({card.priceInSats} sats)");
+    }
+});
+```
+
+## Prerequisites
+
+- **The SDK must be initialized.** `GetGiftCards` relies on the gift-card web view, which loads during `Init` — so it works even while the modal is closed, but `Init` must have completed. Check `ZBDController.Instance.initialized` before calling.
+- **Gift cards must be an available cashout option.** If gift-card cashout isn't enabled for your app or isn't available in the player's region, `giftCards` comes back empty (with `success = true`).
+- **Requests made too early are queued.** If the web app is still loading when you call, the request is held and sent automatically once it's ready.
+
+## Response
+
+`GetGiftCards` returns a `ZBDGiftCardsResponse`:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | `bool` | Whether the request succeeded. |
+| `message` | `string` | Status or error message. |
+| `availableBalanceInSats` | `int` | The player's available (withdrawable) balance, in satoshis. |
+| `giftCards` | `ZBDGiftCard[]` | The top gift cards available to the player. An empty array with `success = true` means no cards are available (gift-card cashout isn't enabled, or none are offered in the player's region). |
+
+Each `ZBDGiftCard`:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | `string` | Gift card identifier, e.g. `amazon_com-usa`. |
+| `name` | `string` | Display name, e.g. `Amazon.com United States`. |
+| `logoUrl` | `string` | URL of the card's logo image. |
+| `priceInSats` | `int` | Price of the cheapest denomination, in satoshis. |
+| `denomination` | `float` | Fiat value of that denomination, e.g. `5.0`. |
+| `denominationCurrency` | `string` | Currency of the denomination, e.g. `USD`. |
+| `unlockedPercent` | `float` | The player's progress toward `priceInSats`, from `0` to `100`. Returns `-1` when it can't be computed (for example, a missing exchange rate). |
+
+### Example response
+
+```json
+{
+  "success": true,
+  "message": "Success",
+  "availableBalanceInSats": 125,
+  "giftCards": [
+    {
+      "id": "amazon_com-usa",
+      "name": "Amazon.com United States",
+      "logoUrl": "https://cdn.bitrefill.com/primg/w320h180/amazon_com-usa.png",
+      "priceInSats": 7150,
+      "denomination": 5.0,
+      "denominationCurrency": "USD",
+      "unlockedPercent": 1.7482517
+    },
+    {
+      "id": "walmart-usa",
+      "name": "Walmart United States",
+      "logoUrl": "https://cdn.bitrefill.com/primg/w320h180/walmart-usa.png",
+      "priceInSats": 14300,
+      "denomination": 10.0,
+      "denominationCurrency": "USD",
+      "unlockedPercent": 0.8741259
+    },
+    {
+      "id": "target-usa",
+      "name": "Target United States",
+      "logoUrl": "https://cdn.bitrefill.com/primg/w320h180/target-usa.png",
+      "priceInSats": 35750,
+      "denomination": 25.0,
+      "denominationCurrency": "USD",
+      "unlockedPercent": 0.34965035
+    }
+  ]
+}
+```
+
+In this example the player has 125 sats and the cheapest Amazon US card costs 7,150 sats, so `unlockedPercent` is roughly 1.75% (125 ÷ 7,150).
+
+## Showing progress to players
+
+Because `unlockedPercent` is a straight 0–100 percentage, you can bind it directly to a progress bar to show how close a player is to unlocking each card. Combine it with `logoUrl`, `name`, and `denomination` / `denominationCurrency` to build a "gift card progress" panel that motivates players to keep earning.
+
+<Warning>
+  **Prices are always returned in satoshis, even when your game uses points and a fiat value like USD.** `priceInSats` and `availableBalanceInSats` are denominated in sats because ZBD's gift-card provider uses Bitcoin as its base currency — this is independent of the currency your game rewards or displays in.
+
+  You do **not** need to show sats to your players, and we recommend you don't. Show **`unlockedPercent`** — a percentage toward the card — rather than a sats amount. A progress percentage reads naturally regardless of your game's currency; a raw sats price does not.
+</Warning>
+
+<Note>
+  Handle the edge cases: an empty `giftCards` array means no cards are available to the player, and any card with `unlockedPercent = -1` should be skipped (or shown without a progress value), since that means progress couldn't be calculated.
+</Note>
