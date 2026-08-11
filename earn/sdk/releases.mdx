@@ -1,0 +1,44 @@
+---
+title: 'Releases'
+sidebarTitle: 'Releases'
+description: 'Download the ZBD Earn SDK Unity package and see what changed in each version.'
+icon: 'box-open'
+---
+
+Download the ZBD Earn SDK for Unity below. Each release links to the `.unitypackage` to import into your project and lists what changed.
+
+<Warning>
+**Downloads require access.** The SDK is hosted in a private GitHub repository, so you need to be granted access before you can download it.
+
+If a download link shows **"404 — Page not found"**, your GitHub account hasn't been granted access yet. Reach out to your account manager with your **GitHub username or the email on your GitHub account**, and they'll add you.
+</Warning>
+
+<Note>
+New to the SDK? See [Compatibility](/earn/sdk/compatibility) for supported Unity and OS versions, then follow the [Integration guide](/earn/sdk/integration).
+</Note>
+
+<Update label="v1.1.7" description="2026-08-04">
+**Download:** [ZBDSDK-v1.1.7.unitypackage](https://github.com/zbdpay/rewards-sdk-unity/releases/download/v1.1.7/ZBDSDK-v1.1.7.unitypackage)
+
+No breaking API changes — upgrading from 1.1.x requires no code changes, and existing signed-in players carry over automatically.
+
+### Added
+
+- **[Creative modals](/earn/sdk/creatives)** — show remotely configured promotional creatives with a single `ShowCreative()` call, with no SDK update or app release needed to change a campaign. Supports multi-page carousels with swipe navigation and page dots, portrait and landscape artwork per page (chosen automatically and updated on rotation), `popup` / `fade` / `slide` transitions, optional tap-through into the rewards experience, skinnable next and close buttons, and A/B variants. Images preload at `Init` into a memory-bounded, mobile-tuned cache.
+- **`OnWithdrawWithData` event** — receive a `ZBDWithdrawalSuccessData` payload when a player completes a withdrawal, including the method, amount and its USD value, destination where available, and per-method identifiers (`transactionId`, `giftCardId`, `invoiceId`). The existing parameterless `OnWithdraw` event still fires alongside it, so current integrations keep working unchanged.
+- **[`GetGiftCards`](/earn/sdk/gift-cards)** — fetch the top gift cards available to the player (region-aware), each with its price in sats and how close the player's balance is to unlocking it, for building "you're 80% of the way to a $5 card" moments into your own UI.
+- **`Utils.GetUserId()`** — replaces `GetUserDetailsId()`.
+
+### Changed
+
+- **Face ID is no longer required.** The SDK no longer injects `NSFaceIDUsageDescription` into your `Info.plist`, and no Face ID or LocalAuthentication code ships in your binary — one less App Store privacy declaration to answer for. Biometric-gated withdrawals remain available behind the opt-in `ZBD_ENABLE_BIOMETRICS` scripting define.
+- `GetUserDetailsId()` is deprecated in favour of `Utils.GetUserId()`.
+- iOS Fingerprint Pro SDK updated to 2.17.1.
+
+### Fixed
+
+- **iOS webview layout.** Fixed a family of bugs where the rewards UI could leave parts of the game visible or clip its own content, most notably when a game cold-starts in landscape. The webview is now always full-bleed, sized from the window so it's immune to WKWebView's automatic safe-area insetting and Unity root-controller swaps. Device safe-area insets are now passed to the web app on both iOS and Android so content clears the notch correctly.
+- The SDK recovers automatically from stale or invalid cached device attestation — one restart instead of a stuck install.
+- Players blocked by an ad blocker, VPN, or private DNS during device verification now see an actionable message instead of a raw system error.
+- `Init` no longer hangs when a proxy or WAF returns a non-JSON response.
+</Update>
