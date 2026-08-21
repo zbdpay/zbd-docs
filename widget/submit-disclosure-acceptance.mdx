@@ -6,11 +6,10 @@ api: "POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures"
 
 ## Description
 
-Records the user's acceptance of the latest version of each disclosure type in `acceptedDisclosureTypeIds`.
-
-Use this from your server after your application has presented the applicable
-documents and collected the user's acceptance. Do not call this endpoint from a
-browser, mobile client, game client, or WebView.
+Records the user's acceptance of the latest Electronic Funds Transfer
+disclosure (EFT, type `6`). Use this from your server after your application has
+presented the EFT document and collected the user's explicit acceptance. Do not
+call this endpoint from a browser, mobile client, game client, or WebView.
 
 ## Configuration
 
@@ -33,7 +32,7 @@ browser, mobile client, game client, or WebView.
 ### Body Parameters
 
 <ParamField required body="acceptedDisclosureTypeIds" type="array">
-  Disclosure type IDs accepted by the user. ZBD records acceptance for the latest version of each type.
+  Widget disclosure type IDs accepted by the user. Submit `[6]` to record the latest EFT version.
 </ParamField>
 
 <RequestExample>
@@ -60,13 +59,23 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
 ```
 </ResponseExample>
 
-## Disclosure Type IDs
+## Widget Disclosure Type ID
 
 | Disclosure type | Type ID |
 |---|---:|
-| Terms of Service | `2` |
-| Privacy Policy | `3` |
 | Electronic Funds Transfer | `6` |
+
+Exact disclosure types required depend on your contract and the services you
+use. ACH cashout requires the current EFT version.
+
+## Backward compatibility
+
+The endpoint considers only type `6`. Other type IDs are ignored and are not
+recorded. An older request containing `[2, 3, 6]` records EFT only and returns
+`[6]`. A non-empty request containing only unsupported IDs returns `201` with an
+empty `acceptedDisclosureTypeIds` array.
+
+New and updated integrations should submit only `[6]`.
 
 ## Existing Users
 
@@ -76,7 +85,7 @@ If a user already exists and needs to accept a current disclosure, call this end
 
 | Status | Reason |
 |---|---|
-| `400` | `acceptedDisclosureTypeIds` is empty, missing, or contains an unknown disclosure type |
+| `400` | `acceptedDisclosureTypeIds` is empty or missing |
 | `401` | Missing or invalid API key |
 | `403` | The API key is not allowed to access widget disclosure APIs |
 | `404` | `userId` does not belong to the project associated with the API key |

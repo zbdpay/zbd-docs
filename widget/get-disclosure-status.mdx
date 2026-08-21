@@ -6,11 +6,19 @@ api: "GET https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures"
 
 ## Description
 
-Returns the user's acceptance status for each current disclosure type.
+Returns the user's acceptance status for the current Electronic Funds Transfer
+disclosure (EFT, type `6`). If no EFT disclosure version is currently
+published, `data` is empty.
 
-Use this from your server to determine which current disclosures the user must accept. Present any outstanding documents and collect the user's acceptance in your application before creating a widget session, then record it with [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance). Do not call this endpoint from a browser, mobile client, game client, or WebView.
+Use this from your server to determine whether the latest EFT version is
+current. Exact disclosure types required depend on your contract and the
+services you use; ACH cashout requires current EFT acceptance. Present the
+document outside the widget and record acceptance with
+[Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance).
 
-The API key determines the publisher/project context. `userId` is the ZBD user ID returned when the widget user is created or resolved.
+ZBD Terms of Service and Privacy Policy are not returned by this widget
+endpoint. The API key determines the publisher/project context, and `userId` is
+the ZBD user ID returned when the widget user is created or resolved.
 
 ## Configuration
 
@@ -40,13 +48,6 @@ curl https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
   "message": "Publisher user ToS status retrieved successfully.",
   "data": [
     {
-      "type_id": 2,
-      "name": "Terms of Service",
-      "version": "1.4.0",
-      "tos_current": true,
-      "accepted_at": "2026-01-15T12:00:00Z"
-    },
-    {
       "type_id": 6,
       "name": "Electronic Funds Transfer",
       "version": "1.0.0",
@@ -59,7 +60,9 @@ curl https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
 ```
 </ResponseExample>
 
-`tos_current` means the user has accepted the current version of that disclosure type. A value of `false` means there is no acceptance on record, or the user's latest acceptance is for an older version.
+`tos_current` retains its existing field name and means the user has accepted
+the current EFT version. `false` means there is no EFT acceptance on record or
+the latest acceptance belongs to an older EFT version.
 
 ## Errors
 
