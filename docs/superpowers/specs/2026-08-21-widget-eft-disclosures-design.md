@@ -1,10 +1,10 @@
 # Widget EFT-Only Disclosures — Public Documentation Design
 
-**Date:** 2026-08-21  
-**Status:** Approved for implementation  
-**Repo:** `zbd-docs`  
-**Branch:** `docs/widget-eft-disclosures`  
-**Backend work item:** `platform-accounts-service#248`  
+**Date:** 2026-08-21
+**Status:** Approved for implementation
+**Repo:** `zbd-docs`
+**Branch:** `docs/widget-eft-disclosures`
+**Backend work item:** `platform-accounts-service#248`
 **Companion backend spec:** `platform-accounts-service/docs/superpowers/specs/2026-08-21-widget-eft-disclosures-design.md` on `feat/widget-eft-disclosures`
 
 ## Outcome

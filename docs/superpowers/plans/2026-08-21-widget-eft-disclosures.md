@@ -10,7 +10,7 @@
 
 ---
 
-**Design spec:** `docs/superpowers/specs/2026-08-21-widget-eft-disclosures-design.md`  
+**Design spec:** `docs/superpowers/specs/2026-08-21-widget-eft-disclosures-design.md`
 **Companion backend plan:** `platform-accounts-service/docs/superpowers/plans/2026-08-21-widget-eft-disclosures.md` on `feat/widget-eft-disclosures`
 
 ## File map
