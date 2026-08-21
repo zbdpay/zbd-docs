@@ -5,6 +5,8 @@ description: 'Add real-money rewards to your Unity mobile game. No backend requi
 icon: 'layer-group'
 ---
 
+import { LegalNotice } from '/snippets/legal-disclaimer.mdx';
+
 <Frame>
   <img src="/img/earn/sdk-hero.jpg" />
 </Frame>
@@ -119,15 +121,20 @@ Payments involve compliance requirements. Here's what falls on ZBD and what fall
 
 **ZBD handles:**
 - Player identity verification — players go through a light KYC step the first time they cash out, inside the ZBD modal. You don't build or manage this.
-- Regulatory compliance — ZBD is a licensed payment service provider in the US and EU.
+- Its own regulatory obligations as a payment service provider — ZBD is licensed in the US and EU, and is responsible for the compliance of the payment and KYC services it operates.
 - Fraud tooling — withdrawal limits, device attestation, geolocation, and VPN detection are built into the SDK.
 
 **You are responsible for:**
 - Your reward exposure — you set the budget and limits. ZBD's built-in protections reduce fraud risk, but you ultimately own your reward economics. Moving to [server-side reward delivery](/earn/sdk/send-rewards-server) is the most effective step you can take. See [Security](/earn/sdk/security) for the full picture.
-- App store compliance — ZBD rewards must be implemented correctly to comply with Apple App Store and Google Play policies. See [iOS App Store Guidelines](/earn/sdk/ios-app-store) and [Android App Store Guidelines](/earn/sdk/android-app-store).
+- App store compliance — how you implement rewards determines whether your game meets Apple App Store and Google Play policies. See [Apple App Store Guidelines](/earn/sdk/ios-app-store) and [Google Play Store Guidelines](/earn/sdk/android-app-store).
+- Your own legal and regulatory position — whether real-money rewards are permitted in the markets you ship to, and how promotions, advertising, consumer protection, data protection, and tax or reporting rules apply to your game.
 - How you communicate rewards to players — see the [Player Communication Guide](/earn/sdk/player-comms) for what to say and what to avoid.
 
+ZBD's licensing covers the payment services ZBD operates. It does not extend to your game, your reward design, or how you market it — those remain yours, and only your own legal counsel can tell you where you stand on them.
+
 You do not take on KYC obligations for your players. ZBD holds that relationship.
+
+<LegalNotice />
 
 ## Before you start
 

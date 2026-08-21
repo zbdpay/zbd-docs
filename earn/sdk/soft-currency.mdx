@@ -5,6 +5,9 @@ description: 'Pair your game-themed currency with its real-money value. This pag
 icon: 'coins'
 ---
 
+import { LegalNotice } from '/snippets/legal-disclaimer.mdx';
+
+<LegalNotice />
 <Note>
   This page covers the **in-game currency (Points)** reward model. If you are rewarding players in Bitcoin (sats), the balance display and UX rules are similar — you show sats rather than virtual units, and the payout options differ (gift cards, Cash App, Speed Wallet, Bitcoin). The critical UX rules and IAP compliance guidance on this page apply regardless of reward currency. See [Before You Build](/earn/sdk/planning#payout-options) for the full comparison.
 </Note>
@@ -88,7 +91,7 @@ Avoid:
 ## IAP and subscription rewards
 
 <Warning>
-  Never tie a specific reward amount directly to a purchase. Saying "Buy this item and earn 2,000 coins" violates both Apple App Store and Google Play policies. Use time-limited boosts instead.
+  Never tie a specific reward amount directly to a purchase. Offers like "Buy this item and earn 2,000 coins" risk breaching Apple App Store and Google Play policies, and are a common cause of rejection. Use time-limited boosts instead, and confirm your own offer structure with your legal counsel.
 </Warning>
 
 If you want to use ZBD rewards as part of an IAP or subscription offer, the reward must be a **time-limited earning boost**, not a fixed currency grant.
@@ -98,6 +101,6 @@ If you want to use ZBD rewards as part of an IAP or subscription offer, the rewa
 | "+20% Reward Coins for 24h with this purchase" | "Earn 2,000 Reward Coins when you buy this upgrade" |
 | "VIP members earn 50% more rewards" | "Get $1.00 in rewards with your subscription" |
 
-A boost accelerates earning. It doesn't guarantee a specific withdrawal amount. This keeps your game compliant with both app stores and limits your financial exposure.
+A boost accelerates earning. It doesn't guarantee a specific withdrawal amount. That reduces both your policy risk with the app stores and your financial exposure — though whether any particular offer complies remains your call to make with your own counsel.
 
 If you want to offer rewards as a subscription benefit, we recommend testing the boost percentage (typically +20–50%) once your base integration is stable and your reward economics are well understood.
