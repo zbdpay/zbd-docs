@@ -1,74 +1,80 @@
 ---
 title: "Disclosure Agreements"
-description: "Understand how widget user disclosure acceptance works before cashout."
+description: "Understand how widget EFT disclosure acceptance works before ACH cashout."
 ---
 
 ## Overview
 
-Some cashout flows require the user to accept the latest legal disclosure before
-continuing. ZBD tracks acceptance by disclosure type and version, so a user may
-need to accept a new version even if they accepted an older version before.
+The widget disclosure APIs expose the Electronic Funds Transfer disclosure
+(EFT, type `6`). ACH cashout requires acceptance of the current EFT version.
 
-Your application is responsible for presenting the documents and collecting the
-user's acceptance before it creates a widget session. The widget does not render
-Terms of Service, Privacy Policy, or other disclosure documents, or record
-acceptance on the publisher's behalf. It validates that the required terms have
-been accepted before the user can access its services.
+Other disclosure requirements depend on your agreement with ZBD and the
+services enabled for your project. ZBD presents and records acceptance of its
+Terms of Service (type `2`) and Privacy Policy (type `3`) separately. Do not
+submit those disclosure types through the widget endpoints.
+
+Your application must present the EFT document outside the widget, collect the
+user's explicit acceptance, and record it through the widget disclosure API.
 
 ## End-to-end Flow
 
-```
+```text
 1. Your server creates or resolves the widget user.
-2. Your server reads `outstanding_disclosures` from the response or calls Get Disclosure Status.
-3. Your application presents each outstanding document to the user outside the widget.
-4. Your server records acceptance with Submit Disclosure Acceptance.
+2. Your server reads `outstanding_disclosures` or calls Get Disclosure Status.
+3. If EFT is outstanding, your application presents the document outside the widget.
+4. After the user accepts it, your server submits disclosure type 6.
 5. Your server creates a widget session.
 6. Your frontend opens the returned `widget_url`.
-7. The user can continue to bank linking, identity verification, and cashout.
+7. ACH cashout can proceed after the current EFT version is accepted.
 ```
 
 <Info>
-  Do not open a widget session until the publisher-side disclosure flow is complete. The disclosure APIs require your server-side API key and must not be called from a browser, game client, or WebView.
+  Disclosure APIs require your server-side API key. Never call them from a browser, mobile client, game client, or WebView.
 </Info>
 
 ## Outstanding Disclosures on User Creation
 
-You do not need a separate call to discover what a user still owes. The [Create User](/widget/create-user) response (`POST /api/v1/widget/users`) already includes an **`outstanding_disclosures`** array on that **first user request** — the disclosure versions this user has not yet accepted. Surface or record them right away; if the array is empty, the user is current.
+The [Create User](/widget/create-user) response
+(`POST /api/v1/widget/users`) includes an `outstanding_disclosures` array. The
+array contains the current EFT disclosure when the user has not accepted it. It
+is empty when the user has accepted the current EFT version or no EFT version
+is published.
 
-`outstanding_disclosures` only lists what is **still outstanding**. When you need the complete picture — including which disclosures a user has **already accepted** and when — use the dedicated endpoints:
+This field reports EFT status only. It does not report disclosures managed
+outside the widget APIs.
 
-- [Get Disclosure Status](/widget/get-disclosure-status) — list every current disclosure type with the user's acceptance state (`tos_current`, `accepted_at`), so you can show accepted vs. outstanding.
-- [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) — record acceptance of the latest version from your server.
+Use the dedicated endpoints to retrieve and update EFT acceptance:
+
+- [Get Disclosure Status](/widget/get-disclosure-status) — returns the current
+  EFT version with `tos_current` and `accepted_at`.
+- [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) — records
+  acceptance of the latest EFT version from your server.
 
 <Note>
-  The same `outstanding_disclosures` shape also appears in the widget session status during a session (see [Session Status](#session-status)). Create User is the initial snapshot at provisioning time; Get Disclosure Status is the source of truth for the full, up-to-date acceptance state.
+  `GET /api/v2/session/me` exposes the same EFT-only `outstanding_disclosures` shape during a session. It is read-only status; the widget does not collect acceptance.
 </Note>
 
-## Disclosure Types
-
-The widget disclosure endpoints can check and record acceptance for all current disclosure types.
+## Widget Disclosure Type
 
 | Disclosure type | Type ID | Used for |
 |---|---:|---|
-| Terms of Service | `2` | General ZBD terms |
-| Privacy Policy | `3` | General privacy disclosure |
-| Electronic Funds Transfer | `6` | ACH bank payout authorization |
+| Electronic Funds Transfer | `6` | ACH cashout requirement |
 
 <Note>
-  ACH cashout submission requires the current Electronic Funds Transfer disclosure to be accepted. If the user has not accepted the latest Electronic Funds Transfer disclosure, the cashout request is rejected until acceptance is recorded.
+  ACH cashout submission requires the current EFT disclosure. If the latest version is outstanding, the cashout request is rejected until acceptance is recorded.
 </Note>
+
+## Versioning
+
+ZBD tracks acceptance by disclosure type and version. A user who accepted an
+older EFT version must accept a newly published version before ACH cashout can
+continue. The Create User response and session status report the current
+version when it is outstanding.
 
 ## Session Status
 
-During a widget session, ZBD can return outstanding disclosure information as a
-read-only status. The field is named `outstanding_disclosures`. This does not
-cause the widget to display the documents or collect acceptance.
-
-Terms of Service and Privacy Policy are expected to be accepted before session
-creation. Cashout-specific checks, such as Electronic Funds Transfer acceptance
-for ACH, are enforced when the user submits the cashout.
-
-Example session status shape:
+During a widget session, `GET /api/v2/session/me` can return outstanding EFT as
+read-only status:
 
 ```json
 {
@@ -82,14 +88,14 @@ Example session status shape:
     "capabilities": [],
     "outstanding_disclosures": [
       {
-        "id": 12,
-        "type_id": 2,
-        "name": "Terms of Service",
-        "description": "ZBD Terms of Service Document.",
-        "version": "1.4.0",
-        "content_uri": "https://...",
+        "id": 60,
+        "type_id": 6,
+        "name": "Electronic Funds Transfer",
+        "description": "ZBD Electronic Funds Transfer Document.",
+        "version": "1.0.0",
+        "content_uri": "https://example.com/disclosures/eft",
         "created_at": "2026-06-24T20:11:45Z",
-        "due_date": "2025-08-11T00:00:00"
+        "due_date": "2026-08-11T00:00:00Z"
       }
     ]
   },
@@ -98,32 +104,37 @@ Example session status shape:
 }
 ```
 
-If `outstanding_disclosures` is empty, the user is current on all session disclosures returned by this endpoint. If it is not empty, return the user to the publisher-side acceptance flow rather than expecting the widget to collect it.
+If `outstanding_disclosures` contains EFT, direct the user to your acceptance
+flow before allowing an ACH cashout.
 
-## Recording acceptance before the widget
+## Recording acceptance
 
-Use the widget disclosure APIs from your server before opening the widget. The
-API key determines the project context, so these endpoints only require the
-widget user ID in the path.
+Use [Get Disclosure Status](/widget/get-disclosure-status) to read the current
+EFT state. After presenting the document and collecting the user's explicit
+acceptance, call
+[Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) with type
+`6`.
 
-<Warning>
-  Disclosure endpoints require your server-side API key. Do not call these endpoints directly from a browser, mobile client, game client, or WebView.
-</Warning>
+## Backward compatibility
 
-Use [Get Disclosure Status](/widget/get-disclosure-status) to check current disclosure acceptance and [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) to record acceptance for the latest version of one or more disclosure types.
+The submit endpoint processes only type `6`. Unsupported type IDs are ignored,
+and acceptance is not recorded for those types. For example, a request
+containing `[2, 3, 6]` records only type `6`, and the response contains `[6]`.
+A request containing only unsupported type IDs succeeds and returns an empty
+`acceptedDisclosureTypeIds` array.
+
+New and updated integrations should submit only `[6]`.
 
 ## Existing Users
 
-Disclosure acceptance is versioned. If a user already exists and needs to accept a current disclosure, submit the acceptance with the disclosure endpoint above.
-
-Do not rely on an idempotent user-create call to update disclosure acceptance for an existing user. User creation can return an existing user without recording new disclosure acceptance.
+For an existing user, call the disclosure endpoint whenever EFT is outstanding.
+Do not rely on an idempotent Create User request to record acceptance.
 
 ## Sandbox
 
-Sandbox uses the same disclosure status and acceptance model as production. When testing disclosure handling, use your sandbox API key and sandbox API base URL:
+Sandbox uses the same EFT status, acceptance, and ACH enforcement model as
+production. Use your sandbox API key and sandbox API base URL:
 
 ```text
 https://sandbox-api.zbdpay.com
 ```
-
-Some sandbox bypass settings can skip cashout checks for faster testing. If you specifically need to verify cashout disclosure blocking behavior, make sure your sandbox setup is not bypassing the cashout disclosure gate.

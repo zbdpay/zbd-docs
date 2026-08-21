@@ -11,7 +11,7 @@ Provisions a user in ZBD for your project. Idempotent — if a user with the sam
 Call this from your server before creating a widget session.
 
 <Note>
-  Some cashout methods require acceptance of the latest disclosure before they can proceed. When `outstanding_disclosures` is not empty, your application must present those documents and record acceptance before creating a widget session. See [Disclosure Agreements](/widget/disclosures).
+  The response includes the current EFT disclosure when it is outstanding. ACH cashout requires current EFT acceptance. See [Disclosure Agreements](/widget/disclosures).
 </Note>
 
 ## Configuration
@@ -50,14 +50,18 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users \
 
 ## Response
 
-The response `data` includes the new (or existing) user plus an `outstanding_disclosures` array — the disclosure versions this user still needs to accept. This is returned on the **first user request**, so you have the user's outstanding disclosures immediately, with no extra call.
+The response `data` includes the new (or existing) user plus an
+`outstanding_disclosures` array. The array contains the current Electronic
+Funds Transfer disclosure (type `6`) when the user has not accepted it. It is
+empty when the current version has been accepted or no EFT version is
+published.
 
 <ResponseField name="outstanding_disclosures" type="array">
-  Disclosure versions the user has not yet accepted. Empty when the user is current on all disclosures. Each entry includes `id`, `type_id`, `name`, `description`, `version`, `content_uri`, `created_at`, and `due_date`.
+  The current EFT disclosure when it is outstanding. Each entry includes `id`, `type_id`, `name`, `description`, `version`, `content_uri`, `created_at`, and `due_date`.
 </ResponseField>
 
 <Note>
-  `outstanding_disclosures` lists only what is still outstanding. To list a user's full acceptance state (including what they have **already accepted**), call [Get Disclosure Status](/widget/get-disclosure-status) at any time. See [Disclosure Agreements](/widget/disclosures) for the full model.
+  To read the current EFT version together with `tos_current` and `accepted_at`, call [Get Disclosure Status](/widget/get-disclosure-status). See [Disclosure Agreements](/widget/disclosures) for applicability and enforcement.
 </Note>
 
 <ResponseExample>
@@ -70,14 +74,14 @@ The response `data` includes the new (or existing) user plus an `outstanding_dis
     "email": "player@example.com",
     "outstanding_disclosures": [
       {
-        "id": 12,
-        "type_id": 2,
-        "name": "Terms of Service",
-        "description": "ZBD Terms of Service Document.",
-        "version": "1.4.0",
-        "content_uri": "https://...",
+        "id": 60,
+        "type_id": 6,
+        "name": "Electronic Funds Transfer",
+        "description": "ZBD Electronic Funds Transfer Document.",
+        "version": "1.0.0",
+        "content_uri": "https://example.com/disclosures/eft",
         "created_at": "2026-06-24T20:11:45Z",
-        "due_date": "2025-08-11T00:00:00"
+        "due_date": "2026-08-11T00:00:00Z"
       }
     ]
   }
