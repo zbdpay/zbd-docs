@@ -5,8 +5,6 @@ description: 'Grow per-player withdrawal limits from real monetization signals i
 icon: 'chart-mixed'
 ---
 
-import { LegalNotice } from '/snippets/legal-disclaimer.mdx';
-
 The withdrawal limit is the ceiling on what a player can cash out, so it's also the ceiling on how engaging your rewards can be. The time-based accrual described in [Withdrawal Limits (Server)](/earn/sdk/revenue-based-earning) is a rough proxy for revenue; tying limits to **actual monetization signals from your MMP** (Singular, AppsFlyer, Adjust, and similar) is how you raise them meaningfully.
 
 Done this way the pool is self-funding: players who generate revenue earn the right to withdraw more, and you never give away more than that player has produced.
@@ -191,5 +189,3 @@ The field names differ between the two: the client returns `balance` and `withdr
 Either way you learn two things: what the player currently has, and what they're allowed to cash out. Players with more headroom can be given larger rewards, because you know the revenue is there to back them.
 
 Keeping the two roughly aligned matters — a player who can see a large balance they can't withdraw disengages. See [Best Practices](/earn/sdk/best-practices).
-
-<LegalNotice />

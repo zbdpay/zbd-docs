@@ -5,8 +5,6 @@ description: 'Show full-screen image modals over gameplay, configured by ZBD wit
 icon: 'images'
 ---
 
-import { LegalNotice } from '/snippets/legal-disclaimer.mdx';
-
 Creatives are full-screen image modals your game can show over gameplay. ZBD sets up the creative and hosts the artwork; your game shows it with one line of code. Changing artwork, copy, or behavior later is a ZBD-side change — **no SDK update and no app store release**.
 
 Typical uses:
@@ -439,5 +437,3 @@ Optional. Refreshes the cached creative list. The SDK already fetches during `In
 **Nothing shows for some players only.** Check the locale — a creative with a locale set is only served to matching players. Ask for a version with no locale as a fallback.
 
 **A newly updated creative isn't picked up.** The creative list is cached for the session. Restart the app, or call `FetchCreatives()` to refresh.
-
-<LegalNotice />
