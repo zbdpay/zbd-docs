@@ -65,15 +65,14 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
 |---|---:|
 | Electronic Funds Transfer | `6` |
 
-Exact disclosure types required depend on your contract and the services you
-use. ACH cashout requires the current EFT version.
+ACH cashout requires acceptance of the current EFT version.
 
 ## Backward compatibility
 
-The endpoint considers only type `6`. Other type IDs are ignored and are not
-recorded. An older request containing `[2, 3, 6]` records EFT only and returns
-`[6]`. A non-empty request containing only unsupported IDs returns `201` with an
-empty `acceptedDisclosureTypeIds` array.
+The endpoint processes only type `6`. Unsupported type IDs are ignored, and
+acceptance is not recorded for those types. A request containing `[2, 3, 6]`
+records EFT only and returns `[6]`. A request containing only unsupported IDs
+returns `201` with an empty `acceptedDisclosureTypeIds` array.
 
 New and updated integrations should submit only `[6]`.
 

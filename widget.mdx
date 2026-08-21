@@ -5,7 +5,7 @@ description: "Embed a hosted cashout experience so your users can withdraw earne
 
 ## Overview
 
-The ZBD Widget is an embeddable iframe that runs the cashout experience for your users — OTP verification, identity verification, bank account linking, and bank payouts. Your backend creates widget users, funds their point balances, creates sessions, and records any applicable widget disclosure acceptance before a service that requires it is used.
+The ZBD Widget is an embeddable iframe that supports the cashout experience for your users — OTP verification, identity verification, bank account linking, and bank payouts. Your backend creates and funds widget users, creates sessions, and records acceptance of required disclosures.
 
 ## Prerequisites
 
@@ -30,14 +30,14 @@ To get sandbox running quickly, start with the [sandbox guide](/widget/sandbox):
 
 ## Disclosures
 
-Your application presents and records applicable widget disclosures outside the
-iframe. Exact disclosure types required depend on your contract and the
-services you use. For ACH cashout, the widget disclosure APIs report and record
-Electronic Funds Transfer disclosure type `6`.
+Your application must present and record required widget disclosures outside
+the iframe. Requirements depend on your agreement with ZBD and the services
+enabled for your project. ACH cashout requires acceptance of the current
+Electronic Funds Transfer disclosure (type `6`).
 
-ZBD Terms of Service and Privacy Policy are handled by ZBD-owned product flows,
-not by the publisher through widget endpoints. See
-[Disclosure Agreements](/widget/disclosures) for the complete flow.
+ZBD presents and records acceptance of its Terms of Service and Privacy Policy
+separately. Do not submit those disclosure types through the widget endpoints.
+See [Disclosure Agreements](/widget/disclosures) for the complete flow.
 
 ## Country availability
 

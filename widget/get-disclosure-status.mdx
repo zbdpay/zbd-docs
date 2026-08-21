@@ -10,10 +10,9 @@ Returns the user's acceptance status for the current Electronic Funds Transfer
 disclosure (EFT, type `6`). If no EFT disclosure version is currently
 published, `data` is empty.
 
-Use this from your server to determine whether the latest EFT version is
-current. Exact disclosure types required depend on your contract and the
-services you use; ACH cashout requires current EFT acceptance. Present the
-document outside the widget and record acceptance with
+Use this endpoint from your server to determine whether the latest EFT version
+is current. ACH cashout requires current EFT acceptance. Present the document
+outside the widget and record acceptance with
 [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance).
 
 ZBD Terms of Service and Privacy Policy are not returned by this widget
@@ -60,9 +59,9 @@ curl https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
 ```
 </ResponseExample>
 
-`tos_current` retains its existing field name and means the user has accepted
-the current EFT version. `false` means there is no EFT acceptance on record or
-the latest acceptance belongs to an older EFT version.
+`tos_current` indicates whether the user has accepted the current EFT version.
+`false` means that no EFT acceptance is recorded or that the user accepted an
+earlier version.
 
 ## Errors
 
