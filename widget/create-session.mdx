@@ -10,14 +10,14 @@ Creates a widget session for a user. Returns a `session_token` (JWT) and a `widg
 
 The widget handles OTP email verification, identity verification (Onfido), bank linking (Plaid), and cashout initiation internally.
 
-Before creating a session, your application must already have presented and
-recorded the user's acceptance of its applicable Terms of Service, Privacy
-Policy, and required disclosures. The widget does not display or collect those
-acceptances for the publisher.
+Exact disclosure types required depend on your contract and the services you
+use. For ACH cashout, your application presents and records the current
+Electronic Funds Transfer disclosure (type `6`) outside the widget.
 
-The session can report outstanding disclosures as a read-only status. It does
-not render them or collect acceptance. Cashout-specific disclosures are enforced
-when a cashout is submitted. See [Disclosure Agreements](/widget/disclosures).
+The session can report outstanding EFT through `outstanding_disclosures`, but
+it does not render the document, collect acceptance, or accept anything
+automatically. ACH cashout enforces the current EFT version when the cashout is
+submitted. See [Disclosure Agreements](/widget/disclosures).
 
 ## Configuration
 
