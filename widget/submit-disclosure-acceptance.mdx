@@ -8,9 +8,10 @@ api: "POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures"
 
 Records the user's acceptance of the latest version of each disclosure type in `acceptedDisclosureTypeIds`.
 
-Use this from your server after your application has presented the applicable
-documents and collected the user's acceptance. Do not call this endpoint from a
-browser, mobile client, game client, or WebView.
+For widget ACH cashout, present the Electronic Funds Transfer disclosure and
+submit type `6`, as shown below. Types `1` through `5` are not required for widget
+eligibility. Do not call this endpoint from a browser, mobile client, game
+client, or WebView.
 
 ## Configuration
 
@@ -33,7 +34,7 @@ browser, mobile client, game client, or WebView.
 ### Body Parameters
 
 <ParamField required body="acceptedDisclosureTypeIds" type="array">
-  Disclosure type IDs accepted by the user. ZBD records acceptance for the latest version of each type.
+  Disclosure type IDs accepted by the user. For widget ACH cashout, send `[6]`. ZBD records acceptance for the latest version of each submitted type.
 </ParamField>
 
 <RequestExample>
@@ -64,13 +65,14 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
 
 | Disclosure type | Type ID |
 |---|---:|
-| Terms of Service | `2` |
-| Privacy Policy | `3` |
 | Electronic Funds Transfer | `6` |
+
+Disclosure types `1` through `5` can appear in disclosure status responses, but
+they are not widget session or ACH cashout prerequisites.
 
 ## Existing Users
 
-If a user already exists and needs to accept a current disclosure, call this endpoint. Do not rely on an idempotent user-create call to update disclosure acceptance for an existing user.
+If an existing user has not accepted the current Electronic Funds Transfer disclosure, call this endpoint with type `6`. Do not rely on an idempotent user-create call to update disclosure acceptance.
 
 ## Errors
 
