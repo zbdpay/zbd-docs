@@ -22,7 +22,7 @@ Every ZBD project includes a **sandbox environment** for testing the ZBD Widget 
 | **Identity verification** | Controlled through sandbox identity verification status helpers; no live Onfido review | Required for bank cashouts |
 | **Bank linking (Plaid)** | Full Plaid sandbox flow | Real bank connections |
 | **ACH payout** | Simulated when sandbox bypass is enabled; no real transfer | Real ACH via banking partner |
-| **Disclosures** | Same status and acceptance model; bypass settings may skip cashout disclosure checks | Required disclosures can block cashout until accepted |
+| **Disclosures** | Same status and acceptance model; bypass settings may skip the type `6` ACH check | Electronic Funds Transfer type `6` blocks ACH until accepted |
 | **Webhooks** | Fire normally to your `webhook_url` | Same |
 | **Widget UI** | Identical to production | Same |
 
@@ -112,7 +112,7 @@ The identity verification `status` must be `approved`, `rejected`, or `processin
 Balance helper amounts use currency minor units. For USD, `5000` means `$50.00`.
 
 <Note>
-  Disclosure acceptance can be tested in sandbox with the same flow as production. If you need to verify that cashout is blocked by a missing disclosure, make sure your sandbox setup is not using a bypass mode that skips the disclosure gate.
+  Electronic Funds Transfer disclosure type `6` can be tested in sandbox with the same flow as production. If you need to verify that ACH cashout is blocked when type `6` is missing, make sure your sandbox setup is not using a bypass mode that skips the disclosure gate. Types `1` through `5` do not affect widget eligibility.
 </Note>
 
 <Note>

@@ -5,40 +5,52 @@ description: "Understand how widget user disclosure acceptance works before cash
 
 ## Overview
 
-Some cashout flows require the user to accept the latest legal disclosure before
-continuing. ZBD tracks acceptance by disclosure type and version, so a user may
-need to accept a new version even if they accepted an older version before.
+Widget ACH cashout requires the user to accept the latest Electronic Funds
+Transfer disclosure (type `6`). ZBD tracks acceptance by disclosure type and
+version, so the user must accept a new type `6` version even if they accepted an
+older version before.
 
-Your application is responsible for presenting the documents and collecting the
-user's acceptance before it creates a widget session. The widget does not render
-Terms of Service, Privacy Policy, or other disclosure documents, or record
-acceptance on the publisher's behalf. It validates that the required terms have
-been accepted before the user can access its services.
+Disclosure status does not block widget session creation. The disclosure APIs
+can also return types `1` through `5`; those types do not block widget cashout
+and can be ignored for widget eligibility. Your contract or other ZBD services
+may impose separate legal requirements.
+
+Your application is responsible for presenting the Electronic Funds Transfer
+document and collecting the user's acceptance. The widget does not render the
+document or record acceptance on the publisher's behalf.
 
 ## End-to-end Flow
 
 ```
 1. Your server creates or resolves the widget user.
 2. Your server reads `outstanding_disclosures` from the response or calls Get Disclosure Status.
-3. Your application presents each outstanding document to the user outside the widget.
-4. Your server records acceptance with Submit Disclosure Acceptance.
-5. Your server creates a widget session.
-6. Your frontend opens the returned `widget_url`.
-7. The user can continue to bank linking, identity verification, and cashout.
+3. If you offer ACH, your server checks whether disclosure type `6` is current.
+4. If type `6` is outstanding, your application presents that document outside the widget.
+5. Your server records type `6` acceptance with Submit Disclosure Acceptance.
+6. Your server creates a widget session.
+7. Your frontend opens the returned `widget_url`.
+8. The user can continue to bank linking, identity verification, and cashout.
 ```
 
 <Info>
-  Do not open a widget session until the publisher-side disclosure flow is complete. The disclosure APIs require your server-side API key and must not be called from a browser, game client, or WebView.
+  No disclosure type is checked when a widget session is created. Type `6` is checked only when an ACH cashout is submitted. Complete the publisher-side type `6` flow before opening the widget to avoid sending the user into a blocked ACH flow. Disclosure APIs require your server-side API key and must not be called from a browser, game client, or WebView.
 </Info>
 
 ## Outstanding Disclosures on User Creation
 
-You do not need a separate call to discover what a user still owes. The [Create User](/widget/create-user) response (`POST /api/v1/widget/users`) already includes an **`outstanding_disclosures`** array on that **first user request** — the disclosure versions this user has not yet accepted. Surface or record them right away; if the array is empty, the user is current.
+You do not need a separate call to discover whether Electronic Funds Transfer
+type `6` is outstanding. The [Create User](/widget/create-user) response (`POST
+/api/v1/widget/users`) already includes an **`outstanding_disclosures`** array on
+that **first user request**.
+
+The array can contain types `1` through `5`; ignore those entries for widget
+eligibility. For ACH, filter for `type_id: 6`. If no type `6` entry is present,
+the user is current for the widget ACH disclosure gate.
 
 `outstanding_disclosures` only lists what is **still outstanding**. When you need the complete picture — including which disclosures a user has **already accepted** and when — use the dedicated endpoints:
 
-- [Get Disclosure Status](/widget/get-disclosure-status) — list every current disclosure type with the user's acceptance state (`tos_current`, `accepted_at`), so you can show accepted vs. outstanding.
-- [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) — record acceptance of the latest version from your server.
+- [Get Disclosure Status](/widget/get-disclosure-status) — list every current disclosure type with the user's acceptance state (`tos_current`, `accepted_at`); inspect type `6` for ACH.
+- [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) — record acceptance of the latest type `6` version from your server.
 
 <Note>
   The same `outstanding_disclosures` shape also appears in the widget session status during a session (see [Session Status](#session-status)). Create User is the initial snapshot at provisioning time; Get Disclosure Status is the source of truth for the full, up-to-date acceptance state.
@@ -46,27 +58,25 @@ You do not need a separate call to discover what a user still owes. The [Create 
 
 ## Disclosure Types
 
-The widget disclosure endpoints can check and record acceptance for all current disclosure types.
+The disclosure endpoints can report other types, but the widget has one required
+publisher-managed disclosure:
 
 | Disclosure type | Type ID | Used for |
 |---|---:|---|
-| Terms of Service | `2` | General ZBD terms |
-| Privacy Policy | `3` | General privacy disclosure |
 | Electronic Funds Transfer | `6` | ACH bank payout authorization |
 
 <Note>
-  ACH cashout submission requires the current Electronic Funds Transfer disclosure to be accepted. If the user has not accepted the latest Electronic Funds Transfer disclosure, the cashout request is rejected until acceptance is recorded.
+  ACH cashout submission requires the current Electronic Funds Transfer disclosure to be accepted. If the user has not accepted the latest type `6` version, the request is rejected before payout processing. Type `6` is not required for SCT cashout. Types `1` through `5` do not block widget cashout, and no disclosure type blocks widget session creation.
 </Note>
 
 ## Session Status
 
-During a widget session, ZBD can return outstanding disclosure information as a
-read-only status. The field is named `outstanding_disclosures`. This does not
-cause the widget to display the documents or collect acceptance.
+During a widget session, ZBD can return all outstanding disclosure information
+as a read-only status. The field is named `outstanding_disclosures`. This does
+not cause the widget to display documents or collect acceptance.
 
-Terms of Service and Privacy Policy are expected to be accepted before session
-creation. Cashout-specific checks, such as Electronic Funds Transfer acceptance
-for ACH, are enforced when the user submits the cashout.
+Only an outstanding type `6` entry affects widget ACH eligibility. Types `1`
+through `5` can remain outstanding without blocking the session or cashout.
 
 Example session status shape:
 
@@ -83,10 +93,10 @@ Example session status shape:
     "outstanding_disclosures": [
       {
         "id": 12,
-        "type_id": 2,
-        "name": "Terms of Service",
-        "description": "ZBD Terms of Service Document.",
-        "version": "1.4.0",
+        "type_id": 6,
+        "name": "Electronic Funds Transfer",
+        "description": "Electronic Funds Transfer Agreement.",
+        "version": "1.0.0",
         "content_uri": "https://...",
         "created_at": "2026-06-24T20:11:45Z",
         "due_date": "2025-08-11T00:00:00"
@@ -98,32 +108,40 @@ Example session status shape:
 }
 ```
 
-If `outstanding_disclosures` is empty, the user is current on all session disclosures returned by this endpoint. If it is not empty, return the user to the publisher-side acceptance flow rather than expecting the widget to collect it.
+If `outstanding_disclosures` contains type `6`, return the user to the
+publisher-side EFT acceptance flow before ACH cashout. Do not block widget access
+because the array contains only types `1` through `5`.
 
 ## Recording acceptance before the widget
 
-Use the widget disclosure APIs from your server before opening the widget. The
-API key determines the project context, so these endpoints only require the
-widget user ID in the path.
+Use the widget disclosure APIs from your server to check and record type `6`
+acceptance before ACH cashout. The API key determines the project context, so
+these endpoints only require the widget user ID in the path.
 
 <Warning>
   Disclosure endpoints require your server-side API key. Do not call these endpoints directly from a browser, mobile client, game client, or WebView.
 </Warning>
 
-Use [Get Disclosure Status](/widget/get-disclosure-status) to check current disclosure acceptance and [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) to record acceptance for the latest version of one or more disclosure types.
+Use [Get Disclosure Status](/widget/get-disclosure-status) to check type `6` and
+[Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) to record
+acceptance of its latest version.
 
 ## Existing Users
 
-Disclosure acceptance is versioned. If a user already exists and needs to accept a current disclosure, submit the acceptance with the disclosure endpoint above.
+Disclosure acceptance is versioned. If an existing user needs to accept the
+current Electronic Funds Transfer disclosure, submit type `6` with the endpoint
+above.
 
 Do not rely on an idempotent user-create call to update disclosure acceptance for an existing user. User creation can return an existing user without recording new disclosure acceptance.
 
 ## Sandbox
 
-Sandbox uses the same disclosure status and acceptance model as production. When testing disclosure handling, use your sandbox API key and sandbox API base URL:
+Sandbox uses the same type `6` status and acceptance model as production. When testing disclosure handling, use your sandbox API key and sandbox API base URL:
 
 ```text
 https://sandbox-api.zbdpay.com
 ```
 
-Some sandbox bypass settings can skip cashout checks for faster testing. If you specifically need to verify cashout disclosure blocking behavior, make sure your sandbox setup is not bypassing the cashout disclosure gate.
+Some sandbox bypass settings can skip cashout checks for faster testing. If you
+specifically need to verify that ACH is blocked by missing type `6` acceptance,
+make sure your sandbox setup is not bypassing the disclosure gate.
