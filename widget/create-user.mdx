@@ -11,7 +11,7 @@ Provisions a user in ZBD for your project. Idempotent — if a user with the sam
 Call this from your server before creating a widget session.
 
 <Note>
-  A non-empty `outstanding_disclosures` array does not by itself block widget session creation. For widget ACH cashout, filter this array for Electronic Funds Transfer disclosure type `6`, present that document, and record its acceptance. Types `1` through `5` can be ignored for widget eligibility. See [Disclosure Agreements](/widget/disclosures).
+  Disclosure status does not block widget session creation. For widget ACH cashout, filter `outstanding_disclosures` for Electronic Funds Transfer disclosure type `6`, present that document, and record its acceptance before the ACH request is submitted. Types `1` through `5` can be ignored for widget eligibility. See [Disclosure Agreements](/widget/disclosures).
 </Note>
 
 ## Configuration

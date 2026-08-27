@@ -10,10 +10,10 @@ Transfer disclosure (type `6`). ZBD tracks acceptance by disclosure type and
 version, so the user must accept a new type `6` version even if they accepted an
 older version before.
 
-The disclosure APIs can also return types `1` through `5`. Those types are not
-prerequisites for widget session creation or ACH cashout and can be ignored for
-widget eligibility. Your contract or other ZBD services may impose separate
-legal requirements.
+Disclosure status does not block widget session creation. The disclosure APIs
+can also return types `1` through `5`; those types do not block widget cashout
+and can be ignored for widget eligibility. Your contract or other ZBD services
+may impose separate legal requirements.
 
 Your application is responsible for presenting the Electronic Funds Transfer
 document and collecting the user's acceptance. The widget does not render the
@@ -33,7 +33,7 @@ document or record acceptance on the publisher's behalf.
 ```
 
 <Info>
-  Session creation does not require type `6`, but ACH cashout submission does. Complete the publisher-side type `6` flow before opening the widget to avoid sending the user into a blocked ACH flow. Disclosure APIs require your server-side API key and must not be called from a browser, game client, or WebView.
+  No disclosure type is checked when a widget session is created. Type `6` is checked only when an ACH cashout is submitted. Complete the publisher-side type `6` flow before opening the widget to avoid sending the user into a blocked ACH flow. Disclosure APIs require your server-side API key and must not be called from a browser, game client, or WebView.
 </Info>
 
 ## Outstanding Disclosures on User Creation
@@ -66,7 +66,7 @@ publisher-managed disclosure:
 | Electronic Funds Transfer | `6` | ACH bank payout authorization |
 
 <Note>
-  ACH cashout submission requires the current Electronic Funds Transfer disclosure to be accepted. If the user has not accepted the latest type `6` version, the request is rejected before payout processing. Type `6` is not required for SCT cashout. Types `1` through `5` do not block either widget session creation or widget cashout.
+  ACH cashout submission requires the current Electronic Funds Transfer disclosure to be accepted. If the user has not accepted the latest type `6` version, the request is rejected before payout processing. Type `6` is not required for SCT cashout. Types `1` through `5` do not block widget cashout, and no disclosure type blocks widget session creation.
 </Note>
 
 ## Session Status

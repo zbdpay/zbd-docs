@@ -13,8 +13,8 @@ For widget ACH cashout, inspect Electronic Funds Transfer type `6` only. If its
 `tos_current` value is `false`, present the current EFT document and record
 acceptance with [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance).
 Types `1` through `5` can be ignored for widget eligibility and do not block
-session creation. Do not call this endpoint from a browser, mobile client, game
-client, or WebView.
+cashout. No disclosure type is checked during widget session creation. Do not
+call this endpoint from a browser, mobile client, game client, or WebView.
 
 The API key determines the publisher/project context. `userId` is the ZBD user ID returned when the widget user is created or resolved.
 
