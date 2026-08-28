@@ -176,6 +176,7 @@
                 "pages": [
                   "earn/sdk/error-handling",
                   "earn/sdk/troubleshoot",
+                  "earn/sdk/support-data",
                   "earn/sdk/ios-app-store",
                   "earn/sdk/android-app-store",
                   "earn/sdk/go-live-checklist"

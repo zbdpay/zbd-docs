@@ -1,0 +1,95 @@
+---
+title: 'Support Data'
+sidebarTitle: 'Support Data'
+description: 'Attach your own diagnostics to the support link a player opens from the rewards screen, so tickets arrive with the game context already in them.'
+icon: 'life-ring'
+---
+
+When a player hits a problem in the rewards web app, they can tap **Contact Support**. That opens the support URL you have configured, and the SDK already appends the identifiers ZBD needs to find the account.
+
+Support data lets you add **your own** context to that same link — the level they were on, which world, which build, an internal save id. The ticket then arrives with the information you would otherwise have to ask for.
+
+<Note>
+Requires Unity SDK v1.2.0 or above, and a support URL configured for your app. Without a support URL there is no Contact Support button, and nothing is sent.
+</Note>
+
+## Setting the data
+
+Call `SetSupportData` with a flat dictionary of strings. It replaces the whole payload, so call it again whenever the values change:
+
+```csharp
+ZBDController.Instance.SetSupportData(new Dictionary<string, string> {
+    { "level",       playerLevel.ToString() },
+    { "worldId",     currentWorld.Id },
+    { "buildFlavor", "prod" },
+    { "saveId",      saveGame.ShortId }
+});
+```
+
+To remove it again:
+
+```csharp
+ZBDController.Instance.ClearSupportData();
+```
+
+Values must be strings — format numbers yourself, so they read the way you want them to in the ticket.
+
+## What support receives
+
+Your entries are appended to the support URL, each prefixed with `sd_`:
+
+```
+https://your-support-site.com/help
+    ?errorCode=403W0S
+    &appId=...&appVersion=...&deviceId=...&linkedId=...&version=...
+    &sd_level=42&sd_worldId=winter-2&sd_buildFlavor=prod&sd_saveId=a7f3c9
+```
+
+The `sd_` prefix keeps your keys separate from the SDK's own, so a key of yours can never overwrite one of ours, whatever you name it.
+
+<Warning>
+**Do not put personal data in support data.** These values end up in a URL that opens in an external browser, and your support URL may point at a third-party helpdesk. No email addresses, no usernames, no free text the player typed. Stick to game state: levels, worlds, build identifiers, feature flags, internal ids.
+</Warning>
+
+## Rules and limits
+
+Anything that breaks these rules is dropped rather than sent, and the reason is written to the Unity console so you can see it while testing.
+
+| Rule | Value |
+| --- | --- |
+| Value type | Strings only |
+| Keys | Letters, numbers and underscores (`[a-zA-Z0-9_]`) |
+| Maximum entries | 10 |
+| Maximum value length | 120 characters |
+| Maximum total size | 1,000 characters |
+| Reserved keys | `requestId`, `sessionId` and `userDetailsId` are never forwarded |
+
+The limits exist because support providers and CDNs truncate or reject long URLs. Sending less means the link keeps working.
+
+## When it is sent
+
+You can call `SetSupportData` at any point, including during startup before the rewards screen has ever been opened — the SDK holds the most recent payload and sends it as soon as the web app is ready.
+
+<Note>
+Nothing is stored between sessions. The SDK re-sends the current payload every time the web app loads, so set it once per session (or whenever it changes) and the SDK handles the rest.
+</Note>
+
+The return value tells you what happened, though most games can ignore it:
+
+```csharp
+ZBDSetSupportDataResponse res = ZBDController.Instance.SetSupportData(data);
+
+res.acceptedCount; // how many entries will actually be sent, after the rules above
+res.success;       // false simply means the web app is not open yet — it is sent on load
+```
+
+## Choosing what to send
+
+The useful test is whether it would change how a support agent replies. Good candidates:
+
+- **Progress** — level, chapter, world, prestige tier
+- **Build** — build flavour, store, an internal build number you can map to a release
+- **State** — which feature flags or A/B variants the player is in
+- **Your own ids** — a save id or session id you can look up in your own tooling
+
+Things not worth sending: anything ZBD already appends (app id, app version, device id), anything that changes every frame, and anything you would not be comfortable seeing in a third party's ticketing system.
