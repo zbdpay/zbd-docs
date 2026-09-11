@@ -205,6 +205,42 @@
                 ]
               }
             ]
+          },
+          {
+            "group": "Deprecated",
+            "pages": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "rewards/oauth2",
+                  "rewards/oauth2/integration",
+                  "rewards/oauth2/guidelines",
+                  "rewards/oauth2/walkthrough",
+                  "rewards/oauth2/advanced"
+                ]
+              },
+              {
+                "group": "Integrations",
+                "pages": [
+                  "rewards/oauth2/integrations/intro",
+                  "rewards/oauth2/integrations/next-auth",
+                  "rewards/oauth2/integrations/better-auth"
+                ]
+              },
+              {
+                "group": "API Reference",
+                "icon": "code",
+                "pages": [
+                  "rewards/oauth2/api",
+                  "rewards/oauth2/api/authorization",
+                  "rewards/oauth2/api/retrieve-access-token",
+                  "rewards/oauth2/api/refresh-token",
+                  "rewards/oauth2/api/data-fetching",
+                  "rewards/oauth2/api/retrieve-user",
+                  "rewards/oauth2/api/retrieve-wallet"
+                ]
+              }
+            ]
           }
         ]
       },
@@ -345,43 +381,6 @@
               "bitcoin/utils/btc-usd",
               "bitcoin/utils/is-supported-region",
               "bitcoin/utils/ip"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Login with ZBD",
-        "icon": "shield-halved",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "rewards/oauth2",
-              "rewards/oauth2/integration",
-              "rewards/oauth2/guidelines",
-              "rewards/oauth2/walkthrough",
-              "rewards/oauth2/advanced"
-            ]
-          },
-          {
-            "group": "Integrations",
-            "pages": [
-              "rewards/oauth2/integrations/intro",
-              "rewards/oauth2/integrations/next-auth",
-              "rewards/oauth2/integrations/better-auth"
-            ]
-          },
-          {
-            "group": "API Reference",
-            "icon": "code",
-            "pages": [
-              "rewards/oauth2/api",
-              "rewards/oauth2/api/authorization",
-              "rewards/oauth2/api/retrieve-access-token",
-              "rewards/oauth2/api/refresh-token",
-              "rewards/oauth2/api/data-fetching",
-              "rewards/oauth2/api/retrieve-user",
-              "rewards/oauth2/api/retrieve-wallet"
             ]
           }
         ]
