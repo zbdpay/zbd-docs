@@ -5,13 +5,7 @@ icon: 'gear'
 description: Understand how to use ZBD Payments with LLMs.
 ---
 
-export const PreviewButton = ({ children, href }) => {
-  return (
-    <a href={href} className="text-sm font-medium text-white dark:!text-zinc-950 bg-zinc-900 hover:bg-zinc-700 dark:bg-zinc-100 hover:dark:bg-zinc-300 rounded-full px-3.5 py-1.5 not-prose">
-      {children}
-    </a>
-  )
-}
+import { PreviewButton } from '/snippets/preview-button.jsx';
 
 [docs.zbdpay.com](/) documentation pages are content rich and can be a great source of information for LLMs for AI tools. You can use your documentation to fine-tune a chatbot, answer questions about your product, or use it to generate code.
 

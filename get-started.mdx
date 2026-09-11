@@ -5,7 +5,7 @@ description: 'Global Payment Service Provider for Gaming and Interactive Enterta
 ---
 
 import { BtcEurRate } from "/snippets/btc-eur-rate.jsx";
-import { Footer } from '/snippets/footer.mdx';
+import { Footer } from '/snippets/footer.jsx';
 
 The global payment infrastructure built for the speed and scale of gaming. Process thousands of transactions per second, enable true micropayments, and unlock new monetization models – all through a single API.
 
@@ -75,7 +75,7 @@ Drive user engagement, boost retention, and unlock new revenue streams by offeri
       Programmatically distribute rewards. Perfect for tournaments and achievements.
     </p>
   </Card>
-  <Card title="Login with ZBD" horizontal icon='shield-check' href="/earn/oauth2">
+  <Card title="Login with ZBD" horizontal icon='shield-halved' href="/earn/oauth2">
     <p>
       OAuth2 authentication with built-in wallet creation and KYC.
     </p>
@@ -152,10 +152,10 @@ curl -X GET https://api.zbdpay.com/v0/wallet \
 ### Start with These Guides
 
 <CardGroup cols={3}>
-  <Card title="5-Minute Quickstart" icon="rocket" href="/get-started/quickstart">
+  <Card title="5-Minute Quickstart" icon="rocket" href="/payments/payins/lightning-charges">
     Send your first payment in minutes
   </Card>
-  <Card title="Ramp Integration" icon="circle-dollar" href="/payments/ramp/quickstart">
+  <Card title="Ramp Integration" icon="circle-dollar-to-slot" href="/payments/ramp/quickstart">
     Add fiat-to-crypto in your app
   </Card>
   <Card title="Unity Rewards" icon="gamepad" href="/earn/sdk/integration">
