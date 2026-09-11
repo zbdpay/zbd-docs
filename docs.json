@@ -12,30 +12,30 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Getting Started",
-        "icon": "bolt-lightning",
+        "tab": "Start",
+        "icon": "rocket",
         "groups": [
           {
             "group": "Build with ZBD",
             "icon": "bolt-lightning",
             "pages": [
-              "get-started",
-              "get-started/dev-dashboard",
+              "start",
+              "start/dev-dashboard",
               {
                 "group": "Set Up ZBD",
                 "pages": [
-                  "get-started/create-account",
-                  "get-started/verify-identity",
-                  "get-started/add-funds",
+                  "start/create-account",
+                  "start/verify-identity",
+                  "start/add-funds",
                   {
                     "group": "Projects",
                     "icon": "folder",
                     "pages": [
-                      "get-started/create-project",
-                      "get-started/api-keys",
-                      "get-started/project-wallet",
-                      "get-started/manage-project",
-                      "get-started/sandbox-project"
+                      "start/create-project",
+                      "start/api-keys",
+                      "start/project-wallet",
+                      "start/manage-project",
+                      "start/sandbox-project"
                     ]
                   }
                 ]
@@ -50,11 +50,11 @@
               {
                 "group": "Products",
                 "pages": [
-                  "get-started/zbd-ramp",
-                  "get-started/zbd-earn-sdk",
-                  "get-started/zbd-payments-api",
-                  "get-started/login-with-zbd",
-                  "get-started/zbd-app"
+                  "start/zbd-ramp",
+                  "start/zbd-earn-sdk",
+                  "start/zbd-payments-api",
+                  "start/login-with-zbd",
+                  "start/zbd-app"
                 ]
               },
               {
@@ -91,6 +91,47 @@
                   }
                 ]
               }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Payouts",
+        "icon": "table-cells-large",
+        "groups": [
+          {
+            "group": " ",
+            "pages": [
+              "payouts",
+              "payouts/disclosures"
+            ]
+          },
+          {
+            "group": "Events",
+            "pages": [
+              "payouts/browser-events",
+              "payouts/webhooks"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "payouts/create-user",
+              "payouts/update-user",
+              "payouts/fund-user",
+              "payouts/get-balance",
+              "payouts/create-session",
+              "payouts/get-disclosure-status",
+              "payouts/submit-disclosure-acceptance",
+              "payouts/get-user",
+              "payouts/get-transactions",
+              "payouts/deplete-user"
+            ]
+          },
+          {
+            "group": "Testing",
+            "pages": [
+              "payouts/sandbox"
             ]
           }
         ]
@@ -245,8 +286,8 @@
         ]
       },
       {
-        "tab": "Bitcoin API",
-        "icon": "code",
+        "tab": "Bitcoin",
+        "icon": "lucide:bitcoin",
         "groups": [
           {
             "group": "Overview",
@@ -375,47 +416,6 @@
               "payments/nostr/nostr-relay",
               "payments/openapi",
               "payments/roadmap"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Payouts",
-        "icon": "table-cells-large",
-        "groups": [
-          {
-            "group": " ",
-            "pages": [
-              "payouts",
-              "payouts/disclosures"
-            ]
-          },
-          {
-            "group": "Events",
-            "pages": [
-              "payouts/browser-events",
-              "payouts/webhooks"
-            ]
-          },
-          {
-            "group": "API Reference",
-            "pages": [
-              "payouts/create-user",
-              "payouts/update-user",
-              "payouts/fund-user",
-              "payouts/get-balance",
-              "payouts/create-session",
-              "payouts/get-disclosure-status",
-              "payouts/submit-disclosure-acceptance",
-              "payouts/get-user",
-              "payouts/get-transactions",
-              "payouts/deplete-user"
-            ]
-          },
-          {
-            "group": "Testing",
-            "pages": [
-              "payouts/sandbox"
             ]
           }
         ]
@@ -593,6 +593,14 @@
     {
       "source": "/earn/:slug*",
       "destination": "/rewards/:slug*"
+    },
+    {
+      "source": "/get-started",
+      "destination": "/start"
+    },
+    {
+      "source": "/get-started/:slug*",
+      "destination": "/start/:slug*"
     }
   ],
   "fonts": {
