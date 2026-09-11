@@ -12,7 +12,7 @@ To complete this guide, you will need the following:
 
 ## 1. Create payment request
 
-To create a [Charge](/payments/glossary#charge) on the Bitcoin Lightning Network, use the [Charges HTTP API](/bitcoin/lightning-charges/create):
+To create a [Charge](/bitcoin/payments/glossary#charge) on the Bitcoin Lightning Network, use the [Charges HTTP API](/bitcoin/lightning-charges/create):
 
 ```bash
 curl --request POST \
@@ -28,7 +28,7 @@ Check the `data.invoice.request` property on the response payload for the conten
 
 ## 2. Send payment to Bitcoin Lightning invoice
 
-You can pay a Bitcoin Lightning payment request, or [Charge](/payments/glossary#charge), by leveraging the [Payments HTTP API](/bitcoin/lightning-payments/send):
+You can pay a Bitcoin Lightning payment request, or [Charge](/bitcoin/payments/glossary#charge), by leveraging the [Payments HTTP API](/bitcoin/lightning-payments/send):
 
 ```bash
 curl --request POST \
@@ -44,7 +44,7 @@ Check the `data.status` property on the response payload to know if the payment 
 
 ## 3. Send payment to Lightning Address
 
-To send an instant Bitcoin payment to a [Lightning Address](/payments/lightning-address) (e.g. andre @ zbd.gg), you can use the [Lightning Address HTTP API](/bitcoin/lightning-address/send):
+To send an instant Bitcoin payment to a [Lightning Address](/bitcoin/payments/lightning-address) (e.g. andre @ zbd.gg), you can use the [Lightning Address HTTP API](/bitcoin/lightning-address/send):
 
 ```bash
 curl --request POST \

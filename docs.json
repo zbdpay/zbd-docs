@@ -19,7 +19,7 @@
             "group": " ",
             "pages": [
               "start",
-              "payments/ai-ingestion"
+              "bitcoin/payments/ai-ingestion"
             ]
           }
         ]
@@ -270,8 +270,8 @@
               "bitcoin/lightning-address/send",
               "bitcoin/lightning-address/validate",
               "bitcoin/lightning-address/create-charge",
-              "payments/lightning-address/intro",
-              "payments/lightning-address/static-charges"
+              "bitcoin/payments/lightning-address/intro",
+              "bitcoin/payments/lightning-address/static-charges"
             ]
           },
           {
@@ -341,31 +341,31 @@
           {
             "group": "Payments Overview",
             "pages": [
-              "payments",
-              "payments/lightning-network",
-              "payments/lightning-address"
+              "bitcoin/payments",
+              "bitcoin/payments/lightning-network",
+              "bitcoin/payments/lightning-address"
             ]
           },
           {
             "group": "Guides",
             "pages": [
-              "payments/integrations",
-              "payments/knowledge-base",
-              "payments/replit",
+              "bitcoin/payments/integrations",
+              "bitcoin/payments/knowledge-base",
+              "bitcoin/payments/replit",
               {
                 "group": "Pay Ins",
                 "pages": [
-                  "payments/payins/lightning-charges",
-                  "payments/payins/gamertags"
+                  "bitcoin/payments/payins/lightning-charges",
+                  "bitcoin/payments/payins/gamertags"
                 ]
               },
               {
                 "group": "Pay Outs",
                 "pages": [
-                  "payments/payouts/lightning-address",
-                  "payments/payouts/gamertags",
-                  "payments/payouts/withdrawal-requests",
-                  "payments/payouts/lightning-charges"
+                  "bitcoin/payments/payouts/lightning-address",
+                  "bitcoin/payments/payouts/gamertags",
+                  "bitcoin/payments/payouts/withdrawal-requests",
+                  "bitcoin/payments/payouts/lightning-charges"
                 ]
               }
             ]
@@ -373,19 +373,18 @@
           {
             "group": "Resources",
             "pages": [
-              "payments/coverage",
-              "payments/glossary",
-              "payments/templates",
-              "payments/nostr/nostr-relay",
-              "payments/openapi",
-              "payments/roadmap"
+              "bitcoin/payments/coverage",
+              "bitcoin/payments/glossary",
+              "bitcoin/payments/templates",
+              "bitcoin/payments/nostr/nostr-relay",
+              "bitcoin/payments/openapi"
             ]
           },
           {
             "group": " ",
             "pages": [
               "start/dev-dashboard",
-              "payments/mcp"
+              "bitcoin/payments/mcp"
             ]
           },
           {
@@ -465,7 +464,7 @@
     },
     {
       "source": "/docs/replit-quickstart",
-      "destination": "/payments/replit"
+      "destination": "/bitcoin/payments/replit"
     },
     {
       "source": "/docs/openapi",
@@ -473,15 +472,15 @@
     },
     {
       "source": "/docs/examples",
-      "destination": "/payments/templates"
+      "destination": "/bitcoin/payments/templates"
     },
     {
       "source": "/docs/integrations",
-      "destination": "/payments"
+      "destination": "/bitcoin/payments"
     },
     {
       "source": "/docs/global-support",
-      "destination": "/payments/coverage"
+      "destination": "/bitcoin/payments/coverage"
     },
     {
       "source": "/courses/*",
@@ -489,27 +488,27 @@
     },
     {
       "source": "/knowledge-base/payouts/zbd-gamertag",
-      "destination": "/payments/payouts/gamertags"
+      "destination": "/bitcoin/payments/payouts/gamertags"
     },
     {
       "source": "/knowledge-base/payouts/:slug*",
-      "destination": "/payments/payouts/:slug*"
+      "destination": "/bitcoin/payments/payouts/:slug*"
     },
     {
       "source": "/knowledge-base/payins/charges",
-      "destination": "/payments/payins/lightning-charges"
+      "destination": "/bitcoin/payments/payins/lightning-charges"
     },
     {
       "source": "/knowledge-base/payins/zbd-gamertag",
-      "destination": "/payments/payins/gamertags"
+      "destination": "/bitcoin/payments/payins/gamertags"
     },
     {
       "source": "/knowledge-base/guides/nostr-relay",
-      "destination": "/payments/nostr/nostr-relay"
+      "destination": "/bitcoin/payments/nostr/nostr-relay"
     },
     {
       "source": "/knowledge-base/guides/*",
-      "destination": "/payments"
+      "destination": "/bitcoin/payments"
     },
     {
       "source": "/api-reference/introduction",
@@ -568,11 +567,11 @@
       "destination": "/payouts/:slug*"
     },
     {
-      "source": "/payments/api",
+      "source": "/bitcoin/payments/api",
       "destination": "/bitcoin"
     },
     {
-      "source": "/payments/api/:slug*",
+      "source": "/bitcoin/payments/api/:slug*",
       "destination": "/bitcoin/:slug*"
     },
     {
@@ -590,6 +589,14 @@
     {
       "source": "/get-started/:slug*",
       "destination": "/start/:slug*"
+    },
+    {
+      "source": "/payments",
+      "destination": "/bitcoin/payments"
+    },
+    {
+      "source": "/payments/:slug*",
+      "destination": "/bitcoin/payments/:slug*"
     }
   ],
   "fonts": {
