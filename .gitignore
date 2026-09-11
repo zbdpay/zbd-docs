@@ -1,2 +1,4 @@
-.claude
-.idea
+node_modules/
+dist/
+public/_holocron/
+.DS_Store
