@@ -39,7 +39,7 @@ document or record acceptance on the publisher's behalf.
 ## Outstanding Disclosures on User Creation
 
 You do not need a separate call to discover whether Electronic Funds Transfer
-type `6` is outstanding. The [Create User](/widget/create-user) response (`POST
+type `6` is outstanding. The [Create User](/payouts/create-user) response (`POST
 /api/v1/widget/users`) already includes an **`outstanding_disclosures`** array on
 that **first user request**.
 
@@ -49,8 +49,8 @@ the user is current for the widget ACH disclosure gate.
 
 `outstanding_disclosures` only lists what is **still outstanding**. When you need the complete picture — including which disclosures a user has **already accepted** and when — use the dedicated endpoints:
 
-- [Get Disclosure Status](/widget/get-disclosure-status) — list every current disclosure type with the user's acceptance state (`tos_current`, `accepted_at`); inspect type `6` for ACH.
-- [Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) — record acceptance of the latest type `6` version from your server.
+- [Get Disclosure Status](/payouts/get-disclosure-status) — list every current disclosure type with the user's acceptance state (`tos_current`, `accepted_at`); inspect type `6` for ACH.
+- [Submit Disclosure Acceptance](/payouts/submit-disclosure-acceptance) — record acceptance of the latest type `6` version from your server.
 
 <Note>
   The same `outstanding_disclosures` shape also appears in the widget session status during a session (see [Session Status](#session-status)). Create User is the initial snapshot at provisioning time; Get Disclosure Status is the source of truth for the full, up-to-date acceptance state.
@@ -122,8 +122,8 @@ these endpoints only require the widget user ID in the path.
   Disclosure endpoints require your server-side API key. Do not call these endpoints directly from a browser, mobile client, game client, or WebView.
 </Warning>
 
-Use [Get Disclosure Status](/widget/get-disclosure-status) to check type `6` and
-[Submit Disclosure Acceptance](/widget/submit-disclosure-acceptance) to record
+Use [Get Disclosure Status](/payouts/get-disclosure-status) to check type `6` and
+[Submit Disclosure Acceptance](/payouts/submit-disclosure-acceptance) to record
 acceptance of its latest version.
 
 ## Existing Users

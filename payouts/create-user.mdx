@@ -11,7 +11,7 @@ Provisions a user in ZBD for your project. Idempotent — if a user with the sam
 Call this from your server before creating a widget session.
 
 <Note>
-  Disclosure status does not block widget session creation. For widget ACH cashout, filter `outstanding_disclosures` for Electronic Funds Transfer disclosure type `6`, present that document, and record its acceptance before the ACH request is submitted. Types `1` through `5` can be ignored for widget eligibility. See [Disclosure Agreements](/widget/disclosures).
+  Disclosure status does not block widget session creation. For widget ACH cashout, filter `outstanding_disclosures` for Electronic Funds Transfer disclosure type `6`, present that document, and record its acceptance before the ACH request is submitted. Types `1` through `5` can be ignored for widget eligibility. See [Disclosure Agreements](/payouts/disclosures).
 </Note>
 
 ## Configuration
@@ -57,7 +57,7 @@ The response `data` includes the new (or existing) user plus an `outstanding_dis
 </ResponseField>
 
 <Note>
-  `outstanding_disclosures` lists only what is still outstanding. To list a user's full acceptance state (including what they have **already accepted**), call [Get Disclosure Status](/widget/get-disclosure-status) at any time. See [Disclosure Agreements](/widget/disclosures) for the full model.
+  `outstanding_disclosures` lists only what is still outstanding. To list a user's full acceptance state (including what they have **already accepted**), call [Get Disclosure Status](/payouts/get-disclosure-status) at any time. See [Disclosure Agreements](/payouts/disclosures) for the full model.
 </Note>
 
 <ResponseExample>

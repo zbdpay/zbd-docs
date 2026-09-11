@@ -387,42 +387,42 @@
         ]
       },
       {
-        "tab": "Widgets",
+        "tab": "Payouts",
         "icon": "table-cells-large",
         "groups": [
           {
             "group": "Overview",
             "pages": [
-              "widget",
-              "widget/disclosures"
+              "payouts",
+              "payouts/disclosures"
             ]
           },
           {
             "group": "Events",
             "pages": [
-              "widget/browser-events",
-              "widget/webhooks"
+              "payouts/browser-events",
+              "payouts/webhooks"
             ]
           },
           {
             "group": "API Reference",
             "pages": [
-              "widget/create-user",
-              "widget/update-user",
-              "widget/fund-user",
-              "widget/get-balance",
-              "widget/create-session",
-              "widget/get-disclosure-status",
-              "widget/submit-disclosure-acceptance",
-              "widget/get-user",
-              "widget/get-transactions",
-              "widget/deplete-user"
+              "payouts/create-user",
+              "payouts/update-user",
+              "payouts/fund-user",
+              "payouts/get-balance",
+              "payouts/create-session",
+              "payouts/get-disclosure-status",
+              "payouts/submit-disclosure-acceptance",
+              "payouts/get-user",
+              "payouts/get-transactions",
+              "payouts/deplete-user"
             ]
           },
           {
             "group": "Testing",
             "pages": [
-              "widget/sandbox"
+              "payouts/sandbox"
             ]
           }
         ]
@@ -580,6 +580,14 @@
     {
       "source": "/earn/sdk/intro",
       "destination": "/earn/sdk"
+    },
+    {
+      "source": "/widget",
+      "destination": "/payouts"
+    },
+    {
+      "source": "/widget/:slug*",
+      "destination": "/payouts/:slug*"
     }
   ],
   "fonts": {
