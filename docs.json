@@ -391,7 +391,7 @@
         "icon": "table-cells-large",
         "groups": [
           {
-            "group": "Overview",
+            "group": " ",
             "pages": [
               "payouts",
               "payouts/disclosures"
