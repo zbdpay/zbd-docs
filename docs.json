@@ -350,51 +350,6 @@
         ]
       },
       {
-        "tab": "Onramps",
-        "icon": "circle-dollar-to-slot",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "payments/ramp",
-              "payments/ramp/quickstart",
-              "payments/ramp/user-flow",
-              "payments/ramp/faq"
-            ]
-          },
-          {
-            "group": "SDKs",
-            "pages": [
-              "payments/ramp/sdks/typescript",
-              "payments/ramp/sdks/react",
-              "payments/ramp/sdks/react-native",
-              "payments/ramp/sdks/flutter"
-            ]
-          },
-          {
-            "group": "API",
-            "pages": [
-              "payments/ramp/session"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "payments/ramp/platform",
-              "payments/ramp/themes",
-              "payments/ramp/ai-themes"
-            ]
-          },
-          {
-            "group": "Events",
-            "pages": [
-              "payments/ramp/webhooks",
-              "payments/ramp/emails"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "Login with ZBD",
         "icon": "shield-halved",
         "groups": [
