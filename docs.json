@@ -258,27 +258,27 @@
         ]
       },
       {
-        "tab": "Payments API",
+        "tab": "Bitcoin API",
         "icon": "code",
         "groups": [
           {
             "group": "Overview",
             "pages": [
-              "payments/api",
-              "payments/api/errors",
-              "payments/api/callbacks",
-              "payments/api/resources/openapi",
-              "payments/api/resources/overview",
-              "payments/api/resources/postman"
+              "bitcoin",
+              "bitcoin/errors",
+              "bitcoin/callbacks",
+              "bitcoin/resources/openapi",
+              "bitcoin/resources/overview",
+              "bitcoin/resources/postman"
             ]
           },
           {
             "group": "Lightning Address",
             "pages": [
-              "payments/api/lightning-address",
-              "payments/api/lightning-address/send",
-              "payments/api/lightning-address/validate",
-              "payments/api/lightning-address/create-charge",
+              "bitcoin/lightning-address",
+              "bitcoin/lightning-address/send",
+              "bitcoin/lightning-address/validate",
+              "bitcoin/lightning-address/create-charge",
               "payments/lightning-address/intro",
               "payments/lightning-address/static-charges"
             ]
@@ -286,65 +286,65 @@
           {
             "group": "Lightning Charges",
             "pages": [
-              "payments/api/lightning-charges",
-              "payments/api/lightning-charges/create",
-              "payments/api/lightning-charges/retrieve",
-              "payments/api/lightning-charges/decode",
-              "payments/api/lightning-charges/create-static",
-              "payments/api/lightning-charges/retrieve-static",
-              "payments/api/lightning-charges/update-static"
+              "bitcoin/lightning-charges",
+              "bitcoin/lightning-charges/create",
+              "bitcoin/lightning-charges/retrieve",
+              "bitcoin/lightning-charges/decode",
+              "bitcoin/lightning-charges/create-static",
+              "bitcoin/lightning-charges/retrieve-static",
+              "bitcoin/lightning-charges/update-static"
             ]
           },
           {
             "group": "Lightning Payments",
             "pages": [
-              "payments/api/lightning-payments",
-              "payments/api/lightning-payments/send",
-              "payments/api/lightning-payments/retrieve"
+              "bitcoin/lightning-payments",
+              "bitcoin/lightning-payments/send",
+              "bitcoin/lightning-payments/retrieve"
             ]
           },
           {
             "group": "Withdrawal Requests",
             "pages": [
-              "payments/api/withdrawal-requests",
-              "payments/api/withdrawal-requests/create",
-              "payments/api/withdrawal-requests/retrieve"
+              "bitcoin/withdrawal-requests",
+              "bitcoin/withdrawal-requests/create",
+              "bitcoin/withdrawal-requests/retrieve"
             ]
           },
           {
             "group": "Gamertags",
             "pages": [
-              "payments/api/gamertags",
-              "payments/api/gamertags/send",
-              "payments/api/gamertags/retrieve-payment",
-              "payments/api/gamertags/create-charge",
-              "payments/api/gamertags/retrieve-userid",
-              "payments/api/gamertags/retrieve-from-userid",
-              "payments/api/gamertags/sandbox/send"
+              "bitcoin/gamertags",
+              "bitcoin/gamertags/send",
+              "bitcoin/gamertags/retrieve-payment",
+              "bitcoin/gamertags/create-charge",
+              "bitcoin/gamertags/retrieve-userid",
+              "bitcoin/gamertags/retrieve-from-userid",
+              "bitcoin/gamertags/sandbox/send"
             ]
           },
           {
             "group": "Wallet",
             "pages": [
-              "payments/api/wallet",
-              "payments/api/wallet/retrieve-balance",
-              "payments/api/wallet/internal-transfer"
+              "bitcoin/wallet",
+              "bitcoin/wallet/retrieve-balance",
+              "bitcoin/wallet/internal-transfer"
             ]
           },
           {
             "group": "Keysend",
             "pages": [
-              "payments/api/keysend",
-              "payments/api/keysend/send"
+              "bitcoin/keysend",
+              "bitcoin/keysend/send"
             ]
           },
           {
             "group": "Utilities",
             "pages": [
-              "payments/api/utils",
-              "payments/api/utils/btc-usd",
-              "payments/api/utils/is-supported-region",
-              "payments/api/utils/ip"
+              "bitcoin/utils",
+              "bitcoin/utils/btc-usd",
+              "bitcoin/utils/is-supported-region",
+              "bitcoin/utils/ip"
             ]
           }
         ]
@@ -487,7 +487,7 @@
     },
     {
       "source": "/docs/openapi",
-      "destination": "/payments/api/resources/openapi"
+      "destination": "/bitcoin/resources/openapi"
     },
     {
       "source": "/docs/examples",
@@ -531,7 +531,7 @@
     },
     {
       "source": "/api-reference/introduction",
-      "destination": "/payments/api"
+      "destination": "/bitcoin"
     },
     {
       "source": "/rewards/:slug*",
@@ -588,6 +588,14 @@
     {
       "source": "/widget/:slug*",
       "destination": "/payouts/:slug*"
+    },
+    {
+      "source": "/payments/api",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/api/:slug*",
+      "destination": "/bitcoin/:slug*"
     }
   ],
   "fonts": {
