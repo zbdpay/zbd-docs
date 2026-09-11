@@ -16,36 +16,10 @@
         "icon": "rocket",
         "groups": [
           {
-            "group": "Build with ZBD",
-            "icon": "bolt-lightning",
+            "group": " ",
             "pages": [
               "start",
-              {
-                "group": "Set Up ZBD",
-                "pages": [
-                  "start/create-account",
-                  "start/verify-identity",
-                  "start/add-funds",
-                  {
-                    "group": "Projects",
-                    "icon": "folder",
-                    "pages": [
-                      "start/create-project",
-                      "start/api-keys",
-                      "start/project-wallet",
-                      "start/manage-project",
-                      "start/sandbox-project"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": " ",
-                "pages": [
-                  "payments/mcp",
-                  "payments/ai-ingestion"
-                ]
-              }
+              "payments/ai-ingestion"
             ]
           }
         ]
@@ -410,7 +384,27 @@
           {
             "group": " ",
             "pages": [
-              "start/dev-dashboard"
+              "start/dev-dashboard",
+              "payments/mcp"
+            ]
+          },
+          {
+            "group": "Set Up ZBD",
+            "pages": [
+              "start/create-account",
+              "start/verify-identity",
+              "start/add-funds",
+              {
+                "group": "Projects",
+                "icon": "folder",
+                "pages": [
+                  "start/create-project",
+                  "start/api-keys",
+                  "start/project-wallet",
+                  "start/manage-project",
+                  "start/sandbox-project"
+                ]
+              }
             ]
           }
         ]
