@@ -1,0 +1,27 @@
+{
+  "name": "zbd-docs",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">   <a href=\"https://docs.zbdpay.com\">     <img src=\"https://avatars.githubusercontent.com/u/54384134?s=200&v=4\" height=\"96\" />     <h3 align=\"center\">ZBD API Docs</h3>   </a> </p>",
+  "main": "widget-tab.js",
+  "dependencies": {
+    "@holocron.so/vite": "^0.35.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "vite": "^8.3.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zbdpay/zbd-docs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/zbdpay/zbd-docs/issues"
+  },
+  "homepage": "https://github.com/zbdpay/zbd-docs#readme"
+}
