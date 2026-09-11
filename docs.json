@@ -245,55 +245,6 @@
         ]
       },
       {
-        "tab": "Pay",
-        "icon": "inbox",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "payments",
-              "payments/lightning-network",
-              "payments/lightning-address"
-            ]
-          },
-          {
-            "group": "Guides",
-            "pages": [
-              "payments/integrations",
-              "payments/knowledge-base",
-              "payments/replit",
-              {
-                "group": "Pay Ins",
-                "pages": [
-                  "payments/payins/lightning-charges",
-                  "payments/payins/gamertags"
-                ]
-              },
-              {
-                "group": "Pay Outs",
-                "pages": [
-                  "payments/payouts/lightning-address",
-                  "payments/payouts/gamertags",
-                  "payments/payouts/withdrawal-requests",
-                  "payments/payouts/lightning-charges"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Resources",
-            "pages": [
-              "payments/coverage",
-              "payments/glossary",
-              "payments/templates",
-              "payments/nostr/nostr-relay",
-              "payments/openapi",
-              "payments/roadmap"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "Bitcoin API",
         "icon": "code",
         "groups": [
@@ -381,6 +332,49 @@
               "bitcoin/utils/btc-usd",
               "bitcoin/utils/is-supported-region",
               "bitcoin/utils/ip"
+            ]
+          },
+          {
+            "group": "Payments Overview",
+            "pages": [
+              "payments",
+              "payments/lightning-network",
+              "payments/lightning-address"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "payments/integrations",
+              "payments/knowledge-base",
+              "payments/replit",
+              {
+                "group": "Pay Ins",
+                "pages": [
+                  "payments/payins/lightning-charges",
+                  "payments/payins/gamertags"
+                ]
+              },
+              {
+                "group": "Pay Outs",
+                "pages": [
+                  "payments/payouts/lightning-address",
+                  "payments/payouts/gamertags",
+                  "payments/payouts/withdrawal-requests",
+                  "payments/payouts/lightning-charges"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "payments/coverage",
+              "payments/glossary",
+              "payments/templates",
+              "payments/nostr/nostr-relay",
+              "payments/openapi",
+              "payments/roadmap"
             ]
           }
         ]
