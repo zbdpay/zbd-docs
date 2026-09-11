@@ -738,5 +738,6 @@
       "family": "Inter",
       "fontSize": 26
     }
-  }
+  },
+  "customCss": ":root:root {\n  --sidebar-font-size: 14px;\n  --sidebar-row-padding-y: calc(6em / 14);\n  --sidebar-row-gap: calc(3em / 14);\n  --sidebar-group-margin-top: calc(20em / 14);\n}\n\n/* FRAGILE: inline-TOC heading rows under the active page — pad to match main nav rows. May break on Holocron updates. */\n.slot-sidebar-left nav a[href*=\"#\"] {\n  padding-block: var(--sidebar-row-padding-y) !important;\n}"
 }
