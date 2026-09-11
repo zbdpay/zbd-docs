@@ -1,0 +1,54 @@
+---
+title: 'Introduction'
+icon: 'user-shield'
+description: 'Learn about the features and capabilities of ZBD Login (ZBD OAuth2 API).'
+---
+
+<CardGroup cols={2}>
+  <Card title="Next.js + ZBD Login" icon="/img/logos/nextjs.svg" href="/rewards/oauth2/integration">
+    Out-of-the-box integration with NextAuth.js and ZBD OAuth2 API.
+  </Card>
+  <Card title="API Reference" icon="code" color="#000" href="/rewards/oauth2/api/authorization">
+    Detailed information on the ZBD OAuth2 API and test with our API Playground.
+  </Card>
+  <Card title="Guides & Walkthrougths" icon="bookmark" color="#000" href="/rewards/oauth2/walkthrough">
+    Advanced walkthrough on the steps to integrate ZBD Login with your app.
+  </Card>
+  <Card title="next-auth-zbd-provider" icon="github" color="#000" href="https://github.com/zebedeeio/next-auth-zbd-provider">
+    Open-source ZBD OAuth2 Provider for NextAuth.js.
+  </Card>
+</CardGroup>
+
+## Quick Start
+
+Using `ZBD Login` is an easy and convenient way for users to log into and grant data access to your apps and games across multiple platforms. It is available on iOS, Android, web and desktop environments.
+
+ZBD Login uses the [OAuth 2.0](https://oauth.net/2/) protocol for authentication and authorization, compatible with common OAuth 2.0 scenarios such as web device apps, client side, installed and limited ingress.
+
+`ZBD Login` is used for easily authenticating on apps using ZBD accounts. Users need to have previously signed up on the ZBD App. It allows users to easily and quickly create an account in your game or app without having to set (and possibly forget) a password.
+
+## Features
+
+### ZBD Gamertags
+
+When users choose to log in with ZBD, they can share their ZBD Gamertags with the game or app through their ZBD profiles. The ZBD profile data includes the user's Gamertag, their Lightning Address, profile pictures, verification status and much more.
+
+### Money-enabled OAuth2
+
+Think of `ZBD Login` as a money-enabled OAuth2. Unlike regular OAuth2 providers such as Google, Twitter, Apple, or Facebook, that only provide your game or application with the user's basic information, `ZBD Login` provides you with money capabilities. Whether through the user's ZBD Gamertag, or their public Lightning Address you can send payments and transactions to this user with ease.
+
+### BYOA (Bring Your Own Auth)
+
+`ZBD Login` functionality complements your existing account system. Give people the option to log in with ZBD, in addition to email or other forms of social login. When an email address obtained from `ZBD Login` matches one on your system, you will be able to log that person into your existing account without the need for additional passwords.
+
+### Multi platform
+
+ZBD follows strictly OAuth2 standards, therefore it is possible to integrate with most clients out there. Once users have a ZBD account, they can easily sign in to their accounts using your game or app on different platforms.
+
+### Granular permissions
+
+`ZBD Login` supports specific scopes and permissions that determine what information users choose to share with your app. This means developers have precise control over what is requested and users have precise control over what they want to approve.
+
+### Data deletion
+
+As conforming to a variety of data privacy guidelines (e.g. GDPR, CCPA) users are able to, at anytime, revoke their permissions from the games and apps they have logged in. Once login is made, the `Connected App` will be available on the ZBD App, on which users can easily revoke data access.

@@ -60,25 +60,25 @@
               {
                 "group": "Knowledge Base",
                 "pages": [
-                  "earn/knowledge-base",
+                  "rewards/knowledge-base",
                   {
                     "group": "Rewarded Play",
                     "pages": [
-                      "earn/knowledge-base/rewarded-play",
-                      "earn/knowledge-base/rewarded-play/integrating",
+                      "rewards/knowledge-base/rewarded-play",
+                      "rewards/knowledge-base/rewarded-play/integrating",
                       {
                         "group": "Game Security Course",
                         "pages": [
-                          "earn/knowledge-base/game-security",
-                          "earn/knowledge-base/game-security/insecure-game",
-                          "earn/knowledge-base/game-security/hacking-saved-game",
-                          "earn/knowledge-base/game-security/hacking-memory-values",
-                          "earn/knowledge-base/game-security/decompiling-source-code",
-                          "earn/knowledge-base/game-security/altering-network-traffic",
-                          "earn/knowledge-base/game-security/securing-game",
-                          "earn/knowledge-base/game-security/replay-attacks",
-                          "earn/knowledge-base/game-security/securing-data",
-                          "earn/knowledge-base/game-security/app-check"
+                          "rewards/knowledge-base/game-security",
+                          "rewards/knowledge-base/game-security/insecure-game",
+                          "rewards/knowledge-base/game-security/hacking-saved-game",
+                          "rewards/knowledge-base/game-security/hacking-memory-values",
+                          "rewards/knowledge-base/game-security/decompiling-source-code",
+                          "rewards/knowledge-base/game-security/altering-network-traffic",
+                          "rewards/knowledge-base/game-security/securing-game",
+                          "rewards/knowledge-base/game-security/replay-attacks",
+                          "rewards/knowledge-base/game-security/securing-data",
+                          "rewards/knowledge-base/game-security/app-check"
                         ]
                       }
                     ]
@@ -86,7 +86,7 @@
                   {
                     "group": "Integration Guides",
                     "pages": [
-                      "earn/knowledge-base/integrations/unity"
+                      "rewards/knowledge-base/integrations/unity"
                     ]
                   }
                 ]
@@ -96,41 +96,41 @@
         ]
       },
       {
-        "tab": "Earn",
+        "tab": "Rewards",
         "icon": "layer-group",
         "groups": [
           {
             "group": "Overview",
             "pages": [
-              "earn/sdk",
-              "earn/sdk/planning",
-              "earn/coverage",
-              "earn/app",
-              "earn/app/uri-schemes"
+              "rewards/sdk",
+              "rewards/sdk/planning",
+              "rewards/coverage",
+              "rewards/app",
+              "rewards/app/uri-schemes"
             ]
           },
           {
             "group": "Concepts",
             "pages": [
-              "earn/sdk/reward-economics",
-              "earn/sdk/soft-currency",
-              "earn/sdk/security",
-              "earn/sdk/customization"
+              "rewards/sdk/reward-economics",
+              "rewards/sdk/soft-currency",
+              "rewards/sdk/security",
+              "rewards/sdk/customization"
             ]
           },
           {
             "group": "Setup",
             "pages": [
-              "earn/sdk/download",
-              "earn/sdk/compatibility",
-              "earn/sdk/integration",
-              "earn/sdk/building",
+              "rewards/sdk/download",
+              "rewards/sdk/compatibility",
+              "rewards/sdk/integration",
+              "rewards/sdk/building",
               {
                 "group": "Advanced Configuration",
                 "icon": "sliders",
                 "pages": [
-                  "earn/sdk/url-scheme",
-                  "earn/sdk/attestation-setup"
+                  "rewards/sdk/url-scheme",
+                  "rewards/sdk/attestation-setup"
                 ]
               }
             ]
@@ -138,70 +138,70 @@
           {
             "group": "Sending Rewards",
             "pages": [
-              "earn/sdk/send-rewards-client",
-              "earn/sdk/send-rewards-server",
-              "earn/sdk/restrict-client-rewards"
+              "rewards/sdk/send-rewards-client",
+              "rewards/sdk/send-rewards-server",
+              "rewards/sdk/restrict-client-rewards"
             ]
           },
           {
             "group": "Balances & Limits",
             "pages": [
-              "earn/sdk/user-balance",
-              "earn/sdk/withdrawal-events",
-              "earn/sdk/manage-rewards-balance",
-              "earn/sdk/gift-cards",
-              "earn/sdk/revenue-based-earning",
-              "earn/sdk/mmp-postbacks",
-              "earn/sdk/manage-withdrawal-limits"
+              "rewards/sdk/user-balance",
+              "rewards/sdk/withdrawal-events",
+              "rewards/sdk/manage-rewards-balance",
+              "rewards/sdk/gift-cards",
+              "rewards/sdk/revenue-based-earning",
+              "rewards/sdk/mmp-postbacks",
+              "rewards/sdk/manage-withdrawal-limits"
             ]
           },
           {
             "group": "Developer Dashboard",
             "pages": [
-              "earn/sdk/manage-via-dashboard",
-              "earn/sdk/manage-controls-dashboard",
-              "earn/sdk/manage-user-linking"
+              "rewards/sdk/manage-via-dashboard",
+              "rewards/sdk/manage-controls-dashboard",
+              "rewards/sdk/manage-user-linking"
             ]
           },
           {
             "group": "Best Practices & Engagement",
             "pages": [
-              "earn/sdk/player-comms",
-              "earn/sdk/best-practices",
-              "earn/sdk/creatives",
-              "earn/sdk/local-notifications"
+              "rewards/sdk/player-comms",
+              "rewards/sdk/best-practices",
+              "rewards/sdk/creatives",
+              "rewards/sdk/local-notifications"
             ]
           },
           {
             "group": "Go Live",
             "pages": [
-              "earn/sdk/error-handling",
-              "earn/sdk/troubleshoot",
-              "earn/sdk/support-data",
-              "earn/sdk/ios-app-store",
-              "earn/sdk/android-app-store",
-              "earn/sdk/go-live-checklist"
+              "rewards/sdk/error-handling",
+              "rewards/sdk/troubleshoot",
+              "rewards/sdk/support-data",
+              "rewards/sdk/ios-app-store",
+              "rewards/sdk/android-app-store",
+              "rewards/sdk/go-live-checklist"
             ]
           },
           {
             "group": "API Reference",
             "pages": [
-              "earn/sdk/send-rewards-api",
+              "rewards/sdk/send-rewards-api",
               {
                 "group": "API Keys",
                 "icon": "key",
                 "pages": [
-                  "earn/sdk/create-api-key",
-                  "earn/sdk/list-api-keys",
-                  "earn/sdk/revoke-api-key"
+                  "rewards/sdk/create-api-key",
+                  "rewards/sdk/list-api-keys",
+                  "rewards/sdk/revoke-api-key"
                 ]
               },
               {
                 "group": "Blocklist",
                 "icon": "ban",
                 "pages": [
-                  "earn/sdk/get-blocklist-entries",
-                  "earn/sdk/delete-blocklist-entry"
+                  "rewards/sdk/get-blocklist-entries",
+                  "rewards/sdk/delete-blocklist-entry"
                 ]
               }
             ]
@@ -356,32 +356,32 @@
           {
             "group": "Overview",
             "pages": [
-              "earn/oauth2",
-              "earn/oauth2/integration",
-              "earn/oauth2/guidelines",
-              "earn/oauth2/walkthrough",
-              "earn/oauth2/advanced"
+              "rewards/oauth2",
+              "rewards/oauth2/integration",
+              "rewards/oauth2/guidelines",
+              "rewards/oauth2/walkthrough",
+              "rewards/oauth2/advanced"
             ]
           },
           {
             "group": "Integrations",
             "pages": [
-              "earn/oauth2/integrations/intro",
-              "earn/oauth2/integrations/next-auth",
-              "earn/oauth2/integrations/better-auth"
+              "rewards/oauth2/integrations/intro",
+              "rewards/oauth2/integrations/next-auth",
+              "rewards/oauth2/integrations/better-auth"
             ]
           },
           {
             "group": "API Reference",
             "icon": "code",
             "pages": [
-              "earn/oauth2/api",
-              "earn/oauth2/api/authorization",
-              "earn/oauth2/api/retrieve-access-token",
-              "earn/oauth2/api/refresh-token",
-              "earn/oauth2/api/data-fetching",
-              "earn/oauth2/api/retrieve-user",
-              "earn/oauth2/api/retrieve-wallet"
+              "rewards/oauth2/api",
+              "rewards/oauth2/api/authorization",
+              "rewards/oauth2/api/retrieve-access-token",
+              "rewards/oauth2/api/refresh-token",
+              "rewards/oauth2/api/data-fetching",
+              "rewards/oauth2/api/retrieve-user",
+              "rewards/oauth2/api/retrieve-wallet"
             ]
           }
         ]
@@ -534,52 +534,48 @@
       "destination": "/bitcoin"
     },
     {
-      "source": "/rewards/:slug*",
-      "destination": "/earn/:slug*"
-    },
-    {
       "source": "/rewards",
-      "destination": "/earn/sdk"
+      "destination": "/rewards/sdk"
     },
     {
-      "source": "/earn/api",
-      "destination": "/earn/sdk"
+      "source": "/rewards/api",
+      "destination": "/rewards/sdk"
     },
     {
-      "source": "/earn/api/gamertags",
-      "destination": "/earn/sdk"
+      "source": "/rewards/api/gamertags",
+      "destination": "/rewards/sdk"
     },
     {
-      "source": "/earn/api/gamertags/:slug*",
-      "destination": "/earn/sdk"
+      "source": "/rewards/api/gamertags/:slug*",
+      "destination": "/rewards/sdk"
     },
     {
-      "source": "/earn/knowledge-base/integrations/beamable",
-      "destination": "/earn/knowledge-base/integrations/unity"
+      "source": "/rewards/knowledge-base/integrations/beamable",
+      "destination": "/rewards/knowledge-base/integrations/unity"
     },
     {
-      "source": "/earn/sdk/fraud-prevention",
-      "destination": "/earn/sdk/security"
+      "source": "/rewards/sdk/fraud-prevention",
+      "destination": "/rewards/sdk/security"
     },
     {
-      "source": "/earn/sdk/withdrawal-limits",
-      "destination": "/earn/sdk/revenue-based-earning"
+      "source": "/rewards/sdk/withdrawal-limits",
+      "destination": "/rewards/sdk/revenue-based-earning"
     },
     {
-      "source": "/earn/sdk/user-withdrawal",
-      "destination": "/earn/sdk/user-balance"
+      "source": "/rewards/sdk/user-withdrawal",
+      "destination": "/rewards/sdk/user-balance"
     },
     {
-      "source": "/earn/sdk/increase-withdrawal-limit",
-      "destination": "/earn/sdk/manage-withdrawal-limits"
+      "source": "/rewards/sdk/increase-withdrawal-limit",
+      "destination": "/rewards/sdk/manage-withdrawal-limits"
     },
     {
-      "source": "/earn/sdk/decrease-withdrawal-limit",
-      "destination": "/earn/sdk/manage-withdrawal-limits"
+      "source": "/rewards/sdk/decrease-withdrawal-limit",
+      "destination": "/rewards/sdk/manage-withdrawal-limits"
     },
     {
-      "source": "/earn/sdk/intro",
-      "destination": "/earn/sdk"
+      "source": "/rewards/sdk/intro",
+      "destination": "/rewards/sdk"
     },
     {
       "source": "/widget",
@@ -596,6 +592,14 @@
     {
       "source": "/payments/api/:slug*",
       "destination": "/bitcoin/:slug*"
+    },
+    {
+      "source": "/earn",
+      "destination": "/rewards/sdk"
+    },
+    {
+      "source": "/earn/:slug*",
+      "destination": "/rewards/:slug*"
     }
   ],
   "fonts": {
