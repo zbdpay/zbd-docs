@@ -258,71 +258,6 @@
         ]
       },
       {
-        "tab": "Payments SDK",
-        "icon": "layer-group",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "payments/sdk"
-            ]
-          },
-          {
-            "group": "TypeScript",
-            "pages": [
-              "payments/sdk/typescript",
-              {
-                "group": "Guides",
-                "pages": [
-                  "payments/sdk/typescript/next",
-                  "payments/sdk/typescript/node",
-                  "payments/sdk/typescript/express",
-                  {
-                    "group": "Vercel",
-                    "pages": [
-                      "payments/sdk/typescript/vercel/send",
-                      "payments/sdk/typescript/vercel/receive"
-                    ]
-                  },
-                  {
-                    "group": "Supabase",
-                    "pages": [
-                      "payments/sdk/typescript/supabase/send",
-                      "payments/sdk/typescript/supabase/receive"
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Go",
-            "pages": [
-              "payments/sdk/go"
-            ]
-          },
-          {
-            "group": "Rust",
-            "pages": [
-              "payments/sdk/rust"
-            ]
-          },
-          {
-            "group": "C#",
-            "pages": [
-              "payments/sdk/csharp"
-            ]
-          },
-          {
-            "group": "HTTP",
-            "pages": [
-              "payments/http",
-              "payments/sdk/http"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "Payments API",
         "icon": "code",
         "groups": [
@@ -592,44 +527,8 @@
       "destination": "/get-started"
     },
     {
-      "source": "/docs/nodejs-quickstart",
-      "destination": "/payments/sdk/typescript/node"
-    },
-    {
-      "source": "/docs/nextjs-quickstart",
-      "destination": "/payments/sdk/typescript/next"
-    },
-    {
-      "source": "/docs/express-quickstart",
-      "destination": "/payments/sdk/typescript/express"
-    },
-    {
-      "source": "/docs/vercel-edge-functions/send",
-      "destination": "/payments/sdk/typescript/vercel/send"
-    },
-    {
-      "source": "/docs/vercel-edge-functions/receive",
-      "destination": "/payments/sdk/typescript/vercel/receive"
-    },
-    {
-      "source": "/docs/supabase-edge-functions/send",
-      "destination": "/payments/sdk/typescript/supabase/send"
-    },
-    {
-      "source": "/docs/supabase-edge-functions/receive",
-      "destination": "/payments/sdk/typescript/supabase/receive"
-    },
-    {
-      "source": "/docs/csharp-quickstart",
-      "destination": "/payments/sdk/csharp"
-    },
-    {
-      "source": "/docs/go-quickstart",
-      "destination": "/payments/sdk/go"
-    },
-    {
       "source": "/docs/replit-quickstart",
-      "destination": "/payments/sdk"
+      "destination": "/payments/replit"
     },
     {
       "source": "/docs/openapi",
@@ -638,10 +537,6 @@
     {
       "source": "/docs/examples",
       "destination": "/payments/templates"
-    },
-    {
-      "source": "/docs/sdk",
-      "destination": "/payments/sdk"
     },
     {
       "source": "/docs/integrations",
