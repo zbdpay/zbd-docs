@@ -20,7 +20,6 @@
             "icon": "bolt-lightning",
             "pages": [
               "start",
-              "start/dev-dashboard",
               {
                 "group": "Set Up ZBD",
                 "pages": [
@@ -41,54 +40,10 @@
                 ]
               },
               {
-                "group": "Building with LLMs",
+                "group": " ",
                 "pages": [
                   "payments/mcp",
                   "payments/ai-ingestion"
-                ]
-              },
-              {
-                "group": "Products",
-                "pages": [
-                  "start/zbd-ramp",
-                  "start/zbd-earn-sdk",
-                  "start/zbd-payments-api",
-                  "start/login-with-zbd",
-                  "start/zbd-app"
-                ]
-              },
-              {
-                "group": "Knowledge Base",
-                "pages": [
-                  "rewards/knowledge-base",
-                  {
-                    "group": "Rewarded Play",
-                    "pages": [
-                      "rewards/knowledge-base/rewarded-play",
-                      "rewards/knowledge-base/rewarded-play/integrating",
-                      {
-                        "group": "Game Security Course",
-                        "pages": [
-                          "rewards/knowledge-base/game-security",
-                          "rewards/knowledge-base/game-security/insecure-game",
-                          "rewards/knowledge-base/game-security/hacking-saved-game",
-                          "rewards/knowledge-base/game-security/hacking-memory-values",
-                          "rewards/knowledge-base/game-security/decompiling-source-code",
-                          "rewards/knowledge-base/game-security/altering-network-traffic",
-                          "rewards/knowledge-base/game-security/securing-game",
-                          "rewards/knowledge-base/game-security/replay-attacks",
-                          "rewards/knowledge-base/game-security/securing-data",
-                          "rewards/knowledge-base/game-security/app-check"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Integration Guides",
-                    "pages": [
-                      "rewards/knowledge-base/integrations/unity"
-                    ]
-                  }
                 ]
               }
             ]
@@ -96,7 +51,7 @@
         ]
       },
       {
-        "tab": "Payouts",
+        "tab": "Embedded Payouts",
         "icon": "table-cells-large",
         "groups": [
           {
@@ -282,6 +237,40 @@
                 ]
               }
             ]
+          },
+          {
+            "group": "Knowledge Base",
+            "pages": [
+              "rewards/knowledge-base",
+              {
+                "group": "Rewarded Play",
+                "pages": [
+                  "rewards/knowledge-base/rewarded-play",
+                  "rewards/knowledge-base/rewarded-play/integrating",
+                  {
+                    "group": "Game Security Course",
+                    "pages": [
+                      "rewards/knowledge-base/game-security",
+                      "rewards/knowledge-base/game-security/insecure-game",
+                      "rewards/knowledge-base/game-security/hacking-saved-game",
+                      "rewards/knowledge-base/game-security/hacking-memory-values",
+                      "rewards/knowledge-base/game-security/decompiling-source-code",
+                      "rewards/knowledge-base/game-security/altering-network-traffic",
+                      "rewards/knowledge-base/game-security/securing-game",
+                      "rewards/knowledge-base/game-security/replay-attacks",
+                      "rewards/knowledge-base/game-security/securing-data",
+                      "rewards/knowledge-base/game-security/app-check"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Integration Guides",
+                "pages": [
+                  "rewards/knowledge-base/integrations/unity"
+                ]
+              }
+            ]
           }
         ]
       },
@@ -416,6 +405,12 @@
               "payments/nostr/nostr-relay",
               "payments/openapi",
               "payments/roadmap"
+            ]
+          },
+          {
+            "group": " ",
+            "pages": [
+              "start/dev-dashboard"
             ]
           }
         ]
