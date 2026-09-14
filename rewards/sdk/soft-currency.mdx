@@ -1,0 +1,103 @@
+---
+title: 'Soft Currency Model'
+sidebarTitle: 'Displaying Rewards'
+description: 'Pair your game-themed currency with its real-money value. This page covers how to display rewards throughout your game and why it matters.'
+icon: 'coins'
+---
+
+<Note>
+  This page covers the **in-game currency (Points)** reward model. If you are rewarding players in Bitcoin (sats), the balance display and UX rules are similar — you show sats rather than virtual units, and the payout options differ (gift cards, Cash App, Speed Wallet, Bitcoin). The critical UX rules and IAP compliance guidance on this page apply regardless of reward currency. See [Before You Build](/rewards/sdk/planning#payout-options) for the full comparison.
+</Note>
+
+The ZBD Earn SDK is built around a soft-currency model: players accumulate virtual units in your game's own currency (coins, gems, tokens, whatever fits your universe) and convert them to real money only at the point of withdrawal. ZBD handles the conversion.
+
+Players are ultimately here for real money — that's the point of the product. Your themed currency keeps rewards native to your game's world and lets you be generous with the numbers; the dollar value is what makes them real. Show both: lead with your currency, and pair it with its real-money value — "You earned 2,500 coins (\$0.25)".
+
+## What to show where
+
+| Context | Show this | Not this |
+|---------|-----------|----------|
+| Reward notification during gameplay | "You earned 500 coins (\$0.05)!" | Coins with the real-money value hidden |
+| Persistent balance display | "Your balance: 12,400 coins ≈ \$1.24" | Coins alone, no dollar value |
+| First-open reveal (after the first reward) | "You've already earned 500 coins (\$0.05) — this game shares its ad revenue with players" | "Earn real money while you play!" (an offer, not a reveal) |
+| Milestone progress | "Next reward: \$5 gift card — 80% there" | A far-off summit ("Save up for a \$100 payout") |
+| Daily limit reached | "You've maxed out today's rewards. Come back tomorrow to earn more." | "Daily withdrawal limit: $0.20" |
+| Claim screen | ZBD modal handles this. Don't build a custom screen. | n/a |
+
+## Creating your rewards currency
+
+You will need to create a new in-game currency specifically for ZBD rewards. This currency has one purpose: it can be withdrawn as real money via the ZBD modal. Players cannot spend it inside the game.
+
+Name it something that fits your game's universe. The currency name appears in your UI; ZBD never shows it externally. Some examples:
+
+- A pirate game: Doubloons
+- A space game: Credits
+- A fantasy game: Gold Coins
+- A generic implementation: Reward Points
+
+You do not need to build a store or spend mechanic for this currency. Just a balance display and a button that opens the ZBD modal.
+
+## Required UI elements
+
+Two UI components are required:
+
+### 1. Rewards counter (P0)
+
+A persistent display of the player's current rewards balance. Treat it like any other in-game currency display. Always visible, on the home screen and in gameplay.
+
+Tapping the counter opens the ZBD modal directly. Do not add an intermediate screen.
+
+### 2. Rewards button (optional, recommended)
+
+A secondary entry point from the main menu or store page. Some players won't realize the counter is tappable. The button makes the entry point explicit.
+
+Both the counter and the button should open the modal with a single call:
+
+```csharp
+ZBDModalController.Instance.ShowModal();
+```
+
+## Critical UX rules
+
+Breaking any of these measurably reduces cashout rates and player engagement.
+
+**1. Entry point goes directly to the claim flow.** Do not add screens between your entry point and the ZBD modal. One extra screen drops cashout rates. The modal is the product. Get players there fast.
+
+**2. Balance is always visible.** Home screen, store page, during gameplay. Players who can't see their balance disengage. Treat it the same as your gem or coin counter.
+
+**3. Reveal rewards in session 1 — after the first reward lands.** Don't wait for players to discover the feature on their own, but don't pitch it cold either. Fire the first reward early in normal play, then surface a one-screen reveal: the balance they already have, plus the reason ("this game shares its ad revenue with players"). Players who engage with rewards early retain significantly better — and a reveal converts where an offer doesn't. A [creative](/rewards/sdk/creatives) is the ideal vehicle.
+
+**4. Never fail silently on init failure.** If `Init` fails the modal can't be shown — it has nothing loaded to display — so handle the failure yourself: read the reason off the `completion` object and either show your own message (network, VPN/ad-blocker, attestation) or hide the rewards UI entirely (maintenance, unsupported region). A rewards button that does nothing destroys trust before any reward is delivered. See [Error Handling](/rewards/sdk/error-handling).
+
+**5. Frame the withdrawal limit as a daily return mechanic.** When a player has withdrawn everything their limit currently allows, the correct message is "Come back tomorrow to earn more," not "You've reached your limit." Their daily allowance for unlocking more resets every 24 hours. Frame it as an opportunity, not a cap.
+
+## Reward moment design
+
+Tie reward triggers to high-emotion gameplay moments, the places where a player already feels a rush of satisfaction. Real-money rewards amplify that feeling. A reward that arrives when a player just cleared all their daily missions feels like recognition. A reward that arrives at an arbitrary moment feels like a pop-up.
+
+Good trigger placements:
+- Level completions and milestone unlocks
+- Daily mission chest rewards
+- Skill combos or streak achievements
+- Refer-a-friend conversions
+
+Avoid:
+- Passive or arbitrary placements (watching an ad, launching the app)
+- Direct rewards tied to purchases (use time-limited boosts instead, see below)
+
+## IAP and subscription rewards
+
+<Warning>
+  Never tie a specific reward amount directly to a purchase. Saying "Buy this item and earn 2,000 coins" violates both Apple App Store and Google Play policies. Use time-limited boosts instead.
+</Warning>
+
+If you want to use ZBD rewards as part of an IAP or subscription offer, the reward must be a **time-limited earning boost**, not a fixed currency grant.
+
+| Do this | Not this |
+|---------|---------|
+| "+20% Reward Coins for 24h with this purchase" | "Earn 2,000 Reward Coins when you buy this upgrade" |
+| "VIP members earn 50% more rewards" | "Get $1.00 in rewards with your subscription" |
+
+A boost accelerates earning. It doesn't guarantee a specific withdrawal amount. This keeps your game compliant with both app stores and limits your financial exposure.
+
+If you want to offer rewards as a subscription benefit, we recommend testing the boost percentage (typically +20–50%) once your base integration is stable and your reward economics are well understood.

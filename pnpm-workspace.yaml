@@ -1,0 +1,4 @@
+allowBuilds:
+  esbuild: true
+  opencode-ai: true
+  workerd: false

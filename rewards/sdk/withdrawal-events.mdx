@@ -1,0 +1,92 @@
+---
+title: 'Withdrawal Events'
+sidebarTitle: 'Withdrawal Events'
+description: 'React in your game when a player completes a withdrawal, with full transaction detail.'
+icon: 'bell-concierge'
+---
+
+The withdrawal itself happens inside the ZBD modal, but your game usually wants to know it happened — to refresh a balance display, fire a celebration, or log the cashout to your own analytics.
+
+Two events fire when a player completes a withdrawal:
+
+| Event | Payload |
+|---|---|
+| `OnWithdraw` | None — a bare notification that a withdrawal completed. |
+| `OnWithdrawWithData` | A `ZBDWithdrawalSuccessData` object describing the cashout. |
+
+Both fire on every successful withdrawal, so existing integrations that only listen to `OnWithdraw` keep working unchanged.
+
+<Note>
+`OnWithdrawWithData` requires Unity SDK v1.1.7 or above.
+</Note>
+
+## Subscribing
+
+```csharp
+using ZBD;
+
+private void Start()
+{
+    ZBDController.Instance.OnWithdrawWithData += HandleWithdrawal;
+}
+
+private void OnDestroy()
+{
+    ZBDController.Instance.OnWithdrawWithData -= HandleWithdrawal;
+}
+
+private void HandleWithdrawal(ZBDWithdrawalSuccessData data)
+{
+    // Refresh your balance display, celebrate, and log it
+    Debug.Log($"Withdrew via {data.method}, worth {data.usdValue ?? 0} USD");
+
+    if (data.method == ZBDWithdrawalMethod.Bitrefill)
+    {
+        Debug.Log($"Gift card: {data.giftCardName}");
+    }
+}
+```
+
+Always unsubscribe in `OnDestroy` to avoid holding a reference to a destroyed object.
+
+## The payload
+
+`ZBDWithdrawalSuccessData` is **always non-null**, but individual fields may be unset — which fields arrive depends on the payout method the player chose.
+
+### Always present (when the web app sends them)
+
+| Field | Type | Description |
+|---|---|---|
+| `method` | `ZBDWithdrawalMethod` | The payout method: `Speed`, `CashApp`, `Bitrefill` (gift cards), `Zbd`, `Bank`, or `Unknown`. |
+| `amount` | `long?` | Amount withdrawn, in the player's reward currency. |
+| `usdValue` | `decimal?` | USD value of the withdrawal, to two decimal places. |
+| `earningType` | `ZBDEarningType` | Which reward system the balance was earned in: `Points`, `Sats`, or `Unknown`. |
+
+### Method-specific
+
+| Field | Type | Present for |
+|---|---|---|
+| `destination` | `string` | Speed, Cash App, Bank — where the money went. |
+| `transactionId` | `string` | Speed, Cash App, Bank. |
+| `giftCardId` | `string` | Gift cards (`Bitrefill`). |
+| `giftCardName` | `string` | Gift cards — the brand, e.g. "Amazon". |
+| `recipientEmail` | `string` | Gift cards — where the card was sent. |
+| `invoiceId` | `string` | Gift cards. |
+| `amountInCurrency` | `decimal?` | ZBD, Bank — the amount in `currency`. |
+| `currency` | `string` | ZBD, Bank — the fiat currency of `amountInCurrency`. |
+
+<Warning>
+The numeric fields are nullable (`long?`, `decimal?`) and the strings can be null. Null-check before using them — a method that doesn't provide a destination, or a web app that omitted a field, will leave them unset rather than zero or empty.
+</Warning>
+
+### Raw variants
+
+Every parsed field has a `raw` string counterpart: `rawMethod`, `rawEarningType`, `amountRaw`, `usdValueRaw`, `amountInCurrencyRaw`.
+
+These carry exactly what the rewards web app sent, before the SDK parsed it into an enum or number. Use them when `method` or `earningType` comes back `Unknown` — a new payout method the SDK doesn't recognise yet will still have its name in `rawMethod`, which means your analytics keep working without an SDK upgrade.
+
+## What to use it for
+
+- **Refresh your balance display.** The player's balance has changed; re-read it with [`GetBalance`](/rewards/sdk/user-balance).
+- **Celebrate.** A completed cashout is the strongest moment in the whole journey — the [Player Communication Guide](/rewards/sdk/player-comms) covers making it feel like a level-up rather than a receipt.
+- **Log the cashout to your analytics.** `method` and `usdValue` together tell you which payout options your players actually use and what they're worth, which is what you need to decide which options to promote.

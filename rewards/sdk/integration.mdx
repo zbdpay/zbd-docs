@@ -1,0 +1,183 @@
+---
+title: 'Integrating Earn SDK'
+sidebarTitle: 'Integration'
+description: 'How to import and initialize the ZBD Earn SDK.'
+icon: 'gamepad'
+---
+
+# Import the SDK
+
+<Steps>
+  <Step title="Download the ZBD SDK">
+    Reach out to your ZBD Customer Success Manager to get access to the Unity SDK package.
+  </Step>
+  <Step title="Import the .unitypackage">
+    To import a package, right-click the assets folder in Unity Editor and choose `"Import Package..."`.
+  </Step>
+  <Step title="Drag and drop the ZBDSDK into your scene">
+    Navigate to the newly imported ZBD folder `Prefabs` and drag and drop the ZBDSDK prefab into your scene.
+  </Step>
+  <Step title="Adjust UI elements (Optional)">
+    Due to your specific scene resolution settings and orientation you may need to resize/adjust the included UI elements. We will explain how to do this in more detail later in this documentation, but for now we are assuming the UI element has imported correctly.
+  </Step>
+</Steps>
+
+# Add your App ID
+
+You should have received your `App ID` from your ZBD Customer Success Manager. You’ll need to set this in the `ZBDController` script which is attached to the `ZBDSDK` game object in the ZBDSDK prefab.
+
+<Frame>
+  <img src="/img/earn/init-sdk.png" alt="Initialize SDK" />
+</Frame>
+
+If you have not been given an App ID, reach out to your Customer Success Manager.
+
+# Initialize the SDK
+
+<Note>
+Pass a `userId` during initialization — your own internal identifier for the player. The SDK works without it, but it's the key that joins your players to ZBD, so it's required for analytics, user linking, and for raising withdrawal limits from MMP revenue data. See [Increasing Limits with MMP Data](/rewards/sdk/mmp-postbacks). If you can't supply it at `Init`, set it later with `SetUserId`.
+</Note>
+<Warning>
+  Please reach out to your ZBD Customer Success Manager if you face any issues.
+</Warning>
+
+Once the ZBDSDK prefab is added you can initiate the SDK from another script, such as your main controller, via the following call:
+
+```csharp
+// Initialize the SDK with your internal userId
+
+using ZBD;
+
+ZBDController.Instance.Init(userId, completion =>
+  {
+    if (completion.success) {
+      Debug.Log("success");
+    } else if (completion.maintenance) {
+      // Platform is in maintenance mode — display a message to the user
+      Debug.Log("Rewards are temporarily unavailable. Please try again later.");
+    } else {
+      Debug.LogError(completion.error);
+    }
+  }
+);
+```
+
+### Initializing SDK without `userId`
+
+You can also set the `userId` at any time after initialization by calling:
+
+```csharp
+  ZBDController.Instance.SetUserId("user_id");
+```
+
+```csharp
+using ZBD;
+
+ZBDController.Instance.Init(completion =>
+	{
+	  if (completion.success) {
+	    Debug.Log("success");
+	  } else if (completion.maintenance) {
+	    Debug.Log("Rewards are temporarily unavailable. Please try again later.");
+	  } else {
+      Debug.LogError(completion.error);
+    }
+  }
+);
+```
+
+<Note>
+This will allow the user to start earning. To withdraw, they open the ZBD modal, where they see their balance and the cashout options configured for your app — gift cards, Cash App, ZBD, and others depending on their region. A linked ZBD account is only needed if they choose to cash out **to ZBD**; the other options don't require one.
+
+**Timing matters:** present the modal when the player taps their rewards balance or a claim prompt — once there's a balance worth claiming — never at cold launch or before they've earned anything. See the [Player Communication Guide](/rewards/sdk/player-comms).
+</Note>
+
+### Handling Maintenance Mode
+
+The ZBD platform may occasionally enter maintenance mode. When this happens, the SDK response will include a `maintenance` flag set to `true`. Check for this flag during initialization and respond based on the player: hide rewards UI entirely for players who haven't started earning, and show a brief, ZBD-free message (e.g. *"Rewards are temporarily unavailable"*) for players who already have a balance. See [Error Handling](/rewards/sdk/error-handling#maintenance-mode) for the full guidance.
+
+The `Init` response object contains the following fields:
+
+```csharp
+public class ZBDInitResponse
+{
+    public bool success;
+    public bool maintenance;
+    public string userId;
+    public string error;
+    public string type;
+}
+```
+
+When `maintenance` is `true`:
+- The SDK will not be fully operational
+- Reward sending will be unavailable
+- You should display a user-friendly message (e.g. *"Rewards are temporarily unavailable. Please try again later."*)
+- You should **not** treat this as an error — maintenance periods are temporary
+
+<Warning>
+Maintenance mode can begin at any time, including while players are actively in a session. This means `Init` may succeed normally, but subsequent calls to `SendReward` or `GetBalance` can return `maintenance = true` during gameplay. You must handle the maintenance flag on **every** SDK response, not just during initialization.
+</Warning>
+
+The following SDK methods can return the `maintenance` flag:
+
+| Method | Response Class |
+|---|---|
+| `Init` | `ZBDInitResponse` |
+| `SendReward` | `ZBDSendRewardResponse` |
+| `GetBalance` | `ZBDBalanceResponse` |
+
+### Presenting SDK Modal
+
+```csharp
+ZBDModalController.Instance.ShowModal();
+```
+
+`ShowModal()` presents the ZBD modal, showing the player their balance and the cashout options configured for your app.
+
+Users can **view their balance** and **initiate a withdrawal** from this modal. Cashing out to ZBD requires a linked ZBD account, and the modal guides the player through that if they pick it; other payout options don't need one.
+
+### Detecting Modal Visibility
+
+You may want to stop the gameplay or trigger some other event when the SDK modal becomes visible. You can **detect when the modal is visible** via 2 methods:
+
+**Subscribe to the `ModalIsVisible` event**
+
+```csharp
+private void Start()
+{
+  ZBDController.Instance.ModalIsVisible += WebViewVisible;
+}
+  
+void WebViewVisible(bool visible)
+{
+  // handle event here
+}
+  
+private void OnDestroy()
+{
+  ZBDController.Instance.ModalIsVisible -= WebViewVisible;
+}
+```
+
+**Invoke `IsModalVisible()`**
+
+You can also call `IsModalVisible()` to check the status of the modal.
+
+```csharp
+ZBDModalController.Instance.IsModalVisible();
+```
+
+### Android Back Button
+
+In Android you can detect whether the modal is open and close it with the following code snippet. 
+
+```csharp
+if (Input.GetKeyDown(KeyCode.Escape))
+{
+	if (ZBDModalController.Instance.IsModalVisible())
+	{
+    ZBDModalController.Instance.CloseModal();
+	}
+}
+```

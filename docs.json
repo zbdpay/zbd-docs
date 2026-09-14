@@ -12,462 +12,236 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Getting Started",
-        "dropdowns": [
+        "tab": "Start",
+        "icon": "rocket",
+        "groups": [
           {
-            "dropdown": "Build with ZBD",
-            "icon": "bolt-lightning",
+            "group": " ",
             "pages": [
-              "get-started",
-              "get-started/dev-dashboard",
-              {
-                "group": "Set Up ZBD",
-                "pages": [
-                  "get-started/create-account",
-                  "get-started/verify-identity",
-                  "get-started/add-funds",
-                  {
-                    "group": "Projects",
-                    "icon": "folder",
-                    "pages": [
-                      "get-started/create-project",
-                      "get-started/api-keys",
-                      "get-started/project-wallet",
-                      "get-started/manage-project"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Building with LLMs",
-                "pages": [
-                  "payments/mcp",
-                  "payments/ai-ingestion"
-                ]
-              },
-              {
-                "group": "Products",
-                "pages": [
-                  "get-started/zbd-ramp",
-                  "get-started/zbd-earn-sdk",
-                  "get-started/zbd-payments-api",
-                  "get-started/login-with-zbd",
-                  "get-started/zbd-app"
-                ]
-              },
-              {
-                "group": "Knowledge Base",
-                "pages": [
-                  "earn/knowledge-base",
-                  {
-                    "group": "Rewarded Play",
-                    "pages": [
-                      "earn/knowledge-base/rewarded-play",
-                      "earn/knowledge-base/rewarded-play/integrating",
-                      {
-                        "group": "Game Security Course",
-                        "pages": [
-                          "earn/knowledge-base/game-security",
-                          "earn/knowledge-base/game-security/insecure-game",
-                          "earn/knowledge-base/game-security/hacking-saved-game",
-                          "earn/knowledge-base/game-security/hacking-memory-values",
-                          "earn/knowledge-base/game-security/decompiling-source-code",
-                          "earn/knowledge-base/game-security/altering-network-traffic",
-                          "earn/knowledge-base/game-security/securing-game",
-                          "earn/knowledge-base/game-security/replay-attacks",
-                          "earn/knowledge-base/game-security/securing-data",
-                          "earn/knowledge-base/game-security/app-check"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Integration Guides",
-                    "pages": [
-                      "earn/knowledge-base/integrations/unity"
-                    ]
-                  }
-                ]
-              }
+              "start",
+              "bitcoin/payments/ai-ingestion"
             ]
           }
         ]
       },
       {
-        "tab": "Earn",
-        "anchors": [
+        "tab": "Embedded Payouts",
+        "icon": "table-cells-large",
+        "groups": [
           {
-            "anchor": "Earn SDK",
-            "icon": "layer-group",
+            "group": " ",
             "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "earn/sdk",
-                  "earn/sdk/planning",
-                  "earn/coverage"
-                ]
-              },
-              {
-                "group": "Concepts",
-                "pages": [
-                  "earn/sdk/reward-economics",
-                  "earn/sdk/soft-currency",
-                  "earn/sdk/security",
-                  "earn/sdk/customization"
-                ]
-              },
-              {
-                "group": "Setup",
-                "pages": [
-                  "earn/sdk/download",
-                  "earn/sdk/compatibility",
-                  "earn/sdk/integration",
-                  "earn/sdk/building",
-                  {
-                    "group": "Advanced Configuration",
-                    "icon": "sliders",
-                    "pages": [
-                      "earn/sdk/url-scheme",
-                      "earn/sdk/attestation-setup"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Sending Rewards",
-                "pages": [
-                  "earn/sdk/send-rewards-client",
-                  "earn/sdk/send-rewards-server",
-                  "earn/sdk/restrict-client-rewards"
-                ]
-              },
-              {
-                "group": "Balances & Limits",
-                "pages": [
-                  "earn/sdk/user-balance",
-                  "earn/sdk/withdrawal-events",
-                  "earn/sdk/manage-rewards-balance",
-                  "earn/sdk/gift-cards",
-                  "earn/sdk/revenue-based-earning",
-                  "earn/sdk/mmp-postbacks",
-                  "earn/sdk/manage-withdrawal-limits"
-                ]
-              },
-              {
-                "group": "Developer Dashboard",
-                "pages": [
-                  "earn/sdk/manage-via-dashboard",
-                  "earn/sdk/manage-controls-dashboard",
-                  "earn/sdk/manage-user-linking"
-                ]
-              },
-              {
-                "group": "Best Practices & Engagement",
-                "pages": [
-                  "earn/sdk/player-comms",
-                  "earn/sdk/best-practices",
-                  "earn/sdk/creatives",
-                  "earn/sdk/local-notifications"
-                ]
-              },
-              {
-                "group": "Go Live",
-                "pages": [
-                  "earn/sdk/error-handling",
-                  "earn/sdk/troubleshoot",
-                  "earn/sdk/support-data",
-                  "earn/sdk/ios-app-store",
-                  "earn/sdk/android-app-store",
-                  "earn/sdk/go-live-checklist"
-                ]
-              },
-              {
-                "group": "API Reference",
-                "pages": [
-                  "earn/sdk/send-rewards-api",
-                  {
-                    "group": "API Keys",
-                    "icon": "key",
-                    "pages": [
-                      "earn/sdk/create-api-key",
-                      "earn/sdk/list-api-keys",
-                      "earn/sdk/revoke-api-key"
-                    ]
-                  },
-                  {
-                    "group": "Blocklist",
-                    "icon": "ban",
-                    "pages": [
-                      "earn/sdk/get-blocklist-entries",
-                      "earn/sdk/delete-blocklist-entry"
-                    ]
-                  }
-                ]
-              }
+              "payouts",
+              "payouts/disclosures"
+            ]
+          },
+          {
+            "group": "Events",
+            "pages": [
+              "payouts/browser-events",
+              "payouts/webhooks"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "payouts/create-user",
+              "payouts/update-user",
+              "payouts/fund-user",
+              "payouts/get-balance",
+              "payouts/create-session",
+              "payouts/get-disclosure-status",
+              "payouts/submit-disclosure-acceptance",
+              "payouts/get-user",
+              "payouts/get-transactions",
+              "payouts/deplete-user"
+            ]
+          },
+          {
+            "group": "Testing",
+            "pages": [
+              "payouts/sandbox"
             ]
           }
         ]
       },
       {
-        "tab": "Pay",
-        "anchors": [
+        "tab": "Rewards",
+        "icon": "layer-group",
+        "groups": [
           {
-            "anchor": "Overview",
-            "icon": "inbox",
+            "group": "Overview",
             "pages": [
+              "rewards/sdk",
+              "rewards/sdk/planning",
+              "rewards/coverage",
+              "rewards/app",
+              "rewards/app/uri-schemes"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "rewards/sdk/reward-economics",
+              "rewards/sdk/soft-currency",
+              "rewards/sdk/security",
+              "rewards/sdk/customization"
+            ]
+          },
+          {
+            "group": "Setup",
+            "pages": [
+              "rewards/sdk/download",
+              "rewards/sdk/compatibility",
+              "rewards/sdk/integration",
+              "rewards/sdk/building",
               {
-                "group": "Overview",
+                "group": "Advanced Configuration",
+                "icon": "sliders",
                 "pages": [
-                  "payments",
-                  "payments/lightning-network",
-                  "payments/lightning-address"
-                ]
-              },
-              {
-                "group": "Guides",
-                "pages": [
-                  {
-                    "group": "Pay Ins",
-                    "pages": [
-                      "payments/payins/lightning-charges",
-                      "payments/payins/gamertags"
-                    ]
-                  },
-                  {
-                    "group": "Pay Outs",
-                    "pages": [
-                      "payments/payouts/lightning-address",
-                      "payments/payouts/gamertags",
-                      "payments/payouts/withdrawal-requests",
-                      "payments/payouts/lightning-charges"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Resources",
-                "pages": [
-                  "payments/coverage",
-                  "payments/glossary"
+                  "rewards/sdk/url-scheme",
+                  "rewards/sdk/attestation-setup"
                 ]
               }
             ]
           },
           {
-            "anchor": "Payments SDK",
-            "icon": "layer-group",
+            "group": "Sending Rewards",
             "pages": [
+              "rewards/sdk/send-rewards-client",
+              "rewards/sdk/send-rewards-server",
+              "rewards/sdk/restrict-client-rewards"
+            ]
+          },
+          {
+            "group": "Balances & Limits",
+            "pages": [
+              "rewards/sdk/user-balance",
+              "rewards/sdk/withdrawal-events",
+              "rewards/sdk/manage-rewards-balance",
+              "rewards/sdk/gift-cards",
+              "rewards/sdk/revenue-based-earning",
+              "rewards/sdk/mmp-postbacks",
+              "rewards/sdk/manage-withdrawal-limits"
+            ]
+          },
+          {
+            "group": "Developer Dashboard",
+            "pages": [
+              "rewards/sdk/manage-via-dashboard",
+              "rewards/sdk/manage-controls-dashboard",
+              "rewards/sdk/manage-user-linking"
+            ]
+          },
+          {
+            "group": "Best Practices & Engagement",
+            "pages": [
+              "rewards/sdk/player-comms",
+              "rewards/sdk/best-practices",
+              "rewards/sdk/creatives",
+              "rewards/sdk/local-notifications"
+            ]
+          },
+          {
+            "group": "Go Live",
+            "pages": [
+              "rewards/sdk/error-handling",
+              "rewards/sdk/troubleshoot",
+              "rewards/sdk/support-data",
+              "rewards/sdk/ios-app-store",
+              "rewards/sdk/android-app-store",
+              "rewards/sdk/go-live-checklist"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "rewards/sdk/send-rewards-api",
               {
-                "group": "Overview",
+                "group": "API Keys",
+                "icon": "key",
                 "pages": [
-                  "payments/sdk"
+                  "rewards/sdk/create-api-key",
+                  "rewards/sdk/list-api-keys",
+                  "rewards/sdk/revoke-api-key"
                 ]
               },
               {
-                "group": "TypeScript",
+                "group": "Blocklist",
+                "icon": "ban",
                 "pages": [
-                  "payments/sdk/typescript",
-                  {
-                    "group": "Guides",
-                    "pages": [
-                      "payments/sdk/typescript/next",
-                      "payments/sdk/typescript/node",
-                      "payments/sdk/typescript/express",
-                      {
-                        "group": "Vercel",
-                        "pages": [
-                          "payments/sdk/typescript/vercel/send",
-                          "payments/sdk/typescript/vercel/receive"
-                        ]
-                      },
-                      {
-                        "group": "Supabase",
-                        "pages": [
-                          "payments/sdk/typescript/supabase/send",
-                          "payments/sdk/typescript/supabase/receive"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Go",
-                "pages": [
-                  "payments/sdk/go"
-                ]
-              },
-              {
-                "group": "Rust",
-                "pages": [
-                  "payments/sdk/rust"
-                ]
-              },
-              {
-                "group": "C#",
-                "pages": [
-                  "payments/sdk/csharp"
+                  "rewards/sdk/get-blocklist-entries",
+                  "rewards/sdk/delete-blocklist-entry"
                 ]
               }
             ]
           },
           {
-            "anchor": "Payments API",
-            "icon": "code",
+            "group": "Deprecated",
             "pages": [
               {
                 "group": "Overview",
                 "pages": [
-                  "payments/api",
-                  "payments/api/errors",
-                  "payments/api/callbacks",
-                  "payments/api/resources/openapi"
+                  "rewards/oauth2",
+                  "rewards/oauth2/integration",
+                  "rewards/oauth2/guidelines",
+                  "rewards/oauth2/walkthrough",
+                  "rewards/oauth2/advanced"
                 ]
               },
               {
-                "group": "Lightning Address",
+                "group": "Integrations",
                 "pages": [
-                  "payments/api/lightning-address",
-                  "payments/api/lightning-address/send",
-                  "payments/api/lightning-address/validate",
-                  "payments/api/lightning-address/create-charge"
-                ]
-              },
-              {
-                "group": "Lightning Charges",
-                "pages": [
-                  "payments/api/lightning-charges",
-                  "payments/api/lightning-charges/create",
-                  "payments/api/lightning-charges/retrieve",
-                  "payments/api/lightning-charges/decode",
-                  "payments/api/lightning-charges/create-static",
-                  "payments/api/lightning-charges/retrieve-static",
-                  "payments/api/lightning-charges/update-static"
-                ]
-              },
-              {
-                "group": "Lightning Payments",
-                "pages": [
-                  "payments/api/lightning-payments",
-                  "payments/api/lightning-payments/send",
-                  "payments/api/lightning-payments/retrieve"
-                ]
-              },
-              {
-                "group": "Withdrawal Requests",
-                "pages": [
-                  "payments/api/withdrawal-requests",
-                  "payments/api/withdrawal-requests/create",
-                  "payments/api/withdrawal-requests/retrieve"
-                ]
-              },
-              {
-                "group": "Gamertags",
-                "pages": [
-                  "payments/api/gamertags",
-                  "payments/api/gamertags/send",
-                  "payments/api/gamertags/retrieve-payment",
-                  "payments/api/gamertags/create-charge",
-                  "payments/api/gamertags/retrieve-userid",
-                  "payments/api/gamertags/retrieve-from-userid"
-                ]
-              },
-              {
-                "group": "Wallet",
-                "pages": [
-                  "payments/api/wallet",
-                  "payments/api/wallet/retrieve-balance",
-                  "payments/api/wallet/internal-transfer"
-                ]
-              },
-              {
-                "group": "Keysend",
-                "pages": [
-                  "payments/api/keysend",
-                  "payments/api/keysend/send"
-                ]
-              },
-              {
-                "group": "Utilities",
-                "pages": [
-                  "payments/api/utils",
-                  "payments/api/utils/btc-usd",
-                  "payments/api/utils/is-supported-region",
-                  "payments/api/utils/ip"
-                ]
-              }
-            ]
-          },
-          {
-            "anchor": "Onramps",
-            "icon": "circle-dollar-to-slot",
-            "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "payments/ramp",
-                  "payments/ramp/quickstart",
-                  "payments/ramp/user-flow",
-                  "payments/ramp/faq"
-                ]
-              },
-              {
-                "group": "SDKs",
-                "pages": [
-                  "payments/ramp/sdks/typescript",
-                  "payments/ramp/sdks/react",
-                  "payments/ramp/sdks/react-native",
-                  "payments/ramp/sdks/flutter"
-                ]
-              },
-              {
-                "group": "API",
-                "pages": [
-                  "payments/ramp/session"
-                ]
-              },
-              {
-                "group": "Customization",
-                "pages": [
-                  "payments/ramp/platform",
-                  "payments/ramp/themes",
-                  "payments/ramp/ai-themes"
-                ]
-              },
-              {
-                "group": "Events",
-                "pages": [
-                  "payments/ramp/webhooks",
-                  "payments/ramp/emails"
-                ]
-              }
-            ]
-          },
-          {
-            "anchor": "Login with ZBD",
-            "icon": "shield-check",
-            "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "earn/oauth2",
-                  "earn/oauth2/integration",
-                  "earn/oauth2/guidelines",
-                  "earn/oauth2/walkthrough"
+                  "rewards/oauth2/integrations/intro",
+                  "rewards/oauth2/integrations/next-auth",
+                  "rewards/oauth2/integrations/better-auth"
                 ]
               },
               {
                 "group": "API Reference",
                 "icon": "code",
                 "pages": [
-                  "earn/oauth2/api",
-                  "earn/oauth2/api/authorization",
-                  "earn/oauth2/api/retrieve-access-token",
-                  "earn/oauth2/api/refresh-token",
-                  "earn/oauth2/api/data-fetching",
-                  "earn/oauth2/api/retrieve-user",
-                  "earn/oauth2/api/retrieve-wallet"
+                  "rewards/oauth2/api",
+                  "rewards/oauth2/api/authorization",
+                  "rewards/oauth2/api/retrieve-access-token",
+                  "rewards/oauth2/api/refresh-token",
+                  "rewards/oauth2/api/data-fetching",
+                  "rewards/oauth2/api/retrieve-user",
+                  "rewards/oauth2/api/retrieve-wallet"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Knowledge Base",
+            "pages": [
+              "rewards/knowledge-base",
+              {
+                "group": "Rewarded Play",
+                "pages": [
+                  "rewards/knowledge-base/rewarded-play",
+                  "rewards/knowledge-base/rewarded-play/integrating",
+                  {
+                    "group": "Game Security Course",
+                    "pages": [
+                      "rewards/knowledge-base/game-security",
+                      "rewards/knowledge-base/game-security/insecure-game",
+                      "rewards/knowledge-base/game-security/hacking-saved-game",
+                      "rewards/knowledge-base/game-security/hacking-memory-values",
+                      "rewards/knowledge-base/game-security/decompiling-source-code",
+                      "rewards/knowledge-base/game-security/altering-network-traffic",
+                      "rewards/knowledge-base/game-security/securing-game",
+                      "rewards/knowledge-base/game-security/replay-attacks",
+                      "rewards/knowledge-base/game-security/securing-data",
+                      "rewards/knowledge-base/game-security/app-check"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Integration Guides",
+                "pages": [
+                  "rewards/knowledge-base/integrations/unity"
                 ]
               }
             ]
@@ -475,45 +249,159 @@
         ]
       },
       {
-        "tab": "Widgets",
-        "anchors": [
+        "tab": "Bitcoin",
+        "icon": "lucide:bitcoin",
+        "groups": [
           {
-            "anchor": "ZBD Widget",
-            "icon": "grid-2",
+            "group": "Overview",
             "pages": [
+              "bitcoin",
+              "bitcoin/errors",
+              "bitcoin/callbacks",
+              "bitcoin/resources/openapi",
+              "bitcoin/resources/overview",
+              "bitcoin/resources/postman"
+            ]
+          },
+          {
+            "group": "Lightning Address",
+            "pages": [
+              "bitcoin/lightning-address",
+              "bitcoin/lightning-address/send",
+              "bitcoin/lightning-address/validate",
+              "bitcoin/lightning-address/create-charge",
+              "bitcoin/payments/lightning-address/intro",
+              "bitcoin/payments/lightning-address/static-charges"
+            ]
+          },
+          {
+            "group": "Lightning Charges",
+            "pages": [
+              "bitcoin/lightning-charges",
+              "bitcoin/lightning-charges/create",
+              "bitcoin/lightning-charges/retrieve",
+              "bitcoin/lightning-charges/decode",
+              "bitcoin/lightning-charges/create-static",
+              "bitcoin/lightning-charges/retrieve-static",
+              "bitcoin/lightning-charges/update-static"
+            ]
+          },
+          {
+            "group": "Lightning Payments",
+            "pages": [
+              "bitcoin/lightning-payments",
+              "bitcoin/lightning-payments/send",
+              "bitcoin/lightning-payments/retrieve"
+            ]
+          },
+          {
+            "group": "Withdrawal Requests",
+            "pages": [
+              "bitcoin/withdrawal-requests",
+              "bitcoin/withdrawal-requests/create",
+              "bitcoin/withdrawal-requests/retrieve"
+            ]
+          },
+          {
+            "group": "Gamertags",
+            "pages": [
+              "bitcoin/gamertags",
+              "bitcoin/gamertags/send",
+              "bitcoin/gamertags/retrieve-payment",
+              "bitcoin/gamertags/create-charge",
+              "bitcoin/gamertags/retrieve-userid",
+              "bitcoin/gamertags/retrieve-from-userid",
+              "bitcoin/gamertags/sandbox/send"
+            ]
+          },
+          {
+            "group": "Wallet",
+            "pages": [
+              "bitcoin/wallet",
+              "bitcoin/wallet/retrieve-balance",
+              "bitcoin/wallet/internal-transfer"
+            ]
+          },
+          {
+            "group": "Keysend",
+            "pages": [
+              "bitcoin/keysend",
+              "bitcoin/keysend/send"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "bitcoin/utils",
+              "bitcoin/utils/btc-usd",
+              "bitcoin/utils/is-supported-region",
+              "bitcoin/utils/ip"
+            ]
+          },
+          {
+            "group": "Payments Overview",
+            "pages": [
+              "bitcoin/payments",
+              "bitcoin/payments/lightning-network",
+              "bitcoin/payments/lightning-address"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "bitcoin/payments/integrations",
+              "bitcoin/payments/knowledge-base",
+              "bitcoin/payments/replit",
               {
-                "group": "Overview",
+                "group": "Pay Ins",
                 "pages": [
-                  "widget",
-                  "widget/disclosures"
+                  "bitcoin/payments/payins/lightning-charges",
+                  "bitcoin/payments/payins/gamertags"
                 ]
               },
               {
-                "group": "Events",
+                "group": "Pay Outs",
                 "pages": [
-                  "widget/browser-events",
-                  "widget/webhooks"
+                  "bitcoin/payments/payouts/lightning-address",
+                  "bitcoin/payments/payouts/gamertags",
+                  "bitcoin/payments/payouts/withdrawal-requests",
+                  "bitcoin/payments/payouts/lightning-charges"
                 ]
-              },
+              }
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "bitcoin/payments/coverage",
+              "bitcoin/payments/glossary",
+              "bitcoin/payments/templates",
+              "bitcoin/payments/nostr/nostr-relay",
+              "bitcoin/payments/openapi"
+            ]
+          },
+          {
+            "group": " ",
+            "pages": [
+              "start/dev-dashboard",
+              "bitcoin/payments/mcp"
+            ]
+          },
+          {
+            "group": "Set Up ZBD",
+            "pages": [
+              "start/create-account",
+              "start/verify-identity",
+              "start/add-funds",
               {
-                "group": "API Reference",
+                "group": "Projects",
+                "icon": "folder",
                 "pages": [
-                  "widget/create-user",
-                  "widget/update-user",
-                  "widget/fund-user",
-                  "widget/get-balance",
-                  "widget/create-session",
-                  "widget/get-disclosure-status",
-                  "widget/submit-disclosure-acceptance",
-                  "widget/get-user",
-                  "widget/get-transactions",
-                  "widget/deplete-user"
-                ]
-              },
-              {
-                "group": "Testing",
-                "pages": [
-                  "widget/sandbox"
+                  "start/create-project",
+                  "start/api-keys",
+                  "start/project-wallet",
+                  "start/manage-project",
+                  "start/sandbox-project"
                 ]
               }
             ]
@@ -540,22 +428,18 @@
   "navbar": {
     "links": [
       {
-        "label": "API Status",
+        "label": "Status",
         "href": "https://status.zbdpay.com/"
-      },
-      {
-        "label": "Create Account",
-        "href": "https://dashboard.zebedee.io"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Log In",
+      "label": "Publisher Portal",
       "href": "https://dashboard.zebedee.io"
     }
   },
   "search": {
-    "prompt": "Search ZBD Documentation"
+    "prompt": "Search ZBD"
   },
   "seo": {
     "metatags": {
@@ -565,74 +449,38 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/zebedeeio",
-      "github": "https://github.com/zebedeeio"
+      "x": "https://x.com/zbdpay",
+      "github": "https://github.com/zbdpay"
     }
   },
   "redirects": [
+    {
+      "source": "/",
+      "destination": "/get-started"
+    },
     {
       "source": "/docs/introduction",
       "destination": "/get-started"
     },
     {
-      "source": "/docs/nodejs-quickstart",
-      "destination": "/payments/sdk/node"
-    },
-    {
-      "source": "/docs/nextjs-quickstart",
-      "destination": "/payments/sdk/typescript/next"
-    },
-    {
-      "source": "/docs/express-quickstart",
-      "destination": "/payments/sdk/typescript/express"
-    },
-    {
-      "source": "/docs/vercel-edge-functions/send",
-      "destination": "/payments/sdk/typescript/vercel/send"
-    },
-    {
-      "source": "/docs/vercel-edge-functions/receive",
-      "destination": "/payments/sdk/typescript/vercel/receive"
-    },
-    {
-      "source": "/docs/supabase-edge-functions/send",
-      "destination": "/payments/sdk/typescript/supabase/send"
-    },
-    {
-      "source": "/docs/supabase-edge-functions/receive",
-      "destination": "/payments/sdk/typescript/supabase/receive"
-    },
-    {
-      "source": "/docs/csharp-quickstart",
-      "destination": "/payments/sdk/csharp"
-    },
-    {
-      "source": "/docs/go-quickstart",
-      "destination": "/payments/sdk/go"
-    },
-    {
       "source": "/docs/replit-quickstart",
-      "destination": "/payments/sdk"
+      "destination": "/bitcoin/payments/replit"
     },
     {
       "source": "/docs/openapi",
-      "destination": "/payments/api/resources/openapi"
+      "destination": "/bitcoin/resources/openapi"
     },
     {
       "source": "/docs/examples",
-      "destination": "/payments/templates"
-    },
-    {
-      "source": "/docs/sdk",
-      "destination": "/payments/sdk"
+      "destination": "/bitcoin/payments/templates"
     },
     {
       "source": "/docs/integrations",
-      "destination": "/payments"
+      "destination": "/bitcoin/payments"
     },
     {
       "source": "/docs/global-support",
-      "destination": "/payments/coverage"
+      "destination": "/bitcoin/payments/coverage"
     },
     {
       "source": "/courses/*",
@@ -640,79 +488,123 @@
     },
     {
       "source": "/knowledge-base/payouts/zbd-gamertag",
-      "destination": "/payments/payouts/gamertags"
+      "destination": "/bitcoin/payments/payouts/gamertags"
     },
     {
       "source": "/knowledge-base/payouts/:slug*",
-      "destination": "/payments/payouts/:slug*"
+      "destination": "/bitcoin/payments/payouts/:slug*"
     },
     {
       "source": "/knowledge-base/payins/charges",
-      "destination": "/payments/payins/lightning-charges"
+      "destination": "/bitcoin/payments/payins/lightning-charges"
     },
     {
       "source": "/knowledge-base/payins/zbd-gamertag",
-      "destination": "/payments/payins/gamertags"
+      "destination": "/bitcoin/payments/payins/gamertags"
     },
     {
       "source": "/knowledge-base/guides/nostr-relay",
-      "destination": "/payments/nostr/nostr-relay"
+      "destination": "/bitcoin/payments/nostr/nostr-relay"
     },
     {
       "source": "/knowledge-base/guides/*",
-      "destination": "/payments"
+      "destination": "/bitcoin/payments"
     },
     {
       "source": "/api-reference/introduction",
-      "destination": "/payments/api"
-    },
-    {
-      "source": "/rewards/:slug*",
-      "destination": "/earn/:slug*"
+      "destination": "/bitcoin"
     },
     {
       "source": "/rewards",
-      "destination": "/earn"
+      "destination": "/rewards/sdk"
     },
     {
-      "source": "/earn/api",
-      "destination": "/earn/sdk"
+      "source": "/rewards/api",
+      "destination": "/rewards/sdk"
     },
     {
-      "source": "/earn/api/gamertags",
-      "destination": "/earn/sdk"
+      "source": "/rewards/api/gamertags",
+      "destination": "/rewards/sdk"
     },
     {
-      "source": "/earn/api/gamertags/:slug*",
-      "destination": "/earn/sdk"
+      "source": "/rewards/api/gamertags/:slug*",
+      "destination": "/rewards/sdk"
     },
     {
-      "source": "/earn/knowledge-base/integrations/beamable",
-      "destination": "/earn/knowledge-base/integrations/unity"
+      "source": "/rewards/knowledge-base/integrations/beamable",
+      "destination": "/rewards/knowledge-base/integrations/unity"
     },
     {
-      "source": "/earn/sdk/fraud-prevention",
-      "destination": "/earn/sdk/security"
+      "source": "/rewards/sdk/fraud-prevention",
+      "destination": "/rewards/sdk/security"
     },
     {
-      "source": "/earn/sdk/withdrawal-limits",
-      "destination": "/earn/sdk/revenue-based-earning"
+      "source": "/rewards/sdk/withdrawal-limits",
+      "destination": "/rewards/sdk/revenue-based-earning"
     },
     {
-      "source": "/earn/sdk/user-withdrawal",
-      "destination": "/earn/sdk/user-balance"
+      "source": "/rewards/sdk/user-withdrawal",
+      "destination": "/rewards/sdk/user-balance"
     },
     {
-      "source": "/earn/sdk/increase-withdrawal-limit",
-      "destination": "/earn/sdk/manage-withdrawal-limits"
+      "source": "/rewards/sdk/increase-withdrawal-limit",
+      "destination": "/rewards/sdk/manage-withdrawal-limits"
     },
     {
-      "source": "/earn/sdk/decrease-withdrawal-limit",
-      "destination": "/earn/sdk/manage-withdrawal-limits"
+      "source": "/rewards/sdk/decrease-withdrawal-limit",
+      "destination": "/rewards/sdk/manage-withdrawal-limits"
     },
     {
-      "source": "/earn/sdk/intro",
-      "destination": "/earn/sdk"
+      "source": "/rewards/sdk/intro",
+      "destination": "/rewards/sdk"
+    },
+    {
+      "source": "/widget",
+      "destination": "/payouts"
+    },
+    {
+      "source": "/widget/:slug*",
+      "destination": "/payouts/:slug*"
+    },
+    {
+      "source": "/bitcoin/payments/api",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/payments/api/:slug*",
+      "destination": "/bitcoin/:slug*"
+    },
+    {
+      "source": "/earn",
+      "destination": "/rewards/sdk"
+    },
+    {
+      "source": "/earn/:slug*",
+      "destination": "/rewards/:slug*"
+    },
+    {
+      "source": "/get-started",
+      "destination": "/start"
+    },
+    {
+      "source": "/get-started/:slug*",
+      "destination": "/start/:slug*"
+    },
+    {
+      "source": "/payments",
+      "destination": "/bitcoin/payments"
+    },
+    {
+      "source": "/payments/:slug*",
+      "destination": "/bitcoin/payments/:slug*"
     }
-  ]
+  ],
+  "fonts": {
+    "fontSize": 16,
+    "heading": {
+      "family": "Inter",
+      "fontSize": 26
+    }
+  },
+  "customCss": ":root:root {\n  --weight-heading: 700;\n}\n:root:root {\n  --sidebar-font-size: 14px;\n  --sidebar-row-padding-y: calc(6em / 14);\n  --sidebar-row-gap: calc(3em / 14);\n  --sidebar-group-margin-top: calc(20em / 14);\n}\n\n/* FRAGILE: inline-TOC heading rows under the active page — pad to match main nav rows. May break on Holocron updates. */\n.slot-sidebar-left nav a[href*=\"#\"] {\n  padding-block: var(--sidebar-row-padding-y) !important;\n}\n/* FRAGILE: hide the powered-by credit block (keeps Prev/Next page nav). May break on Holocron updates. */\nfooter .opacity-40:has(a[href*=\"utm_source=powered-by\"]) {\n  display: none;\n}\n\n/* FRAGILE: pin API request/response example modules right below the copy-markdown button in the right rail (they scroll normally with the page). May break on Holocron updates. */\n@media (min-width: 1024px) {\n  body:has(.slot-aside [role=\"tablist\"][aria-label=\"Request example\"]) .slot-aside:not(:has([role=\"tablist\"][aria-label=\"Request example\"])) > .flex.w-full.flex-col {\n    position: static !important;\n  }\n  body:has(.slot-aside [role=\"tablist\"][aria-label=\"Request example\"]) .slot-aside:has([role=\"tablist\"][aria-label=\"Request example\"]) > .flex.w-full.flex-col {\n    position: absolute !important;\n    top: calc(var(--sticky-top) + 46px) !important;\n    max-height: none !important;\n    width: var(--grid-sidebar-width, 460px);\n  }\n}\n\n/* FRAGILE: Mintlify-style card layout — icon as left column, title on top, description below. May break on Holocron updates. */\n.slot-main .group\\/card > div.pointer-events-none {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  column-gap: 14px;\n  row-gap: 4px;\n  align-items: start;\n}\n.slot-main .group\\/card > div.pointer-events-none > .flex.items-center.gap-2 {\n  display: contents;\n}\n.slot-main .group\\/card > div.pointer-events-none > .flex.items-center.gap-2 > svg,\n.slot-main .group\\/card > div.pointer-events-none > .flex.items-center.gap-2 > img {\n  grid-column: 1;\n  grid-row: 1 / span 2;\n  align-self: center;\n  width: 24px !important;\n  height: 24px !important;\n  color: var(--primary);\n}\n.slot-main .group\\/card .text-sm.font-semibold {\n  grid-column: 2;\n  grid-row: 1;\n  font-size: 15px;\n}\n.slot-main .group\\/card > div.pointer-events-none > .flex.flex-col.gap-3 {\n  grid-column: 2;\n  grid-row: 2;\n}\n.slot-main .group\\/card > div.pointer-events-none > .text-xs.text-primary {\n  grid-column: 2;\n  grid-row: 3;\n}\n\n/* FRAGILE: heading hierarchy — h2/h3 step down from the config h1 size. May break on Holocron updates. */\n.slot-main .editorial-h2 { font-size: 22px; }\n.slot-main .editorial-h3 { font-size: 19px; }\n\n/* FRAGILE: navbar primary CTA as solid inverted pill (black/white per theme). May break on Holocron updates. */\n.slot-navbar-primary {\n  background: var(--foreground) !important;\n  color: var(--background) !important;\n  border: none !important;\n  border-radius: 9999px !important;\n  padding: 6px 14px !important;\n  font-weight: 500;\n}\n.slot-navbar-primary:hover { opacity: 0.85; }\n\n/* FRAGILE: mobile header — overlay the Ask AI/Menu toolbar onto the logo row so logo and Menu share one row. May break on Holocron updates. */\n@media (max-width: 1023px) {\n  .slot-navbar { position: relative; }\n  .slot-navbar > div.flex.items-center.justify-between.lg\\:hidden {\n    position: absolute;\n    top: 0; bottom: 0; left: 0; right: 0;\n    height: auto;\n  }\n}\n\n/* FRAGILE: mobile drawer — logo top-left, then Status + Publisher Portal + theme toggle on one row. May break on Holocron updates. */\n[style*=\"max-width: 360px\"] > div:first-child::before {\n  content: '';\n  display: block;\n  width: 100px;\n  height: 28px;\n  margin-right: auto;\n  background: url('/img/logo/light.svg') no-repeat left center / contain;\n}\nhtml.dark [style*=\"max-width: 360px\"] > div:first-child::before {\n  background-image: url('/img/logo/dark.svg');\n}\n[style*=\"max-width: 360px\"] > div:nth-child(2) {\n  flex-direction: row !important;\n  flex-wrap: wrap;\n  align-items: center;\n}\n[style*=\"max-width: 360px\"] > div:nth-child(2) > div:nth-child(1) {\n  order: 2;\n  margin-left: auto;\n}\n[style*=\"max-width: 360px\"] > div:nth-child(2) > div:nth-child(2) {\n  order: 1;\n}\n[style*=\"max-width: 360px\"] > div:nth-child(2) > *:nth-child(n+3) {\n  flex-basis: 100%;\n}"
 }

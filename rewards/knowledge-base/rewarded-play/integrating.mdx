@@ -1,0 +1,289 @@
+---
+title: 'Integrating Player Rewards in a Game'
+sidebarTitle: 'Integrating Rewards'
+icon: 'award'
+description: 'From setting up your account, to using our APIs in a secure way and massively engaging your users with Bitcoin rewards!'
+---
+
+This guide will take you step by step through everything you need to know to integrate Bitcoin rewards using ZBD API into your game.
+
+Here's what's in this guide:
+
+|Section    |What you'll learn|Key points|
+|--------|----|----|
+| [Setting up your account](#setting-up-your-account) |Signing up and funding your account.|- Main wallet holds most of your funds <br/><br/> -Project wallets are connected to games and have API keys attached to them|
+| [Under the hood: ZBD API in your game](#under-the-hood) |The backend part of using ZBD.|- Store API keys on a secure server! <br/><br/> - Recommended ZBD integration: Log in with ZBD (Send to Email is deprecated)|
+| [The front-end: In-game UI/UX](#the-front-end) |The front end part: How players withdraw rewards and how they earn them in the first place.|- Creating a withdrawal flow (with a premade template)|
+|||- Earning mechanics: Simple on-size-fits-all vs custom integrations to fit a specific game|
+
+
+**Not into reading?** [Here's a video tutorial](https://www.youtube.com/watch?v=59ucumRqFxA) **taking you through the entire process of integrating time-based rewards into a Unity game.** It literally only takes a bit over an hour.
+
+## Setting up your account
+
+**If you've already set up a ZBD API account, created a Project and put some Bitcoin into it, feel free to skip this section.**
+
+### Step 1: Sign up and verify
+
+Signing up as a developer on ZBD is super easy. Head over to the sign-up page by [clicking here](https://dashboard.zebedee.io/signup). 
+
+You will then have to do the following:
+1. Verify your email
+2. Verify your identity/business
+    + **If you've received an invite code** from our BD team and signed up with that, then we will be in touch with some forms to verify your business
+    + **If you didn't sign up with a code**, that's totally fine. Just complete the simple ID verification process in our platform
+
+### Step 2: Create and fund Project
+**There are two types of wallets inside the ZBD Dashboard:**
+1. Main wallet - this is very secure and should hold most of your Bitcoin
+2. Projects - these are connected to API keys and should be topped up in small amounts regularly, to protect your funds from bots, hackers or simple mistakes.
+    + **RULE OF THUMB**: Create one project per game. So basically ZBD Project = rewards wallet for your game. We recommend you give your project the same name as your game.
+    + **STATING THE OBVIOUS**: If someone gets a hold of the API keys for your project wallet, they can drain all the Bitcoin inside that project.
+
+**Now, your project needs funds.**
+
+**First, get some Bitcoin to your main wallet**. You can do this by pressing the *charge* button on the [wallet page](https://dashboard.zebedee.io/wallet) and making a transfer from any Bitcoin Lightning wallet or exchange that supports the Lightning protocol.
+
+If you don't have access to an exchange account, our dashboard also features a Sandbox mode to get you started with testing payments. Just make sure you're using our [Sandbox APIs and keys](/bitcoin/gamertags/sandbox/send), they're separate from production ones!
+
+More ways to top up your balance from the ZBD Dashboard are coming soon!
+
+**Second, transfer Bitcoin from your main wallet to your project wallet**. On the [main wallet page](https://dashboard.zebedee.io/wallet), simply press the transfer button. The rest should be obvious.
+
+<Frame caption="Wallet Actions">
+  <img src="/img/courses/rewarded-play/wallet-actions.png" alt="Wallet Actions" />
+</Frame>
+<br />
+
+## Under the hood
+
+### ZBD API in your game
+
+**Before you get started: Do you have a server?**
+
+We realize many games don't require running any server-side code. For hypercasual and casual mobile games especially, it's usually totally fine to run all code on the client. Unfortunately, this won't work when you're integrating any sort of real-money functionality.
+
+
+**You absolutely must store the following on a secure server, or you will get robbed.**
+1. Your ZBD Project API keys - this gives access to sending out rewards
+2. User balances - how much a user has earned and not withdrawn yet
+
+**No server? No worries, we have a solution**
+
+We've partnered with **Beamable** to provide game devs without existing server infra with a simple yet powerful and safe solution. Sounds interesting? [Sign up for a Beamable account here](https://beamable.com/?referral=zbd).
+
+For a step by step guide on how to set up ZBD using Beamable for a Unity game:
+
+<br />
+<CardGroup cols={2}>
+  <Card title="Beamable + ZBD Guide" icon="/img/logos/beamable.svg" href="/rewards/knowledge-base/integrations/beamable">
+    Step by step integration guide for games using Beamable and ZBD.
+  </Card>
+
+  <Card title="Starter Source Code" color="black" icon={"github"} href="https://github.com/zebedeeio/beamable-starter">
+    View the source code for an example implementation of Beamable and ZBD.
+  </Card>
+</CardGroup>
+<br />
+
+#### Storing your API key
+
+It is important to make sure that your ZBD API key is stored securely in your backend of choice. The API key should NOT be stored in the client. 
+
+<Accordion title="More details...">
+If your backend is something like Playfab you can use the built in "Internal Title Data" to save sensitive game variables such as API keys, as data stored here cannot be accessed by the client but you can retrieve it via playfab cloud script to make requests to the ZBD API directly from your Playfab backend.
+
+If you're using PlayFab, you can find a guide [here](https://learn.microsoft.com/en-us/gaming/playfab/features/data/titledata/quickstart).
+
+If you are using your own backend such as node.JS or .NET you can put the API key in your .env file.
+
+As mentioned above, if you don't have a backend solution yet, we recommend [Beamable](https://beamable.com/?referral=zbd) (and have a guide [here](https://github.com/zebedeeio/beamable-starter))
+</Accordion>
+
+#### Storing user balances
+
+Rewards work best when the player sees them accumulating inside the game clearly. More on the UX/UI on this below (including templates), but for now, let's talk about the server-side part of user balances.
+
+You should always store how much a user has earned (and not yet withdrawn) on the server. If you store it on the client, bad actors can decompile your game, change that variable and pay themselves.
+
+**If you're familiar with storing values on a backend, feel free to skip this next section.**
+
+There's three parts to it:
+
+1. Storing user balances on the server
+    + You need a user identifier, such as Device ID or GAID
+    + You need to store a value for rewards
+2. Resetting the user balance when they withdraw rewards from the game to ZBD
+3. Displaying all that inside your game
+
+<Accordion title="More details...">
+If you are developing on services such as Unity for your game and PlayFab for your backend, then PlayFab will automatically assign each user a playfabID. You can then use PlayFab's Economy system to store, retrieve and update the user's balance via PlayFab's Cloud Script. [Here](https://learn.microsoft.com/en-us/gaming/playfab/features/economy-v2/tutorials/currencies?tabs=create-currency-gm)'s a guide for this specific setup.
+
+If you are using a custom backend such as NodeJS or .NET, you will need to set up a secure authenticated server and API using something like [Express](https://expressjs.com/), and provision a database such as MongoDB and manually create a user entry when your app loads for the first time. It is typical to use Unity's SystemInfo.deviceUniqueIdentifier as the unique identifier for the user.
+
+At the risk of repeating ourselves... you can also do this using [Beamable](https://beamable.com/?referral=zbd). Especially if you don't have a backend yet.
+</Accordion>
+
+#### On to the ZBD API
+
+We recommend using **Log in with ZBD** for integrating the ZBD API:
+
+- Just like "Sign in with Google", but for moving money.
+- Ideal for games that want to build deeper integrations and have more insight into users/who is receiving rewards
+
+### Log in with ZBD
+
+Similar to Log in with Google/Apple/Facebook. But for moving money.
+Gives you access to more detail about your users, which enables advanced controls, like separate settings for ID verified users, querying a user's balance and more.
+
+<Info>**The user's perspective**: They push a Log in with ZBD button, then they confirm permissions in the ZBD app.</Info>
+
+#### Integrating Log in with ZBD 
+
+First, you need to integrate Log in with ZBD - this is built on the OAuth2 protocol, so it should be pretty standard.
+
+**If you are using Unity and Beamable** (described above), we have a step-by-step guide and example projects for you [here](/rewards/knowledge-base/integrations/beamable).
+
+**If you are using other engines or backends**, we have a guide for you [here](/rewards/oauth2/integration).
+
+
+#### Sending rewards with Log in with ZBD
+
+Log in with ZBD is a way to get user data. You can use it to fetch a user's ZBD Gamertag (basically their username on our system). To make payments, you just use our standard Send to Gamertag API.
+
+To learn how to Send to Gamertag, check our docs [here](/bitcoin/gamertags/send).
+
+## The front-end
+
+**In-game UI/UX**
+
+This part of the guide will look at two things:
+1. ZBD Withdrawal flow - how do users cash out from your game to their ZBD App?
+2. Reward Mechanics - how do users actually get rewards in your game?
+
+### ZBD Withdrawal flow
+
+Why are we starting with how users claim rewards and not with how they get them? Because this part is simple and we have established very clear best-practices and prototypes. So this should be a breeze! 
+
+**The Components**
+
+This is what you'll need to show inside your game:
+1. Reward counter - how much the user has earned (and not withdrawn yet)
+2. Withdrawal UI - a few simple screens that allow the user to withdraw
+
+That's it! You can check out a prototype of this [here](https://www.figma.com/proto/myeGjehpTyFjpH5QYH3Z0B/ZBD-Unity-Asset-Kit-(UI-for-Mobile-Games)?type=design&node-id=484-163&t=XtQjZMRzM5mY0Mrk-0&scaling=min-zoom&starting-point-node-id=1119%3A129&show-proto-sidebar=1) and it'll all make sense.
+
+<Frame caption="Cashing out to a gamertag">
+  <img src="/img/courses/rewarded-play/cashout.png" alt="Cashout" />
+</Frame>
+<br />
+
+You can find a Unity package with all required elements set up in a way that's easy to customize [here](https://github.com/zebedeeio/zbd-unity-asset-kit).
+
+ZBD integrations come in all shapes and sizes - it's really up to you what you want to build and how complex you want to go. But no matter what you're building, the withdrawal UX will work the same way. And, hopefully, that part is super clear now!
+
+### Reward mechanics
+Ok, now the fun part: deciding how users earn rewards in your game. Most ZBD games go custom and build custom mechanics inside the game. But there's also a one size fits all solution.
+
+#### One size fits all: time-based rewards
+|||
+|------|------|
+|**Great for**:| Incentivizing players to spend a certain amount of time in-game per session and keep coming back every day.|
+|**Pros**:| Quick implementation that can be copied to any game.|
+|**Cons**:| Only encourages time spent playing, not specific actions. Layers rewards on top, not as part of the game, making it feel a little less native.|
+
+The simplest way to implement real-money rewards into a game is to simply say if a user plays for X amount of time, reward them with Y amount of Bitcoin.
+
+[Here's a video tutorial that takes you through the entire process!](https://youtu.be/59ucumRqFxA?si=1gkamqBXOKP-vPWL)
+ 
+#### Messaging
+It's very important to clearly let the user know when they've earned a reward. We suggest showing a banner overlay every time a user earns a reward, that says:
+"You've just earned a bit of Bitcoin! Keep playing to earn more!"
+
+<Frame caption="Messaging example">
+  <img src="/img/courses/rewarded-play/earned-bitcoin.png" alt="Messaging" />
+</Frame>
+<br />
+
+#### How to not get scammed
+Any system that gives out real money for playing a game will always attract exploiters. Luckily, there are powerful tools available that ensure only legitimate players can get rewards.
+
+**Security essential: Play Integrity**
+We HIGHLY recommend you add Google Play Integrity and iOS Device Check to any game that gives out real-money rewards. This will ensure only users on legitimate devices (not emulators, not rooted) can get rewards. Firebase offers a convenient Wrapper called App Check for both services that you can integrate inside of Unity.
+
+[Here's](https://docs.zbdpay.com/courses/game-security/app-check) how you do it.
+
+
+**Validating gameplay: Quago**
+
+You should validate real gameplay before giving out any rewards. Because you don't want to give rewards to users that just open a game and leave it running. You want them actually playing legitimately!
+
+To do that, you need to run some sort of anti-cheat software. Otherwise, you will get scammed! We recommend [Quago](https://www.quago.io/) for this.
+
+You can then make calls from your server or backend (PlayFab Cloud Script, Beamable micro service) to get the user's "game play data" which will tell you if the user has cheated - used a bot, fake device, etc.
+
+<Accordion title="Show how to integrate time-based rewards using Quago SDK">
+
+Here's how you can implement time-based rewards using [Quago SDK](https://www.quago.io/) (See below)
+
+```csharp Unity code 
+
+Quago.initialize(QuagoSettings
+.create(appToken, QuagoSettings.QuagoFlavor.PRODUCTION).setLogLevel(QuagoSettings.LogLevel.INFO)
+
+);
+var userId = SystemInfo.deviceUniqueIdentifier;
+Quago.beginTracking(userId);
+
+API Endpoint to call on the server to get the Users playtime data
+https://inference.quago.io/user/userId/?app_token=QUAGO_APP_TOKEN
+
+Example Response
+
+{
+  "platforms": "Android",
+  "last_seen_timestamp": "2023-10-29T18:49:00",
+  "cnt_inauth_days": 0,
+  "last_inauth_timestamp": null,
+  "total_playtime_hours": 0.16,
+  "total_motion_hours": 0.09109083333333333,
+  "inauth_playtime_percentage": 0,
+  "emu_playtime_percentage": 0,
+  "emu_models": "[]",
+  "input_devices_found": "[]",
+  "avg_session_playtime_minutes": 1.36,
+  "avg_daily_playtime_hours": 0.16,
+  "cnt_device_ids": 1,
+  "cnt_ips": 1,
+  "countries": "GB",
+  "device_model": "SM-S911B",
+  "system_version": "13"
+}
+```
+
+You can then use total_playtime_hours to calculate how many sats you want to assign to the users balance. If inauth_playtime_percentage or emu_playtime_percentage is not 0 you can not reward any sats as the user has cheated.
+</Accordion>
+
+#### Advanced integration: custom mechanics
+
+|||
+|----|----|
+|Great for:| Making rewards a native and super fun part of your game.|
+|Pros:| Brings maximum engagement and feels native to the game.|
+|Cons:| Implementation will be different for every game and essentially becomes part of game design. But there's always simple ways to add it to an existing game!|
+
+
+Every game is different, so we really can't tell you exactly how to integrate rewards as a native part of gameplay. But here's an example that should make it pretty clear how it works and give you some ideas!
+
+**Example: Bitcoin Miner by Fumb Games**
+
+This is a simple crypto mining simulation game. Check it out here: [Android](https://play.google.com/store/apps/details?id=com.fumbgames.bitcoinminor&hl=en_US) / [iOS](https://apps.apple.com/us/app/bitcoin-miner-idle-tycoon/id1413770650)
+
+Inside, players earn rewards by **tapping on coins with an orange "satoshi icon" on top:**
+
+<Frame caption="Bitcoin Miner">
+  <img src="/img/courses/rewarded-play/bitcoin-miner.png" alt="Bitcion Miner" />
+</Frame>
+<br />
+
+**That's it! Thanks for reading this guide, now go and create some super rewarding experiences for your players!**
