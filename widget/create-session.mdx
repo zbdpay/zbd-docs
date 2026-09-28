@@ -1,12 +1,24 @@
 ---
-title: "Create Session"
-description: "Mint a widget session and get the embeddable URL."
+title: "Create Legacy Session"
+description: "Mint a type-4 Legacy Cashout Widget session and get its embeddable URL."
 api: "POST https://api.zbdpay.com/api/v1/widget/users/session"
 ---
 
 ## Description
 
-Creates a widget session for a user. Returns a `session_token` (JWT) and a `widget_url` that you embed as an iframe. The session is valid for the duration specified in `expires_at`.
+Creates a type-4 Legacy Cashout Widget session. Returns a `session_token` (JWT)
+and the `widget_url` to open in an iframe or WebView. The session is valid until
+`expires_at`.
+
+Supply exactly one of `email` or `access_token`. On the email path, an optional
+`reference_id` validates that the email and publisher reference identify the
+same project user. It is not a session ID. On the access-token path, identity
+comes from the token, so omit `reference_id`.
+
+<Info>
+  This endpoint belongs to the Legacy Cashout Widget contract. EA integrations
+  use [Create EA Session](/widget/create-ea-session) instead.
+</Info>
 
 The widget handles OTP email verification, identity verification (Onfido), bank linking (Plaid), and cashout initiation internally.
 
@@ -34,24 +46,22 @@ submitted. See [Disclosure Agreements](/widget/disclosures).
 
 ### Body Parameters
 
-<ParamField required body="email" type="string">
-  User's email address. Required when `access_token` is not supplied.
-</ParamField>
-
-<ParamField body="webhook_url" type="string">
-  Optional HTTPS server URL to receive widget webhook events.
+<ParamField body="email" type="string">
+  User's email address. Required when `access_token` is omitted; do not send both.
 </ParamField>
 
 <ParamField body="reference_id" type="string">
-  Optional publisher reference for the session.
+  Optional stable publisher user reference used to validate the email mapping.
+  Use only with the email path.
 </ParamField>
 
 <ParamField body="metadata" type="object">
-  Optional key-value metadata to attach to the session.
+  Optional string key-value metadata to attach to the session.
 </ParamField>
 
 <ParamField body="access_token" type="string">
-  Existing access token. When supplied, `email` is not required and OTP is skipped.
+  Existing user access token. Required when `email` is omitted; do not send both.
+  Identity comes from this token and OTP is skipped.
 </ParamField>
 
 <RequestExample>
@@ -61,7 +71,6 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users/session \
   -H "Content-Type: application/json" \
   -d '{
     "email": "player@example.com",
-    "webhook_url": "https://your-server.com/zbd/webhooks",
     "reference_id": "player-42",
     "metadata": { "source": "your-game" }
   }'
@@ -69,7 +78,7 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users/session \
 </RequestExample>
 
 <ResponseExample>
-```json 201
+```json 200
 {
   "success": true,
   "data": {
@@ -80,3 +89,8 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users/session \
 }
 ```
 </ResponseExample>
+
+<Note>
+  `webhook_url` is not a session field. Configure server webhooks for the
+  publisher integration rather than sending a callback URL on each session.
+</Note>

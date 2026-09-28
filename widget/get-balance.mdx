@@ -1,14 +1,22 @@
 ---
-title: "Get User Balance"
-description: "Retrieve a widget user's available and total reward balance."
+title: "Get Legacy User Balance"
+description: "Retrieve a Legacy Cashout Widget user's available and total reward balance."
 api: "GET https://api.zbdpay.com/api/v1/widget/users/{user_id}/balance"
 ---
 
 ## Description
 
+<Info>
+  This is a Legacy Cashout Widget (type-4) server endpoint. EA Widget balance
+  and currency metadata come from the authenticated EA account summary.
+</Info>
+
 Returns the user's widget reward balance for your project. Use this from your server when you need to show a user's cashout-ready balance outside the widget.
 
-Amounts are returned in **currency minor units**. For USD, `100` equals `$1.00`.
+Amounts are integer values in the project's configured currency precision. For
+a two-decimal currency, `100` represents `1.00`. Use the returned currency code
+and your provisioned currency configuration; do not assume every project uses
+USD or two decimal places.
 
 ## Configuration
 

@@ -1,11 +1,19 @@
 ---
-title: "Sandbox"
-description: "Test the full ZBD Widget flow without real money, real identity verification, or real bank transfers."
+title: "Legacy Sandbox"
+description: "Test the Legacy Cashout Widget without real money, identity verification, or bank transfers."
 ---
 
 ## Overview
 
-Every ZBD project includes a **sandbox environment** for testing the ZBD Widget integration end-to-end. Sandbox mode simulates the entire flow — funding users, initiating cashouts, and receiving webhooks — without moving real money through ACH or requiring real identity verification.
+This guide applies to project-scoped Legacy Cashout Widget (type-4)
+integrations. Every enabled ZBD project includes a **sandbox environment** for
+testing that contract end to end. Sandbox mode simulates funding users,
+initiating cashouts, and receiving webhooks without moving real money through
+ACH or requiring real identity verification.
+
+EA sandbox onboarding uses the publisher and workspace configuration provisioned
+for your Embedded Accounts integration; do not use the Legacy sandbox-user
+endpoint to create an EA user.
 
 <Info>
   **Sandbox API keys** are separate from production keys. Make sure you're using the right key for the right environment.
@@ -23,7 +31,7 @@ Every ZBD project includes a **sandbox environment** for testing the ZBD Widget 
 | **Bank linking (Plaid)** | Full Plaid sandbox flow | Real bank connections |
 | **ACH payout** | Simulated when sandbox bypass is enabled; no real transfer | Real ACH via banking partner |
 | **Disclosures** | Same status and acceptance model; bypass settings may skip the type `6` ACH check | Electronic Funds Transfer type `6` blocks ACH until accepted |
-| **Webhooks** | Fire normally to your `webhook_url` | Same |
+| **Webhooks** | Fire normally to the configured publisher endpoint | Same |
 | **Widget UI** | Identical to production | Same |
 
 ## Getting Started
@@ -67,7 +75,9 @@ curl -X POST https://sandbox-api.zbdpay.com/api/v1/widget/users/fund \
 ```
 
 <Note>
-  In sandbox, funding transfers don't debit a real pool. The balance is credited for testing purposes.
+  In sandbox, funding transfers don't debit a real pool. The balance is credited
+  for testing purposes. Replace `USDZ` with the point currency provisioned for
+  your project; it is not a global default.
 </Note>
 
 ### 4. Create a Widget Session
@@ -78,7 +88,7 @@ curl -X POST https://sandbox-api.zbdpay.com/api/v1/widget/users/session \
   -H "Content-Type: application/json" \
   -d '{
     "email": "test@yourcompany.com",
-    "webhook_url": "https://your-server.com/zbd/webhooks"
+    "reference_id": "test-player-1"
   }'
 ```
 
@@ -121,7 +131,8 @@ Balance helper amounts use currency minor units. For USD, `5000` means `$50.00`.
 
 ## Sandbox Webhooks
 
-Sandbox webhooks fire to your `webhook_url` with the same payload structure as production:
+Sandbox webhooks fire to the publisher endpoint configured during onboarding,
+with the same payload structure as production:
 
 ```json
 {

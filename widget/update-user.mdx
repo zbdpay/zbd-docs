@@ -1,10 +1,15 @@
 ---
-title: "Update User"
-description: "Update a widget user's details."
+title: "Update Legacy User"
+description: "Update a project-scoped Legacy Cashout Widget user."
 api: "PATCH https://api.zbdpay.com/api/v1/widget/users/{user_id}"
 ---
 
 ## Description
+
+<Info>
+  This is a Legacy Cashout Widget (type-4) server endpoint. It does not update
+  an EA publisher user.
+</Info>
 
 Updates a widget user's details. This is a partial update. Only the fields you send are changed, and today `email` is the only updatable field.
 

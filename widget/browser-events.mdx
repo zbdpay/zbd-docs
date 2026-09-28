@@ -7,16 +7,29 @@ icon: "window"
 
 ## Overview
 
-The ZBD Widget communicates with your page from the iframe using browser `postMessage` events. Use these events for frontend state such as widget readiness, close actions, cashout submission, identity verification, and linked payout methods.
+The ZBD Widget communicates with your page from the iframe using browser
+`postMessage` events. This host-message protocol is shared by Legacy type-4 and
+EA type-5 sessions.
 
-Server-side cashout status updates are delivered separately as signed webhooks. See [Server Webhooks](/widget/webhooks).
+Use these events for frontend state such as widget readiness, close actions,
+cashout submission, identity verification, and linked payout methods.
+
+Legacy server-side cashout status updates are delivered separately as signed
+webhooks. See [Legacy Server Webhooks](/widget/webhooks).
 
 ## Listening for Events
 
-Listen for events on the parent window:
+Derive the trusted origin from the `widget_url` returned by session creation and
+validate both the message origin and source window:
 
 ```javascript
+const widgetFrame = document.querySelector("#zbd-widget");
+const widgetOrigin = new URL(widgetUrl).origin;
+
 window.addEventListener("message", (event) => {
+  if (event.origin !== widgetOrigin) return;
+  if (event.source !== widgetFrame?.contentWindow) return;
+
   const { type, payload } = event.data ?? {};
   if (!type?.startsWith("ZBD_")) return;
 
@@ -35,14 +48,50 @@ window.addEventListener("message", (event) => {
 });
 ```
 
+<Warning>
+  A `ZBD_*` prefix is not authentication. Never accept a widget token or act on
+  a payout event until `event.origin` and `event.source` have both been checked.
+</Warning>
+
 ## Event Types
 
-| Event | Payload | Description |
-|---|---|---|
-| `ZBD_WIDGET_READY` | `{ user? }` | Widget loaded and authenticated |
-| `ZBD_WIDGET_CLOSE` | — | User closed the widget |
-| `ZBD_CASHOUT_SUCCESS` | `{ cashout_id, amount, currency_code, usd_equivalent }` | Cashout submitted successfully |
-| `ZBD_KYC_COMPLETE` | `{ tier }` | Identity verification approved |
-| `ZBD_METHOD_ADDED` | `{ payout_method_id, type, label }` | Bank account linked via Plaid |
-| `ZBD_AUTH_TOKEN_READY` | `{ auth_token, user? }` | OTP verified, auth JWT available |
-| `ZBD_WIDGET_ERROR` | `{ code, message }` | An error occurred |
+| Event | Sessions | Payload | Description |
+|---|---|---|---|
+| `ZBD_SESSION_REFRESH_REQUIRED` | Both | `{ request_id }` | Widget requests a replacement session token from the host |
+| `ZBD_WIDGET_READY` | Both | `{ user? }` | Widget loaded and authenticated |
+| `ZBD_WIDGET_CLOSE` | Both | — | User closed the widget |
+| `ZBD_WIDGET_BACK` | Both | — | User requested host-level back navigation |
+| `ZBD_WIDGET_ERROR` | Both | `{ code, message }` | An error occurred |
+| `ZBD_AUTH_TOKEN_READY` | Legacy type 4 | `{ auth_token, user? }` | OTP verification produced an auth JWT |
+| `ZBD_CASHOUT_SUCCESS` | Both | `{ cashout_id, status?, amount, currency_code, usd_equivalent }` | Cashout submitted successfully |
+| `ZBD_CASHOUT_CANCELLED` | Both | — | User cancelled cashout |
+| `ZBD_KYC_STARTED` | Both | `{ target_tier }` | Identity verification started |
+| `ZBD_KYC_STEP_COMPLETED` | Both | `{ step }` | An identity-verification step completed |
+| `ZBD_KYC_COMPLETE` | Both | `{ tier }` | Identity verification approved |
+| `ZBD_KYC_FAILED` | Both | `{ retryable }` or `{ reason }` | Identity verification failed |
+| `ZBD_KYC_CANCELLED` | Both | — | User cancelled identity verification |
+| `ZBD_KYC_PENDING_REVIEW` | Both | — | Verification requires review |
+| `ZBD_METHOD_ADD_STARTED` | Both | `{ method_type }` | Payout-method linking started |
+| `ZBD_METHOD_ADDED` | Both | `{ payout_method_id, type, label }` | Payout method linked |
+| `ZBD_METHOD_CANCELLED` | Both | — | User cancelled payout-method linking |
+| `ZBD_GIFT_CARD_PURCHASE_SUCCESS` | Both | `{ product_name, amount, email }` | Gift-card purchase completed |
+| `ZBD_GIFT_CARD_PURCHASE_FAILED` | Both | `{ reason }` | Gift-card purchase failed |
+| `ZBD_PAYOUT_INITIATED` | Both | `{ cashout_id, idempotency_key }` | Payout request was initiated |
+| `ZBD_PAYOUT_CONFIRMED` | Both | `{ method_id, amount }` | Payout was confirmed |
+| `ZBD_NAVIGATION` | Both | `{ from, to }` | Widget navigation changed |
+| `ZBD_EXTERNAL_REDIRECT` | Both | `{ provider, url, flow? }` | Widget requests an external provider redirect |
+
+## Host Commands
+
+After the same origin/source checks, a host can send these public commands to
+either runtime:
+
+| Command | Sessions | Payload | Description |
+|---|---|---|---|
+| `ZBD_SESSION_REFRESH_RESULT` | Both | `{ request_id, session_token }` | Answers the matching refresh request; token can be `null` when refresh failed |
+| `ZBD_SET_THEME` | Both | String key-value object | Updates supported theme values |
+| `ZBD_SET_CONFIG` | Both | Widget configuration object | Updates supported runtime configuration |
+| `ZBD_NAVIGATE` | Both | `{ path }` | Requests navigation to a supported widget path |
+
+Preview-only commands used by the ZBD configuration UI are not part of the
+publisher integration contract.

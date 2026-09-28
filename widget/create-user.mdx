@@ -1,14 +1,25 @@
 ---
-title: "Create User"
-description: "Create or fetch a publisher-linked widget user."
+title: "Create Legacy User"
+description: "Create or resolve a project-scoped Legacy Cashout Widget user."
 api: "POST https://api.zbdpay.com/api/v1/widget/users"
 ---
 
 ## Description
 
-Provisions a user in ZBD for your project. Idempotent — if a user with the same `reference_id` or `email` already exists for your project, the existing user is returned.
+Provisions a Legacy Cashout Widget user for your project. The request is
+idempotent only when the normalized `email` and `reference_id` both resolve to
+the same existing project user.
+
+If either identifier is already bound to a different mapping, the API returns
+`409` with error code `PA5004`. It does not return whichever user matched first.
 
 Call this from your server before creating a widget session.
+
+<Info>
+  This endpoint belongs to the Legacy Cashout Widget contract and produces the
+  user used by a type-4 session. EA integrations use
+  [Create EA User](/widget/create-ea-user) instead.
+</Info>
 
 <Note>
   Disclosure status does not block widget session creation. For widget ACH cashout, filter `outstanding_disclosures` for Electronic Funds Transfer disclosure type `6`, present that document, and record its acceptance before the ACH request is submitted. Types `1` through `5` can be ignored for widget eligibility. See [Disclosure Agreements](/widget/disclosures).
@@ -61,7 +72,7 @@ The response `data` includes the new (or existing) user plus an `outstanding_dis
 </Note>
 
 <ResponseExample>
-```json 201
+```json 200
 {
   "success": true,
   "data": {
@@ -84,3 +95,12 @@ The response `data` includes the new (or existing) user plus an `outstanding_dis
 }
 ```
 </ResponseExample>
+
+## Errors
+
+| Status | Meaning |
+|---|---|
+| `400` | Invalid email or `reference_id` |
+| `401` | Missing or invalid project API key |
+| `403` | The project is not enabled for this endpoint |
+| `409` | The email or `reference_id` is already bound to a different project user (`PA5004`) |

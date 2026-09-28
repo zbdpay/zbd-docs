@@ -1,10 +1,15 @@
 ---
-title: "Submit Disclosure Acceptance"
-description: "Record disclosure acceptance for a widget user."
+title: "Submit Legacy Disclosure Acceptance"
+description: "Record disclosure acceptance for a Legacy Cashout Widget user."
 api: "POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures"
 ---
 
 ## Description
+
+<Info>
+  This is a Legacy Cashout Widget (type-4) server endpoint. It uses the
+  project-scoped user ID and `apikey` contract.
+</Info>
 
 Records the user's acceptance of the latest version of each disclosure type in `acceptedDisclosureTypeIds`.
 
