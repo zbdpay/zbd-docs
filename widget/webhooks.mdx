@@ -1,11 +1,17 @@
 ---
-title: "Server Webhooks"
-sidebarTitle: "Server Webhooks"
-description: "Reference for ZBD Widget publisher webhook events, delivery, signing, retries, and payloads."
+title: "Legacy Server Webhooks"
+sidebarTitle: "Legacy Server Webhooks"
+description: "Reference for Legacy Cashout Widget publisher webhook events, delivery, signing, retries, and payloads."
 icon: "webhook"
 ---
 
 ## Overview
+
+<Info>
+  This webhook contract applies to Legacy Cashout Widget (type-4) integrations.
+  EA publishers should use the event contract provisioned for their Embedded
+  Accounts integration.
+</Info>
 
 ZBD sends webhook events to your configured HTTPS endpoint when a widget cashout or reversal changes status. Your endpoint validates the signature, acknowledges receipt, and processes the event asynchronously.
 

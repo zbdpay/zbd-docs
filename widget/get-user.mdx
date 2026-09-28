@@ -1,10 +1,15 @@
 ---
-title: "Get User"
-description: "Retrieve a widget user's details and verification status."
+title: "Get Legacy User"
+description: "Retrieve a Legacy Cashout Widget user's details and verification status."
 api: "GET https://api.zbdpay.com/api/v1/widget/users/{user_id}"
 ---
 
 ## Description
+
+<Info>
+  This is a Legacy Cashout Widget (type-4) server endpoint. It does not read an
+  EA publisher user.
+</Info>
 
 Returns the user's details including their current identity verification status. Use this to check if a user has completed identity verification before showing cashout options.
 

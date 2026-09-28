@@ -1,16 +1,22 @@
 ---
-title: "Deplete User"
-description: "Debit USDZ points from a widget user's point balance."
+title: "Deplete Legacy User"
+description: "Debit points from a Legacy Cashout Widget user's configured balance."
 api: "POST https://api.zbdpay.com/api/v1/widget/users/deplete"
 ---
 
 ## Description
 
+<Info>
+  This is a Legacy Cashout Widget (type-4) server endpoint. It does not debit an
+  EA workspace balance.
+</Info>
+
 Reverse an available fund by debiting publisher points from a widget user's
 point balance and returning them to the project's configured sink/source
 account. This creates a new debit; it does not modify the original fund
-transfer. Amount is in **currency minor units**. For USDZ, `100` equals `$1.00`
-worth of points.
+transfer. `amount` is an integer in the precision of the project's configured
+point currency. For a two-decimal currency such as USDZ, `100` represents
+`1.00`.
 
 This endpoint is idempotent on `idempotency_key`. The user must already have enough point balance for the debit.
 
@@ -33,11 +39,13 @@ This endpoint is idempotent on `idempotency_key`. The user must already have eno
 </ParamField>
 
 <ParamField required body="amount" type="integer">
-  Amount in currency minor units. For USDZ: `100` = $1.00, `1000` = $10.00.
+  Integer amount in the configured currency precision. For a two-decimal
+  currency, `100` represents `1.00`.
 </ParamField>
 
 <ParamField required body="currency" type="string">
-  Point currency code. Use `USDZ` unless your project has a different configured point currency.
+  Exact point currency code provisioned for the project. `USDZ` below is an
+  example, not a global default.
 </ParamField>
 
 <ParamField required body="idempotency_key" type="string">

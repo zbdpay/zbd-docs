@@ -1,10 +1,15 @@
 ---
-title: "Get Disclosure Status"
-description: "Check a widget user's current disclosure acceptance status."
+title: "Get Legacy Disclosure Status"
+description: "Check a Legacy Cashout Widget user's current disclosure acceptance status."
 api: "GET https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures"
 ---
 
 ## Description
+
+<Info>
+  This is a Legacy Cashout Widget (type-4) server endpoint. It uses the
+  project-scoped user ID and `apikey` contract.
+</Info>
 
 Returns the user's acceptance status for each current disclosure type. The
 response can include disclosures that are not required by the widget.

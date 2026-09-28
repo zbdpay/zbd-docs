@@ -1,0 +1,85 @@
+---
+title: "Create EA Session"
+description: "Mint an Embedded Accounts widget session for a publisher user and workspace."
+api: "POST https://api.zbdpay.com/api/v1/zbd-widget/sessions"
+---
+
+## Description
+
+Mints a four-hour type-5 Widget session for an existing Embedded Accounts user
+and workspace. The response contains the signed `session_token`, expiry, and the
+`widget_url` to open in an iframe or WebView.
+
+The endpoint verifies that the API-key publisher owns `workspace_id`, that
+`user_id` is registered to that publisher, and that the user belongs to the
+workspace. It never auto-provisions a user.
+
+<Info>
+  Register the user with [Create EA User](/widget/create-ea-user) first. Legacy
+  Cashout Widget integrations use [Create Legacy Session](/widget/create-session)
+  instead.
+</Info>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your EA publisher API key. Keep this key on your server.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content type.
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="user_id" type="string">
+  The ZBD user UUID returned by Create EA User.
+</ParamField>
+
+<ParamField required body="workspace_id" type="string">
+  The EA workspace UUID for this session. The authenticated publisher must own
+  the workspace.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/zbd-widget/sessions \
+  -H "x-api-key: YOUR_EA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "b2c3d4e5-f6a7-4890-abcd-ef0123456789",
+    "workspace_id": "1d2e3f40-5a6b-4c7d-8e9f-0a1b2c3d4e5f"
+  }'
+```
+</RequestExample>
+
+## Response
+
+Open the returned `widget_url`; do not construct a widget hostname or append a
+different session token yourself.
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "ZBD widget session created successfully.",
+  "data": {
+    "session_token": "eyJhbGciOiJSUzI1NiIs...",
+    "expires_at": "2026-05-27T19:04:05Z",
+    "widget_url": "https://widget.zbdpay.com?session_token=eyJhbGciOiJSUzI1NiIs..."
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Errors
+
+| Status | Meaning |
+|---|---|
+| `400` | `user_id` or `workspace_id` is empty or invalid (`ZWS0002`) |
+| `401` | Missing or invalid publisher API key |
+| `403` | The workspace does not belong to the authenticated publisher (`ZWS0003`) |
+| `404` | The user is not registered to the publisher (`ZWS0001`) |

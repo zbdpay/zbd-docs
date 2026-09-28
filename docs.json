@@ -485,6 +485,7 @@
                 "group": "Overview",
                 "pages": [
                   "widget",
+                  "widget/integration-models",
                   "widget/disclosures"
                 ]
               },
@@ -496,7 +497,7 @@
                 ]
               },
               {
-                "group": "API Reference",
+                "group": "Legacy Cashout API",
                 "pages": [
                   "widget/create-user",
                   "widget/update-user",
@@ -508,6 +509,13 @@
                   "widget/get-user",
                   "widget/get-transactions",
                   "widget/deplete-user"
+                ]
+              },
+              {
+                "group": "Embedded Accounts API",
+                "pages": [
+                  "widget/create-ea-user",
+                  "widget/create-ea-session"
                 ]
               },
               {

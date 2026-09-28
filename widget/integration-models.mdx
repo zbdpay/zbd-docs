@@ -1,0 +1,91 @@
+---
+title: "Integration Models"
+description: "Choose the Legacy Cashout Widget or Embedded Accounts contract and keep user, session, and currency semantics consistent."
+---
+
+## Overview
+
+The hosted ZBD Widget supports two publisher integration contracts. Your ZBD
+onboarding configuration determines which contract to use.
+
+| Contract | Widget session | Publisher scope | Server credential |
+|---|---|---|---|
+| **Legacy Cashout Widget (1047)** | `session_type_id = 4` | Project and `reference_id` | `apikey` |
+| **Embedded Accounts (EA) Widget** | `session_type_id = 5` | Publisher user and workspace | `x-api-key` |
+
+<Warning>
+  Do not mix endpoints from the two contracts. The widget selects Legacy V1 or
+  EA V2 only from the signed session token. A URL parameter, project ID, or
+  browser message cannot change the runtime.
+</Warning>
+
+Both contracts return a tokenized `widget_url`. Create the user and session on
+your server, then give only the returned URL to your browser, WebView, or game
+client. Never expose either publisher credential to a client.
+
+## Legacy Cashout Widget
+
+Use this contract for an existing project-based Cashout Widget integration.
+
+| Step | Route | Purpose |
+|---|---|---|
+| 1 | `POST /api/v1/widget/users` | Create or resolve the project-scoped user from `reference_id` and email |
+| 2 | `POST /api/v1/widget/users/fund` | Credit the user's configured point currency |
+| 3 | `POST /api/v1/widget/users/session` | Mint a type-4 widget session |
+| 4 | Open returned `widget_url` | Start the hosted cashout experience |
+
+The publisher must retain its stable `reference_id` and the returned ZBD user
+ID. User creation is idempotent only when the normalized email and
+`reference_id` identify the same existing user for the project. Reusing either
+identifier for a different mapping returns `409` (`PA5004`).
+
+During email-based session creation, `reference_id` validates that exact user
+mapping; it is not a session identifier. When creating a session from an
+`access_token`, omit `reference_id` because identity comes from the token.
+
+See [Create Legacy User](/widget/create-user) and
+[Create Legacy Session](/widget/create-session).
+
+## Embedded Accounts Widget
+
+Use this contract for a publisher and workspace provisioned for Embedded
+Accounts.
+
+| Step | Route | Purpose |
+|---|---|---|
+| 1 | `POST /api/v1/publishers/{publisherId}/users` | Create or resolve a publisher user from `publisher_user_id` |
+| 2 | Fund or reward the user through your EA integration | Make workspace currency available to the user |
+| 3 | `POST /api/v1/zbd-widget/sessions` | Mint a type-5 session for `user_id` and `workspace_id` |
+| 4 | Open returned `widget_url` | Start the hosted cashout experience |
+
+The session endpoint verifies that the API-key publisher owns the workspace and
+that the user is registered to that publisher. It does not create the user.
+
+See [Create EA User](/widget/create-ea-user) and
+[Create EA Session](/widget/create-ea-session).
+
+## Currency and amounts
+
+Amounts are integer values in the precision of their associated currency. Do
+not assume every currency has two decimal places.
+
+- Legacy endpoints use the point currency provisioned for the project. There is
+  no separate public Legacy currency-discovery endpoint. Use the provisioned
+  currency and the codes returned by balance APIs; do not globally hard-code
+  `USD` or `USDZ`.
+- EA currency metadata comes from the authenticated account summary at
+  `GET /api/v1/users/{userId}/account-summary`. Respect each currency's `id`,
+  `code`, and `precision`, and aggregate only balances for the same currency
+  identity and precision.
+- The source or points currency and the payout fiat currency are separate
+  values. Do not use one field for both.
+
+## Shared widget behavior
+
+The iframe/WebView bridge is shared by both session types. See
+[Browser Events](/widget/browser-events) for the public `ZBD_*` protocol and
+security requirements.
+
+Routes under a sample backend or the widget application's own `/api/*` namespace
+are implementation proxies, not publisher-facing platform APIs. Publisher
+servers must call the public routes documented in this section.

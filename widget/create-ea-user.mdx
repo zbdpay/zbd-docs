@@ -1,0 +1,75 @@
+---
+title: "Create EA User"
+description: "Create or resolve an Embedded Accounts publisher user."
+api: "POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/users"
+---
+
+## Description
+
+Creates a user for an Embedded Accounts publisher, or returns the existing user
+for the same `publisher_user_id`. Call this server-to-server before creating an
+EA Widget session.
+
+<Info>
+  This endpoint belongs to the Embedded Accounts contract and produces the user
+  used by a type-5 widget session. Legacy Cashout Widget integrations use
+  [Create Legacy User](/widget/create-user) instead.
+</Info>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your EA publisher API key. Keep this key on your server.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content type.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="publisherId" type="string">
+  The publisher UUID provisioned for your integration. It must match the
+  publisher authenticated by `x-api-key`.
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="publisher_user_id" type="string">
+  Your stable identifier for this user. It is idempotent within the publisher.
+</ParamField>
+
+<ParamField body="accepted_disclosure_type_ids" type="array">
+  Optional disclosure type IDs already accepted by the user.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/publishers/PUBLISHER_ID/users \
+  -H "x-api-key: YOUR_EA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "publisher_user_id": "player-42"
+  }'
+```
+</RequestExample>
+
+## Response
+
+Retain `user_id`; it is required when creating the EA Widget session.
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "Publisher user created successfully.",
+  "data": {
+    "user_id": "b2c3d4e5-f6a7-4890-abcd-ef0123456789",
+    "publisher_user_id": "player-42"
+  },
+  "error": null
+}
+```
+</ResponseExample>
