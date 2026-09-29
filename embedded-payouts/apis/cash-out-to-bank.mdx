@@ -1,0 +1,12 @@
+---
+title: "Cash out to a bank account"
+description: "Cashout to a linked bank account."
+api: "POST https://api.zbdpay.com/api/v1/widget/cashout"
+---
+
+Cashout to a linked bank account. Idempotency goes in the `idempotency_key` **body field** — the `Idempotency-Key` header is ignored
+
+<ParamField header="Authorization" type="string" required>
+  session
+</ParamField>
+

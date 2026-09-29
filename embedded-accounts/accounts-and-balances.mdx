@@ -1,0 +1,28 @@
+---
+title: "Accounts and balances"
+description: "Every player in your economy has an account with ZBD that holds their balances."
+---
+
+Every player in your economy has an account with ZBD. It holds their balances, records everything that moves, and carries the permissions that decide what they can do.
+## The objects
+
+| Object | What it is |
+| --- | --- |
+| User | The player. You create one using your own identifier for them. |
+| Account | Their financial record with ZBD. One per user. |
+| Wallet | Where a balance in a given currency lives. Wallets are currency-specific. |
+
+Creating a user provisions the account and a wallet for each currency in your project, so nothing else is needed before you can credit them.
+## Creating an account costs the player nothing
+You create accounts from your backend with an identifier of your own, a country code, and confirmation the player accepted your terms. No identity documents and no personal data.
+Identity checks happen later. A player can hold a balance, earn and spend without being asked for anything. Verification is required when the user initiates one of the following actions: loading a fiat wallet, selling an item for fiat, or cashing out.
+## What a balance actually is
+A balance isn't a number ZBD stores and updates. It's the sum of every entry in the ledger for that wallet, and each entry carries a source tag recording where the value came from.
+So a player's balance has structure. The total is what they can spend, while what they can take out depends on which tags make up that total. A player showing 1,700 might be able to cash out all, some or none of it.
+[Currencies](/embedded-accounts/currencies) covers how tags work and what each one permits. ZBD sets that, not you.
+## More than one wallet
+Each currency gets its own wallet automatically. You can also create additional wallets against the same currency where you want to keep value separate, for example keeping a seasonal event currency apart from a player's main balance.
+## Your own wallet
+Your organization holds a wallet per currency, and funds a separate project wallet — also one per currency — for each game. Keeping only a game's expected payouts in its project wallet limits what a leaked key or fraud can reach.
+## Reading balances
+You can read a wallet's balance, the entries behind it, and what portion is currently available to cash out. Read these rather than tracking balances yourself, since tags and conversions affect what a player can do with what they hold.

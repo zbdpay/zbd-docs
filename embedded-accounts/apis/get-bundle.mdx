@@ -1,0 +1,16 @@
+---
+title: "Get a bundle"
+description: "Get one bundle."
+api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/bundles/{bundleId}"
+---
+
+<Info>
+  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+</Info>
+
+Get one bundle. An archived bundle 404s, same as a missing one
+
+<ParamField header="Authorization" type="string" required>
+  `x-api-key`
+</ParamField>
+

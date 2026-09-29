@@ -1,0 +1,31 @@
+---
+title: "Payout methods"
+description: "Where a user can be paid, and how they get their money."
+---
+
+Where a user can be paid, and how they get their money, depends on their country and on what your program supports. Both change over time, so coverage is resolved when it's needed rather than published as a fixed list.
+## How coverage is resolved
+When a user goes to link a payout account, they're shown the methods available to them. That set comes from their country, the methods your program has enabled, and their [verification tier](/embedded-payouts/users).
+You don't maintain a list of supported countries or methods, and you don't branch on them in your own code. A user in a newly supported country sees the new option without any change on your side.
+## Method types
+
+| Type | What it is |
+| --- | --- |
+| Bank account | Domestic or cross-border transfer to an account the user holds |
+| Mobile wallet | Transfer to a wallet, where the market supports it |
+| Gift card | Redemption against a catalog, where available |
+
+Some countries support more than one, and the user chooses between them.
+## What affects timing
+Timing varies by method and by the user's country rather than by anything in your instruction. The categories that behave differently:
+- **Near-instant.** Mobile wallets and some domestic schemes settle in minutes.
+- **Same or next business day.** Domestic bank transfers in most supported markets.
+- **Several business days.** Cross-border bank transfers, where an intermediary is involved.
+Two things apply across all of them. Local banking hours and holidays govern when funds actually move, and a payout submitted after the local cut-off starts on the next business day.
+## Fees
+Fees are deducted from the payout, so a user receives the amount you instructed minus the cost of the method they chose.
+That cost sits with the user because the choice does too. Faster methods generally cost more, so someone deciding between them is trading speed against what actually lands in their account. The widget shows the fee and the resulting amount before they confirm, which means the tradeoff is visible at the moment it's made rather than discovered afterward.
+Where a payout crosses currencies, the conversion is part of that cost. A user choosing a method in their local currency sees the converted amount and the conversion cost together.
+For your own accounting, the amount you [instruct](/embedded-payouts/paying-out) is the amount debited from your [pool](/embedded-payouts/funding). The user's fee comes out of their proceeds rather than being charged to you.
+## Building against this
+The parts that stay stable are the method types above, the [payout states](/embedded-payouts/paying-out), and the shape of the instruction you send. Country availability, per-method limits, fees, and the fields a user has to fill in all change without notice, so treat them as things you read rather than things you encode.

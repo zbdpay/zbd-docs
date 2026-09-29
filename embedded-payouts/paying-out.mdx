@@ -1,0 +1,52 @@
+---
+title: "Paying out"
+description: "A payout moves money from your pool into a user's payout account."
+---
+
+A payout moves money from your pool into a user's payout account. You instruct one at a time, at the moment you decide a user should be paid.
+## What triggers a payout is yours to decide
+Nothing schedules payouts for you. Common patterns:
+- The user asks for a cash out in your product
+- You run payouts on a cycle, weekly or monthly
+- You pay automatically once a balance crosses a threshold you set
+Which one fits depends on your economy, and a creator program usually wants something different from a rewards program.
+## Instructing a payout
+An instruction carries three things: the [user](/embedded-payouts/users), the amount, and the [payout account](/embedded-payouts/methods-and-coverage) they linked. ZBD resolves the rest at that moment, including the user's tier, the rail behind their account, and the conversion rate if their currency differs from your funding currency.
+The amount you instruct is the amount debited from your [pool](/embedded-payouts/funding). [Fees](/embedded-payouts/methods-and-coverage) for the method the user chose come out of their proceeds, so what lands in their account is lower than what you instructed.
+Send an idempotency key with every instruction, so that a timeout or a retry on your side doesn't result in the user being paid twice.
+## Lifecycle
+
+```mermaid
+flowchart LR
+  A[Processing] --> B[Completed]
+  A --> C[Failed]
+  A --> D[Returned]
+```
+
+| State | What it means |
+| --- | --- |
+| Processing | Accepted and moving. Checks have passed and the payout is with the rail. |
+| Completed | Settled into the user's payout account. |
+| Failed | Rejected before any money moved. The amount stays with the user. |
+| Returned | Settled, then came back, usually because the account was closed or the details were wrong. |
+
+Each transition raises a webhook, so you don't have to poll for status.
+## Holds
+A payout can be held before it becomes payable, covering the window where the transaction that funded it could still be refunded or charged back. A held payout isn't stuck, it releases on its own once that window closes.
+Recipients notice holds more than anything else in this flow, so it's worth showing them the release date rather than a generic pending state.
+## When a payout fails
+A failed payout returns a status and leaves the amount with the user, with nothing partially paid.
+
+| Reason | What to do |
+| --- | --- |
+| Tier too low | Prompt the user to verify, then re-instruct once they clear |
+| Screening | Don't surface details to the user, these need a person to look at them |
+| Limit reached | Show the user when the limit resets |
+| Pool short | Top up and re-instruct, and don't surface it to the user |
+| No payout account | Prompt the user to link one |
+
+## Returns
+A payout can settle and still come back. The usual causes are a closed account or details that didn't match, and the user's balance is restored when it happens.
+Returns can arrive well after a payout looks complete, so treat returned as a state a finished payout can still enter rather than a failure mode that only shows up early.
+## What to show users
+The states above map to a small number of things a user actually cares about: whether their money is on the way, when it lands, and whether something is blocking it. Surfacing the payout state directly usually works better than inventing your own vocabulary on top of it.

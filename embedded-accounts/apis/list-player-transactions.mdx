@@ -1,0 +1,12 @@
+---
+title: "List player transactions"
+description: "Player history, session-bound."
+api: "GET https://api.zbdpay.com/api/v1/users/{userId}/transactions"
+---
+
+Player history, session-bound. `take` 1–200 (default 50; ≤ 0 falls back to 50, > 200 clamps), `before` is an **id cursor**, not a timestamp, `type` ∈ `reward` `spend` `cashout` `purchase` `gift`, optional `workspace_id`. No `has_more`, no `total` — page until a page returns fewer rows than `take`
+
+<ParamField header="Authorization" type="string" required>
+  `Bearer` session
+</ParamField>
+

@@ -1,0 +1,565 @@
+---
+title: "Integrating Embedded Accounts"
+description: "End-to-end integration guide: workspaces, currencies, players, sessions, transactions and cash out."
+---
+
+Embedded Accounts runs your in-game economy. You define a virtual currency, and ZBD holds a balance in it for every player. Your players earn it, spend it, send it to each other, and cash it out as real money at the redemption rate you set.
+
+ZBD holds the balances and keeps the records. It also verifies each player's identity and pays them in their own country and currency. Your integration decides when value moves; ZBD runs everything behind it.
+
+---
+
+## How it fits together
+
+| # | Step | Call |
+| --- | --- | --- |
+| 1 | Create a project | `POST /api/v1/publishers/{publisherId}/projects` |
+| 2 | Define your currency | `POST /api/v1/publishers/{publisherId}/virtual-currencies` |
+| 3 | Read your redemption rate | `GET /api/v1/publishers/{publisherId}/redemption-rates` |
+| 4 | Open an account for a player | `POST /api/v1/publishers/{publisherId}/users` |
+| 5 | Start a player session | `POST /api/v1/sessions` |
+| 6 | Credit, spend, transfer | `POST /api/v1/transactions/{rewards · spends · gifts}/virtual-currencies` |
+| 7 | Show a balance | `GET /api/v1/users/{userId}/account-summary` |
+| 8 | Cash out | limits → payout methods → quote → cash-out |
+| 9 | Transaction history | project feed, per-player feed |
+
+---
+
+## Before you start
+
+| What | How you get it |
+| --- | --- |
+| Publisher account | ZBD's team guides you through business verification (KYB). Your credentials are issued once it clears. |
+| API key | Create one in the Publisher Portal. |
+| Redemption rate | Set it in the Publisher Portal for each currency you plan to cash out. |
+
+Plan for business verification at the start of your timeline. It runs before credentials are issued.
+
+### Environments
+
+| Environment | Base URL |
+| --- | --- |
+| Production | `https://api.zbdpay.com` |
+| Sandbox | your sandbox host, issued with your sandbox key |
+
+The environment is selected by the host. Sandbox keys work only on the sandbox host, and production keys only on production.
+
+### Authentication
+
+| Credential | Header | Used for |
+| --- | --- | --- |
+| Publisher API key | `x-api-key` | Calls from your server: projects, currencies, rates, players, sessions, credit, spend, reporting |
+| Player session token | `Authorization: Bearer` | Calls the player makes: balance, transfer, own history, cash-out |
+
+Keep the API key on your server. The session token is safe to hand to the game client, because it is scoped to a single player and expires after 4 hours.
+
+### Requests and responses
+
+Every response uses the same envelope:
+
+```json
+{ "success": true, "message": "…", "data": {}, "error": null }
+```
+
+The HTTP status is authoritative. On success, `error` is `null`; on failure, `data` is `null`.
+
+| Header | Purpose |
+| --- | --- |
+| `Idempotency-Key` | A UUID you generate. Required on every call that moves value: credit, spend, transfer, cash-out. Replaying the same key returns the original result and sets `Idempotency-Replayed: true`. |
+| `x-project-id` | Scopes a credit or spend to a project. |
+| `X-Request-Id` | Your own trace id, accepted on every call and echoed back. |
+
+> **Idempotency in practice:** generate the key when the business event happens (the match ends, the order is placed), store it with that event, and reuse it on every retry. That way a network retry can never credit or charge a player twice.
+> 
+
+---
+
+## 1. Create a project
+
+A project groups one part of your economy, such as a game, a season or a region. Currencies are linked to Projects, and every transaction records the project it ran in, so you can report on each project separately.
+
+```
+POST /api/v1/publishers/{publisherId}/projects
+x-api-key: {your key}
+Content-Type: application/json
+
+{
+  "display_name": "Northlight Rewards",
+  "description": "Rewards economy for the Northlight season."
+}
+```
+
+- `display_name` is required, up to 256 characters. `description` is optional, up to 1000 characters.
+- Read, update or remove a project at `/api/v1/publishers/{publisherId}/projects/{projectId}` with `GET`, `PATCH` or `DELETE`.
+- `PATCH` changes only the fields you send.
+
+## 2. Define your currency
+
+```
+POST /api/v1/publishers/{publisherId}/virtual-currencies
+x-api-key: {your key}
+Content-Type: application/json
+
+{ "code": "GEMZ", "name": "Gems", "icon_url": "<https://cdn.example.com/gems.png>" }
+```
+
+| Field | Rules |
+| --- | --- |
+| `code` | 2–4 uppercase letters or digits. This is the permanent identifier you'll use in every call. |
+| `name` | Display name, up to 100 characters |
+| `icon_url` | Optional. Shown wherever ZBD displays the currency to the player. |
+- `name` and `icon_url` can be changed later with `PATCH`.
+- Link the currency to a project: `POST /api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies` with `{ "virtual_currency_id": "…" }`.
+- Unlink it with `DELETE …/virtual-currencies/{virtualCurrencyId}`.
+
+## 3. Read your redemption rate
+
+The redemption rate is what one unit of your currency is worth in fiat when a player cashes out. You set it in the Publisher Portal, and your server can read it at any time:
+
+```
+GET /api/v1/publishers/{publisherId}/redemption-rates?currency_code=GEMZ&current_only=true
+x-api-key: {your key}
+```
+
+```json
+{
+  "success": true,
+  "data": {
+    "redemption_rates": [
+      {
+        "id": "9b1c…",
+        "from_currency": { "code": "GEMZ", "name": "Gems" },
+        "to_currency":   { "code": "USD",  "name": "US Dollar" },
+        "rate": "0.00666667",
+        "is_current": true,
+        "created_at": "2026-09-01T12:00:00Z"
+      }
+    ]
+  }
+}
+```
+
+- **Reading the rate:** `rate` is the fiat value of one unit of your currency. `"0.00666667"` means 1 GEMZ = $0.00666667, or 150 GEMZ = $1.
+- **Exact values:** `rate` is sent as a **string** so the exact decimal survives JSON. Parse it with a decimal type, not a float.
+- **Changing the rate:** a new rate applies from the moment you set it. Earlier rates stay in the history; leave out `current_only` to list them. `is_current` marks the rate in force for each pair.
+- **Quotes keep their rate.** A cash-out that was already quoted or completed keeps the rate it was created with, so changing your rate never alters a player's pending cash-out.
+- **Showing cash value:** you can use the current rate to show players what their balance is worth (see [step 7](https://app.notion.com/p/Integrating-Embedded-Accounts-w-planned-endpoints-3e7617b17b9680b5b79ac85e27e3b825?pvs=21)). The amount they actually receive is always the one in their cash-out quote.
+
+## 4. Open an account for a player
+
+```
+POST /api/v1/publishers/{publisherId}/users
+x-api-key: {your key}
+Content-Type: application/json
+
+{ "publisher_user_id": "player-42", "accepted_disclosure_type_ids": [] }
+```
+
+The response contains a ZBD `user_id`. Store it next to your own player record; every later call identifies the player by `user_id`.
+
+- **Safe to retry:** the call is idempotent on `publisher_user_id`. It returns `201` when the account is created and `200` with the same `user_id` on every repeat. It's safe to call on each login.
+- **No personal data needed:** there's no email, name or country to send, because your API key vouches for the player. ZBD asks the player for identity details only when they cash out, and collects them directly from the player.
+- **One account per currency:** each player gets one account in each of your currencies.
+- **Removing a player:** call `POST /api/v1/publishers/{publisherId}/users/{userId}/deletion-request` when a player deletes their account with you. ZBD archives their account.
+
+## 5. Start a player session
+
+Anything the player does themselves runs on a session token: checking their balance, sending value to another player, viewing their own history and cashing out.
+
+```
+POST /api/v1/sessions
+x-api-key: {your key}
+Content-Type: application/json
+
+{ "user_id": "b2c3d4e5-…", "project_id": "7c59e948-…" }
+```
+
+- Returns a JWT valid for **4 hours**. Start a new session when the player opens your game, and again when the token is close to expiry.
+- A session can read its own identity with `GET /api/v1/sessions/current`.
+
+## 6. Credit, spend, transfer
+
+Amounts are whole numbers of your currency: `"amount": 200` means 200 GEMZ.
+
+### Credit a player
+
+Use this when a player earns value: a match win, a quest reward, a referral bonus.
+
+```
+POST /api/v1/transactions/rewards/virtual-currencies
+x-api-key: {your key}
+Idempotency-Key: {uuid}
+x-project-id: {project id}
+
+{ "user_id": "b2c3d4e5-…", "currency_code": "GEMZ", "amount": 200 }
+```
+
+The response returns `transaction_id`, `user_id`, `currency_code` and `amount`. Credited value is available to spend immediately and counts towards what the player can cash out.
+
+### Take a spend
+
+Use this when a player pays you: an item purchase, an entry fee, an upgrade.
+
+```
+POST /api/v1/transactions/spends/virtual-currencies
+x-api-key: {your key}
+Idempotency-Key: {uuid}
+x-project-id: {project id}
+
+{ "user_id": "b2c3d4e5-…", "currency_code": "GEMZ", "amount": 50, "reference_id": "order-9921" }
+```
+
+- The response returns `transaction_id`, `user_spendable_balance` and your `reference_id`, so you can confirm the purchase in one round trip.
+- `reference_id` is optional: up to 255 characters, `A–Z a–z 0–9 _ -`. Use your own order id, and it will show up in the transaction feeds.
+- If the player's balance can't cover the spend, you get **422**. Nothing is charged.
+
+### Transfer between players
+
+Players can send value to each other, for example gifts, trades and team pots. The transfer runs on the sender's session, so only the player can send their own balance.
+
+```
+POST /api/v1/transactions/gifts/virtual-currencies
+Authorization: Bearer {sender's session token}
+Idempotency-Key: {uuid}
+
+{ "publisher_user_id": "player-77", "currency_code": "GEMZ", "amount": 10 }
+```
+
+- **Recipient:** identify them by **either** `user_id` **or** your own `publisher_user_id`, never both. Players think in your identifiers, so `publisher_user_id` is usually the natural choice.
+- **Sender:** always taken from the session.
+- **Amount:** 1 to 1,000 units per transfer.
+- **Webhooks:** both players' sides are recorded, and you receive a webhook for each.
+
+## 7. Show a balance
+
+### In the game (player session)
+
+```
+GET /api/v1/users/{userId}/account-summary
+Authorization: Bearer {session token}
+```
+
+The response has one row per account:
+
+| Field | Meaning |
+| --- | --- |
+| `currency` | `code`, `name`, `icon_url` |
+| `balance` | Everything the player holds |
+| `cashable` | The part the player can cash out |
+| `source_tag` | Where the value came from |
+| `updated_at` | When the balance last changed |
+
+To show the cash value, multiply `cashable` by the current redemption rate. For example, 400 cashable GEMZ at `0.00666667` is about $2.67.
+
+### From your server
+
+```
+GET /api/v1/publishers/{publisherId}/users/{userId}/account-summary
+x-api-key: {your key}
+```
+
+This returns the same response for any of your players, without a session. Use it for support tools, matchmaking rules or server-side checks before you offer a purchase.
+
+## 8. Cash out
+
+When a player cashes out:
+
+1. ZBD verifies their identity.
+2. It converts their cashable balance to fiat at your redemption rate.
+3. It pays them through the payout method they choose.
+
+Your game offers the button; ZBD collects everything it needs from the player directly, so your systems never hold personal or banking details.
+
+```
+limits  →  payout methods  →  quote (rate locked)  →  cash out  →  webhooks / status
+```
+
+### 8.1 Check limits and eligibility
+
+```
+GET /api/v1/users/{userId}/cashout-limits?fiat_currency_code=USD
+Authorization: Bearer {session token}
+```
+
+```json
+{
+  "data": {
+    "state": "eligible",
+    "remaining_fiat": "580.00",
+    "minimum_fiat": "1.00",
+    "fiat_currency_code": "USD",
+    "verification_tier": 1,
+    "verification_required": false,
+    "verification_url": null
+  }
+}
+```
+
+- Call this before you show the cash-out button, and use `state` and `remaining_fiat` to set what the player sees.
+- When `verification_required` is `true`, open `verification_url`. ZBD takes the player through identity verification and brings them back to your game when it's done.
+- Limits depend on the player's country and verification tier.
+
+### 8.2 Choose a payout method
+
+```
+GET /api/v1/users/{userId}/payout-methods
+Authorization: Bearer {session token}
+```
+
+This lists the payout methods the player has linked (bank account, gift card and so on), each with a `payout_method_id` and a display label. Players link a new method during ZBD's verification and payout flow.
+
+### 8.3 Get a quote
+
+```
+POST /api/v1/transactions/cashouts/quotes
+Authorization: Bearer {session token}
+Content-Type: application/json
+
+{ "currency_code": "GEMZ", "amount": 400, "fiat_currency_code": "USD", "payout_method_id": "pm_…" }
+```
+
+```json
+{
+  "data": {
+    "quote_id": "q_7d2e…",
+    "redemption_rate_id": "9b1c…",
+    "rate": "0.00666667",
+    "amount": 400,
+    "currency_code": "GEMZ",
+    "gross_fiat": "2.67",
+    "fee_fiat": "0.00",
+    "net_fiat": "2.67",
+    "fiat_currency_code": "USD",
+    "expires_at": "2026-09-24T18:05:00Z"
+  }
+}
+```
+
+- **Rate lock:** the quote holds the redemption rate until `expires_at`. Show the player `net_fiat`; that is what they'll receive.
+- **Worked example:** 400 GEMZ × 0.00666667 = $2.67.
+- **Not enough to cash out:** if the player's cashable balance is too low, you get **422** with the cashable amount in `error.message`.
+
+### 8.4 Confirm the cash-out
+
+```
+POST /api/v1/transactions/cashouts/fiat/USD
+Authorization: Bearer {session token}
+Idempotency-Key: {uuid}
+Content-Type: application/json
+
+{ "currency_code": "GEMZ", "amount": 400, "quote_id": "q_7d2e…", "payout_method_id": "pm_…" }
+```
+
+- **All-or-nothing:** the player's balance is debited and the payout is created together, or neither happens.
+- **Which rate applies:** with a `quote_id`, the cash-out settles at the quoted rate. Without one, it uses the rate in force at that moment and returns it in the response.
+- **Cashable only:** only cashable balance is used.
+- **Response:** `cashout_id`, `status`, `redemption_rate_id`, `rate`, `amount`, `net_fiat`, `fiat_currency_code`.
+
+### 8.5 Track it
+
+```
+GET /api/v1/transactions/cashouts/{cashoutId}
+Authorization: Bearer {session token}     or     x-api-key: {your key}
+```
+
+`status` moves through `pending → processing → completed`. It ends at `failed` or `returned` if the payout can't complete, and in that case the balance goes back to the player automatically. Every change also arrives as a webhook (see [Webhooks](https://app.notion.com/p/Integrating-Embedded-Accounts-w-planned-endpoints-3e7617b17b9680b5b79ac85e27e3b825?pvs=21)).
+
+---
+
+## 9. Transaction history
+
+Every credit, spend, transfer and cash-out is recorded in ZBD's ledger for your project, and you can read it from three angles.
+
+| You want | Use |
+| --- | --- |
+| Reconciliation and reporting across all players | [9.1 Project feed](https://app.notion.com/p/Integrating-Embedded-Accounts-w-planned-endpoints-3e7617b17b9680b5b79ac85e27e3b825?pvs=21) |
+| One player's history, on your server (support, disputes) | [9.2 Player feed](https://app.notion.com/p/Integrating-Embedded-Accounts-w-planned-endpoints-3e7617b17b9680b5b79ac85e27e3b825?pvs=21) |
+| A history screen in the game | [9.3 Player's own feed](https://app.notion.com/p/Integrating-Embedded-Accounts-w-planned-endpoints-3e7617b17b9680b5b79ac85e27e3b825?pvs=21) |
+
+### Transaction fields
+
+| Field | Meaning |
+| --- | --- |
+| `id` | Transaction id, also the paging cursor |
+| `type` | `reward` · `spend` · `gift` · `cashout` · `purchase` · `adjustment` |
+| `status` | `pending` · `completed` · `failed` · `returned` |
+| `user_id` | The player |
+| `debit_amount`, `debit_currency_code`, `debit_currency_name`, `debit_currency_icon_url` | What left the account |
+| `credit_amount`, `credit_currency_code`, `credit_currency_name`, `credit_currency_icon_url` | What arrived |
+| `redemption_rate`, `redemption_rate_id` | On cash-outs: the rate applied |
+| `reference_id` | Your reference, where you sent one |
+| `project_id`, `project_name` | The project it ran in |
+| `created_at`, `completed_at` | Timestamps |
+
+### Paging
+
+The same paging works on all three feeds:
+
+- `take` sets the page size: 1–200, default 50.
+- `before` takes the **`id`** of the last row on the previous page.
+- Keep requesting pages until one comes back with fewer rows than `take`.
+
+```jsx
+let before;
+do {
+  page = await get(`/api/v1/publishers/${publisherId}/transactions`, { type: 'cashout', take: 200, before });
+  process(page.data.transactions);
+  before = page.data.transactions.at(-1)?.id;
+} while (page.data.transactions.length === 200);
+```
+
+### 9.1 Project feed
+
+Every transaction in your project, with filters.
+
+```
+GET /api/v1/publishers/{publisherId}/transactions?type=reward,spend&from=2026-09-01T00:00:00Z&to=2026-10-01T00:00:00Z
+x-api-key: {your key}
+```
+
+| Parameter | Meaning |
+| --- | --- |
+| `type` | One or more types, comma-separated. Leave it out to get every type. |
+| `project_id` | One project |
+| `currency_code` | One currency |
+| `user_id` | One player |
+| `from`, `to` | ISO-8601 range on `created_at` |
+| `take`, `before` | Paging |
+
+Typical uses:
+
+- A nightly reconciliation of `type=cashout`.
+- A monthly report of `type=reward,spend` for each project.
+- A full export to your data warehouse.
+
+### 9.2 Player feed, from your server
+
+One player's history, without a session. Use it for support tools and dispute handling.
+
+```
+GET /api/v1/publishers/{publisherId}/users/{userId}/transactions?type=gift&take=50
+x-api-key: {your key}
+```
+
+It takes the same filters and returns the same fields as the project feed.
+
+### 9.3 Player's own feed
+
+What the player sees in your game's history screen.
+
+```
+GET /api/v1/users/{userId}/transactions?type=reward&take=50&project_id={project id}
+Authorization: Bearer {session token}
+```
+
+`type` takes a single value here: `reward`, `spend`, `gift`, `cashout` or `purchase`.
+
+---
+
+## Webhooks
+
+ZBD notifies your server whenever value moves, so you can update your game state without polling.
+
+| Event | Sent when |
+| --- | --- |
+| `EA.V1.REWARD.COMPLETED` | A credit has settled |
+| `EA.V1.SPEND.COMPLETED` | A spend has settled |
+| `EA.V1.GIFT.COMPLETED` | A transfer has settled; one event carries both sides |
+| `EA.V1.CASHOUT.INITIATED` · `PROCESSING` · `COMPLETED` · `FAILED` · `RETURNED` | Each change in a cash-out's status, with `cashout_id`, `rate` and `redemption_rate_id` |
+
+Manage your webhook endpoints at `/api/v1/publishers/{publisherId}/webhooks/subscriptions`. You can filter by event type and project.
+
+### Verifying webhooks
+
+Every webhook is signed with RS256:
+
+- `X-ZBD-Signature` carries the signature.
+- `X-ZBD-Signature-Key-Id` names the key that signed it.
+
+To verify one, fetch ZBD's public keys from `GET /v1/webhooks/jwks.json` and cache them (they're served with a 5-minute cache header). Then check the signature over the raw request body before you act on it.
+
+---
+
+## Rate limits
+
+Every publisher account starts with the default limits below. They're set per publisher and can be changed to fit your traffic: a launch week, a tournament, or a game whose players transact more often than most. Ask your ZBD contact to adjust any limit for your production or sandbox environment.
+
+| Call | Default limit |
+| --- | --- |
+| Credit a player | 1/s per player |
+| Take a spend | 6/min per player |
+| Transfer between players | 6/min per session |
+| Read a balance | 20/min, 1,000/day per session |
+| Player's own history | 1/s per session |
+| Open a player account | 10/min per publisher |
+| Read currencies, projects, rates | 1/s per publisher |
+| Change currencies | 20/min per publisher |
+| Change projects | 2/min per publisher |
+| Cash-out quote and confirm | 6/min per session |
+| Project feed and player feed | 5/s per publisher |
+| Server-side balance | 20/s per publisher |
+
+A request over the limit returns `429`. Back off and retry with the same `Idempotency-Key`.
+
+Sandbox allows higher limits on most calls, so you can load-test your integration. Opening player accounts and reading balances use production limits in both environments, so sandbox reflects how those two calls behave in production.
+
+> **Planning a spike?** If you expect a surge, such as a live event, a big reward drop or a marketing push, tell ZBD ahead of time. Your limits can be raised for the window you need.
+
+## Errors
+
+Branch on the HTTP status, and use `error.message` for detail. Include your `X-Request-Id` when you contact ZBD support.
+
+| Status | Meaning |
+| --- | --- |
+| 400 | The request is invalid, for example an amount of zero or a missing `Idempotency-Key` |
+| 401 | The credential is missing, invalid, expired or revoked |
+| 403 | The session or key isn't allowed to act on this resource |
+| 404 | Not found in your publisher account |
+| 409 | The request conflicts with the resource's current state |
+| 422 | Not enough balance, or not enough cashable balance |
+| 429 | Rate limited |
+
+---
+
+## Go-live checklist
+
+- [ ]  Business verification complete; production API key stored in your secrets manager
+- [ ]  project and currency created; currency linked to the project
+- [ ]  Redemption rate set in the Publisher Portal, and read back with `GET …/redemption-rates`
+- [ ]  Your player records store the ZBD `user_id`
+- [ ]  Every credit, spend, transfer and cash-out sends an `Idempotency-Key` stored with its business event
+- [ ]  Webhook endpoint subscribed, with signatures verified against the JWKS
+- [ ]  Cash-out flow checks limits, shows the quoted `net_fiat`, and handles `failed` / `returned`
+- [ ]  A nightly reconciliation job reads the project feed
+- [ ]  End-to-end run in sandbox, including a completed cash-out
+
+---
+
+## Endpoint reference
+
+| Area | Method and path | Credential |
+| --- | --- | --- |
+| Projects | `GET · POST /api/v1/publishers/{publisherId}/projects` | API key |
+| Projects | `GET · PATCH · DELETE /api/v1/publishers/{publisherId}/projects/{projectId}` | API key |
+| Projects | `POST · DELETE /api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies[/{virtualCurrencyId}]` | API key |
+| Currencies | `GET · POST /api/v1/publishers/{publisherId}/virtual-currencies` | API key |
+| Currencies | `GET · PATCH · DELETE /api/v1/publishers/{publisherId}/virtual-currencies/{virtualCurrencyId}` | API key |
+| Redemption rates | `GET /api/v1/publishers/{publisherId}/redemption-rates` | API key |
+| Players | `POST /api/v1/publishers/{publisherId}/users` | API key |
+| Players | `POST /api/v1/publishers/{publisherId}/users/{userId}/deletion-request` | API key |
+| Sessions | `POST /api/v1/sessions` · `GET /api/v1/sessions/current` | API key · session |
+| Credit | `POST /api/v1/transactions/rewards/virtual-currencies` | API key |
+| Spend | `POST /api/v1/transactions/spends/virtual-currencies` | API key |
+| Transfer | `POST /api/v1/transactions/gifts/virtual-currencies` | Session |
+| Balance | `GET /api/v1/users/{userId}/account-summary` | Session |
+| Balance | `GET /api/v1/publishers/{publisherId}/users/{userId}/account-summary` | API key |
+| Cash-out | `GET /api/v1/users/{userId}/cashout-limits` | Session |
+| Cash-out | `GET /api/v1/users/{userId}/payout-methods` | Session |
+| Cash-out | `POST /api/v1/transactions/cashouts/quotes` | Session |
+| Cash-out | `POST /api/v1/transactions/cashouts/fiat/{fiat_currency_code}` | Session |
+| Cash-out | `GET /api/v1/transactions/cashouts/{cashoutId}` | Session · API key |
+| History | `GET /api/v1/publishers/{publisherId}/transactions` | API key |
+| History | `GET /api/v1/publishers/{publisherId}/users/{userId}/transactions` | API key |
+| History | `GET /api/v1/users/{userId}/transactions` | Session |
+| Webhooks | `GET · POST · PATCH · DELETE /api/v1/publishers/{publisherId}/webhooks/subscriptions` | API key |
+| Webhooks | `GET /v1/webhooks/jwks.json` | Public |

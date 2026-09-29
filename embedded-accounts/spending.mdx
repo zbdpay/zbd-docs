@@ -1,0 +1,23 @@
+---
+title: "Spends"
+description: "A spend moves currency out of a player's wallet and into yours."
+---
+
+A spend moves currency out of a player's wallet and into yours. It's what happens when a player buys something from you: a cosmetic, a battle pass, an upgrade, an entry fee.
+Player-to-player activity works differently. See [Transfers between users](/embedded-accounts/transfers) and [Marketplace settlement](/embedded-accounts/marketplace).
+## The call
+A spend takes the player, the currency and the amount. Your backend makes it, since what a player is buying and what it costs belong to your game.
+Send an idempotency key. A retried spend shouldn't charge a player twice for one item.
+## Where the currency goes
+Spent currency doesn't disappear. It moves to your own account, and what you do with it is an economy design decision.
+Retiring it makes the spend a true sink, pulling supply out of circulation and supporting the value of what's left. Recirculating it as rewards keeps supply flat and makes those rewards cost you nothing new. Most economies do some of both, and that ratio is one of the few real levers you have over inflation.
+## Which pools drain
+A player's balance is made of pools with different histories, and a spend draws them down in a fixed order ZBD applies.
+The order decides what's left behind. A player holding 1,000 units they bought and 500 from rewards who spends 600 ends up in a very different position depending on which pool went first.
+[Currencies](/embedded-accounts/currencies) covers the pools and the order they drain in.
+## Recurring spends
+Subscriptions, season passes and anything charged on a schedule work as ordinary spends you instruct when each period comes due.
+Handle the case where a player's balance has fallen short since the last charge. Decide in advance whether the subscription lapses, retries or holds, and tell the player which.
+## When a spend fails
+A spend against a balance that can't cover it fails and moves nothing. Nothing partial is taken.
+We recommend checking the available spendable balance before presenting a price where you can. A player who gets as far as confirming a purchase and then sees it refused is a worse experience than one who was shown the shortfall earlier.

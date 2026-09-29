@@ -1,0 +1,16 @@
+---
+title: "Debit a player"
+description: "Debit a player."
+api: "POST https://api.zbdpay.com/api/v1/transactions/spends/virtual-currencies"
+---
+
+<Info>
+  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+</Info>
+
+Debit a player. Takes `currency_id` (a UUID), **not** `currency_code` — the asymmetry with reward is deliberate. Optional `reference_id` `^[A-Za-z0-9_-]+$` ≤ 255. Unsatisfiable spend → **422**. Returns `user_spendable_balance`
+
+<ParamField header="Authorization" type="string" required>
+  `x-api-key` + `Idempotency-Key`
+</ParamField>
+

@@ -1,0 +1,16 @@
+---
+title: "List redemption rates"
+description: "Read your rates — take the row with is_current: true."
+api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/redemption-rates"
+---
+
+<Info>
+  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+</Info>
+
+Read your rates — take the row with `is_current: true`. Filters: `from_currency_code`, `to_currency_code`, `current_only`, `skip`, `take`. Rates are append-only and forward-only; there is no update or delete route, and writes are ZBD-side
+
+<ParamField header="Authorization" type="string" required>
+  `x-api-key`
+</ParamField>
+

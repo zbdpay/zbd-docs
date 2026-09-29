@@ -1,0 +1,20 @@
+---
+title: "Cash out widget"
+description: "A hosted flow that runs the whole player-facing side of taking money out."
+---
+
+The cash out widget is a hosted flow that runs the whole player-facing side of taking money out: identity verification, tax information, linking a [payout account](/embedded-payouts/methods-and-coverage), and the cash out itself. It embeds in your product as an iframe.
+## When to use it
+Use the widget when you want a payout program live without building the player-facing experience yourself.
+Use components instead when you have an existing flow you want to keep, and place the individual pieces inside it.
+Both collect and store the same data on ZBD's side, so the choice is about how much of the experience you compose.
+## How it fits
+Your backend does what it always does: create the [user](/embedded-payouts/users), credit their balance, read status. The widget covers what the player sees and everything collected from them.
+## Integration shape
+1. Create the user
+2. Credit their balance
+3. Create a session
+4. Embed the widget in your frontend
+5. Listen for events
+The first three run on your server, so your API key never reaches the browser.
+Full detail in Prerequisites, Integration flow and Embedding the widget.

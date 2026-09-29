@@ -1,0 +1,16 @@
+---
+title: "Unlink a currency"
+description: "Unlink a currency."
+api: "DELETE https://api.zbdpay.com/api/v1/publishers/{publisherId}/workspaces/{workspaceId}/virtual-currencies/{virtualCurrencyId}"
+---
+
+<Info>
+  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+</Info>
+
+Unlink a currency. Note the currency id in the path — not the bare collection
+
+<ParamField header="Authorization" type="string" required>
+  `x-api-key`
+</ParamField>
+

@@ -1,0 +1,12 @@
+---
+title: "Create a player"
+description: "Provision a player."
+api: "POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/users"
+---
+
+Provision a player. Idempotent on `(publisher, publisher_user_id)` — 201 first, 200 on replay. Store the returned ZBD `user_id`; every later call uses it, never your own id
+
+<ParamField header="Authorization" type="string" required>
+  `x-api-key`
+</ParamField>
+

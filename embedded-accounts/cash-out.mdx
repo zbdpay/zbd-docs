@@ -1,0 +1,25 @@
+---
+title: "Cash outs"
+description: "Moving value out of a player's balance and into an account they control."
+---
+
+Cashing out moves value out of a player's balance and into an account they control. Whatever your economy runs on, this is the point where value leaves the system.
+## What has to be true first
+Three things gate a cash out, and all of them are worth surfacing in your game well before a player reaches this point.
+**The value has to be eligible.** A balance is made of pools with different histories, and not all of them can leave. That includes fiat: money a player put in is not money they can take back out this way.
+**The player has to be verified.** No verification is needed to hold, earn or spend. It's required to take money out, and the level of verification affects how much can leave and how quickly. Selling in a marketplace requires it too, where the sale settles in fiat.
+**A payout account has to be linked.** The player chooses where their money lands from the options available in their country.
+## Conversion
+What happens here depends on what the player holds.
+A player holding fiat is already holding money, so nothing converts.
+A player holding a currency you defined has it converted at your redemption rate, applied at the moment they cash out.
+Where a conversion happens, show the player the resulting amount before they commit. Someone who expected one number and received another will assume they were charged a fee nobody mentioned.
+## Where the money goes
+Money settles to the account the player linked, on a rail available in their country. Fees for the method they chose come out of their proceeds, so what arrives is lower than what left their balance.
+The player picks the method, and faster ones generally cost more, so they're trading speed against what lands.
+## Funding it
+Cash outs draw from your project wallet, so value leaving the system has to be covered by what you've funded.
+We recommend funding against the volume you expect to exit over a full settlement period, with headroom for a busier week than usual.
+## What to show players
+Most support load around cash out is about waiting and limits, and nearly all of it is preventable in your own interface.
+A player should be able to see what's available now, what isn't yet, what would change that, and where a submitted cash out has got to. A player who can answer those questions without asking doesn't contact anyone.

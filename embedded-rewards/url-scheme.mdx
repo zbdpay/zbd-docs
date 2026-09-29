@@ -1,0 +1,29 @@
+---
+title: "URL Scheme"
+description: "Handle secure user redirection back to your app after ZBD OAuth login using a custom URL scheme."
+sidebarTitle: "URL Scheme"
+icon: "link"
+---
+
+To enable the ZBD app to redirect back to your game after the user connects via the ZBD app,we need to know your game's URL scheme.
+If you’ve already set this up, please share it with your ZBD Customer Success Manager.
+If this is your first time setting it up, don’t worry. The process is straightforward for both iOS and Android.
+
+## In Unity:
+
+
+<Steps>
+    <Step title="Select the ZBDSDK Prefab in your Hierarchy">
+    </Step>
+    <Step title="In the Inspector, locate the ZBD Controller script.">
+    </Step>
+    <Step title="Find the URL Scheme input field.">
+    </Step>
+    <Step title="Enter your custom URL scheme (for example: sdkdemo).">
+    </Step>
+</Steps>
+
+<Note>
+    If you’ve already added the custom URL scheme to your Android Manifest (AndroidManifest.xml) or iOS plist file, leave the field empty.
+</Note>
+

@@ -1,0 +1,16 @@
+---
+title: "Send a gift"
+description: "Player → player gift, never a publisher key."
+api: "POST https://api.zbdpay.com/api/v1/transactions/gifts/virtual-currencies"
+---
+
+<Info>
+  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+</Info>
+
+Player → player gift, never a publisher key. Recipient by **exactly one** of `user_id` / `publisher_user_id`; both or neither is a 400. Gifter comes from the session, never the body. Service enforces **0.1–1000 whole units**, tighter than the DTO's `minimum: 1` — validate against the service rule
+
+<ParamField header="Authorization" type="string" required>
+  `Bearer` session + `Idempotency-Key`
+</ParamField>
+

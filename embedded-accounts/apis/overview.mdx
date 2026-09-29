@@ -1,0 +1,62 @@
+---
+title: "API overview"
+sidebarTitle: "Overview"
+description: "Base URL, authentication and the conventions every Embedded Accounts endpoint shares."
+---
+
+Run your in-game economy: provision players, define virtual currencies, credit and debit balances, move value between players, and read transaction history.
+
+## Base URL
+
+```
+https://api.zbdpay.com
+```
+
+## Endpoints
+
+| Method | Path | Purpose |
+|---|---|---|
+| `POST` | `/api/v1/publishers/{publisherId}/users` | Provision a player. Idempotent on `(publisher, publisher_user_id)` — 201 first, 200 on replay. Store the returned ZBD `user_id`; every later call uses it, never your own id |
+| `POST` | `/api/v1/publishers/{publisherId}/users/{userId}/deletion-request` | Queue a managed player for archival |
+| `GET` | `/api/v1/publishers/{publisherId}/config` | Publisher's own cashout routing config |
+| `GET` | `/api/v1/users/{userId}/account-summary` | Balances per (monetary account × source tag), with `balance` and `cashable`. Route-bound: `userId` must match the session's own principal or 403. Not paginated |
+| `GET` | `/api/v1/widget/users/{userId}/disclosures` | Read disclosure / ToS acceptance status |
+| `POST` | `/api/v1/widget/users/{userId}/disclosures` | Record disclosure acceptances |
+| `GET` | `/api/v2/projects/{projectId}/monetary-accounts` | Project monetary accounts + `cashoutRoutingType` |
+| `POST` | `/api/v1/zbd-widget/sessions` | Mint a 4-hour widget session JWT carrying `workspace_id` and the resolved principal. Membership-checked; does **not** create the player |
+| `GET` | `/api/v1/zbd-widget/session/config` | Session reads its own identity / config |
+| `GET` | `/api/v1/publishers/{publisherId}/virtual-currencies` | List the publisher's virtual currencies |
+| `POST` | `/api/v1/publishers/{publisherId}/virtual-currencies` | Create a currency. `code` `^[A-Z0-9]{2,4}$`, `name` ≤ 100, `icon_url` optional, `precision` **required** and may be 0 — omitting it is a 400, not a default |
+| `GET` | `/api/v1/publishers/{publisherId}/virtual-currencies/{virtualCurrencyId}` | Get one currency |
+| `PATCH` | `/api/v1/publishers/{publisherId}/virtual-currencies/{virtualCurrencyId}` | Merge-patch `name` / `icon_url` / `precision`. `code` is immutable after creation |
+| `DELETE` | `/api/v1/publishers/{publisherId}/virtual-currencies/{virtualCurrencyId}` | Soft-delete a currency |
+| `GET` | `/api/v1/users/{userId}/transactions` | Player history, session-bound. `take` 1–200 (default 50; ≤ 0 falls back to 50, > 200 clamps), `before` is an **id cursor**, not a timestamp, `type` ∈ `reward` `spend` `cashout` `purchase` `gift`, optional `workspace_id`. No `has_more`, no `total` — page until a page returns fewer rows than `take` |
+| `POST` | `/api/v1/transactions/rewards/virtual-currencies` | Credit a player: `user_id`, `currency_code`, `amount`. Tag is always `Rewarded` and is not selectable. Response echoes `transaction_id` **(needs activation)** |
+| `POST` | `/api/v1/transactions/spends/virtual-currencies` | Debit a player. Takes `currency_id` (a UUID), **not** `currency_code` — the asymmetry with reward is deliberate. Optional `reference_id` `^[A-Za-z0-9_-]+$` ≤ 255. Unsatisfiable spend → **422**. Returns `user_spendable_balance` **(needs activation)** |
+| `POST` | `/api/v1/transactions/gifts/virtual-currencies` | Player → player gift, never a publisher key. Recipient by **exactly one** of `user_id` / `publisher_user_id`; both or neither is a 400. Gifter comes from the session, never the body. Service enforces **0.1–1000 whole units**, tighter than the DTO's `minimum: 1` — validate against the service rule **(needs activation)** |
+| `GET` | `/api/v1/publishers/{publisherId}/workspaces` | List workspaces **(needs activation)** |
+| `POST` | `/api/v1/publishers/{publisherId}/workspaces` | Create workspace. `display_name` required ≤ 256, `description` optional ≤ 1000. The slug `name` is derived server-side and is **not accepted as input** **(needs activation)** |
+| `GET` | `/api/v1/publishers/{publisherId}/workspaces/{workspaceId}` | Get one workspace **(needs activation)** |
+| `PATCH` | `/api/v1/publishers/{publisherId}/workspaces/{workspaceId}` | Update workspace. Merge-patch: omitted and explicit `null` are indistinguishable, both mean unchanged **(needs activation)** |
+| `DELETE` | `/api/v1/publishers/{publisherId}/workspaces/{workspaceId}` | Soft-delete workspace **(needs activation)** |
+| `POST` | `/api/v1/publishers/{publisherId}/workspaces/{workspaceId}/virtual-currencies` | Link a currency to a workspace (201 for the join row) **(needs activation)** |
+| `DELETE` | `/api/v1/publishers/{publisherId}/workspaces/{workspaceId}/virtual-currencies/{virtualCurrencyId}` | Unlink a currency. Note the currency id in the path — not the bare collection **(needs activation)** |
+| `GET` | `/api/v1/publishers/{publisherId}/bundles` | List purchasable bundles. `currency_code` is **required**; archived bundles are excluded **(needs activation)** |
+| `GET` | `/api/v1/publishers/{publisherId}/bundles/{bundleId}` | Get one bundle. An archived bundle 404s, same as a missing one **(needs activation)** |
+| `GET` | `/api/v1/publishers/{publisherId}/redemption-rates` | Read your rates — take the row with `is_current: true`. Filters: `from_currency_code`, `to_currency_code`, `current_only`, `skip`, `take`. Rates are append-only and forward-only; there is no update or delete route, and writes are ZBD-side **(needs activation)** |
+
+## Conventions
+
+- **Response envelope** is uniform: `{ success, message, data, error }`. The HTTP status line is authoritative and is deliberately not duplicated in the body. On success `error` is null; on failure `data` is null.
+- **Amounts** are always integers in the currency's smallest indivisible unit (`int64`, min 1), at that currency's own `precision`. Balances come back the same way — never assume two decimals. `BTC`, `USD`, `EUR` and `USDZ` exist alongside publisher-defined currencies.
+- **`Idempotency-Key`** (UUID header) is required on reward, spend and gift; a replay returns the original result and echoes `Idempotency-Replayed`. The cashout rails are the exception — body field, header ignored.
+- **`x-workspace-id`** is optional and honoured on **reward and spend only**. A workspace that isn't yours returns 404 without transacting.
+- **`X-Request-Id`** is accepted everywhere as a trace id.
+- **Error prefixes:** `PA` accounts · `EG` economy · `ZWS` sessions · `AK` API keys · `CH` shared HTTP. Money-movement endpoints are the exception — their `error.code` carries a request trace id rather than a stable business code, so branch on the HTTP status and `error.message` there, and quote the trace id to support.
+- **Rate limits** apply per credential. Sandbox is roughly 30× more generous than production, so a clean sandbox run does not characterise production — load test against realistic limits.
+
+## Current limitations
+
+- **No server-to-server balance read.** `account-summary` takes a player session token only. The one balance figure a publisher key ever sees is `user_spendable_balance` on the spend response.
+- **No fiat purchase of virtual currency.** Bundles are readable; buying one is not implemented yet.
+- **Cash out runs on Embedded Payouts.** The live rails move USD points through the Embedded Payouts surface rather than a publisher's own virtual currency.

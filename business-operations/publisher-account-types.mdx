@@ -1,0 +1,111 @@
+---
+title: "Publisher account types"
+description: "User roles, visibility and how money and permissions fit together in the Publisher Portal."
+---
+
+## Account structure
+
+User roles are sets of permissions that determine what a user can do in the Publisher Portal — such as whether they can look up transactions, move funds between accounts, configure payout integrations, or download financial reports.
+
+Each user can have **organization visibility** (the whole studio, including every current and future project) or **individual project visibility**, depending on the tasks they need to perform. Visibility controls *how much* a user sees — never *what kind* of actions they can take. For example, a Developer with organization visibility can work with every project, but still cannot see or move the studio's main balances.
+
+You assign roles to users individually. A user can hold more than one role, and can hold the same role on several projects; their permissions are the combination of everything assigned to them.
+
+When you first sign up for ZBD, you get an **Owner** user with the most powerful role assigned to it. As the Owner, you then create users for other people in your organization and give each of them the role that matches their job — so your engineers, finance team, and support agents each get exactly the access they need, and nobody has to share a login.
+
+---
+
+## How money and roles fit together
+
+Your studio holds two kinds of balance:
+
+- **Main accounts** — your studio-level wallets, one per currency. This is your company money: it is funded from your bank and is only visible to studio-level roles.
+- **Project accounts** — per-game wallets, funded *from* a main account in the same currency. This is the float your game spends on payouts to players.
+
+Only the **Owner** and **Finance Manager** roles can move money between these levels. Developers and API keys operate strictly on the project side: they can spend a project's balance through payouts, but can never see main accounts or refill a project themselves. This is a structural rule of the platform, not a setting — it caps how much a single compromised credential or integration can ever put at risk.
+
+---
+
+## Manage user roles
+
+The following sections describe the individual user roles, grouped by category.
+
+### Administration
+
+#### Owner
+
+The primary role of the account, created at sign-up. The role allows you to govern the studio: invite and remove users, assign roles, create projects, create currencies (open new main accounts), configure studio settings, approve live API keys, and perform every financial and technical action available to the other roles.
+
+Typically assigned to a producer, platform lead, or operations lead. A studio always has at least one Owner and at most three; sensitive actions (inviting users, changing roles, moving funds) require step-up confirmation even for Owners.
+
+### Finance
+
+#### Finance Manager
+
+The role allows you to manage the studio's money: fund main accounts, allocate funds from a main account to a project, recall unused project float, withdraw to your bank, convert between currencies, export statements, and cancel a pending payout. Finance Managers can also revoke any API key immediately — an emergency brake if a payout pattern looks wrong.
+
+Finance Managers cannot invite users or change roles, cannot create API keys, and never see unmasked personal data of your players — amounts and references only. Fund movements above a threshold you configure require approval by a second person, and no one can approve a movement they initiated themselves.
+
+Usually assigned to someone from your finance or operations team.
+
+### Development
+
+#### Developer
+
+The role allows you to integrate and operate your game: create and manage API keys and webhooks, configure the project, operate the project in **test mode** with instantly available test keys, enable an existing studio currency for your game, create and retry payouts through the API, and monitor the project's balance and transaction history.
+
+Two deliberate limits apply at any visibility level:
+
+- **Project money only.** Developers never see main-account balances and cannot move funds between accounts. Their maximum reach is the balance sitting in the project accounts they work with.
+- **Going live is a two-person action.** Test keys are instant; a live key must be approved by an Owner, who sets its scope and payout ceiling.
+
+You can give a Developer organization visibility (your in-house team, covering all projects) or individual project visibility (contractors, co-development partners).
+
+Typically assigned to a software engineer or technical PM.
+
+### Support and analytics
+
+#### Support Agent
+
+The role allows you to handle player-facing operations without any access to money: look up a player by reference, see a payout's status and human-readable failure reason, view a project's balance and transaction history, **block and unblock players**, and — with step-up confirmation — **adjust a player's limits**. Every screen includes an Escalate action that raises a structured request to the project's Developers or your Finance Manager.
+
+Support Agents cannot move money, cancel or retry payouts, see unmasked personal data, see main-account balances, or export data. This makes the role safe to give to outsourced support vendors — assign it with individual project visibility and an expiry date, and access removes itself.
+
+The same role is the right fit for analytics, BI, and operational oversight: it can read everything operational without being able to change anything financial.
+
+---
+
+## Permissions at a glance
+
+|  | Owner | Finance Manager | Developer | Support Agent |
+| --- | --- | --- | --- | --- |
+| Invite users and assign roles | ✓ | — | — | — |
+| Create projects | ✓ | — | — | — |
+| Create currencies (main accounts) | ✓ | — | — | — |
+| View main-account balances | ✓ | ✓ | — | — |
+| Move funds (allocate, recall, withdraw, FX) | ✓ | ✓ | — | — |
+| Export financial statements | ✓ | ✓ | — | — |
+| Enable a currency for a project | ✓ | — | ✓ | — |
+| View project balance and transactions | ✓ | ✓ | ✓ | view only |
+| Create and retry payouts (API) | ✓ | — | ✓ | — |
+| Cancel a pending payout | ✓ | ✓ | ✓ | — |
+| Create test API keys | ✓ | — | ✓ | — |
+| Create live API keys | ✓ | — | needs Owner approval | — |
+| Revoke API keys | ✓ | ✓ | ✓ | — |
+| Manage webhooks | ✓ | — | ✓ | — |
+| Look up players and payout status | ✓ | masked | masked | masked |
+| Block / unblock players | ✓ | ✓ | ✓ | ✓ |
+| Adjust player limits | ✓ (step-up) | — | — | ✓ (step-up) |
+| View unmasked player personal data | ✓ (step-up) | — | — | — |
+| View the audit log | ✓ | view only | view only | — |
+
+*Step-up* means the action asks for a fresh security confirmation (passkey or authenticator code) even inside an active session. API keys can never perform step-up actions or move funds between accounts, regardless of configuration.
+
+---
+
+## Good practices
+
+- **Don't share logins.** Create a user per person — the audit log records who did what, which only works if everyone acts under their own name.
+- **Give the narrowest visibility that does the job.** An external contractor rarely needs organization visibility.
+- **Set expiry dates for external people.** Users outside your verified email domain (vendors, contractors) must have one; it defaults to 90 days.
+- **Keep the Owner role rare.** Day-to-day work belongs in Finance Manager, Developer, and Support Agent; the portal will show you what each user actually did and suggest a narrower role where one fits.

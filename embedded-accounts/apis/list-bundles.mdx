@@ -1,0 +1,20 @@
+---
+title: "List bundles"
+description: "List purchasable bundles."
+api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/bundles"
+---
+
+<Info>
+  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+</Info>
+
+List purchasable bundles. `currency_code` is **required**; archived bundles are excluded
+
+<ParamField header="Authorization" type="string" required>
+  `x-api-key`
+</ParamField>
+
+<ParamField query="Query parameters" type="string">
+  currency_code=
+</ParamField>
+
