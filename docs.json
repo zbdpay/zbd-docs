@@ -70,12 +70,7 @@
                 "group": "Currencies",
                 "pages": [
                   "embedded-accounts/apis/list-currencies",
-                  "embedded-accounts/apis/create-currency",
-                  "embedded-accounts/apis/get-currency",
-                  "embedded-accounts/apis/update-currency",
-                  "embedded-accounts/apis/delete-currency",
-                  "embedded-accounts/apis/link-currency",
-                  "embedded-accounts/apis/unlink-currency"
+                  "embedded-accounts/apis/get-currency"
                 ]
               },
               {
@@ -86,28 +81,9 @@
                 ]
               },
               {
-                "group": "Workspaces",
+                "group": "Rates",
                 "pages": [
-                  "embedded-accounts/apis/list-workspaces",
-                  "embedded-accounts/apis/create-workspace",
-                  "embedded-accounts/apis/get-workspace",
-                  "embedded-accounts/apis/update-workspace",
-                  "embedded-accounts/apis/delete-workspace"
-                ]
-              },
-              {
-                "group": "Bundles & Rates",
-                "pages": [
-                  "embedded-accounts/apis/list-bundles",
-                  "embedded-accounts/apis/get-bundle",
                   "embedded-accounts/apis/list-redemption-rates"
-                ]
-              },
-              {
-                "group": "Configuration",
-                "pages": [
-                  "embedded-accounts/apis/get-publisher-config",
-                  "embedded-accounts/apis/list-monetary-accounts"
                 ]
               }
             ]
@@ -514,6 +490,62 @@
     }
   },
   "redirects": [
+    {
+      "source": "/embedded-accounts/apis/list-workspaces",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/create-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/update-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/delete-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/list-bundles",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-bundle",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-publisher-config",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/list-monetary-accounts",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/create-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/update-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/delete-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/link-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/unlink-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
     {
       "source": "/get-started",
       "destination": "/embedded-payouts"

@@ -21,14 +21,7 @@ Send an idempotency key with every credit so a retry doesn't credit the player t
 
 You decide what the purchase is worth in your currency and credit the player that amount.
 
-```mermaid
-flowchart LR
-  A[Player pays the store] --> B[You credit the player]
-  B --> C[Balance available immediately]
-  D[Store settles to you later] --> E[You top up your wallet]
-```
-
-The player gets their currency as soon as they pay. The store settles to you on its own schedule, which can take weeks, and your wallet covers the gap. We recommend funding against a full settlement period of player purchases, since one day's volume won't be enough.
+The player gets their currency as soon as they pay, and the store settles to you on its own schedule. The credit doesn't need funds behind it when it's made. Your organization wallet has to cover value when players cash it out, so plan funding around expected cash outs.
 
 ## Source tags
 
