@@ -1,28 +1,70 @@
 ---
 title: "Unlink a currency"
-description: "Unlink a currency."
-api: "DELETE https://api.zbdpay.com/api/v1/publishers/{publisherId}/workspaces/{workspaceId}/virtual-currencies/{virtualCurrencyId}"
+description: "Unlink a currency from a project."
+api: "DELETE https://api.zbdpay.com/api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies/{currencyCode}"
 ---
 
+## Description
+
+Removes the link between a currency and a project.
+
+<Warning>
+  The currency goes **in the path**, not in a request body, and not against the
+  bare collection. The full path ends
+  `/projects/{projectId}/virtual-currencies/{currencyCode}`.
+</Warning>
+
 <Info>
-  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+  **Requires activation.** Available once ZBD switches this feature on for your
+  account. Until then it returns a bare `503` — that means the feature is off,
+  not that the API is down. Ask your ZBD contact to enable it.
 </Info>
 
-Unlink a currency. Note the currency id in the path — not the bare collection
+## Configuration
 
-<ParamField header="x-api-key" type="string" required>
-  Your ZBD API key. Call this endpoint from your server only.
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD publisher API key. Call this from your server only.
 </ParamField>
 
-<ParamField path="publisherId" type="string" required>
+### Path Parameters
+
+<ParamField required path="publisherId" type="string">
   Your ZBD publisher ID.
 </ParamField>
 
-<ParamField path="workspaceId" type="string" required>
-  The workspace ID.
+<ParamField required path="projectId" type="string">
+  The project the currency is linked to.
 </ParamField>
 
-<ParamField path="virtualCurrencyId" type="string" required>
-  The virtual currency ID.
+<ParamField required path="currencyCode" type="string">
+  The currency ticker to unlink, for example `GOLD`.
 </ParamField>
 
+<RequestExample>
+```bash cURL
+curl -X DELETE https://api.zbdpay.com/api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies/GOLD \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Virtual currency unlinked successfully.",
+  "data": null,
+  "error": null
+}
+```
+</ResponseExample>
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `401` | Missing or invalid API key |
+| `403` | The API key does not belong to `publisherId` |
+| `404` | No such project or currency, or the two are not linked |
+| `503` | The Embedded Accounts feature is not switched on for your account |

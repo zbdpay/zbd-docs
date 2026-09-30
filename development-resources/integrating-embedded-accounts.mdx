@@ -1,6 +1,6 @@
 ---
 title: "Integrating Embedded Accounts"
-description: "End-to-end integration guide: workspaces, currencies, players, sessions, transactions and cash out."
+description: "End-to-end integration guide: projects, currencies, players, sessions, transactions and cash out."
 ---
 
 Embedded Accounts runs your in-game economy. You define a virtual currency, and ZBD holds a balance in it for every player. Your players earn it, spend it, send it to each other, and cash it out as real money at the redemption rate you set.
@@ -109,8 +109,8 @@ Content-Type: application/json
 | `name` | Display name, up to 100 characters |
 | `icon_url` | Optional. Shown wherever ZBD displays the currency to the player. |
 - `name` and `icon_url` can be changed later with `PATCH`.
-- Link the currency to a project: `POST /api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies` with `{ "virtual_currency_id": "…" }`.
-- Unlink it with `DELETE …/virtual-currencies/{virtualCurrencyId}`.
+- Link the currency to a project: `POST /api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies` with `{ "currency_code": "…" }`.
+- Unlink it with `DELETE …/virtual-currencies/{currencyCode}`.
 
 ## 3. Read your redemption rate
 
@@ -541,9 +541,9 @@ Branch on the HTTP status, and use `error.message` for detail. Include your `X-R
 | --- | --- | --- |
 | Projects | `GET · POST /api/v1/publishers/{publisherId}/projects` | API key |
 | Projects | `GET · PATCH · DELETE /api/v1/publishers/{publisherId}/projects/{projectId}` | API key |
-| Projects | `POST · DELETE /api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies[/{virtualCurrencyId}]` | API key |
+| Projects | `POST · DELETE /api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies[/{currencyCode}]` | API key |
 | Currencies | `GET · POST /api/v1/publishers/{publisherId}/virtual-currencies` | API key |
-| Currencies | `GET · PATCH · DELETE /api/v1/publishers/{publisherId}/virtual-currencies/{virtualCurrencyId}` | API key |
+| Currencies | `GET · PATCH · DELETE /api/v1/publishers/{publisherId}/virtual-currencies/{currencyCode}` | API key |
 | Redemption rates | `GET /api/v1/publishers/{publisherId}/redemption-rates` | API key |
 | Players | `POST /api/v1/publishers/{publisherId}/users` | API key |
 | Players | `POST /api/v1/publishers/{publisherId}/users/{userId}/deletion-request` | API key |

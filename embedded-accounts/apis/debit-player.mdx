@@ -4,17 +4,101 @@ description: "Debit a player."
 api: "POST https://api.zbdpay.com/api/v1/transactions/spends/virtual-currencies"
 ---
 
+## Description
+
+Debits a player's balance — an in-game purchase, an entry fee, anything that
+takes currency back out of circulation.
+
 <Info>
-  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+  **Requires activation.** Available once ZBD switches this feature on for your
+  account. Until then it returns a bare `503` — that means the feature is off,
+  not that the API is down. Ask your ZBD contact to enable it.
 </Info>
 
-Debit a player. Takes `currency_id` (a UUID), **not** `currency_code` — the asymmetry with reward is deliberate. Optional `reference_id` `^[A-Za-z0-9_-]+$` ≤ 255. Unsatisfiable spend → **422**. Returns `user_spendable_balance`
+A debit the player cannot cover returns `422`, not `400`. Treat it as an
+expected outcome and surface it as "not enough balance" rather than an error.
 
-<ParamField header="x-api-key" type="string" required>
-  Your ZBD API key. Call this endpoint from your server only.
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD publisher API key. Call this from your server only.
 </ParamField>
 
-<ParamField header="Idempotency-Key" type="string" required>
-  A unique key per request so retries are not processed twice.
+<ParamField required header="Idempotency-Key" type="string">
+  A UUID you generate per logical spend. Replaying the same key returns the
+  original result and echoes an `Idempotency-Replayed` header rather than
+  debiting twice.
 </ParamField>
+
+<ParamField header="x-project-id" type="string">
+  Optional. Scopes the spend to one of your projects. A project that isn't
+  yours returns `404` without transacting.
+</ParamField>
+
+### Body
+
+<ParamField required body="user_id" type="string">
+  The ZBD user ID returned by [Create a player](/embedded-accounts/apis/create-player).
+</ParamField>
+
+<ParamField required body="currency_code" type="string">
+  The currency ticker, for example `GOLD`.
+</ParamField>
+
+<ParamField required body="amount" type="integer">
+  Integer in the currency's smallest indivisible unit. Minimum `1`.
+</ParamField>
+
+<ParamField body="reference_id" type="string">
+  Your own reference for the spend. Must match `^[A-Za-z0-9_-]+$`, up to 255 characters.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/transactions/spends/virtual-currencies \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Idempotency-Key: 2c9a7b13-58ef-4d02-8a6c-14b3f7e05d29" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "b2c3d4e5-f6a7-4890-abcd-ef0123456789",
+    "currency_code": "GOLD",
+    "amount": 500,
+    "reference_id": "order-9921"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Spend processed successfully.",
+  "data": {
+    "transaction_id": "7b2e4c90-1a6d-4f53-95c7-0e8b3a2d6f14",
+    "user_id": "b2c3d4e5-f6a7-4890-abcd-ef0123456789",
+    "currency_code": "GOLD",
+    "amount": 500,
+    "user_spendable_balance": 1500,
+    "reference_id": "order-9921"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+`user_spendable_balance` is the player's remaining balance after the debit, in
+the same smallest-unit integer form as `amount`. This is the **only** balance
+figure a publisher API key ever sees — there is no server-to-server balance read.
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `400` | Missing or malformed fields, or `reference_id` fails `^[A-Za-z0-9_-]+$` |
+| `401` | Missing or invalid API key |
+| `404` | Unknown user or currency, or an `x-project-id` that isn't yours |
+| `422` | The player's balance cannot cover the debit |
+| `503` | The Embedded Accounts feature is not switched on for your account |
 

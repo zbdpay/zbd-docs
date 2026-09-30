@@ -86,13 +86,13 @@
                 ]
               },
               {
-                "group": "Workspaces",
+                "group": "Projects",
                 "pages": [
-                  "embedded-accounts/apis/list-workspaces",
-                  "embedded-accounts/apis/create-workspace",
-                  "embedded-accounts/apis/get-workspace",
-                  "embedded-accounts/apis/update-workspace",
-                  "embedded-accounts/apis/delete-workspace"
+                  "embedded-accounts/apis/list-projects",
+                  "embedded-accounts/apis/create-project",
+                  "embedded-accounts/apis/get-project",
+                  "embedded-accounts/apis/update-project",
+                  "embedded-accounts/apis/delete-project"
                 ]
               },
               {
@@ -1249,6 +1249,26 @@
     {
       "source": "/widget/update-user",
       "destination": "/embedded-payouts/apis/update-user"
+    },
+    {
+      "source": "/embedded-accounts/apis/create-workspace",
+      "destination": "/embedded-accounts/apis/create-project"
+    },
+    {
+      "source": "/embedded-accounts/apis/list-workspaces",
+      "destination": "/embedded-accounts/apis/list-projects"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-workspace",
+      "destination": "/embedded-accounts/apis/get-project"
+    },
+    {
+      "source": "/embedded-accounts/apis/update-workspace",
+      "destination": "/embedded-accounts/apis/update-project"
+    },
+    {
+      "source": "/embedded-accounts/apis/delete-workspace",
+      "destination": "/embedded-accounts/apis/delete-project"
     }
   ]
 }

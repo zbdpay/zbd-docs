@@ -1,24 +1,87 @@
 ---
-title: "Link a currency to a workspace"
-description: "Link a currency to a workspace (201 for the join row)."
-api: "POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/workspaces/{workspaceId}/virtual-currencies"
+title: "Link a currency"
+description: "Link a currency to a project."
+api: "POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies"
 ---
 
+## Description
+
+Links one of your virtual currencies to a project, making it usable in that
+project's economy.
+
+Linking a currency that is already linked returns `409`.
+
 <Info>
-  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+  **Requires activation.** Available once ZBD switches this feature on for your
+  account. Until then it returns a bare `503` — that means the feature is off,
+  not that the API is down. Ask your ZBD contact to enable it.
 </Info>
 
-Link a currency to a workspace (201 for the join row)
+## Configuration
 
-<ParamField header="x-api-key" type="string" required>
-  Your ZBD API key. Call this endpoint from your server only.
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD publisher API key. Call this from your server only.
 </ParamField>
 
-<ParamField path="publisherId" type="string" required>
+### Path Parameters
+
+<ParamField required path="publisherId" type="string">
   Your ZBD publisher ID.
 </ParamField>
 
-<ParamField path="workspaceId" type="string" required>
-  The workspace ID.
+<ParamField required path="projectId" type="string">
+  The project to link the currency to.
 </ParamField>
 
+### Body
+
+<ParamField required body="currency_code" type="string">
+  The currency ticker, for example `GOLD`.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/projects/{projectId}/virtual-currencies \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency_code": "GOLD"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Virtual-currency linked.",
+  "data": {
+    "currency_code": "GOLD",
+    "virtual_currency_name": "Gems",
+    "principal_group_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "decimal_places": 2,
+    "linked_at": "2026-05-27T15:04:05Z",
+    "icon_url": null
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+The join row echoes the currency's `decimal_places`, which is the same value the
+currency itself carries as `precision`.
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `400` | Missing or malformed `currency_code` |
+| `401` | Missing or invalid API key |
+| `403` | The API key does not belong to `publisherId` |
+| `404` | No such project or currency under this publisher |
+| `409` | The currency is already linked to this project |
+| `422` | The link could not be processed |
+| `429` | Rate limit exceeded |
+| `503` | The Embedded Accounts feature is not switched on for your account |

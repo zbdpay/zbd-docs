@@ -4,13 +4,86 @@ description: "Provision a player."
 api: "POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/users"
 ---
 
-Provision a player. Idempotent on `(publisher, publisher_user_id)` — 201 first, 200 on replay. Store the returned ZBD `user_id`; every later call uses it, never your own id
+## Description
 
-<ParamField header="x-api-key" type="string" required>
-  Your ZBD API key. Call this endpoint from your server only.
+Provisions a player in your Embedded Accounts economy. Call this from your
+backend the first time a player needs a balance.
+
+The call is **idempotent on `(publisher, publisher_user_id)`**: the first call
+returns `201`, and calling again with the same identifier returns `200` with the
+same player rather than creating a duplicate. You can safely retry.
+
+<Warning>
+  Store the returned ZBD `user_id`. Every later call — credits, debits,
+  sessions, transaction history — takes the ZBD `user_id`, never your own
+  identifier.
+</Warning>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD publisher API key. Call this from your server only.
 </ParamField>
 
-<ParamField path="publisherId" type="string" required>
+### Path Parameters
+
+<ParamField required path="publisherId" type="string">
   Your ZBD publisher ID.
 </ParamField>
 
+### Body
+
+<ParamField required body="publisher_user_id" type="string">
+  Your own identifier for the player. This is the key the idempotency check runs
+  on, so it must be stable for the lifetime of the player.
+</ParamField>
+
+<ParamField body="accepted_disclosure_type_ids" type="integer[]">
+  Disclosure type IDs the player has already accepted, recorded at provisioning
+  time. See [Get disclosure status](/embedded-accounts/apis/get-disclosures) for
+  what the type IDs mean.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/users \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "publisher_user_id": "player-42",
+    "accepted_disclosure_type_ids": []
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "User created successfully.",
+  "data": {
+    "user_id": "b2c3d4e5-f6a7-4890-abcd-ef0123456789",
+    "publisher_user_id": "player-42"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+A repeat call with the same `publisher_user_id` returns `200` and the same
+`user_id`.
+
+<Tip>
+  Keep personal data out of `publisher_user_id` — no email, username or device
+  ID. See [Idempotency keys and user ID generation](/development-resources/idempotency-keys).
+</Tip>
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `400` | Missing or malformed `publisher_user_id` |
+| `401` | Missing or invalid API key |
+| `404` | No such publisher (`PA7001`) |

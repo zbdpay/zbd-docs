@@ -1,20 +1,92 @@
 ---
 title: "Update a currency"
 description: "Merge-patch name / icon_url / precision."
-api: "PATCH https://api.zbdpay.com/api/v1/publishers/{publisherId}/virtual-currencies/{virtualCurrencyId}"
+api: "PATCH https://api.zbdpay.com/api/v1/publishers/{publisherId}/virtual-currencies/{currencyCode}"
 ---
 
-Merge-patch `name` / `icon_url` / `precision`. `code` is immutable after creation
+## Description
 
-<ParamField header="x-api-key" type="string" required>
-  Your ZBD API key. Call this endpoint from your server only.
+Updates a virtual currency. This is a merge-patch: send only the fields you
+want to change and the rest are left alone.
+
+`code` is **immutable after creation** and cannot be patched. To change a
+currency's ticker you have to create a new currency.
+
+<Warning>
+  Changing `precision` on a currency players already hold a balance in changes
+  how existing amounts are interpreted. Confirm the effect on outstanding
+  balances before patching it in production.
+</Warning>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD publisher API key. Call this from your server only.
 </ParamField>
 
-<ParamField path="publisherId" type="string" required>
+### Path Parameters
+
+<ParamField required path="publisherId" type="string">
   Your ZBD publisher ID.
 </ParamField>
 
-<ParamField path="virtualCurrencyId" type="string" required>
-  The virtual currency ID.
+<ParamField required path="currencyCode" type="string">
+  The currency ticker, for example `GOLD`.
 </ParamField>
 
+### Body
+
+<ParamField body="name" type="string">
+  Display name, up to 100 characters.
+</ParamField>
+
+<ParamField body="precision" type="integer">
+  Number of decimal places the currency is denominated in.
+</ParamField>
+
+<ParamField body="icon_url" type="string">
+  URL of an icon to display alongside the currency.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X PATCH https://api.zbdpay.com/api/v1/publishers/{publisherId}/virtual-currencies/GOLD \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Gold Coins",
+    "icon_url": "https://cdn.zbdpay.com/virtual-currencies/gold-v2.png"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Virtual currency updated successfully.",
+  "data": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "publisher_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "code": "GOLD",
+    "name": "Gold Coins",
+    "icon_url": "https://cdn.zbdpay.com/virtual-currencies/gold-v2.png",
+    "precision": 0,
+    "created_at": "2026-05-27T15:04:05Z",
+    "updated_at": "2026-05-27T15:18:22Z"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `400` | Attempted to patch `code`, or `name` exceeds 100 characters |
+| `401` | Missing or invalid API key |
+| `403` | The API key does not belong to `publisherId` |
+| `404` | No such currency, or it has been soft-deleted |

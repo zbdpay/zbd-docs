@@ -1,16 +1,78 @@
 ---
 title: "List currencies"
-description: "List the publisher's virtual currencies."
+description: "List your virtual currencies."
 api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/virtual-currencies"
 ---
 
-List the publisher's virtual currencies
+## Description
 
-<ParamField header="x-api-key" type="string" required>
-  Your ZBD API key. Call this endpoint from your server only.
+Returns the virtual currencies you have defined. Soft-deleted currencies are not
+included.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD publisher API key. Call this from your server only.
 </ParamField>
 
-<ParamField path="publisherId" type="string" required>
+### Path Parameters
+
+<ParamField required path="publisherId" type="string">
   Your ZBD publisher ID.
 </ParamField>
 
+### Query Parameters
+
+<ParamField query="id" type="string">
+  Filter to a single currency by its ID.
+</ParamField>
+
+<ParamField query="code" type="string">
+  Filter to a single currency by its ticker, for example `GOLD`.
+</ParamField>
+
+<ParamField query="skip" type="integer">
+  Number of rows to skip.
+</ParamField>
+
+<ParamField query="take" type="integer">
+  Number of rows to return.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/publishers/{publisherId}/virtual-currencies \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Virtual currencies retrieved successfully.",
+  "data": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "publisher_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+      "code": "GOLD",
+      "name": "Gold Coins",
+      "icon_url": "https://cdn.zbdpay.com/virtual-currencies/gold.png",
+      "precision": 0,
+      "created_at": "2026-05-27T15:04:05Z",
+      "updated_at": "2026-05-27T15:04:05Z"
+    }
+  ],
+  "error": null
+}
+```
+</ResponseExample>
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `401` | Missing or invalid API key |
+| `403` | The API key does not belong to `publisherId` |

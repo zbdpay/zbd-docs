@@ -1,20 +1,102 @@
 ---
 title: "List redemption rates"
-description: "Read your rates — take the row with is_current: true."
+description: "Read your redemption rates."
 api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/redemption-rates"
 ---
 
+## Description
+
+Returns the redemption rates configured between your currencies. Take the row
+with `is_current: true` — the endpoint returns superseded rows as well as the
+rate in force, or pass `current_only=true` to filter server-side.
+
+<Note>
+  Rates are **append-only and forward-only**. There is no update or delete
+  route, and writes are ZBD-side: a new rate supersedes the previous one rather
+  than replacing it. Ask your ZBD contact to change a rate.
+</Note>
+
 <Info>
-  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+  **Requires activation.** Available once ZBD switches this feature on for your
+  account. Until then it returns a bare `503` — that means the feature is off,
+  not that the API is down. Ask your ZBD contact to enable it.
 </Info>
 
-Read your rates — take the row with `is_current: true`. Filters: `from_currency_code`, `to_currency_code`, `current_only`, `skip`, `take`. Rates are append-only and forward-only; there is no update or delete route, and writes are ZBD-side
+## Configuration
 
-<ParamField header="x-api-key" type="string" required>
-  Your ZBD API key. Call this endpoint from your server only.
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD publisher API key. Call this from your server only.
 </ParamField>
 
-<ParamField path="publisherId" type="string" required>
+### Path Parameters
+
+<ParamField required path="publisherId" type="string">
   Your ZBD publisher ID.
 </ParamField>
 
+### Query Parameters
+
+<ParamField query="from_currency_code" type="string">
+  Filter to rates converting from this currency.
+</ParamField>
+
+<ParamField query="to_currency_code" type="string">
+  Filter to rates converting to this currency.
+</ParamField>
+
+<ParamField query="current_only" type="boolean">
+  Return only the rate in force, omitting superseded rows.
+</ParamField>
+
+<ParamField query="skip" type="integer">
+  Number of rows to skip.
+</ParamField>
+
+<ParamField query="take" type="integer">
+  Number of rows to return.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl "https://api.zbdpay.com/api/v1/publishers/{publisherId}/redemption-rates?from_currency_code=GOLD&current_only=true" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Redemption rates retrieved successfully.",
+  "data": [
+    {
+      "id": "6f1c2d3e-4a5b-4c6d-8e9f-0a1b2c3d4e5f",
+      "publisher_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+      "from_currency": null,
+      "to_currency": null,
+      "rate": "0.00666667",
+      "is_current": true,
+      "created_at": "2026-07-30T12:00:00Z"
+    }
+  ],
+  "error": null
+}
+```
+</ResponseExample>
+
+<Warning>
+  `rate` is a **string**, not a number, so the precision survives the round trip.
+  Parse it with a decimal type — reading it as a float will introduce rounding
+  error into conversions.
+</Warning>
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `401` | Missing or invalid API key |
+| `403` | The API key does not belong to `publisherId` |
+| `429` | Rate limit exceeded |
+| `503` | The Embedded Accounts feature is not switched on for your account |
