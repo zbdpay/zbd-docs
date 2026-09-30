@@ -1,34 +1,50 @@
 ---
 title: "Currencies"
-description: "Convertible or not, naming, denomination and conversion rates — what you define up front and what is hard to change afterward."
+icon: "coins"
+description: "Fiat and virtual currencies, convertibility, naming, denomination, conversion rates, and what to decide before launch."
 ---
 
-An economy runs on one or more currencies, and there are two kinds you can use.
-**Fiat** is real-world money such as dollars or euros. Its value is its face value and there's nothing for you to define.
-**Virtual currency** is one you define yourself. You decide what it's called, what it's worth in each direction, and whether it converts back to money at all.
-Some publishers run an entire economy on fiat, with players holding and moving real money. Others define their own currency, and a lot of economies use both together.
-## Convertible or not
-The first decision on a virtual currency is whether it converts back to real money.
-**Convertible** currencies carry a redemption rate and can leave as real money. This is what makes rewards, marketplace proceeds and cash out possible, and it's also where the compliance rules land: what can leave, when, and for whom.
-**Non-convertible** currencies are spend-only. No redemption rate, no cash value, no exit. A grind currency that buys cosmetics doesn't need one, and making it convertible brings obligations a pure game mechanic never has to carry.
-Most economies want both: something players earn and spend freely, and something that carries real value.
-How a player came by value decides what they can do with it, so value you granted behaves differently from value they bought, which behaves differently again from value another player sent them. ZBD applies that classification when the value lands, based on how it arrived. [Cash outs](/embedded-accounts/cash-out) covers which value can leave and when.
+An economy runs on one or more currencies, and you can use two kinds:
+
+- **Fiat** is real-world money, like dollars or euros. There's nothing for you to define.
+- **Virtual currency** is one you create. You choose its name, what it's worth in each direction, and whether it converts back to money.
+
+Some publishers run their whole economy on fiat, some use only their own currency, and many use both.
+
+## Convertible or non-convertible
+
+The first decision for a virtual currency is whether it can convert back to real money.
+
+- **Convertible:** has a redemption rate and can be cashed out. This is what enables rewards, marketplace proceeds and cash outs, and it's where compliance rules apply.
+- **Non-convertible:** can only be spent, and has no cash value. A grind currency for cosmetics usually doesn't need to be convertible, and keeping it that way avoids the compliance obligations.
+
+Most economies use both: a currency players earn and spend freely, and one that carries real value.
+
+How a player got their value also affects what they can do with it. Value you granted, value they bought and value another player sent them are each treated differently. ZBD tags value by how it arrived, and [Cash Outs](/embedded-accounts/cash-out) covers which value can leave and when.
+
 ## Naming and scope
-A currency carries a currency code and a display name. The code identifies it in the API and doesn't change. The display name is what players see in your game.
-Keeping those separate is what makes the next part work, because you also choose how a currency maps to your projects.
-Link one currency to several projects and it behaves identically across all of them, so a player earning Gems in one of your games holds the same thing in another under the same rules.
-The alternative is a variant per project, each with its own conversion rates. Give every variant the display name Gem and players see one currency across your whole catalog while each game runs its own economy underneath.
+
+Each currency has a currency code and a display name:
+
+- **Currency code:** identifies the currency in the API. It can't be changed.
+- **Display name:** what players see in your game.
+
+You also choose how a currency maps to your projects:
+
+- **Shared:** link one currency to several projects and it works the same in all of them. A player's Gems in one game are the same Gems in another.
+- **Per project:** create a separate currency for each project, each with its own conversion rates. Give them all the display name Gem and players see one currency across your games, while each game runs its own economy.
 
 <Note>
-  **ISO currency codes are reserved** and cannot be used for virtual currencies. Your display name should distinctly represent your virtual currency and should not overlap with real-world currency.
+  **ISO currency codes are reserved** and can't be used for virtual currencies. Your display name should clearly represent your virtual currency and not overlap with a real-world currency.
 </Note>
 
 ## Units and denomination
-Currencies differ in their lowest denomination, which is the smallest amount that can exist.
-USD's lowest denomination is a cent, so a dollar is 100 of them. Bitcoin's is a satoshi, so one bitcoin is 100,000,000. Balances are always held as whole numbers of the lowest denomination, which is why ZBD doesn't impose decimal places or add zeros behind the scenes.
-For a currency you define, the lowest denomination is your choice, and it's worth thinking past the price of your cheapest item.
-Say your currency is Gems. If the lowest denomination is one Gem, you can't represent half a Gem, which holds up right until you take a 10% cut on a 5-Gem marketplace sale and have nowhere to put the 0.5.
-Make the lowest denomination a hundredth of a Gem and the same economy works:
+
+The lowest denomination is the smallest amount of a currency that can exist. USD's is a cent, so a dollar is 100 units. Bitcoin's is a satoshi, so one bitcoin is 100,000,000 units. Balances are always held as whole numbers of the lowest denomination.
+
+For your own currency, you choose the lowest denomination. Think beyond your cheapest item. If the lowest denomination is one Gem, you can't take a 10% cut of a 5-Gem sale, since that leaves half a Gem with nowhere to go.
+
+Set it to a hundredth of a Gem and it works:
 
 |   | Units | Shown to the player |
 | --- | --- | --- |
@@ -37,24 +53,27 @@ Make the lowest denomination a hundredth of a Gem and the same economy works:
 | Your 10% cut | 50 | 0.5 Gems |
 | Seller receives | 450 | 4.5 Gems |
 
-Players still see Gems. What you display stays yours, and the denomination only sets how finely the economy can divide underneath.
-Pick one small enough that your smallest price and your smallest fee both land on a whole number.
-## Virtual currency conversion rates
-You set two conversion rates independently, one for each direction.
+Players still see Gems. The denomination only controls how finely amounts can be split, so pick one small enough that your smallest price and your smallest fee are both whole numbers.
+
+## Conversion rates
+
+You set two rates, one for each direction:
 
 |   | Controls |
 | --- | --- |
-| Purchase rate | The amount of virtual currency a player gets for their money going in |
-| Redemption rate | What a unit of virtual currency is worth when it's converted to fiat at cashout |
+| Purchase rate | How much virtual currency a player gets for the money they put in |
+| Redemption rate | What a unit of virtual currency is worth when it's converted to fiat at cash out |
 
-The two don't have to mirror each other. The gap between them is the spread your economy runs on, and players work it out fast, so it's worth setting deliberately.
-Rates apply at the moment of conversion, so a player converting today gets today's rate even if they earned the currency months ago.
-## What to lock before launch
+The two don't have to match. The gap between them is your economy's spread, and players notice it quickly, so set it deliberately.
 
-| Decision | Why it's painful later |
+Rates apply when the conversion happens. A player converting today gets today's rate, even for currency they earned months ago.
+
+## What to decide before launch
+
+| Decision | Why it's hard to change later |
 | --- | --- |
 | Convertible or not | Units already in circulation would gain cash value they were never issued with |
-| Currency code | The code is fixed once set |
+| Currency code | The code can't be changed once set |
 | Lowest denomination | Changing it means migrating every balance and entry |
-| Conversion rates | The redemption rate decides what a unit is worth when a player converts it out |
-| Scope | Splitting a shared currency into per-project variants after launch means migrating balances between them |
+| Conversion rates | The redemption rate sets what a unit is worth when a player cashes out |
+| Scope | Splitting a shared currency into per-project currencies means migrating balances |

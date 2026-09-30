@@ -1,25 +1,20 @@
 ---
-title: "Fund a user"
-description: "Credit USD points to a widget user."
+title: "Credit a User"
+description: "Credit a user's ZBD balance, when ZBD holds the balance."
 api: "POST https://api.zbdpay.com/api/v1/widget/users/fund"
 ---
 
-## Description
+<Note>
+  Only for programs where ZBD holds user balances. If your ledger is the source of truth, you don't need this endpoint.
+</Note>
 
-Credit publisher points to a widget user's point balance. Amount is in **currency minor units**. For USDZ, `100` equals `$1.00` worth of points.
+Adds to the balance ZBD holds for a user. Your pool is only drawn on when the user is paid out.
 
 This endpoint is idempotent on `idempotency_key`.
 
-## Reverse a fund
+## Reversing a credit
 
-To take back points that you previously funded, call
-[`POST /api/v1/widget/users/deplete`](/embedded-payouts/apis/deplete-user). This creates a new
-debit from the user's currently available point balance back to your configured
-sink/source account; it does not undo or mutate the original fund transfer.
-
-Use a new `idempotency_key` for the deplete request. A deplete can only succeed
-while the user has enough available points. It cannot recover points that have
-already been spent or cashed out.
+To take back a credit, call [Debit a User](/embedded-payouts/apis/deplete-user). It creates a new debit from the user's available balance and doesn't change the original credit. Use a new `idempotency_key`. A debit only succeeds while the user still has enough available balance, so it can't recover value they've already cashed out.
 
 ## Configuration
 
@@ -40,11 +35,11 @@ already been spent or cashed out.
 </ParamField>
 
 <ParamField required body="amount" type="integer">
-  Amount in currency minor units. For USDZ: `100` = $1.00, `1000` = $10.00.
+  Amount in the currency's smallest unit. For a two-decimal currency, `100` is 1.00 and `1000` is 10.00.
 </ParamField>
 
 <ParamField required body="currency" type="string">
-  Point currency code. Use `USDZ` unless your project has a different configured point currency.
+  Currency code of the balance. Your ZBD contact confirms which currency your project uses.
 </ParamField>
 
 <ParamField required body="idempotency_key" type="string">

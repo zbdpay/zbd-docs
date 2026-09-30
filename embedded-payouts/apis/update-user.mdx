@@ -1,14 +1,12 @@
 ---
-title: "Update a payout user"
-description: "Update a widget user (email)."
+title: "Update a User"
+description: "Update a user's email address."
 api: "PATCH https://api.zbdpay.com/api/v1/widget/users/{user_id}"
 ---
 
-## Description
+This is a partial update, so only the fields you send are changed. Today `email` is the only field you can update.
 
-Updates a widget user's details. This is a partial update. Only the fields you send are changed, and today `email` is the only updatable field.
-
-Use this when a user changes the email tied to their account. The new email becomes the recipient for OTP verification codes in the widget, so any code requested after the update is sent to the new address.
+Use this when a user changes the email tied to their account. Verification codes requested after the update go to the new address.
 
 ## Configuration
 
@@ -31,7 +29,7 @@ Use this when a user changes the email tied to their account. The new email beco
 ### Body Parameters
 
 <ParamField body="email" type="string">
-  The user's new email address. Used for OTP verification in the widget.
+  The user's new email address.
 </ParamField>
 
 <RequestExample>

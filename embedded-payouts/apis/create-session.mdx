@@ -1,24 +1,14 @@
 ---
-title: "Create a session"
-description: "Mint an Embedded Payouts session — distinct from the Embedded Accounts /zbd-widget/sessions mint."
+title: "Create a Session"
+description: "Create a widget session for a user."
 api: "POST https://api.zbdpay.com/api/v1/widget/users/session"
 ---
 
-## Description
-
-Creates a widget session for a user. Returns a `session_token` (JWT) and a `widget_url` that you embed as an iframe. The session is valid for the duration specified in `expires_at`.
+Returns a `session_token` (JWT) and a `widget_url` that you embed as an iframe. The session is valid for the duration specified in `expires_at`.
 
 The widget handles OTP email verification, identity verification (Onfido), bank linking (Plaid), and cashout initiation internally.
 
-Widget session creation does not query or enforce disclosure acceptance. It can
-report outstanding disclosures as a read-only status, but the widget does not
-render documents or collect acceptance. Types `1` through `5` can be ignored for
-widget eligibility.
-
-ACH cashout submission is a separate gate. Before an ACH cashout can succeed,
-your application must present and record the latest Electronic Funds Transfer
-disclosure (type `6`). This requirement is enforced only when the ACH cashout is
-submitted. See [Disclosure Agreements](/embedded-payouts/disclosures).
+For US bank payouts, see [Disclosures](/embedded-payouts/disclosures).
 
 ## Configuration
 

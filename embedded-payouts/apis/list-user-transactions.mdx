@@ -1,12 +1,14 @@
 ---
-title: "List user transactions"
-description: "USD-points history."
+title: "List User Transactions"
+description: "Read a user's transaction history."
 api: "GET https://api.zbdpay.com/api/v1/widget/users/{user_id}/transactions"
 ---
 
-## Description
+<Note>
+  Only for programs where ZBD holds user balances. If your ledger is the source of truth, you don't need this endpoint.
+</Note>
 
-Returns a widget user's transaction history for your project. Use this from your server when you need to show reward funding and cashout activity outside the widget.
+Use this to show a user's credits and payouts in your own product.
 
 Amounts are returned in **currency minor units**. For USD, `100` equals `$1.00`.
 

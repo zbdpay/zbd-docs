@@ -1,12 +1,17 @@
 ---
-title: "Payout methods"
+title: "Payout Methods"
+icon: "earth-europe"
 description: "Where a user can be paid, and how they get their money."
 ---
 
-Where a user can be paid, and how they get their money, depends on their country and on what your program supports. Both change over time, so coverage is resolved when it's needed rather than published as a fixed list.
-## How coverage is resolved
-When a user goes to link a payout account, they're shown the methods available to them. That set comes from their country, the methods your program has enabled, and their [verification tier](/embedded-payouts/users).
-You don't maintain a list of supported countries or methods, and you don't branch on them in your own code. A user in a newly supported country sees the new option without any change on your side.
+Both depend on the user's country and on what your program supports. They change over time, so ZBD works out what's available when it's needed.
+
+## How coverage works
+
+When a user chooses a payment method, they see the methods available to them, based on their country, the methods your program has enabled, and their [verification tier](/embedded-payouts/users).
+
+You don't need to maintain a list of countries or methods, or branch on them in your code. When ZBD adds a country, users there see the new option without any change on your side.
+
 ## Method types
 
 | Type | What it is |
@@ -15,17 +20,24 @@ You don't maintain a list of supported countries or methods, and you don't branc
 | Mobile wallet | Transfer to a wallet, where the market supports it |
 | Gift card | Redemption against a catalog, where available |
 
-Some countries support more than one, and the user chooses between them.
+Some countries support more than one type, and the user chooses.
+
 ## What affects timing
-Timing varies by method and by the user's country rather than by anything in your instruction. The categories that behave differently:
+
+Timing depends on the method and the user's country:
+
 - **Near-instant.** Mobile wallets and some domestic schemes settle in minutes.
 - **Same or next business day.** Domestic bank transfers in most supported markets.
-- **Several business days.** Cross-border bank transfers, where an intermediary is involved.
-Two things apply across all of them. Local banking hours and holidays govern when funds actually move, and a payout submitted after the local cut-off starts on the next business day.
+- **Several business days.** Cross-border bank transfers that go through an intermediary.
+
+Local banking hours and holidays apply to every method, and a payout submitted after the local cut-off starts the next business day.
+
 ## Fees
-Fees are deducted from the payout, so a user receives the amount you instructed minus the cost of the method they chose.
-That cost sits with the user because the choice does too. Faster methods generally cost more, so someone deciding between them is trading speed against what actually lands in their account. The widget shows the fee and the resulting amount before they confirm, which means the tradeoff is visible at the moment it's made rather than discovered afterward.
-Where a payout crosses currencies, the conversion is part of that cost. A user choosing a method in their local currency sees the converted amount and the conversion cost together.
-For your own accounting, the amount you [instruct](/embedded-payouts/paying-out) is the amount debited from your [pool](/embedded-payouts/funding). The user's fee comes out of their proceeds rather than being charged to you.
+
+Because the user chooses the method and its speed, the fee for that method comes out of their payout by default. Some methods are free or low cost, and faster ones generally cost more. The widget shows the fee and the final amount before the user confirms.
+
+If a payout involves a currency conversion, the conversion cost is included and shown with the converted amount. If you'd rather cover fees for your users, you can choose to subsidize them.
+
 ## Building against this
-The parts that stay stable are the method types above, the [payout states](/embedded-payouts/paying-out), and the shape of the instruction you send. Country availability, per-method limits, fees, and the fields a user has to fill in all change without notice, so treat them as things you read rather than things you encode.
+
+Method types, [payout statuses](/embedded-payouts/paying-out) and the shape of the payout instruction are stable. Country availability, limits, fees and the details a user has to enter can change without notice, so read them from ZBD instead of hard-coding them.

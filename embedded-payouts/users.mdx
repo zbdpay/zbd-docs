@@ -1,12 +1,16 @@
 ---
 title: "Users"
-description: "The person on the receiving end, who holds a balance with you and gets paid out."
+icon: "users"
+description: "The person being paid, their verification tier and their payment method."
 ---
 
-A user is the person on the receiving end, someone who holds a balance with you and gets paid out. It's the same object across Embedded Payouts and Embedded Accounts, so a user you create for payouts is the same user if you later run an economy on top.
-You create them from your backend, ZBD verifies them, and each one carries a verification tier and a payout account.
+A user is the same object in Embedded Payouts and Embedded Accounts, so a user you create for payouts stays the same user if you add an economy later.
+
+You create users from your backend, and ZBD verifies them. Each user has a verification tier and a payment method.
+
 ## When to create and verify
-This is your call and it depends on your program. Both patterns are supported.
+
+You can create and verify users up front, or when they need it.
 
 |   | Up front | Just in time |
 | --- | --- | --- |
@@ -14,18 +18,28 @@ This is your call and it depends on your program. Both patterns are supported.
 | Suits | A known set of users, contracted creators, programs where payout is expected | Large pools of casual earners where most never reach a payout |
 | Trade-off | Friction for people who may never cash out | Friction lands at the moment someone wants their money |
 
-The constraints hold either way. A user has to exist before you can [credit a balance](/embedded-payouts/how-payouts-work) to them, and verification has to clear before a [payout](/embedded-payouts/paying-out) above their current tier.
+Whichever you choose, a user has to exist before you can [credit them](/embedded-payouts/how-payouts-work), and has to be verified before a [payout](/embedded-payouts/paying-out) above their current tier.
+
 ## Creating a user
-Create a user with your own identifier for that person, and no personal data is needed at this point.
+
+Create a user with your own identifier for them. You don't need any personal data at this stage.
+
 ## Verification
-Verification is tiered. A user's tier sets how much they can be paid, and they move up as cumulative earnings grow or whenever you prompt them to.
-Where the verification step appears in your product is up to you. ZBD tells you when a payout needs a higher tier than the user currently holds.
-It runs through ZBD either way, inside the [cash out widget](/embedded-payouts/cash-out-widget) or as a component you place in your own flow.
+
+Verification is tiered. A user's tier sets how much they can be paid, and they can move up a tier as their earnings grow or when you prompt them.
+
+You decide where verification appears in your product, and ZBD tells you when a payout needs a higher tier than the user has. Verification always runs through ZBD, in the widget's identity verification flow.
+
 ## Tax information
-Tax information is collected when a payout requires it, or at onboarding if you'd rather get it out of the way early. Which form applies depends on where the user is and where you are, and ZBD works that out rather than asking you to.
-It's collected once and reused, so a user who has already provided it isn't asked again.
-## Payout account
-The user links the account their money lands in, choosing from the [options available in their country](/embedded-payouts/methods-and-coverage). This happens in the widget, and the account details are collected and held by ZBD.
-A user without a linked payout account can still hold a balance, they just can't be paid until they link one.
+
+ZBD collects tax information when a payout requires it, or at onboarding if you'd rather collect it early. ZBD works out which form applies based on where the user is and where you are. It's collected once, so users aren't asked again.
+
+## Payment method
+
+The user chooses how they want to be paid from the [options available in their country](/embedded-payouts/methods-and-coverage), in the widget's payment method selection flow. ZBD collects and holds the details.
+
+A user can hold a balance before choosing a payment method, but can't be paid until they have one.
+
 ## Reading user state
-You can read back a user's tier, whether they've linked a payout account, and whether they're payable right now. That's usually enough to decide what your product shows them, whether that's a cash out button, a prompt to verify, or a prompt to link an account.
+
+You can read a user's tier, whether they have a payment method, and whether they can be paid right now. That's usually enough to decide what to show them, like a cash out button, a prompt to verify, or a prompt to add a payment method.
