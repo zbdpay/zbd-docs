@@ -6,7 +6,11 @@ api: "POST https://api.zbdpay.com/api/v1/projects/{projectId}/webhooks"
 
 Create a project webhook config
 
-<ParamField header="Authorization" type="string" required>
-  `apikey`
+<ParamField header="apikey" type="string" required>
+  Your ZBD project API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField path="projectId" type="string" required>
+  Your ZBD project ID.
 </ParamField>
 

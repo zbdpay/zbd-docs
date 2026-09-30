@@ -4,9 +4,84 @@ description: "Debit USD points from a widget user."
 api: "POST https://api.zbdpay.com/api/v1/widget/users/deplete"
 ---
 
-Debit USD points from a widget user
+## Description
 
-<ParamField header="Authorization" type="string" required>
-  `apikey`
+Reverse an available fund by debiting publisher points from a widget user's
+point balance and returning them to the project's configured sink/source
+account. This creates a new debit; it does not modify the original fund
+transfer. Amount is in **currency minor units**. For USDZ, `100` equals `$1.00`
+worth of points.
+
+This endpoint is idempotent on `idempotency_key`. The user must already have enough point balance for the debit.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
 </ParamField>
 
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="user_id" type="string">
+  The ZBD user ID returned by Create User.
+</ParamField>
+
+<ParamField required body="amount" type="integer">
+  Amount in currency minor units. For USDZ: `100` = $1.00, `1000` = $10.00.
+</ParamField>
+
+<ParamField required body="currency" type="string">
+  Point currency code. Use `USDZ` unless your project has a different configured point currency.
+</ParamField>
+
+<ParamField required body="idempotency_key" type="string">
+  Unique key to prevent duplicate transfers. Use a UUID.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/widget/users/deplete \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "amount": 500,
+    "currency": "USDZ",
+    "idempotency_key": "551d1b1b-c387-4e16-9a7a-c15be30d0d62"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Point transfer completed successfully.",
+  "data": {
+    "transfer_id": "f4ba94c1-1234-5678-abcd-ef0123456789",
+    "status": "COMPLETED"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+<ResponseExample>
+```json 400
+{
+  "success": false,
+  "message": "Insufficient point balance.",
+  "data": null,
+  "error": {
+    "code": "TX3017",
+    "message": "Insufficient point balance."
+  }
+}
+```
+</ResponseExample>

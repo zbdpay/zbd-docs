@@ -10,7 +10,11 @@ api: "POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/workspaces"
 
 Create workspace. `display_name` required ≤ 256, `description` optional ≤ 1000. The slug `name` is derived server-side and is **not accepted as input**
 
-<ParamField header="Authorization" type="string" required>
-  `x-api-key`
+<ParamField header="x-api-key" type="string" required>
+  Your ZBD API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField path="publisherId" type="string" required>
+  Your ZBD publisher ID.
 </ParamField>
 

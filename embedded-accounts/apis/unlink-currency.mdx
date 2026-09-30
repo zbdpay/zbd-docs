@@ -10,7 +10,19 @@ api: "DELETE https://api.zbdpay.com/api/v1/publishers/{publisherId}/workspaces/{
 
 Unlink a currency. Note the currency id in the path — not the bare collection
 
-<ParamField header="Authorization" type="string" required>
-  `x-api-key`
+<ParamField header="x-api-key" type="string" required>
+  Your ZBD API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField path="publisherId" type="string" required>
+  Your ZBD publisher ID.
+</ParamField>
+
+<ParamField path="workspaceId" type="string" required>
+  The workspace ID.
+</ParamField>
+
+<ParamField path="virtualCurrencyId" type="string" required>
+  The virtual currency ID.
 </ParamField>
 

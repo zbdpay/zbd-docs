@@ -6,7 +6,11 @@ api: "GET https://api.zbdpay.com/api/v2/projects/{projectId}/monetary-accounts"
 
 Project monetary accounts + `cashoutRoutingType`
 
-<ParamField header="Authorization" type="string" required>
-  `apikey`
+<ParamField header="apikey" type="string" required>
+  Your ZBD project API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField path="projectId" type="string" required>
+  Your ZBD project ID.
 </ParamField>
 

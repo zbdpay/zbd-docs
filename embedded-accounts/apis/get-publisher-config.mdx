@@ -6,7 +6,11 @@ api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/config"
 
 Publisher's own cashout routing config
 
-<ParamField header="Authorization" type="string" required>
-  `x-api-key`
+<ParamField header="x-api-key" type="string" required>
+  Your ZBD API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField path="publisherId" type="string" required>
+  Your ZBD publisher ID.
 </ParamField>
 

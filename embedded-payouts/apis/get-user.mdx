@@ -1,12 +1,44 @@
 ---
 title: "Get a payout user"
 description: "Read a widget user."
-api: "GET https://api.zbdpay.com/api/v1/widget/users/{userId}"
+api: "GET https://api.zbdpay.com/api/v1/widget/users/{user_id}"
 ---
 
-Read a widget user
+## Description
 
-<ParamField header="Authorization" type="string" required>
-  `apikey`
+Returns the user's details including their current identity verification status. Use this to check if a user has completed identity verification before showing cashout options.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
 </ParamField>
 
+### Path Parameters
+
+<ParamField required path="user_id" type="string">
+  The ZBD user ID returned by Create User.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/widget/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652 \
+  -H "apikey: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "data": {
+    "id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "reference_id": "player-42",
+    "email": "player@example.com",
+    "is_id_verified": true
+  }
+}
+```
+</ResponseExample>

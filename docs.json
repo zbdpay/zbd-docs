@@ -43,37 +43,73 @@
             ]
           },
           {
-            "group": "API",
+            "group": "Integration",
+            "pages": [
+              "development-resources/integrating-embedded-accounts"
+            ]
+          },
+          {
+            "group": "API reference",
             "pages": [
               "embedded-accounts/apis/overview",
-              "embedded-accounts/apis/create-player",
-              "embedded-accounts/apis/delete-player",
-              "embedded-accounts/apis/get-account-summary",
-              "embedded-accounts/apis/list-player-transactions",
-              "embedded-accounts/apis/create-session",
-              "embedded-accounts/apis/get-session-config",
-              "embedded-accounts/apis/list-currencies",
-              "embedded-accounts/apis/create-currency",
-              "embedded-accounts/apis/get-currency",
-              "embedded-accounts/apis/update-currency",
-              "embedded-accounts/apis/delete-currency",
-              "embedded-accounts/apis/credit-player",
-              "embedded-accounts/apis/debit-player",
-              "embedded-accounts/apis/send-gift",
-              "embedded-accounts/apis/list-workspaces",
-              "embedded-accounts/apis/create-workspace",
-              "embedded-accounts/apis/get-workspace",
-              "embedded-accounts/apis/update-workspace",
-              "embedded-accounts/apis/delete-workspace",
-              "embedded-accounts/apis/link-currency",
-              "embedded-accounts/apis/unlink-currency",
-              "embedded-accounts/apis/list-bundles",
-              "embedded-accounts/apis/get-bundle",
-              "embedded-accounts/apis/list-redemption-rates",
-              "embedded-accounts/apis/get-publisher-config",
-              "embedded-accounts/apis/list-monetary-accounts",
-              "embedded-accounts/apis/get-disclosures",
-              "embedded-accounts/apis/record-disclosures"
+              "development-resources/idempotency-keys",
+              {
+                "group": "Players",
+                "pages": [
+                  "embedded-accounts/apis/create-player",
+                  "embedded-accounts/apis/delete-player"
+                ]
+              },
+              {
+                "group": "Sessions",
+                "pages": [
+                  "embedded-accounts/apis/create-session"
+                ]
+              },
+              {
+                "group": "Currencies",
+                "pages": [
+                  "embedded-accounts/apis/list-currencies",
+                  "embedded-accounts/apis/create-currency",
+                  "embedded-accounts/apis/get-currency",
+                  "embedded-accounts/apis/update-currency",
+                  "embedded-accounts/apis/delete-currency",
+                  "embedded-accounts/apis/link-currency",
+                  "embedded-accounts/apis/unlink-currency"
+                ]
+              },
+              {
+                "group": "Credits and spends",
+                "pages": [
+                  "embedded-accounts/apis/credit-player",
+                  "embedded-accounts/apis/debit-player"
+                ]
+              },
+              {
+                "group": "Workspaces",
+                "pages": [
+                  "embedded-accounts/apis/list-workspaces",
+                  "embedded-accounts/apis/create-workspace",
+                  "embedded-accounts/apis/get-workspace",
+                  "embedded-accounts/apis/update-workspace",
+                  "embedded-accounts/apis/delete-workspace"
+                ]
+              },
+              {
+                "group": "Bundles and rates",
+                "pages": [
+                  "embedded-accounts/apis/list-bundles",
+                  "embedded-accounts/apis/get-bundle",
+                  "embedded-accounts/apis/list-redemption-rates"
+                ]
+              },
+              {
+                "group": "Configuration",
+                "pages": [
+                  "embedded-accounts/apis/get-publisher-config",
+                  "embedded-accounts/apis/list-monetary-accounts"
+                ]
+              }
             ]
           }
         ]
@@ -105,31 +141,65 @@
           {
             "group": "Integration",
             "pages": [
-              "embedded-payouts/cash-out-widget"
+              "embedded-payouts/cash-out-widget",
+              "embedded-payouts/disclosures"
             ]
           },
           {
-            "group": "API",
+            "group": "API reference",
             "pages": [
               "embedded-payouts/apis/overview",
-              "embedded-payouts/apis/create-user",
-              "embedded-payouts/apis/get-user",
-              "embedded-payouts/apis/update-user",
-              "embedded-payouts/apis/create-session",
-              "embedded-payouts/apis/get-balance",
-              "embedded-payouts/apis/list-user-transactions",
-              "embedded-payouts/apis/fund-user",
-              "embedded-payouts/apis/deplete-user",
-              "embedded-payouts/apis/list-publisher-transactions",
-              "embedded-payouts/apis/get-cashout-limits",
-              "embedded-payouts/apis/quote-cashout",
-              "embedded-payouts/apis/cash-out-to-bank",
-              "embedded-payouts/apis/cash-out-gift-card",
-              "embedded-payouts/apis/get-exchange-rate",
-              "embedded-payouts/apis/cash-out-sandbox",
-              "embedded-payouts/apis/create-webhook",
-              "embedded-payouts/apis/list-webhooks",
-              "embedded-payouts/apis/update-webhook"
+              "development-resources/idempotency-keys",
+              {
+                "group": "Users",
+                "pages": [
+                  "embedded-payouts/apis/create-user",
+                  "embedded-payouts/apis/get-user",
+                  "embedded-payouts/apis/update-user"
+                ]
+              },
+              {
+                "group": "Sessions",
+                "pages": [
+                  "embedded-payouts/apis/create-session"
+                ]
+              },
+              {
+                "group": "Balances and funding",
+                "pages": [
+                  "embedded-payouts/apis/fund-user",
+                  "embedded-payouts/apis/deplete-user",
+                  "embedded-payouts/apis/get-balance"
+                ]
+              },
+              {
+                "group": "Transactions",
+                "pages": [
+                  "embedded-payouts/apis/list-user-transactions",
+                  "embedded-payouts/apis/list-publisher-transactions"
+                ]
+              },
+              {
+                "group": "Disclosures",
+                "pages": [
+                  "embedded-accounts/apis/get-disclosures",
+                  "embedded-accounts/apis/record-disclosures"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "embedded-payouts/apis/create-webhook",
+                  "embedded-payouts/apis/list-webhooks",
+                  "embedded-payouts/apis/update-webhook"
+                ]
+              },
+              {
+                "group": "Testing",
+                "pages": [
+                  "embedded-payouts/apis/cash-out-sandbox"
+                ]
+              }
             ]
           }
         ]
@@ -393,42 +463,6 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "Business operations",
-        "groups": [
-          {
-            "group": "Business operations",
-            "pages": [
-              "business-operations/publisher-account-types",
-              "business-operations/data-protection"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Development resources",
-        "groups": [
-          {
-            "group": "Guides",
-            "pages": [
-              "development-resources/idempotency-keys"
-            ]
-          },
-          {
-            "group": "Integrations",
-            "pages": [
-              "development-resources/integrating-embedded-accounts"
-            ]
-          },
-          {
-            "group": "API",
-            "pages": [
-              "embedded-accounts/apis/overview",
-              "embedded-payouts/apis/overview"
-            ]
-          }
-        ]
       }
     ]
   },
@@ -481,48 +515,156 @@
   },
   "redirects": [
     {
+      "source": "/get-started",
+      "destination": "/embedded-payouts"
+    },
+    {
+      "source": "/get-started/zbd-ramp",
+      "destination": "/embedded-payouts"
+    },
+    {
+      "source": "/get-started/zbd-payments-api",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/get-started/zbd-earn-sdk",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/get-started/zbd-app",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/get-started/login-with-zbd",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/app/uri-schemes",
+      "destination": "/embedded-rewards/url-scheme"
+    },
+    {
+      "source": "/earn/knowledge-base/game-security/:slug*",
+      "destination": "/embedded-rewards/security"
+    },
+    {
+      "source": "/earn/knowledge-base/game-security",
+      "destination": "/embedded-rewards/security"
+    },
+    {
+      "source": "/earn/knowledge-base/integrations/unity",
+      "destination": "/embedded-rewards/integration"
+    },
+    {
+      "source": "/earn/app",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/knowledge-base",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/knowledge-base/rewarded-play",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/knowledge-base/rewarded-play/integrating",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/oauth2",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/oauth2/:slug*",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/payments/ramp",
+      "destination": "/embedded-payouts"
+    },
+    {
+      "source": "/payments/ramp/:slug*",
+      "destination": "/embedded-payouts"
+    },
+    {
+      "source": "/payments/sdk",
+      "destination": "/bitcoin/resources/overview"
+    },
+    {
+      "source": "/payments/sdk/:slug*",
+      "destination": "/bitcoin/resources/overview"
+    },
+    {
+      "source": "/payments/http",
+      "destination": "/bitcoin/resources/overview"
+    },
+    {
+      "source": "/payments/ai-ingestion",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/roadmap",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/widget/browser-events",
+      "destination": "/embedded-payouts/cash-out-widget"
+    },
+    {
+      "source": "/widget/disclosures",
+      "destination": "/embedded-payouts/disclosures"
+    },
+    {
+      "source": "/widget/sandbox",
+      "destination": "/embedded-payouts/cash-out-widget"
+    },
+    {
+      "source": "/widget/webhooks",
+      "destination": "/embedded-payouts/cash-out-widget"
+    },
+    {
       "source": "/docs/introduction",
-      "destination": "/get-started"
+      "destination": "/embedded-payouts"
     },
     {
       "source": "/docs/nodejs-quickstart",
-      "destination": "/payments/sdk/node"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/nextjs-quickstart",
-      "destination": "/payments/sdk/typescript/next"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/express-quickstart",
-      "destination": "/payments/sdk/typescript/express"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/vercel-edge-functions/send",
-      "destination": "/payments/sdk/typescript/vercel/send"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/vercel-edge-functions/receive",
-      "destination": "/payments/sdk/typescript/vercel/receive"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/supabase-edge-functions/send",
-      "destination": "/payments/sdk/typescript/supabase/send"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/supabase-edge-functions/receive",
-      "destination": "/payments/sdk/typescript/supabase/receive"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/csharp-quickstart",
-      "destination": "/payments/sdk/csharp"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/go-quickstart",
-      "destination": "/payments/sdk/go"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/replit-quickstart",
-      "destination": "/payments/sdk"
+      "destination": "/bitcoin/payments/replit"
     },
     {
       "source": "/docs/openapi",
@@ -534,7 +676,7 @@
     },
     {
       "source": "/docs/sdk",
-      "destination": "/payments/sdk"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/docs/integrations",
@@ -546,7 +688,7 @@
     },
     {
       "source": "/courses/*",
-      "destination": "/get-started"
+      "destination": "/embedded-payouts"
     },
     {
       "source": "/knowledge-base/payouts/zbd-gamertag",
@@ -554,7 +696,7 @@
     },
     {
       "source": "/knowledge-base/payouts/:slug*",
-      "destination": "/payments/payouts/:slug*"
+      "destination": "/bitcoin/payments/payouts/:slug*"
     },
     {
       "source": "/knowledge-base/payins/charges",
@@ -578,11 +720,11 @@
     },
     {
       "source": "/rewards/:slug*",
-      "destination": "/earn/:slug*"
+      "destination": "/embedded-rewards"
     },
     {
       "source": "/rewards",
-      "destination": "/earn"
+      "destination": "/embedded-rewards"
     },
     {
       "source": "/earn/api",
@@ -598,7 +740,7 @@
     },
     {
       "source": "/earn/knowledge-base/integrations/beamable",
-      "destination": "/earn/knowledge-base/integrations/unity"
+      "destination": "/embedded-rewards/integration"
     },
     {
       "source": "/earn/sdk/fraud-prevention",

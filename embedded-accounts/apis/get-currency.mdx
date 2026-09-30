@@ -6,7 +6,15 @@ api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/virtual-currenc
 
 Get one currency
 
-<ParamField header="Authorization" type="string" required>
-  `x-api-key`
+<ParamField header="x-api-key" type="string" required>
+  Your ZBD API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField path="publisherId" type="string" required>
+  Your ZBD publisher ID.
+</ParamField>
+
+<ParamField path="virtualCurrencyId" type="string" required>
+  The virtual currency ID.
 </ParamField>
 

@@ -19,21 +19,17 @@ https://api.zbdpay.com
 | `POST` | `/api/v1/publishers/{publisherId}/users` | Provision a player. Idempotent on `(publisher, publisher_user_id)` — 201 first, 200 on replay. Store the returned ZBD `user_id`; every later call uses it, never your own id |
 | `POST` | `/api/v1/publishers/{publisherId}/users/{userId}/deletion-request` | Queue a managed player for archival |
 | `GET` | `/api/v1/publishers/{publisherId}/config` | Publisher's own cashout routing config |
-| `GET` | `/api/v1/users/{userId}/account-summary` | Balances per (monetary account × source tag), with `balance` and `cashable`. Route-bound: `userId` must match the session's own principal or 403. Not paginated |
 | `GET` | `/api/v1/widget/users/{userId}/disclosures` | Read disclosure / ToS acceptance status |
 | `POST` | `/api/v1/widget/users/{userId}/disclosures` | Record disclosure acceptances |
 | `GET` | `/api/v2/projects/{projectId}/monetary-accounts` | Project monetary accounts + `cashoutRoutingType` |
 | `POST` | `/api/v1/zbd-widget/sessions` | Mint a 4-hour widget session JWT carrying `workspace_id` and the resolved principal. Membership-checked; does **not** create the player |
-| `GET` | `/api/v1/zbd-widget/session/config` | Session reads its own identity / config |
 | `GET` | `/api/v1/publishers/{publisherId}/virtual-currencies` | List the publisher's virtual currencies |
 | `POST` | `/api/v1/publishers/{publisherId}/virtual-currencies` | Create a currency. `code` `^[A-Z0-9]{2,4}$`, `name` ≤ 100, `icon_url` optional, `precision` **required** and may be 0 — omitting it is a 400, not a default |
 | `GET` | `/api/v1/publishers/{publisherId}/virtual-currencies/{virtualCurrencyId}` | Get one currency |
 | `PATCH` | `/api/v1/publishers/{publisherId}/virtual-currencies/{virtualCurrencyId}` | Merge-patch `name` / `icon_url` / `precision`. `code` is immutable after creation |
 | `DELETE` | `/api/v1/publishers/{publisherId}/virtual-currencies/{virtualCurrencyId}` | Soft-delete a currency |
-| `GET` | `/api/v1/users/{userId}/transactions` | Player history, session-bound. `take` 1–200 (default 50; ≤ 0 falls back to 50, > 200 clamps), `before` is an **id cursor**, not a timestamp, `type` ∈ `reward` `spend` `cashout` `purchase` `gift`, optional `workspace_id`. No `has_more`, no `total` — page until a page returns fewer rows than `take` |
 | `POST` | `/api/v1/transactions/rewards/virtual-currencies` | Credit a player: `user_id`, `currency_code`, `amount`. Tag is always `Rewarded` and is not selectable. Response echoes `transaction_id` **(needs activation)** |
 | `POST` | `/api/v1/transactions/spends/virtual-currencies` | Debit a player. Takes `currency_id` (a UUID), **not** `currency_code` — the asymmetry with reward is deliberate. Optional `reference_id` `^[A-Za-z0-9_-]+$` ≤ 255. Unsatisfiable spend → **422**. Returns `user_spendable_balance` **(needs activation)** |
-| `POST` | `/api/v1/transactions/gifts/virtual-currencies` | Player → player gift, never a publisher key. Recipient by **exactly one** of `user_id` / `publisher_user_id`; both or neither is a 400. Gifter comes from the session, never the body. Service enforces **0.1–1000 whole units**, tighter than the DTO's `minimum: 1` — validate against the service rule **(needs activation)** |
 | `GET` | `/api/v1/publishers/{publisherId}/workspaces` | List workspaces **(needs activation)** |
 | `POST` | `/api/v1/publishers/{publisherId}/workspaces` | Create workspace. `display_name` required ≤ 256, `description` optional ≤ 1000. The slug `name` is derived server-side and is **not accepted as input** **(needs activation)** |
 | `GET` | `/api/v1/publishers/{publisherId}/workspaces/{workspaceId}` | Get one workspace **(needs activation)** |

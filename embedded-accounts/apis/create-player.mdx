@@ -6,7 +6,11 @@ api: "POST https://api.zbdpay.com/api/v1/publishers/{publisherId}/users"
 
 Provision a player. Idempotent on `(publisher, publisher_user_id)` — 201 first, 200 on replay. Store the returned ZBD `user_id`; every later call uses it, never your own id
 
-<ParamField header="Authorization" type="string" required>
-  `x-api-key`
+<ParamField header="x-api-key" type="string" required>
+  Your ZBD API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField path="publisherId" type="string" required>
+  Your ZBD publisher ID.
 </ParamField>
 

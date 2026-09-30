@@ -4,9 +4,83 @@ description: "Create a cashout-widget user."
 api: "POST https://api.zbdpay.com/api/v1/widget/users"
 ---
 
-Create a cashout-widget user
+## Description
 
-<ParamField header="Authorization" type="string" required>
-  `apikey`
+Provisions a user in ZBD for your project. Idempotent — if a user with the same `reference_id` or `email` already exists for your project, the existing user is returned.
+
+Call this from your server before creating a widget session.
+
+<Note>
+  Disclosure status does not block widget session creation. For widget ACH cashout, filter `outstanding_disclosures` for Electronic Funds Transfer disclosure type `6`, present that document, and record its acceptance before the ACH request is submitted. Types `1` through `5` can be ignored for widget eligibility. See [Disclosure Agreements](/embedded-payouts/disclosures).
+</Note>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
 </ParamField>
 
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="reference_id" type="string">
+  Your stable internal user identifier. Must be unique per project.
+</ParamField>
+
+<ParamField required body="email" type="string">
+  User's email address. Used for OTP verification in the widget.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/widget/users \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "reference_id": "player-42",
+    "email": "player@example.com"
+  }'
+```
+</RequestExample>
+
+## Response
+
+The response `data` includes the new (or existing) user plus an `outstanding_disclosures` array containing current disclosure versions the user has not accepted. This is returned on the **first user request**, so you can check immediately whether Electronic Funds Transfer disclosure type `6` is outstanding before offering ACH cashout.
+
+<ResponseField name="outstanding_disclosures" type="array">
+  Current disclosure versions the user has not yet accepted. The array can include types that do not affect widget eligibility. For ACH, only an outstanding entry with `type_id: 6` must be accepted. Each entry includes `id`, `type_id`, `name`, `description`, `version`, `content_uri`, `created_at`, and `due_date`.
+</ResponseField>
+
+<Note>
+  `outstanding_disclosures` lists only what is still outstanding. To list a user's full acceptance state (including what they have **already accepted**), call [Get Disclosure Status](/embedded-accounts/apis/get-disclosures) at any time. See [Disclosure Agreements](/embedded-payouts/disclosures) for the full model.
+</Note>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "data": {
+    "id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "reference_id": "player-42",
+    "email": "player@example.com",
+    "outstanding_disclosures": [
+      {
+        "id": 12,
+        "type_id": 6,
+        "name": "Electronic Funds Transfer",
+        "description": "Electronic Funds Transfer Agreement.",
+        "version": "1.0.0",
+        "content_uri": "https://...",
+        "created_at": "2026-06-24T20:11:45Z",
+        "due_date": "2025-08-11T00:00:00"
+      }
+    ]
+  }
+}
+```
+</ResponseExample>

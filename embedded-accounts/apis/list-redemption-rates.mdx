@@ -10,7 +10,11 @@ api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/redemption-rate
 
 Read your rates — take the row with `is_current: true`. Filters: `from_currency_code`, `to_currency_code`, `current_only`, `skip`, `take`. Rates are append-only and forward-only; there is no update or delete route, and writes are ZBD-side
 
-<ParamField header="Authorization" type="string" required>
-  `x-api-key`
+<ParamField header="x-api-key" type="string" required>
+  Your ZBD API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField path="publisherId" type="string" required>
+  Your ZBD publisher ID.
 </ParamField>
 

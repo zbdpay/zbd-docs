@@ -10,7 +10,11 @@ api: "POST https://api.zbdpay.com/api/v1/transactions/rewards/virtual-currencies
 
 Credit a player: `user_id`, `currency_code`, `amount`. Tag is always `Rewarded` and is not selectable. Response echoes `transaction_id`
 
-<ParamField header="Authorization" type="string" required>
-  `x-api-key` + `Idempotency-Key`
+<ParamField header="x-api-key" type="string" required>
+  Your ZBD API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField header="Idempotency-Key" type="string" required>
+  A unique key per request so retries are not processed twice.
 </ParamField>
 

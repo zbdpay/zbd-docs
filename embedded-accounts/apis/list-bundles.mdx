@@ -10,8 +10,12 @@ api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/bundles"
 
 List purchasable bundles. `currency_code` is **required**; archived bundles are excluded
 
-<ParamField header="Authorization" type="string" required>
-  `x-api-key`
+<ParamField header="x-api-key" type="string" required>
+  Your ZBD API key. Call this endpoint from your server only.
+</ParamField>
+
+<ParamField path="publisherId" type="string" required>
+  Your ZBD publisher ID.
 </ParamField>
 
 <ParamField query="Query parameters" type="string">

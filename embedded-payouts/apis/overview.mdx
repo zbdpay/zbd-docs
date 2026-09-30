@@ -4,7 +4,7 @@ sidebarTitle: "Overview"
 description: "Base URL, authentication and the conventions every Embedded Payouts endpoint shares."
 ---
 
-Pay players out in real money: create payout users and sessions, fund and read balances, quote and submit cash outs, and configure webhooks.
+Pay players out in real money: create payout users and sessions, fund and read balances, and configure webhooks.
 
 ## Base URL
 
@@ -25,11 +25,6 @@ https://api.zbdpay.com
 | `POST` | `/api/v1/widget/users/fund` | Credit USD points to a widget user |
 | `POST` | `/api/v1/widget/users/deplete` | Debit USD points from a widget user |
 | `GET` | `/api/v1/widget/publishers/transactions` | Publisher-wide cashout-funding activity — the only publisher-wide feed that exists today |
-| `GET` | `/api/v1/widget/cashout/cap-status` | Cashout headroom for the banner: `velocity_limits`, `rail`, `currency`, `window_months`, `min_amount_cents`, `rolling_12_month_total_cents`, `cap_cents`, `remaining_cents`, `state`, `upgraded_kyc_required`, `current_kyc_tier`, `as_of` |
-| `POST` | `/api/v1/widget/cashout/preflight` | Quote FX + fees before submitting |
-| `POST` | `/api/v1/widget/cashout` | Cashout to a linked bank account. Idempotency goes in the `idempotency_key` **body field** — the `Idempotency-Key` header is ignored |
-| `POST` | `/api/v1/widget/cashout/giftcard` | Cashout as a Bitrefill gift card. Same body-field idempotency rule |
-| `GET` | `/api/v1/widget/exchange-rate` | Approximate FX rate for gift-card display and affordability *(path disputed: changelog 8.93.0 gives the `/widget/` form, the integration draft gives `/api/v1/exchange-rate` — confirm before publishing)* |
 | `POST` | `/sandbox/api/v1/widget/cashout` | Sandbox variant. The **request host** selects the policy, not the key — a sandbox host needs a sandbox-issued key |
 | `POST` | `/api/v1/projects/{projectId}/webhooks` | Create a project webhook config |
 | `GET` | `/api/v1/projects/{projectId}/webhooks` | List project webhook configs |
