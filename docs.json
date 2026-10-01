@@ -397,12 +397,7 @@
             "group": "Resources",
             "pages": [
               "bitcoin/payments/coverage",
-              "bitcoin/payments/glossary",
-              "bitcoin/payments/templates",
-              "bitcoin/payments/nostr/nostr-relay",
-              "bitcoin/payments/openapi",
-              "bitcoin/start/dev-dashboard",
-              "bitcoin/payments/mcp"
+              "bitcoin/start/dev-dashboard"
             ]
           },
           {
@@ -1335,6 +1330,26 @@
     {
       "source": "/earn/oauth2/api/retrieve-wallet",
       "destination": "/bitcoin/oauth2/api/retrieve-wallet"
+    },
+    {
+      "source": "/bitcoin/payments/glossary",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/payments/templates",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/payments/nostr/nostr-relay",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/payments/mcp",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/payments/openapi",
+      "destination": "/bitcoin/payments/coverage"
     }
   ]
 }
