@@ -279,9 +279,7 @@
             "group": "Get Started",
             "pages": [
               "bitcoin",
-              "bitcoin/errors",
               "bitcoin/callbacks",
-              "bitcoin/resources/openapi",
               "bitcoin/resources/overview"
             ]
           },
@@ -366,14 +364,6 @@
               "bitcoin/payments",
               "bitcoin/payments/lightning-network",
               "bitcoin/payments/lightning-address"
-            ]
-          },
-          {
-            "group": "Guides",
-            "pages": [
-              "bitcoin/payments/integrations",
-              "bitcoin/payments/knowledge-base",
-              "bitcoin/payments/replit"
             ]
           },
           {
@@ -688,11 +678,11 @@
     },
     {
       "source": "/docs/replit-quickstart",
-      "destination": "/bitcoin/payments/replit"
+      "destination": "/bitcoin"
     },
     {
       "source": "/docs/openapi",
-      "destination": "/bitcoin/resources/openapi"
+      "destination": "/bitcoin"
     },
     {
       "source": "/docs/examples",
@@ -1008,7 +998,7 @@
     },
     {
       "source": "/payments/api/errors",
-      "destination": "/bitcoin/errors"
+      "destination": "/bitcoin"
     },
     {
       "source": "/payments/api/gamertags",
@@ -1104,7 +1094,7 @@
     },
     {
       "source": "/payments/api/resources/openapi",
-      "destination": "/bitcoin/resources/openapi"
+      "destination": "/bitcoin"
     },
     {
       "source": "/payments/api/resources/overview",
@@ -1164,11 +1154,11 @@
     },
     {
       "source": "/payments/integrations",
-      "destination": "/bitcoin/payments/integrations"
+      "destination": "/bitcoin"
     },
     {
       "source": "/payments/knowledge-base",
-      "destination": "/bitcoin/payments/knowledge-base"
+      "destination": "/bitcoin"
     },
     {
       "source": "/payments/lightning-address",
@@ -1196,7 +1186,7 @@
     },
     {
       "source": "/payments/openapi",
-      "destination": "/bitcoin/payments/openapi"
+      "destination": "/bitcoin"
     },
     {
       "source": "/payments/payins/gamertags",
@@ -1224,7 +1214,7 @@
     },
     {
       "source": "/payments/replit",
-      "destination": "/bitcoin/payments/replit"
+      "destination": "/bitcoin"
     },
     {
       "source": "/payments/templates",
@@ -1353,6 +1343,26 @@
     {
       "source": "/bitcoin/resources/postman",
       "destination": "/bitcoin/resources/overview"
+    },
+    {
+      "source": "/bitcoin/payments/integrations",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/payments/knowledge-base",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/payments/replit",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/errors",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/resources/openapi",
+      "destination": "/bitcoin"
     }
   ]
 }
