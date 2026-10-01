@@ -1,14 +1,14 @@
 ---
-title: "Get a Balance"
-description: "Read the balance ZBD holds for a user."
+title: "Get Earnings"
+description: "Read the earnings ZBD tracks for a user."
 api: "GET https://api.zbdpay.com/api/v1/widget/users/{user_id}/balance"
 ---
 
 <Note>
-  Only for programs where ZBD holds user balances. If your ledger is the source of truth, you don't need this endpoint.
+  Only for programs where ZBD tracks earnings. If you track earnings yourself, you don't need this endpoint.
 </Note>
 
-Use this to show a user's balance in your own product.
+Use this to show a user's earnings in your own product.
 
 Amounts are returned in **currency minor units**. For USD, `100` equals `$1.00`.
 

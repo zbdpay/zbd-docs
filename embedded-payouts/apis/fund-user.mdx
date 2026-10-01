@@ -1,20 +1,20 @@
 ---
 title: "Credit a User"
-description: "Credit a user's ZBD balance, when ZBD holds the balance."
+description: "Add to the earnings ZBD tracks for a user."
 api: "POST https://api.zbdpay.com/api/v1/widget/users/fund"
 ---
 
 <Note>
-  Only for programs where ZBD holds user balances. If your ledger is the source of truth, you don't need this endpoint.
+  Only for programs where ZBD tracks earnings. If you track earnings yourself, you don't need this endpoint.
 </Note>
 
-Adds to the balance ZBD holds for a user. Your pool is only drawn on when the user is paid out.
+Adds to the earnings ZBD tracks for a user. Your pool is only drawn on when the user cashes out.
 
 This endpoint is idempotent on `idempotency_key`.
 
 ## Reversing a credit
 
-To take back a credit, call [Debit a User](/embedded-payouts/apis/deplete-user). It creates a new debit from the user's available balance and doesn't change the original credit. Use a new `idempotency_key`. A debit only succeeds while the user still has enough available balance, so it can't recover value they've already cashed out.
+To take back a credit, call [Debit a User](/embedded-payouts/apis/deplete-user). It creates a new debit from the user's available earnings and doesn't change the original credit. Use a new `idempotency_key`. A debit only succeeds while the user still has enough available earnings, so it can't recover an amount they've already cashed out.
 
 ## Configuration
 
@@ -39,7 +39,7 @@ To take back a credit, call [Debit a User](/embedded-payouts/apis/deplete-user).
 </ParamField>
 
 <ParamField required body="currency" type="string">
-  Currency code of the balance. Your ZBD contact confirms which currency your project uses.
+  Currency code. Your ZBD contact confirms which currency your project uses.
 </ParamField>
 
 <ParamField required body="idempotency_key" type="string">

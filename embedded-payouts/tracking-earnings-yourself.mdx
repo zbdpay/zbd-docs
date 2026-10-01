@@ -1,0 +1,41 @@
+---
+title: "Tracking Earnings Yourself"
+icon: "clipboard-list"
+description: "You record what each user has earned in your own system, and your backend sends each payout."
+---
+
+Use this model when you already have earnings logic, rules and history in your own system. ZBD doesn't keep a record of what users are owed. It pays out when you tell it to.
+
+## How it works
+
+1. When a user signs up, [create them](/embedded-payouts/apis/create-user) from your backend.
+2. In the same signup flow, open the widget's identity verification and payment method selection flows. See [Embedding the Widget](/embedded-payouts/cash-out-widget). Users have to complete full verification before their first payout, because ZBD has no record of what they've earned to step them up against.
+3. Wait for the webhooks that tell you the user is verified and has a payment method. Until then, you can show them as pending.
+4. When the user should be paid, deduct the amount in your own system and [create a payout](/embedded-payouts/apis/create-payout).
+5. Update your records from the payout webhooks.
+
+You don't need to manage payout limits. ZBD applies them, and if a user can't be paid, the payout is rejected with the reason.
+
+## Sending a payout
+
+Call [Create a Payout](/embedded-payouts/apis/create-payout) with the user, the amount and the ID of the payment method to pay. If the payment method doesn't belong to that user, the payout is rejected.
+
+Deduct the amount in your own system when you send the payout. It comes out of your [pool](/embedded-payouts/funding) at the same moment, so the pool needs to cover it then.
+
+Send an idempotency key with every payout, so a timeout or retry doesn't pay the user twice. [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) covers the full lifecycle.
+
+## When a payout fails or is returned
+
+The amount goes back to your pool, and a webhook tells you. Add the amount back to what the user is owed in your own system, so they can be paid again once the problem is fixed.
+
+Returns can arrive well after a payout looks complete, so keep handling them for completed payouts too.
+
+## Reconciliation
+
+Give every payout your own reference, and use webhooks to match ZBD's records against yours.
+
+## What you don't need
+
+You don't need the credit, debit or earnings endpoints. Those are for programs where ZBD tracks earnings.
+
+Don't use the widget's cash out flow either. It pays out from earnings ZBD tracks, and ZBD doesn't know what your users are owed. Your backend sends every payout, so you always control which user is paid, how much, and to which payment method.

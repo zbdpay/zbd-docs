@@ -8,7 +8,7 @@ Both depend on the user's country and on what your program supports. They change
 
 ## How coverage works
 
-When a user chooses a payment method, they see the methods available to them, based on their country, the methods your program has enabled, and their [verification tier](/embedded-payouts/users).
+When a user chooses a payment method, they see the methods available to them, based on their country, and the methods your program has enabled.
 
 You don't need to maintain a list of countries or methods, or branch on them in your code. When ZBD adds a country, users there see the new option without any change on your side.
 
@@ -40,4 +40,4 @@ If a payout involves a currency conversion, the conversion cost is included and 
 
 ## Building against this
 
-Method types, [payout statuses](/embedded-payouts/paying-out) and the shape of the payout instruction are stable. Country availability, limits, fees and the details a user has to enter can change without notice, so read them from ZBD instead of hard-coding them.
+Method types, [payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) and the shape of the payout instruction are stable. Country availability, limits, fees and the details a user has to enter can change without notice, so read them from ZBD instead of hard-coding them.

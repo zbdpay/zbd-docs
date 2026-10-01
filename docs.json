@@ -104,21 +104,16 @@
             "pages": [
               "embedded-payouts/how-payouts-work",
               "embedded-payouts/funding",
-              "embedded-payouts/users"
-            ]
-          },
-          {
-            "group": "Paying Out",
-            "pages": [
-              "embedded-payouts/paying-out",
+              "embedded-payouts/users",
               "embedded-payouts/methods-and-coverage"
             ]
           },
           {
             "group": "Integration",
             "pages": [
-              "embedded-payouts/cash-out-widget",
-              "embedded-payouts/disclosures"
+              "embedded-payouts/tracking-earnings-yourself",
+              "embedded-payouts/tracking-earnings-with-zbd",
+              "embedded-payouts/cash-out-widget"
             ]
           },
           {
@@ -131,35 +126,25 @@
                 "pages": [
                   "embedded-payouts/apis/create-user",
                   "embedded-payouts/apis/get-user",
-                  "embedded-payouts/apis/update-user"
+                  "embedded-payouts/apis/update-user",
+                  "embedded-payouts/apis/create-session",
+                  "embedded-accounts/apis/get-disclosures",
+                  "embedded-accounts/apis/record-disclosures"
                 ]
               },
               {
-                "group": "Sessions",
+                "group": "Payouts",
                 "pages": [
-                  "embedded-payouts/apis/create-session"
+                  "embedded-payouts/apis/create-payout"
                 ]
               },
               {
-                "group": "Balances & Funding",
+                "group": "Earnings",
                 "pages": [
                   "embedded-payouts/apis/fund-user",
                   "embedded-payouts/apis/deplete-user",
-                  "embedded-payouts/apis/get-balance"
-                ]
-              },
-              {
-                "group": "Transactions",
-                "pages": [
-                  "embedded-payouts/apis/list-user-transactions",
-                  "embedded-payouts/apis/list-publisher-transactions"
-                ]
-              },
-              {
-                "group": "Disclosures",
-                "pages": [
-                  "embedded-accounts/apis/get-disclosures",
-                  "embedded-accounts/apis/record-disclosures"
+                  "embedded-payouts/apis/get-balance",
+                  "embedded-payouts/apis/list-user-transactions"
                 ]
               },
               {
@@ -1281,6 +1266,14 @@
     {
       "source": "/widget/update-user",
       "destination": "/embedded-payouts/apis/update-user"
+    },
+    {
+      "source": "/embedded-payouts/apis/list-publisher-transactions",
+      "destination": "/embedded-payouts/apis/overview"
+    },
+    {
+      "source": "/embedded-payouts/paying-out",
+      "destination": "/embedded-payouts/how-payouts-work"
     }
   ]
 }

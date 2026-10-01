@@ -1,76 +1,104 @@
 ---
 title: "How Payouts Work"
 icon: "diagram-project"
-description: "The flow of funds from the pool you fund to money in a user's account."
+description: "How money moves from your pool to a user's payment method, the two ways to track earnings, and what happens when a payout fails."
 ---
+
+## Two ways to track earnings
+
+Before you integrate, decide who keeps track of what each user has earned. Funding, checks, payment methods and settlement work the same either way.
+
+| | You track earnings | ZBD tracks earnings |
+| --- | --- | --- |
+| Who records what users are owed | You, in your own system | ZBD |
+| How money goes out | Your backend sends each payout | The user cashes out in the widget |
+| Verification | Full verification up front, before the first payout | Tiered. Users can start small and verify further as their earnings grow |
+| If a payout fails or is returned | The amount goes back to your pool, and you add it back in your own system | The amount goes back to the user's earnings on ZBD |
+| Good fit if | You already have earnings logic, rules and history | You'd rather not build and reconcile your own records |
+| Guide | [Tracking Earnings Yourself](/embedded-payouts/tracking-earnings-yourself) | [Tracking Earnings With ZBD](/embedded-payouts/tracking-earnings-with-zbd) |
 
 ## The objects
 
 | Object | What it is |
 | --- | --- |
 | Project | The scope a payout program runs in. Keys, settings and reporting belong to it. |
-| Payout pool | The balance you pre-fund. Every payout draws from it. |
-| [User](/embedded-payouts/users) | The person being paid. Has a verification tier and a payment method. |
-| User balance | What a user is owed, held by ZBD. Only used when ZBD holds balances for you. |
-| Payout | A single instruction to move money to a user. |
+| [Payout pool](/embedded-payouts/funding) | The funds you set aside for payouts. Every payout draws from it. |
+| [User](/embedded-payouts/users) | The person being paid. Has a verification status and a payment method. |
+| Earnings | What a user is owed and hasn't been paid yet. ZBD only tracks this if you choose that model. |
+| Payout | A single movement of money from your pool to one user's payment method. A cash out in the widget creates a payout too. |
 
 ## Flow of funds
 
 ```mermaid
 flowchart LR
-  A[Your treasury] -->|pre-fund| B[Payout pool]
-  C[User balance: your ledger or ZBD] -->|payout or cash out| D[Checks]
-  B -->|funds the payout| D
-  D -->|settle| E[User payment method]
+  C[Your backend sends a payout] -->|if you track earnings| D[Checks]
+  E[User cashes out] -->|if ZBD tracks earnings| D
+  B[Payout pool] -->|covers the payout| D
+  D -->|settle| F[User's payment method]
 ```
 
-## 1. Funding the pool
+A payout names the user, the amount and the [payment method](/embedded-payouts/methods-and-coverage) the user chose. ZBD holds the payment details, so the payout only refers to the method. The amount comes out of your pool when the payout is initiated, and off the user's earnings too if ZBD tracks them.
 
-You send funds to ZBD and they sit in your [payout pool](/embedded-payouts/funding), in your funding currency. Every payout draws from the pool, so it needs to cover a payout at the moment it's initiated.
+[Fees](/embedded-payouts/methods-and-coverage#fees) for the payment method come out of the payout by default, so the user receives less than the amount sent. If the user's currency differs from your funding currency, ZBD converts at the quoted rate.
 
-Agree a low-balance level with ZBD so you know when to top up. [Payout Pools](/embedded-payouts/funding) covers keeping the pool funded.
+## When to pay out
 
-## 2. Where user balances live
+You decide when payouts happen. Common patterns:
 
-There are two ways to track what users are owed. Funding, checks, payment rails and settlement are the same in both, and either way your pool only needs to cover a payout when it's initiated. The difference is who keeps the balance, and where the amount goes if a payout fails or is returned.
+- The user asks to cash out in your product
+- You run payouts on a schedule, like weekly or monthly
+- You pay automatically once a user's earnings reach a threshold you set
 
-**Your ledger is the source of truth.** You track what each user has earned and show their balance in your own product, and ZBD holds no balance for them. When a user should be paid, you debit them in your ledger and send a payout instruction. This works well if you already have earnings logic and history you want to keep.
-
-**ZBD holds the balance.** You credit users as they earn, and ZBD keeps the record of what each user holds. Users cash out from that balance through the widget. This works well if you don't want to build and reconcile a ledger.
-
-## 3. Payment methods
-
-Before a user can be paid, they choose a payment method from the [options available in their country](/embedded-payouts/methods-and-coverage), and link it if it's a bank account. You don't need to model which methods are available where.
-
-ZBD collects and holds the details. A payout instruction refers to the payment method instead of carrying its details.
-
-## 4. Starting a payout
-
-If your ledger is the source of truth, your backend sends each payout instruction when you decide a user should be paid. A [payout instruction](/embedded-payouts/paying-out) names the user, the amount and their payment method.
-
-If ZBD holds the balance, the user starts the payout by cashing out through the widget.
-
-A payout can be held before it's paid, while the transaction behind it could still be refunded or charged back.
-
-## 5. The checks
+## Checks
 
 Every payout goes through the same checks before any money moves:
 
 | Check | What happens |
 | --- | --- |
-| Verification tier | The user's tier has to allow the amount. If it doesn't, they're prompted to verify further. |
+| Verification | The user has to be verified. If ZBD tracks earnings, their tier also has to allow the amount. |
 | Screening | Sanctions and watchlist screening on the user. |
 | Limits | Per-payout, velocity and cumulative limits, counted across all payment methods. |
-| Funds | Your pool has to cover the payout. If ZBD holds the balance, the user's balance has to cover it too. |
+| Funds | Your pool has to cover the payout. If ZBD tracks earnings, the user's earnings have to cover it too. |
 
-If a payout fails a check, nothing is paid. Where the amount goes depends on your ledger model, as covered in [When a payout fails](/embedded-payouts/paying-out#when-a-payout-fails).
+## Payout statuses
 
-## 6. Settlement
+Every payout starts as Processing and ends as either Completed or Failed, never both. A completed payout can occasionally come back as Returned.
 
-If the user's currency is different from your funding currency, ZBD converts at the quoted rate and shows the user the converted amount. The money then settles to the payment method they chose.
+```mermaid
+flowchart LR
+  A[Processing] -->|settles| B[Completed]
+  A -->|or is rejected| C[Failed]
+  B -.->|sent back later, rarely| D[Returned]
+```
 
-Timing depends on the method and the user's country. [Payout Methods](/embedded-payouts/methods-and-coverage) covers what affects it.
+| Status | What it means |
+| --- | --- |
+| Processing | Checks have passed and the payout is with the payment rail. |
+| Completed | Settled to the user's payment method. |
+| Failed | Rejected before any money moved. |
+| Returned | Settled, then sent back, usually because the account was closed or the details were wrong. Returns can arrive well after a payout looks complete. |
 
-## 7. Webhooks
+A webhook fires on every status change, so you don't need to poll. Settlement timing depends on the method and the user's country. See [Payout Methods](/embedded-payouts/methods-and-coverage#what-affects-timing).
 
-A webhook fires each time a payout moves to processing, completed, failed or returned. Use them to keep your records up to date and to show users where their payout is.
+## When a payout fails or is returned
+
+Nothing is ever partially paid. Where the amount goes depends on who tracks earnings:
+
+| | You track earnings | ZBD tracks earnings |
+| --- | --- | --- |
+| Failed | Back to your pool. A webhook tells you, so you can add the amount back in your own system. | Back to the user's earnings on ZBD. |
+| Returned | Back to your pool when the return arrives, with a webhook so you can add the amount back in your own system. | Back to the user's earnings on ZBD when the return arrives. |
+
+Common reasons a payout fails:
+
+| Reason | What to do |
+| --- | --- |
+| Not verified, or tier too low if ZBD tracks earnings | Prompt the user to verify, then try again once they're cleared |
+| Screening | Don't share details with the user. These need manual review. |
+| Limit reached | Show the user when the limit resets |
+| Pool short | Top up and try again. There's no need to tell the user. |
+| No payment method | Prompt the user to choose one |
+
+## What to show users
+
+Users mostly want to know whether their money is on the way, when it'll arrive, and whether anything is blocking it. Showing the payout status directly usually works better than creating your own labels for it.

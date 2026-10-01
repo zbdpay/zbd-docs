@@ -1,0 +1,93 @@
+---
+title: "Create a Payout"
+description: "Send money from your pool to a user's payment method."
+api: "POST https://api.zbdpay.com/api/v1/payouts"
+---
+
+Sends a payout to a user's payment method. The amount comes out of your [pool](/embedded-payouts/funding) when the payout is created, so the pool needs to cover it at that moment. If ZBD tracks earnings for the user, the amount also comes off their earnings.
+
+The payout starts as `PROCESSING`. You get a webhook when it completes, fails or is returned. [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) covers the full lifecycle.
+
+This endpoint is idempotent on `idempotency_key`. Retrying with the same key returns the original payout instead of sending a second one.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  Your ZBD project API key (production scope).
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="user_id" type="string">
+  The ZBD user ID returned by Create User.
+</ParamField>
+
+<ParamField required body="amount" type="integer">
+  Amount in the currency's smallest unit. For a two-decimal currency, `100` is 1.00 and `1000` is 10.00. Fees for the user's payment method come out of this amount.
+</ParamField>
+
+<ParamField required body="currency" type="string">
+  Currency code for the amount, for example `USD`.
+</ParamField>
+
+<ParamField required body="payment_method_id" type="string">
+  The ID of the payment method to pay out to. It has to belong to the user in `user_id`. Required even if the user has only one, so payouts stay unambiguous once users have several.
+</ParamField>
+
+<ParamField required body="idempotency_key" type="string">
+  Unique key to prevent duplicate payouts. Use a UUID.
+</ParamField>
+
+<ParamField body="reference" type="string">
+  Your own ID for this payout, returned in webhooks and transaction history for reconciliation.
+</ParamField>
+
+## Errors
+
+| Status | When it happens |
+| --- | --- |
+| `400` | A required field is missing, the amount is below the minimum for the payment method, or the payment method doesn't belong to the user. |
+| `404` | The user doesn't exist in your project. |
+| `409` | The user hasn't finished verification, hasn't chosen a payment method, or has outstanding disclosures. |
+| `422` | Your pool doesn't cover the amount, or, if ZBD tracks earnings, the user's earnings don't. |
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/payouts \
+  -H "apikey: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "amount": 2500,
+    "currency": "USD",
+    "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
+    "idempotency_key": "6b1d3f0e-2a7c-4e19-9d51-0c8f4a2e7b13",
+    "reference": "creator_payout_2026_10"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Payout created.",
+  "data": {
+    "payout_id": "po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44",
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "amount": 2500,
+    "currency": "USD",
+    "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
+    "reference": "creator_payout_2026_10",
+    "status": "PROCESSING"
+  },
+  "error": null
+}
+```
+</ResponseExample>

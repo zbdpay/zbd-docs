@@ -1,34 +1,34 @@
 ---
 title: "Users"
 icon: "users"
-description: "The person being paid, their verification tier and their payment method."
+description: "The person being paid, how they're verified and their payment method."
 ---
 
 A user is the same object in Embedded Payouts and Embedded Accounts, so a user you create for payouts stays the same user if you add an economy later.
 
-You create users from your backend, and ZBD verifies them. Each user has a verification tier and a payment method.
+You create users from your backend, and ZBD verifies them. Each user has a verification status and a payment method.
 
-## When to create and verify
+## When to verify
 
-You can create and verify users up front, or when they need it.
+When a user verifies depends on [how you track earnings](/embedded-payouts/how-payouts-work#two-ways-to-track-earnings).
 
-|   | Up front | Just in time |
+|   | You track earnings | ZBD tracks earnings |
 | --- | --- | --- |
-| What happens | Create and verify users before anyone earns | Create when someone earns, verify when a payout requires it |
-| Suits | A known set of users, contracted creators, programs where payout is expected | Large pools of casual earners where most never reach a payout |
-| Trade-off | Friction for people who may never cash out | Friction lands at the moment someone wants their money |
+| When | Full verification before the first payout, usually at signup | Up front, or just in time when a payout needs it |
+| Tiers | None. Every user is fully verified | Users start at a lower tier and verify further as their earnings grow |
+| Why | ZBD has no record of what users have earned, so it can't step them up | ZBD sees each user's earnings and payouts, so it knows when a higher tier is needed |
 
-Whichever you choose, a user has to exist before you can [credit them](/embedded-payouts/how-payouts-work), and has to be verified before a [payout](/embedded-payouts/paying-out) above their current tier.
+Either way, a user has to exist before you can [credit them](/embedded-payouts/apis/fund-user) or [pay them](/embedded-payouts/apis/create-payout).
 
 ## Creating a user
 
-Create a user with your own identifier for them. You don't need any personal data at this stage.
+[Create a user](/embedded-payouts/apis/create-user) with your own identifier for them and their email address, which ZBD uses to send verification codes. You don't need any other personal data at this stage.
 
 ## Verification
 
-Verification is tiered. A user's tier sets how much they can be paid, and they can move up a tier as their earnings grow or when you prompt them.
+Verification always runs through ZBD, in the widget's identity verification flow. You decide where it appears in your product.
 
-You decide where verification appears in your product, and ZBD tells you when a payout needs a higher tier than the user has. Verification always runs through ZBD, in the widget's identity verification flow.
+If ZBD tracks earnings, verification is tiered. A user's tier sets how much they can be paid, and ZBD tells you when a payout needs a higher tier than the user has.
 
 ## Tax information
 
@@ -38,8 +38,8 @@ ZBD collects tax information when a payout requires it, or at onboarding if you'
 
 The user chooses how they want to be paid from the [options available in their country](/embedded-payouts/methods-and-coverage), in the widget's payment method selection flow. ZBD collects and holds the details.
 
-A user can hold a balance before choosing a payment method, but can't be paid until they have one.
+A user can have earnings before choosing a payment method, but can't be paid until they have one.
 
 ## Reading user state
 
-You can read a user's tier, whether they have a payment method, and whether they can be paid right now. That's usually enough to decide what to show them, like a cash out button, a prompt to verify, or a prompt to add a payment method.
+You can read whether a user is verified, whether they have a payment method, and whether they can be paid right now. That's usually enough to decide what to show them, like a cash out button, a prompt to verify, or a prompt to add a payment method.

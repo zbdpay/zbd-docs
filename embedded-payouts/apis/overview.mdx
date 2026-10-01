@@ -1,5 +1,5 @@
 ---
-title: "API Overview"
+title: "Embedded Payouts API Overview"
 sidebarTitle: "Overview"
 description: "Base URL, authentication and conventions for the Embedded Payouts API."
 ---
@@ -22,11 +22,11 @@ Send your project API key in the `apikey` header. Call these endpoints from your
 | `GET` | `/api/v1/widget/users/{userId}` | Get a user |
 | `PATCH` | `/api/v1/widget/users/{userId}` | Update a user's email |
 | `POST` | `/api/v1/widget/users/session` | Create a widget session |
-| `GET` | `/api/v1/widget/users/{userId}/balance` | Get the balance ZBD holds for a user |
+| `GET` | `/api/v1/widget/users/{userId}/balance` | Get the earnings ZBD tracks for a user |
 | `GET` | `/api/v1/widget/users/{userId}/transactions` | List a user's transactions |
-| `POST` | `/api/v1/widget/users/fund` | Credit a user's ZBD balance |
+| `POST` | `/api/v1/widget/users/fund` | Credit a user's earnings |
 | `POST` | `/api/v1/widget/users/deplete` | Reverse a credit |
-| `GET` | `/api/v1/widget/publishers/transactions` | List your project's transactions |
+| `POST` | `/api/v1/payouts` | Create a payout |
 | `POST` | `/sandbox/api/v1/widget/cashout` | Simulate a cash out in sandbox |
 | `POST` | `/api/v1/projects/{projectId}/webhooks` | Create a webhook |
 | `GET` | `/api/v1/projects/{projectId}/webhooks` | List webhooks |
@@ -36,6 +36,6 @@ Send your project API key in the `apikey` header. Call these endpoints from your
 
 - **Responses** use the same envelope: `{ success, message, data, error }`. On success `error` is null, and on failure `data` is null. The HTTP status is the source of truth.
 - **Amounts** are integers in the currency's smallest unit. For USD, `100` is $1.00.
-- **Idempotency.** Credit and reverse-credit calls take an `idempotency_key` in the request body. Use a new key for each new operation, and the same key when retrying one.
+- **Idempotency.** Payout, credit and reverse-credit calls take an `idempotency_key` in the request body. Use a new key for each new operation, and the same key when retrying one.
 - **Tracing.** Send an `X-Request-Id` header on any call to make it easier to trace with support.
 - **Rate limits** apply per API key, and sandbox limits are higher than production. Load test against production limits before launch.

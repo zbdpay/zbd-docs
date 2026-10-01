@@ -1,5 +1,6 @@
 ---
-title: "Overview"
+title: "Embedded Payouts Overview"
+sidebarTitle: "Overview"
 icon: "layer-group"
 description: "Pay creators, sellers and players in the countries ZBD supports, from a pool you fund."
 ---
@@ -24,41 +25,39 @@ Embedded Payouts puts the whole payout experience inside your own game or platfo
 
 ```mermaid
 flowchart LR
-  A[You fund a payout pool] --> B[Recipients onboard]
-  B --> C[You instruct a payout]
+  A[You fund a payout pool] --> B[Users onboard]
+  B --> C[Payout is sent]
   C --> D[ZBD runs checks]
-  D --> E[Funds settle to the payout account]
+  D --> E[Funds settle to their payment method]
   E --> F[Webhooks and reconciliation]
 ```
 
-1. [**Fund a pool**](/embedded-payouts/funding)**.** Pre-fund a payout pool in your funding currency, and top it up before it runs dry.
-2. [**Onboard users**](/embedded-payouts/users)**.** Create the user from your backend, and ZBD handles identity verification, tax information and payment method selection. Verification is tiered, and you choose when to collect it: up front, or when a payout requires it.
-3. [**Pay out**](/embedded-payouts/paying-out)**.** Your ledger can be the source of truth, with ZBD holding no balance for your users, or ZBD can hold each user's balance for you. [How Payouts Work](/embedded-payouts/how-payouts-work) explains both.
+1. [**Fund a pool**](/embedded-payouts/funding)**.** Fund a payout pool in your funding currency. It needs to cover each payout when it's initiated.
+2. [**Onboard users**](/embedded-payouts/users)**.** Create the user from your backend, and ZBD handles identity verification, tax information and payment method selection. If you track earnings yourself, users complete full verification up front. If ZBD tracks earnings, verification can be tiered, so users verify further as they earn more.
+3. [**Pay out**](/embedded-payouts/how-payouts-work)**.** Track what users earn in your own system and send each payout, or have ZBD track earnings and let users cash out.
 4. **ZBD runs the checks.** Identity, sanctions and watchlist screening, and payout limits.
-5. [**Funds settle**](/embedded-payouts/methods-and-coverage)**.** The user is paid in their own currency, to the payment method they chose.
+5. [**Funds settle**](/embedded-payouts/methods-and-coverage)**.** The user is paid in their local currency where it's supported, to the payment method they chose.
 6. **Reconcile.** Payout status changes arrive by webhook, so you can keep your own records up to date.
 
 ## Choosing your integration
 
-Your backend always handles creating users, crediting balances, sending payout instructions and handling webhooks.
+Your backend creates users and handles webhooks. Depending on how you track earnings, it also either credits the earnings ZBD tracks for your users, or sends each payout instruction.
 
 The user-facing steps run in the ZBD widget: identity verification, tax information, payment method selection and cashing out. The widget is a set of separate flows, and you choose which ones to use and where they appear in your product.
 
 | Flow | What it does |
 | --- | --- |
-| Identity verification | Verifies the user and sets their tier. Can run on its own, for example at signup. |
+| Identity verification | Verifies the user. Can run on its own, for example at signup. |
 | Payment method selection | The user chooses how to be paid from the methods available in their country. Bank accounts are linked here, and methods that need no linking, like gift cards, are chosen here too. |
-| Cash out | The user withdraws from a balance ZBD holds for them. |
+| Cash out | The user cashes out the earnings ZBD tracks for them. |
 
 One session can open any of these flows without the user signing in again. For example, you might run identity verification when a creator signs up, so they're cleared before they earn anything, and payment method selection before their first payout.
 
-If you keep the ledger and show balances in your own product, you won't need the cash out flow, since your backend sends the payout. See [Cash Out Widget](/embedded-payouts/cash-out-widget) for integration details.
-
-ZBD collects and stores identity documents, tax identifiers and bank details in every flow, so they stay out of your systems and your compliance scope.
+If you track earnings yourself and show them in your own product, you won't need the cash out flow, since your backend sends the payout. See [Embedding the Widget](/embedded-payouts/cash-out-widget) for integration details.
 
 ## What ZBD handles
 
-- Identity verification and tiering
+- Identity verification
 - Sanctions and watchlist screening
 - AML monitoring
 - Tax information collection
@@ -66,4 +65,4 @@ ZBD collects and stores identity documents, tax identifiers and bank details in 
 
 ## Start here
 
-[Fund your payout pool](/embedded-payouts/funding) · [Create a user](/embedded-payouts/users) · [Send your first payout](/embedded-payouts/paying-out)
+[Fund your payout pool](/embedded-payouts/funding) · [Create a user](/embedded-payouts/users) · [Send your first payout](/embedded-payouts/apis/create-payout)

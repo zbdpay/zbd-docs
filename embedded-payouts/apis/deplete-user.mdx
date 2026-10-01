@@ -1,16 +1,16 @@
 ---
 title: "Debit a User"
-description: "Reverse a credit to a user's ZBD balance."
+description: "Reverse a credit to a user's earnings."
 api: "POST https://api.zbdpay.com/api/v1/widget/users/deplete"
 ---
 
 <Note>
-  Only for programs where ZBD holds user balances. If your ledger is the source of truth, you don't need this endpoint.
+  Only for programs where ZBD tracks earnings. If you track earnings yourself, you don't need this endpoint.
 </Note>
 
-Reverses an earlier credit by debiting the user's available balance. It creates a new debit and doesn't change the original credit.
+Reverses an earlier credit by debiting the user's available earnings. It creates a new debit and doesn't change the original credit.
 
-This endpoint is idempotent on `idempotency_key`. The user must have enough available balance to cover the debit.
+This endpoint is idempotent on `idempotency_key`. The user must have enough available earnings to cover the debit.
 
 ## Configuration
 
@@ -35,7 +35,7 @@ This endpoint is idempotent on `idempotency_key`. The user must have enough avai
 </ParamField>
 
 <ParamField required body="currency" type="string">
-  Currency code of the balance. Your ZBD contact confirms which currency your project uses.
+  Currency code. Your ZBD contact confirms which currency your project uses.
 </ParamField>
 
 <ParamField required body="idempotency_key" type="string">
