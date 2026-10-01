@@ -1,27 +1,33 @@
 ---
-title: "Payout pools"
+title: "Payout Pools"
+icon: "piggy-bank"
 description: "Your payout pool is the balance ZBD holds on your behalf, and every payout draws from it."
 ---
 
-Your payout pool is the balance ZBD holds on your behalf. Every payout draws from it, so it has to be funded before you can pay anyone.
+The funds need to be in your pool when a payout is initiated. You can credit users, on your side or on ZBD's, before then.
+
 ## How funding works
+
 1. You send funds from your treasury to the account ZBD provides for your organization.
-2. Funds land in your pool, denominated in your funding currency.
-3. Once settled, the full balance is available to pay out.
-Funding is always a push from your side, so ZBD never pulls from your account.
+2. The funds land in your pool, in your funding currency.
+3. Once they settle, the full balance is available to pay out.
+
+Funding is always a push from your side. ZBD never pulls from your account.
+
 ## Funding currency and conversion
-Your pool holds one funding currency. Recipients are paid in [their own currency](/embedded-payouts/methods-and-coverage), and conversion happens at the point of payout using the rate quoted at that time.
-The amount leaving your pool for a given payout can therefore differ from the amount the user receives, and the difference is the conversion.
+
+Your pool holds one funding currency. Users are paid in [their own currency](/embedded-payouts/methods-and-coverage), converted at the rate quoted at the time of the payout, so the amount leaving your pool can differ from what the user receives.
+
 ## Keeping the pool funded
 
-|   |   |
-| --- | --- |
-| Read your balance | Check available float at any time, including from your own monitoring. |
-| Set a threshold | Get notified when the balance falls below a level you set, before it runs dry. |
-| Fund ahead of volume | Fund against your expected run rate where volume is predictable, rather than waiting on alerts. |
+- **Track your balance.** Your ZBD contact can set up balance reporting for your own monitoring.
+- **Agree a low-balance level.** Work with ZBD on the level that should prompt a top-up.
+- **Fund ahead of volume.** If your volume is predictable, fund against your expected run rate instead of waiting for alerts.
 
 ## When the pool is short
-A payout instructed against an underfunded pool fails the [funds check](/embedded-payouts/paying-out), returns a status, and leaves the amount with the user. Nothing is partially paid or silently dropped.
-Recipients aren't shown a failure caused by funding, so a short pool doesn't surface as a problem on their side, but it does stop payouts until you top up.
+
+If the pool can't cover a payout when it's initiated, the payout fails the [funds check](/embedded-payouts/paying-out) and nothing is paid. Top up and re-instruct. Users aren't shown a failure caused by funding, but payouts stop until you top up.
+
 ## Settlement timing
-Funds are available once they settle with ZBD, and timing depends on how you send them. Plan your top-ups so a settlement window never sits between a user earning and expecting payment.
+
+Funds become available once they settle with ZBD, and timing depends on how you send them. Plan top-ups so users aren't left waiting on your funding to settle.

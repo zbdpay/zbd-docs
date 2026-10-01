@@ -15,7 +15,7 @@
         "tab": "Embedded Accounts",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Get Started",
             "pages": [
               "embedded-accounts"
             ]
@@ -28,7 +28,7 @@
             ]
           },
           {
-            "group": "Moving value",
+            "group": "Moving Value",
             "pages": [
               "embedded-accounts/credits",
               "embedded-accounts/spending",
@@ -37,7 +37,7 @@
             ]
           },
           {
-            "group": "Cashing out",
+            "group": "Cashing Out",
             "pages": [
               "embedded-accounts/cash-out"
             ]
@@ -49,7 +49,7 @@
             ]
           },
           {
-            "group": "API reference",
+            "group": "API Reference",
             "pages": [
               "embedded-accounts/apis/overview",
               "development-resources/idempotency-keys",
@@ -70,44 +70,20 @@
                 "group": "Currencies",
                 "pages": [
                   "embedded-accounts/apis/list-currencies",
-                  "embedded-accounts/apis/create-currency",
-                  "embedded-accounts/apis/get-currency",
-                  "embedded-accounts/apis/update-currency",
-                  "embedded-accounts/apis/delete-currency",
-                  "embedded-accounts/apis/link-currency",
-                  "embedded-accounts/apis/unlink-currency"
+                  "embedded-accounts/apis/get-currency"
                 ]
               },
               {
-                "group": "Credits and spends",
+                "group": "Credits & Spends",
                 "pages": [
                   "embedded-accounts/apis/credit-player",
                   "embedded-accounts/apis/debit-player"
                 ]
               },
               {
-                "group": "Projects",
+                "group": "Rates",
                 "pages": [
-                  "embedded-accounts/apis/list-projects",
-                  "embedded-accounts/apis/create-project",
-                  "embedded-accounts/apis/get-project",
-                  "embedded-accounts/apis/update-project",
-                  "embedded-accounts/apis/delete-project"
-                ]
-              },
-              {
-                "group": "Bundles and rates",
-                "pages": [
-                  "embedded-accounts/apis/list-bundles",
-                  "embedded-accounts/apis/get-bundle",
                   "embedded-accounts/apis/list-redemption-rates"
-                ]
-              },
-              {
-                "group": "Configuration",
-                "pages": [
-                  "embedded-accounts/apis/get-publisher-config",
-                  "embedded-accounts/apis/list-monetary-accounts"
                 ]
               }
             ]
@@ -118,7 +94,7 @@
         "tab": "Embedded Payouts",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Get Started",
             "pages": [
               "embedded-payouts"
             ]
@@ -132,7 +108,7 @@
             ]
           },
           {
-            "group": "Paying out",
+            "group": "Paying Out",
             "pages": [
               "embedded-payouts/paying-out",
               "embedded-payouts/methods-and-coverage"
@@ -146,7 +122,7 @@
             ]
           },
           {
-            "group": "API reference",
+            "group": "API Reference",
             "pages": [
               "embedded-payouts/apis/overview",
               "development-resources/idempotency-keys",
@@ -165,7 +141,7 @@
                 ]
               },
               {
-                "group": "Balances and funding",
+                "group": "Balances & Funding",
                 "pages": [
                   "embedded-payouts/apis/fund-user",
                   "embedded-payouts/apis/deplete-user",
@@ -208,7 +184,7 @@
         "tab": "Embedded Rewards",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Get Started",
             "pages": [
               "embedded-rewards"
             ]
@@ -315,7 +291,7 @@
         "tab": "Bitcoin",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Get Started",
             "pages": [
               "bitcoin",
               "bitcoin/errors",
@@ -514,6 +490,62 @@
     }
   },
   "redirects": [
+    {
+      "source": "/embedded-accounts/apis/list-workspaces",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/create-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/update-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/delete-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/list-bundles",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-bundle",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-publisher-config",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/list-monetary-accounts",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/create-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/update-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/delete-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/link-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/unlink-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
     {
       "source": "/get-started",
       "destination": "/embedded-payouts"
@@ -1249,26 +1281,6 @@
     {
       "source": "/widget/update-user",
       "destination": "/embedded-payouts/apis/update-user"
-    },
-    {
-      "source": "/embedded-accounts/apis/create-workspace",
-      "destination": "/embedded-accounts/apis/create-project"
-    },
-    {
-      "source": "/embedded-accounts/apis/list-workspaces",
-      "destination": "/embedded-accounts/apis/list-projects"
-    },
-    {
-      "source": "/embedded-accounts/apis/get-workspace",
-      "destination": "/embedded-accounts/apis/get-project"
-    },
-    {
-      "source": "/embedded-accounts/apis/update-workspace",
-      "destination": "/embedded-accounts/apis/update-project"
-    },
-    {
-      "source": "/embedded-accounts/apis/delete-workspace",
-      "destination": "/embedded-accounts/apis/delete-project"
     }
   ]
 }

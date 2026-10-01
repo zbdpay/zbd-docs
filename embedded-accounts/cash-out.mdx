@@ -1,25 +1,38 @@
 ---
-title: "Cash outs"
+title: "Cash Outs"
+icon: "money-bill-wave"
 description: "Moving value out of a player's balance and into an account they control."
 ---
 
-Cashing out moves value out of a player's balance and into an account they control. Whatever your economy runs on, this is the point where value leaves the system.
-## What has to be true first
-Three things gate a cash out, and all of them are worth surfacing in your game well before a player reaches this point.
-**The value has to be eligible.** A balance is made of pools with different histories, and not all of them can leave. That includes fiat: money a player put in is not money they can take back out this way.
-**The player has to be verified.** No verification is needed to hold, earn or spend. It's required to take money out, and the level of verification affects how much can leave and how quickly. Selling in a marketplace requires it too, where the sale settles in fiat.
-**A payout account has to be linked.** The player chooses where their money lands from the options available in their country.
+Cashing out is where value leaves your economy.
+
+## Before a player can cash out
+
+Three things need to be in place. It's worth showing players where they stand on each well before they try to cash out.
+
+- **Eligible value.** Not every part of a balance can be cashed out. This includes fiat: money a player loaded can't be withdrawn this way.
+- **Verification.** Players don't need to verify to hold, earn or spend, but they do to cash out. Their verification level affects how much they can take out and how quickly. Selling in a marketplace for fiat also requires it.
+- **A payment method.** The player chooses how to get paid from the options available in their country.
+
 ## Conversion
-What happens here depends on what the player holds.
-A player holding fiat is already holding money, so nothing converts.
-A player holding a currency you defined has it converted at your redemption rate, applied at the moment they cash out.
-Where a conversion happens, show the player the resulting amount before they commit. Someone who expected one number and received another will assume they were charged a fee nobody mentioned.
+
+- **Fiat:** nothing converts.
+- **Your own currency:** converted at your redemption rate at the moment of cash out.
+
+Show the player the final amount before they confirm. If they receive a different number than they expected, they'll assume there was a hidden fee.
+
 ## Where the money goes
-Money settles to the account the player linked, on a rail available in their country. Fees for the method they chose come out of their proceeds, so what arrives is lower than what left their balance.
-The player picks the method, and faster ones generally cost more, so they're trading speed against what lands.
-## Funding it
-Cash outs draw from your project wallet, so value leaving the system has to be covered by what you've funded.
-We recommend funding against the volume you expect to exit over a full settlement period, with headroom for a busier week than usual.
+
+Money settles to the payment method the player chose, on a rail available in their country. Fees for that method come out of the amount, so what arrives is less than what left their balance. Faster methods generally cost more.
+
+## Funding cash outs
+
+Cash outs draw from your project wallet, so it needs to cover what players take out. We recommend funding against the volume you expect over a full settlement period, with room for a busier week than usual.
+
 ## What to show players
-Most support load around cash out is about waiting and limits, and nearly all of it is preventable in your own interface.
-A player should be able to see what's available now, what isn't yet, what would change that, and where a submitted cash out has got to. A player who can answer those questions without asking doesn't contact anyone.
+
+Most cash out support tickets are about waiting and limits, and you can head off most of them in your own interface. Show players:
+
+- What they can cash out now
+- What they can't cash out yet, and what would change that
+- Where a submitted cash out is up to

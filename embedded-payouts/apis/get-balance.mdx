@@ -1,12 +1,14 @@
 ---
-title: "Get a user balance"
-description: "USD-points balance."
+title: "Get a Balance"
+description: "Read the balance ZBD holds for a user."
 api: "GET https://api.zbdpay.com/api/v1/widget/users/{user_id}/balance"
 ---
 
-## Description
+<Note>
+  Only for programs where ZBD holds user balances. If your ledger is the source of truth, you don't need this endpoint.
+</Note>
 
-Returns the user's widget reward balance for your project. Use this from your server when you need to show a user's cashout-ready balance outside the widget.
+Use this to show a user's balance in your own product.
 
 Amounts are returned in **currency minor units**. For USD, `100` equals `$1.00`.
 

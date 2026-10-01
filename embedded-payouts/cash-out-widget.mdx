@@ -1,20 +1,25 @@
 ---
-title: "Cash out widget"
-description: "A hosted flow that runs the whole player-facing side of taking money out."
+title: "Cash Out Widget"
+icon: "window-maximize"
+description: "The hosted widget for identity verification, tax information, payment method selection and cash out."
 ---
 
-The cash out widget is a hosted flow that runs the whole player-facing side of taking money out: identity verification, tax information, linking a [payout account](/embedded-payouts/methods-and-coverage), and the cash out itself. It embeds in your product as an iframe.
-## When to use it
-Use the widget when you want a payout program live without building the player-facing experience yourself.
-Use components instead when you have an existing flow you want to keep, and place the individual pieces inside it.
-Both collect and store the same data on ZBD's side, so the choice is about how much of the experience you compose.
+It embeds in your product as an iframe, and you choose which of its flows to use.
+
+## Flows
+
+The widget is made up of separate flows you can use together or on their own. [Choosing your integration](/embedded-payouts#choosing-your-integration) covers what each one does.
+
 ## How it fits
-Your backend does what it always does: create the [user](/embedded-payouts/users), credit their balance, read status. The widget covers what the player sees and everything collected from them.
-## Integration shape
+
+Your backend creates the [user](/embedded-payouts/users), credits their balance if ZBD holds it, and reads status. The widget covers everything the user sees and everything collected from them.
+
+## Integration steps
+
 1. Create the user
-2. Credit their balance
+2. Credit their balance, if ZBD holds it
 3. Create a session
 4. Embed the widget in your frontend
 5. Listen for events
-The first three run on your server, so your API key never reaches the browser.
-Full detail in Prerequisites, Integration flow and Embedding the widget.
+
+The first three steps run on your server, so your API key never reaches the browser. See [Create a Session](/embedded-payouts/apis/create-session) for the session call.

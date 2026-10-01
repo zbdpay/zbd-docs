@@ -1,10 +1,8 @@
 ---
-title: "API overview"
+title: "API Overview"
 sidebarTitle: "Overview"
-description: "Base URL, authentication and the conventions every Embedded Payouts endpoint shares."
+description: "Base URL, authentication and conventions for the Embedded Payouts API."
 ---
-
-Pay players out in real money: create payout users and sessions, fund and read balances, and configure webhooks.
 
 ## Base URL
 
@@ -12,36 +10,32 @@ Pay players out in real money: create payout users and sessions, fund and read b
 https://api.zbdpay.com
 ```
 
+## Authentication
+
+Send your project API key in the `apikey` header. Call these endpoints from your server only, so the key never reaches a browser or game client.
+
 ## Endpoints
 
 | Method | Path | Purpose |
 |---|---|---|
-| `POST` | `/api/v1/widget/users` | Create a cashout-widget user |
-| `GET` | `/api/v1/widget/users/{userId}` | Read a widget user |
-| `PATCH` | `/api/v1/widget/users/{userId}` | Update a widget user (email) |
-| `POST` | `/api/v1/widget/users/session` | Mint an Embedded Payouts session — distinct from the Embedded Accounts `/zbd-widget/sessions` mint |
-| `GET` | `/api/v1/widget/users/{userId}/balance` | USD-points balance |
-| `GET` | `/api/v1/widget/users/{userId}/transactions` | USD-points history. **Not** the Embedded Accounts history route — do not confuse with `GET /api/v1/users/{userId}/transactions` |
-| `POST` | `/api/v1/widget/users/fund` | Credit USD points to a widget user |
-| `POST` | `/api/v1/widget/users/deplete` | Debit USD points from a widget user |
-| `GET` | `/api/v1/widget/publishers/transactions` | Publisher-wide cashout-funding activity — the only publisher-wide feed that exists today |
-| `POST` | `/sandbox/api/v1/widget/cashout` | Sandbox variant. The **request host** selects the policy, not the key — a sandbox host needs a sandbox-issued key |
-| `POST` | `/api/v1/projects/{projectId}/webhooks` | Create a project webhook config |
-| `GET` | `/api/v1/projects/{projectId}/webhooks` | List project webhook configs |
-| `PUT` | `/api/v1/projects/{projectId}/webhooks/{id}` | Update a project webhook config |
+| `POST` | `/api/v1/widget/users` | Create a user |
+| `GET` | `/api/v1/widget/users/{userId}` | Get a user |
+| `PATCH` | `/api/v1/widget/users/{userId}` | Update a user's email |
+| `POST` | `/api/v1/widget/users/session` | Create a widget session |
+| `GET` | `/api/v1/widget/users/{userId}/balance` | Get the balance ZBD holds for a user |
+| `GET` | `/api/v1/widget/users/{userId}/transactions` | List a user's transactions |
+| `POST` | `/api/v1/widget/users/fund` | Credit a user's ZBD balance |
+| `POST` | `/api/v1/widget/users/deplete` | Reverse a credit |
+| `GET` | `/api/v1/widget/publishers/transactions` | List your project's transactions |
+| `POST` | `/sandbox/api/v1/widget/cashout` | Simulate a cash out in sandbox |
+| `POST` | `/api/v1/projects/{projectId}/webhooks` | Create a webhook |
+| `GET` | `/api/v1/projects/{projectId}/webhooks` | List webhooks |
+| `PUT` | `/api/v1/projects/{projectId}/webhooks/{id}` | Update a webhook |
 
 ## Conventions
 
-- **Response envelope** is uniform: `{ success, message, data, error }`. The HTTP status line is authoritative and is deliberately not duplicated in the body. On success `error` is null; on failure `data` is null.
-- **Amounts** are always integers in the currency's smallest indivisible unit (`int64`, min 1), at that currency's own `precision`. Balances come back the same way — never assume two decimals. `BTC`, `USD`, `EUR` and `USDZ` exist alongside publisher-defined currencies.
-- **`Idempotency-Key`** (UUID header) is required on reward, spend and gift; a replay returns the original result and echoes `Idempotency-Replayed`. The cashout rails are the exception — body field, header ignored.
-- **`x-project-id`** is optional and honoured on **reward and spend only**. A project that isn't yours returns 404 without transacting.
-- **`X-Request-Id`** is accepted everywhere as a trace id.
-- **Error prefixes:** `PA` accounts · `EG` economy · `ZWS` sessions · `AK` API keys · `CH` shared HTTP. Money-movement endpoints are the exception — their `error.code` carries a request trace id rather than a stable business code, so branch on the HTTP status and `error.message` there, and quote the trace id to support.
-- **Rate limits** apply per credential. Sandbox is roughly 30× more generous than production, so a clean sandbox run does not characterise production — load test against realistic limits.
-
-## Current limitations
-
-- **No server-to-server balance read.** `account-summary` takes a player session token only. The one balance figure a publisher key ever sees is `user_spendable_balance` on the spend response.
-- **No fiat purchase of virtual currency.** Bundles are readable; buying one is not implemented yet.
-- **Cash out runs on Embedded Payouts.** The live rails move USD points through the Embedded Payouts surface rather than a publisher's own virtual currency.
+- **Responses** use the same envelope: `{ success, message, data, error }`. On success `error` is null, and on failure `data` is null. The HTTP status is the source of truth.
+- **Amounts** are integers in the currency's smallest unit. For USD, `100` is $1.00.
+- **Idempotency.** Credit and reverse-credit calls take an `idempotency_key` in the request body. Use a new key for each new operation, and the same key when retrying one.
+- **Tracing.** Send an `X-Request-Id` header on any call to make it easier to trace with support.
+- **Rate limits** apply per API key, and sandbox limits are higher than production. Load test against production limits before launch.

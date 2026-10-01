@@ -1,25 +1,39 @@
 ---
-title: "Marketplace sales"
+title: "Marketplace Sales"
+icon: "store"
 description: "Your players buy and sell from each other, and ZBD moves the money."
 ---
 
-Your players buy and sell from each other, and ZBD moves the money.
-## The split of responsibility
-You own the marketplace. Listings, search, matching, pricing, what counts as a fair trade, and every dispute that follows one are yours. ZBD never sees any of it.
-What ZBD does is settle. You send an instruction naming the two players, the amount, the currency and a reference for the item, and the money moves.
-This split is deliberate. Your marketplace works however your game needs it to, without a payments company having opinions about your catalog.
-Where it lives is up to you: inside the game, on a companion site, or as a standalone platform such as a mod portal. Whoever runs the marketplace is the publisher in this relationship.
-## One instruction, several credits
-A sale usually pays more than one party. The seller takes their proceeds, you take your cut, and ZBD takes its fee.
-All of it settles as a single operation, so either every leg lands or none does. There's no state where a seller has been paid and your fee is missing.
+## Who does what
+
+You run the marketplace: listings, search, matching, pricing and disputes. ZBD doesn't see any of it.
+
+ZBD handles settlement. You send an instruction with the two players, the amount, the currency and an item reference, and ZBD moves the money.
+
+The marketplace can live inside your game, on a companion site, or on a standalone platform such as a mod portal. Whoever runs it is the publisher.
+
+## Settling a sale
+
+A sale usually pays more than one party: the seller gets their proceeds and you get your cut. ZBD's fee comes out of your cut, so if you want to keep 5% and ZBD's fee is 5%, charge a 10% marketplace fee. Every part settles together, so either all of it lands or none of it does.
+
 ## Seller verification
-A seller has to be verified before a sale involving them can settle in fiat. A sale settled in your own virtual currency doesn't, since nothing has left as real money. Verification becomes relevant at the point value does.
-Where it applies, it's the single most important thing to get right in a marketplace integration.
-Sales happen asynchronously. A buyer decides to purchase at a moment of their choosing, often long after the listing went up, and the seller isn't there. An unverified seller means that sale fails with nobody present to fix it, and the first anyone knows is a buyer who thinks they bought something and a seller who never got paid.
-So prompt sellers to verify at the point they create their first listing. Not at signup, and not at sale. This holds even where the sale itself doesn't require it, because a seller who will eventually take value out has to verify sooner or later, and first listing is a better moment than the one where they're trying to get paid.
+
+A seller has to be verified before a sale that settles in fiat. Sales in your own virtual currency don't need it, since no real money leaves.
+
+Where it applies, this is the most important part of a marketplace integration to get right. A buyer can purchase at any time, often long after the listing went up and while the seller is offline. If the seller isn't verified, the sale fails and nobody is there to fix it.
+
+We recommend prompting sellers to verify when they create their first listing. It's worth doing even where a sale doesn't require it. Any seller who wants to cash out will need to verify eventually, and it's easier for them before they're waiting to get paid.
+
 ## What the seller receives
-Sale proceeds land in the seller's balance as their own kind of value, and it's cashable without waiting.
-This is worth understanding as an economy designer. A marketplace gives players a route to real money that doesn't depend on waiting, which changes the character of everything else you've built. Players who would otherwise sit on a balance they can't use have something to do with it.
+
+Sale proceeds land in the seller's balance and can be cashed out straight away. That gives players a quick route to real money, which can change how they use the rest of your economy.
+
 ## What to send with a settlement
-Along with the two players and the amount, send the listing reference, when the listing was created, and whether the sale came from an open listing anyone could have bought or a direct arrangement between two named players.
-Those last two do a lot of work. A listing that sat open for a day before it matched is a very different event from one created and completed in the same second, and ZBD has no way to tell them apart without you.
+
+Along with the two players and the amount, send:
+
+- The listing reference
+- When the listing was created
+- Whether it was an open listing anyone could buy, or a direct deal between two named players
+
+The last two help ZBD's risk checks. A listing that was open for a day before it sold looks very different from one created and bought in the same second, and ZBD can't tell them apart without this information.

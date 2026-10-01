@@ -1,23 +1,40 @@
 ---
 title: "Spends"
+icon: "cart-shopping"
 description: "A spend moves currency out of a player's wallet and into yours."
 ---
 
-A spend moves currency out of a player's wallet and into yours. It's what happens when a player buys something from you: a cosmetic, a battle pass, an upgrade, an entry fee.
-Player-to-player activity works differently. See [Transfers between users](/embedded-accounts/transfers) and [Marketplace settlement](/embedded-accounts/marketplace).
-## The call
-A spend takes the player, the currency and the amount. Your backend makes it, since what a player is buying and what it costs belong to your game.
-Send an idempotency key. A retried spend shouldn't charge a player twice for one item.
-## Where the currency goes
-Spent currency doesn't disappear. It moves to your own account, and what you do with it is an economy design decision.
-Retiring it makes the spend a true sink, pulling supply out of circulation and supporting the value of what's left. Recirculating it as rewards keeps supply flat and makes those rewards cost you nothing new. Most economies do some of both, and that ratio is one of the few real levers you have over inflation.
-## Which pools drain
-A player's balance is made of pools with different histories, and a spend draws them down in a fixed order ZBD applies.
-The order decides what's left behind. A player holding 1,000 units they bought and 500 from rewards who spends 600 ends up in a very different position depending on which pool went first.
-[Currencies](/embedded-accounts/currencies) covers the pools and the order they drain in.
+Spends happen when a player buys something from you, like a cosmetic, a battle pass, an upgrade or an entry fee.
+
+For player-to-player activity, see [Transfers](/embedded-accounts/transfers) and [Marketplace Sales](/embedded-accounts/marketplace).
+
+## Making a spend
+
+A spend takes the player, the currency and the amount. Your backend makes the call, since your game decides what's being bought and what it costs.
+
+Send an idempotency key so a retry doesn't charge the player twice.
+
+## Where spent currency goes
+
+Spent currency moves to your own account. What you do with it is an economy design decision:
+
+- **Retire it** to take supply out of circulation, which supports the value of what's left
+- **Recirculate it** as rewards, which keeps supply flat and costs you nothing new
+
+Most economies do some of both, and the mix is one of your main levers on inflation.
+
+## Spend order
+
+A player's balance is made up of value from different sources, and ZBD draws them down in a fixed order when the player spends. For example, a player with 1,000 units they bought and 500 from rewards who spends 600 is left with a different mix depending on which went first, and that affects what they can cash out. [Currencies](/embedded-accounts/currencies) covers the order.
+
 ## Recurring spends
-Subscriptions, season passes and anything charged on a schedule work as ordinary spends you instruct when each period comes due.
-Handle the case where a player's balance has fallen short since the last charge. Decide in advance whether the subscription lapses, retries or holds, and tell the player which.
+
+Subscriptions, season passes and other scheduled charges are ordinary spends you make when each period comes due.
+
+Plan for a player's balance falling short between charges. Decide ahead of time whether the subscription lapses, retries or pauses, and let the player know.
+
 ## When a spend fails
-A spend against a balance that can't cover it fails and moves nothing. Nothing partial is taken.
-We recommend checking the available spendable balance before presenting a price where you can. A player who gets as far as confirming a purchase and then sees it refused is a worse experience than one who was shown the shortfall earlier.
+
+A spend fails if the balance can't cover it, and nothing is taken.
+
+Where you can, check the player's spendable balance before showing a price. It's a better experience to show a shortfall early than to refuse a purchase after the player confirms.

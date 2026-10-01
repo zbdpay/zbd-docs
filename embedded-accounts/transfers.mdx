@@ -1,18 +1,23 @@
 ---
 title: "Transfers"
+icon: "arrow-right-arrow-left"
 description: "A player can send currency to another player, with no goods changing hands."
 ---
 
-A player can send currency to another player. Nothing is bought and no goods change hands, the value simply moves.
 ## How a transfer starts
-The sending player authorizes it, so a transfer runs on their session and always begins with something they did in your game. Your backend can't move value between two players on its own.
-That constraint is deliberate. A transfer gives away something a player owns, so it needs their say-so rather than yours.
-## What the receiving user gets
-Value that arrives by transfer carries a different source tag than it had in the sender's wallet. What the receiving user can then do with it, including whether they can eventually take it out as money, follows from that tag and the permissions ZBD attaches to it.
-[Currencies](/embedded-accounts/currencies) covers source tags and what each one permits.
-## Why transfers matter to an economy
-An economy where value only ever travels from you to a player and back to you is a closed loop with one participant that matters. Transfers let value circulate between players, which is what makes guilds, favors, trades outside the marketplace and ordinary generosity between friends possible.
-It also means your currency starts behaving like something players own, which changes how they treat earning it.
+
+The sending player authorizes every transfer, so it runs on their session and starts with something they did in your game. Your backend can't move value between two players on its own, because a transfer gives away something the player owns.
+
+## What the receiving player gets
+
+Value received by transfer gets a new source tag. That tag decides what the receiving player can do with it, including whether they can cash it out later. [Currencies](/embedded-accounts/currencies) covers source tags.
+
+## Why transfers are useful
+
+Transfers let value move between players, as well as between you and your players. That's what makes guilds, favors, trades outside the marketplace and gifts between friends possible, and it makes your currency feel like something players own.
+
 ## Limits and checks
-Transfers carry limits and checks that ZBD sets and operates. A transfer path is the most attractive route in any economy for someone moving value for reasons that have nothing to do with playing, so it gets more scrutiny than spending does.
-These controls evolve. Build against the response you get rather than assuming a fixed set of rules, and surface a refused transfer to the player as a normal outcome instead of an error.
+
+ZBD sets and runs limits and checks on transfers. Transfers are a common route for moving value for reasons that have nothing to do with play, so they get more scrutiny than spends.
+
+These controls change over time. Build against the response you get instead of assuming fixed rules, and show a refused transfer to the player as a normal outcome instead of an error.

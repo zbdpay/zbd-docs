@@ -1,18 +1,16 @@
 ---
-title: "Deplete a user"
-description: "Debit USD points from a widget user."
+title: "Debit a User"
+description: "Reverse a credit to a user's ZBD balance."
 api: "POST https://api.zbdpay.com/api/v1/widget/users/deplete"
 ---
 
-## Description
+<Note>
+  Only for programs where ZBD holds user balances. If your ledger is the source of truth, you don't need this endpoint.
+</Note>
 
-Reverse an available fund by debiting publisher points from a widget user's
-point balance and returning them to the project's configured sink/source
-account. This creates a new debit; it does not modify the original fund
-transfer. Amount is in **currency minor units**. For USDZ, `100` equals `$1.00`
-worth of points.
+Reverses an earlier credit by debiting the user's available balance. It creates a new debit and doesn't change the original credit.
 
-This endpoint is idempotent on `idempotency_key`. The user must already have enough point balance for the debit.
+This endpoint is idempotent on `idempotency_key`. The user must have enough available balance to cover the debit.
 
 ## Configuration
 
@@ -33,11 +31,11 @@ This endpoint is idempotent on `idempotency_key`. The user must already have eno
 </ParamField>
 
 <ParamField required body="amount" type="integer">
-  Amount in currency minor units. For USDZ: `100` = $1.00, `1000` = $10.00.
+  Amount in the currency's smallest unit. For a two-decimal currency, `100` is 1.00 and `1000` is 10.00.
 </ParamField>
 
 <ParamField required body="currency" type="string">
-  Point currency code. Use `USDZ` unless your project has a different configured point currency.
+  Currency code of the balance. Your ZBD contact confirms which currency your project uses.
 </ParamField>
 
 <ParamField required body="idempotency_key" type="string">
