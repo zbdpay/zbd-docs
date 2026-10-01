@@ -279,7 +279,22 @@
             "group": "Get Started",
             "pages": [
               "bitcoin",
-              "bitcoin/callbacks"
+              "bitcoin/callbacks",
+              {
+                "group": "Developer Dashboard",
+                "expanded": false,
+                "pages": [
+                  "bitcoin/start/dev-dashboard",
+                  "bitcoin/start/create-account",
+                  "bitcoin/start/verify-identity",
+                  "bitcoin/start/add-funds",
+                  "bitcoin/start/create-project",
+                  "bitcoin/start/api-keys",
+                  "bitcoin/start/project-wallet",
+                  "bitcoin/start/manage-project",
+                  "bitcoin/start/sandbox-project"
+                ]
+              }
             ]
           },
           {
@@ -374,31 +389,6 @@
               "bitcoin/payments/payouts/gamertags",
               "bitcoin/payments/payouts/withdrawal-requests",
               "bitcoin/payments/payouts/lightning-charges"
-            ]
-          },
-          {
-            "group": "Resources",
-            "pages": [
-              "bitcoin/payments/coverage",
-              "bitcoin/start/dev-dashboard"
-            ]
-          },
-          {
-            "group": "Set Up ZBD",
-            "pages": [
-              "bitcoin/start/create-account",
-              "bitcoin/start/verify-identity",
-              "bitcoin/start/add-funds"
-            ]
-          },
-          {
-            "group": "Projects",
-            "pages": [
-              "bitcoin/start/create-project",
-              "bitcoin/start/api-keys",
-              "bitcoin/start/project-wallet",
-              "bitcoin/start/manage-project",
-              "bitcoin/start/sandbox-project"
             ]
           },
           {
