@@ -278,34 +278,10 @@
           {
             "group": "Bitcoin Payments",
             "pages": [
-              {
-                "group": "Introduction",
-                "icon": "bolt",
-                "pages": [
-                  "bitcoin"
-                ]
-              },
-              {
-                "group": "Lightning Network",
-                "icon": "bitcoin",
-                "pages": [
-                  "bitcoin/payments/lightning-network"
-                ]
-              },
-              {
-                "group": "Lightning Address",
-                "icon": "at",
-                "pages": [
-                  "bitcoin/payments/lightning-address"
-                ]
-              },
-              {
-                "group": "API Reference",
-                "icon": "code",
-                "pages": [
-                  "bitcoin/api"
-                ]
-              }
+              "bitcoin",
+              "bitcoin/payments/lightning-network",
+              "bitcoin/payments/lightning-address",
+              "bitcoin/api"
             ]
           },
           {
