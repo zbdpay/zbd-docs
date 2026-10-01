@@ -345,7 +345,6 @@
               "bitcoin/lightning-address/send",
               "bitcoin/lightning-address/validate",
               "bitcoin/lightning-address/create-charge",
-              "bitcoin/payments/lightning-address/intro",
               "bitcoin/payments/lightning-address/static-charges"
             ]
           },
@@ -1141,7 +1140,7 @@
     },
     {
       "source": "/payments/lightning-address/intro",
-      "destination": "/bitcoin/payments/lightning-address/intro"
+      "destination": "/bitcoin/lightning-address"
     },
     {
       "source": "/payments/lightning-address/static-charges",
@@ -1374,6 +1373,10 @@
     {
       "source": "/bitcoin/keysend/send",
       "destination": "/bitcoin/lightning-payments/keysend"
+    },
+    {
+      "source": "/bitcoin/payments/lightning-address/intro",
+      "destination": "/bitcoin/lightning-address"
     }
   ]
 }
