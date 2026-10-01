@@ -1,0 +1,29 @@
+---
+title: "Refresh Token"
+description: "Generate a new accessToken for a ZBD Login user."
+api: "POST https://api.zbdpay.com/v1/oauth2/token"
+---
+
+## Description
+
+In order to fetch a new `accessToken` for a given ZBD User, make sure to use the `refreshToken` using the token endpoint.
+
+- [Read here for more details](/earn/oauth2) on how to setup ZBD Login (OAuth2) with your platform.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="client_id" type="string" />
+<ParamField required body="client_secret" type="string" />
+<ParamField required body="grant_type" type="string" />
+<ParamField required body="redirect_uri" type="string" />
+<ParamField required body="refresh_token" type="string" />
+
+

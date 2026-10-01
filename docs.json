@@ -113,7 +113,8 @@
             "pages": [
               "embedded-payouts/tracking-earnings-yourself",
               "embedded-payouts/tracking-earnings-with-zbd",
-              "embedded-payouts/cash-out-widget"
+              "embedded-payouts/cash-out-widget",
+              "embedded-payouts/browser-events"
             ]
           },
           {
@@ -421,6 +422,27 @@
               "bitcoin/start/manage-project",
               "bitcoin/start/sandbox-project"
             ]
+          },
+          {
+            "group": "Login with ZBD",
+            "pages": [
+              "earn/oauth2",
+              "earn/oauth2/integration",
+              "earn/oauth2/guidelines",
+              "earn/oauth2/walkthrough",
+              {
+                "group": "API Reference",
+                "pages": [
+                  "earn/oauth2/api",
+                  "earn/oauth2/api/authorization",
+                  "earn/oauth2/api/retrieve-access-token",
+                  "earn/oauth2/api/refresh-token",
+                  "earn/oauth2/api/data-fetching",
+                  "earn/oauth2/api/retrieve-user",
+                  "earn/oauth2/api/retrieve-wallet"
+                ]
+              }
+            ]
           }
         ]
       }
@@ -536,7 +558,7 @@
     },
     {
       "source": "/get-started/zbd-ramp",
-      "destination": "/embedded-payouts"
+      "destination": "/retired-products"
     },
     {
       "source": "/get-started/zbd-payments-api",
@@ -552,7 +574,7 @@
     },
     {
       "source": "/get-started/login-with-zbd",
-      "destination": "/embedded-rewards"
+      "destination": "/earn/oauth2"
     },
     {
       "source": "/earn/app/uri-schemes",
@@ -587,20 +609,12 @@
       "destination": "/embedded-rewards"
     },
     {
-      "source": "/earn/oauth2",
-      "destination": "/embedded-rewards"
-    },
-    {
-      "source": "/earn/oauth2/:slug*",
-      "destination": "/embedded-rewards"
-    },
-    {
       "source": "/payments/ramp",
-      "destination": "/embedded-payouts"
+      "destination": "/retired-products"
     },
     {
       "source": "/payments/ramp/:slug*",
-      "destination": "/embedded-payouts"
+      "destination": "/retired-products"
     },
     {
       "source": "/payments/sdk",
@@ -624,19 +638,19 @@
     },
     {
       "source": "/widget/browser-events",
-      "destination": "/embedded-payouts/cash-out-widget"
+      "destination": "/embedded-payouts/browser-events"
     },
     {
       "source": "/widget/disclosures",
-      "destination": "/embedded-payouts/disclosures"
+      "destination": "/embedded-accounts/apis/get-disclosures"
     },
     {
       "source": "/widget/sandbox",
-      "destination": "/embedded-payouts/cash-out-widget"
+      "destination": "/embedded-payouts/apis/cash-out-sandbox"
     },
     {
       "source": "/widget/webhooks",
-      "destination": "/embedded-payouts/cash-out-widget"
+      "destination": "/embedded-payouts/apis/create-webhook"
     },
     {
       "source": "/docs/introduction",
@@ -1273,6 +1287,10 @@
     {
       "source": "/embedded-payouts/paying-out",
       "destination": "/embedded-payouts/how-payouts-work"
+    },
+    {
+      "source": "/earn",
+      "destination": "/embedded-rewards"
     }
   ]
 }

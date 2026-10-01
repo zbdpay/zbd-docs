@@ -11,12 +11,12 @@ Use this model when you already have earnings logic, rules, and history in your 
     When a user signs up, call [Create a User](/embedded-payouts/apis/create-user) from your backend with your own ID for them and their email address.
   </Step>
   <Step title="Verify the user and collect a payment method">
-    In the same signup flow, [create a session](/embedded-payouts/apis/create-session) and open the widget's identity verification and payment method selection flows. See [Embedding the Widget](/embedded-payouts/cash-out-widget).
+    In the same signup flow, [create a session](/embedded-payouts/apis/create-session) and open the widget's identity verification and payment method selection flows (`flow=kyc`, then `flow=add-method`). See [Embedding the Widget](/embedded-payouts/cash-out-widget).
 
     Users have to complete full verification before their first payout, because ZBD has no record of what they've earned to step them up against. The payment method selection flow shows each method's fee, so users know what they'll be charged.
   </Step>
   <Step title="Wait for the user to be ready">
-    Listen for the webhooks that tell you the user is verified and has added a payment method, and keep the payment method ID. Until then, you can show the user as pending.
+    Your frontend gets a [browser event](/embedded-payouts/browser-events) when the user is verified and when they add a payment method. Until then, you can show the user as pending.
   </Step>
   <Step title="Send a payout">
     When the user should be paid, call [Create a Payout](/embedded-payouts/apis/create-payout) with the user ID, the amount, and the payment method ID. Deduct the amount in your own system at the same time. The response includes the fee and the net amount the user receives.
