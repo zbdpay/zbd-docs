@@ -1,93 +1,199 @@
 ---
-title: "Payments API Reference"
-description: "Understand general API concepts and authentication strategies."
+title: "ZBD Payments"
+description: "Global instant payments infrastructure for apps and games with Bitcoin and the Lightning Network"
 sidebarTitle: "Introduction"
 ---
 
 import { BtcEurRate } from "/snippets/btc-eur-rate.jsx";
 
-## Overview
-
-ZBD offers a powerful REST API that supports Bitcoin Lightning Network transactions with various payout and payin methods. Our API uses JSON data structures and makes use of industry standard HTTP response codes.
-
-## Base URL
-
-The ZBD API is available on the following base URL:
-
-```bash
-https://api.zbdpay.com
-```
-
-<Note>If you're looking for the Sandbox API, that's available at `https://sandbox-api.zbdpay.com`.</Note>
-
-## Authentication
-
-All ZBD endpoints are protected by an API Key. To make requests against these endpoints you must pass a header property called `apikey` with your [ZBD Project API Key](/bitcoin/start/api-keys).
-
-```json
-apikey: "1PnXYRdcm13gJrHZVzctgCAUIEniVomQR"
-```
-
-## SSL / HTTPS Access
-
-**ZBD only provides a secure interface over HTTPS with SSL certificate support**. Any requests that attempt to reach the ZBD API in an insecure fashion (plain-text over HTTP requests) will be rejected.
-
-<Note>Secure Sockets Layer (SSL) is the standard security technology for establishing an encrypted link between a server and a client. SSL allows sensitive information such as credit card numbers, social security numbers, and login credentials to be transmitted securely.</Note>
-
-## Resources
-
-Links to help you get the most out of your ZBD development experience:
+Build global payment experiences that actually work. ZBD Payments provides instant, low-cost Bitcoin money movement across major Tier 1 markets using the Lightning Network — all through a single API.
 
 <CardGroup cols={2}>
-  <Card title="See our GitHub Examples" icon="github" href="https://github.com/ZBDLabs">
-    Sample projects and templates for the ZBD API.
+  <Card title="Lightning Fast" icon="bolt">
+    Sub-second global payments with Lightning Network. No waiting, no borders.
+  </Card>
+  <Card title="Bitcoin Native" icon="bitcoin">
+    Send and receive BTC over Lightning. One API, instant settlement.
+  </Card>
+  <Card title="Gaming Scale" icon="gauge-high">
+    Built for millions of microtransactions. Handle millions of transactions with ease.
+  </Card>
+  <Card title="Developer First" icon="code">
+    Simple APIs, comprehensive SDKs, and documentation that doesn't suck.
   </Card>
 </CardGroup>
 
-## Errors
+## Why ZBD Payments?
 
-The ZBD API follows standard HTTP response codes for handling success and error requests.
+### The Problem with Traditional Payments
 
-<Note>If you are unfamiliar with HTTP requests, [please read more here](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).</Note>  
+<Tabs>
+  <Tab title="Microtransaction Hell">
+    **Card Networks:**
+    - Minimum ~$0.30 fee per transaction
+    - Can't send 0.10c when fees are 0.30c
+    - Chargebacks eat profits
+    - High decline rates
 
-### HTTP status codes
+    **ZBD Payments:**
+    - Send amounts as low as 1 satoshi
+    - Proportional fees (typically < 1%)
+    - No chargebacks
+    - Near 100% success rate
+  </Tab>
+  <Tab title="Developer Friction">
+    **Legacy Providers:**
+    - Complex integration (weeks/months)
+    - Different APIs per country
+    - Compliance nightmares
+    - Poor documentation
 
-Below is an overview of HTTP status codes available in the standard, which ZBD API adheres by:
+    **ZBD Payments:**
+    - Single API globally
+    - 5-minute quick start
+    - Compliance built-in
+    - Stripe-quality docs
+  </Tab>
+  <Tab title="Cross-Border Nightmare">
+    **Traditional Systems:**
+    - 3-5 day settlement times
+    - $25-45 fees per transaction
+    - Limited to banking hours
+    - Blocked in many countries
 
-| HTTP Response Group | Status Code Range |
-| --- | :-: |
-| Informational Responses | `100-199` |
-| **Successful Responses** | `200-299` |
-| Redirects | `300-399` |
-| **Client Errors** | `400-499` |
-| **Server Errors** | `500-599` |
+    **ZBD Payments:**
+    - Instant settlement (< 1 second)
+    - Fees from 1 satoshi
+    - 24/7/365 availability
+    - Works globally
+  </Tab>
+</Tabs>
 
-### Common response codes
+## How It Works
 
-These are the HTTP status codes most often returned by the ZBD API.
-
-| Status Code | Details | Response Description |
-| :-: | :-: | --- |
-| `200` | Success | Request was successful. |
-| `400` | Bad Request | Either incorrect or missing parameters provided for the Request. |
-| `401` | Unauthorized | Request is not authorized. Make sure correct API Key is provided. |
-| `403` | Forbidden | Request is forbidden. Make sure your IP is located in a region/country that ZBD services are available in. |
-| `404` | Not Found | The requested endpoint/resource was not found. |
-| `422` | Missing Parameter | The requested endpoint expected a specific parameter to be provided. |
-| `429` | Rate Limited | Too many requests in short time-frame. |
-| `500` | Server Error | Something went wrong in the ZBD API servers. |
-
-### Error messages
-
-To help identify the issue with your API requests, the error JSON response returned will often include a **message** property that aims to be descriptive.
-
-Example of an error message from the API:
-
-```json
-{
-  "success": false,
-  "message": "Error creating Withdrawal Request: The \"amount\" property (in millisatoshis) is required.",
-}
+```mermaid
+graph LR
+    A[Your App] -->|API Call| B[ZBD Platform]
+    B --> C{Payment Type}
+    C -->|Lightning| D[Instant Delivery]
+    C -->|On-chain| E[Bitcoin Network]
+    D --> G[Recipient]
+    E --> G
 ```
+
+### Core Concepts
+
+<AccordionGroup>
+  <Accordion title="Lightning Network" icon="bolt">
+    Bitcoin's Layer 2 scaling solution enabling instant, low-cost payments. Think of it as the Visa network for Bitcoin - same security, 1000x faster.
+
+    **Key Benefits:**
+    - Instant settlement (< 1 second)
+    - Fees typically < 1 cent equivalent in sats
+    - Millions of TPS capacity
+    - Perfect for gaming microtransactions
+  </Accordion>
+  <Accordion title="Lightning Address" icon="at">
+    Human-readable payment addresses like `user@zbd.gg`. No more copying long Bitcoin addresses. Works like email for money.
+
+    **Why It Matters:**
+    - Memorable usernames
+    - No QR codes needed
+    - Works across all Lightning wallets
+    - Perfect for in-game identities
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Gaming & Virtual Worlds
+
+<CardGroup cols={2}>
+  <Card title="In-Game Purchases">
+    - Instant item purchases
+    - No minimum transaction
+    - Global player base
+    - Zero chargebacks
+  </Card>
+  <Card title="Player Trading">
+    - P2P marketplaces
+    - Instant settlement
+    - Cross-border trades
+    - Low fees = more profit
+  </Card>
+  <Card title="Tournament Payouts">
+    - Instant winner payouts
+    - Any amount, any country
+    - No banking details needed
+    - Automated via API
+  </Card>
+  <Card title="Creator Economies">
+    - Pay mod creators
+    - Revenue sharing
+    - Micropayments work
+    - Global participation
+  </Card>
+</CardGroup>
+
+### Apps & Platforms
+
+<CardGroup cols={2}>
+  <Card title="Content Monetization">
+    Pay-per-article, pay-per-view, tips - amounts too small for cards
+  </Card>
+  <Card title="Gig Economy">
+    Instant Bitcoin payouts to workers globally without bank accounts
+  </Card>
+  <Card title="Remittances">
+    Send money home instantly with sub-cent-equivalent fees
+  </Card>
+  <Card title="SaaS Billing">
+    Usage-based billing down to fractions of a cent
+  </Card>
+</CardGroup>
+
+## Compliance & Security
+
+### Built-in Compliance
+- **KYC/AML**: Automated identity verification where required
+- **Sanctions Screening**: Real-time OFAC and international lists
+- **Transaction Monitoring**: AI-powered fraud detection
+- **Regulatory Licenses**: Money transmission licenses in key markets
+
+### Security First
+- **End-to-end Encryption**: All data encrypted in transit and at rest
+- **API Key Security**: Scoped permissions and IP allowlisting
+- **Webhook Signatures**: Cryptographic verification of all events
+- **SOC 2 Type II**: Annual security audits
+
+## Start Building
+
+<Steps>
+  <Step title="Get Your API Keys">
+    [Schedule a call](https://zbd.one/sales) with our team to get access
+  </Step>
+  <Step title="Choose Your Product">
+    Pick between the Payments API or the Embedded Payouts widget
+  </Step>
+  <Step title="Follow the Guides">
+    Use our quick start guides to integrate in minutes
+  </Step>
+  <Step title="Go Live">
+    Start processing real payments with production keys
+  </Step>
+</Steps>
+
+---
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Sales" icon="phone" href="https://zbd.one/sales">
+    Get API keys and discuss your use case
+  </Card>
+  <Card title="Support" icon="headset" href="https://zbdpay.com/contact">
+    Technical help from our engineering team
+  </Card>
+</CardGroup>
 
 <BtcEurRate />

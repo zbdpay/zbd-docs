@@ -300,7 +300,7 @@
           {
             "group": "Resources",
             "pages": [
-              "bitcoin/payments",
+              "bitcoin/api",
               "bitcoin/payments/lightning-network",
               "bitcoin/payments/lightning-address",
               {
@@ -668,7 +668,7 @@
     },
     {
       "source": "/docs/integrations",
-      "destination": "/bitcoin/payments"
+      "destination": "/bitcoin"
     },
     {
       "source": "/docs/global-support",
@@ -700,7 +700,7 @@
     },
     {
       "source": "/knowledge-base/guides/*",
-      "destination": "/bitcoin/payments"
+      "destination": "/bitcoin"
     },
     {
       "source": "/api-reference/introduction",
@@ -960,7 +960,7 @@
     },
     {
       "source": "/payments",
-      "destination": "/bitcoin/payments"
+      "destination": "/bitcoin"
     },
     {
       "source": "/payments/api",
@@ -1377,6 +1377,10 @@
     {
       "source": "/bitcoin/payments/lightning-address/intro",
       "destination": "/bitcoin/lightning-address"
+    },
+    {
+      "source": "/bitcoin/payments",
+      "destination": "/bitcoin"
     }
   ]
 }
