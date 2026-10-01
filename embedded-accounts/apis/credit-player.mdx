@@ -4,17 +4,92 @@ description: "Credit a player: user_id, currency_code, amount."
 api: "POST https://api.zbdpay.com/api/v1/transactions/rewards/virtual-currencies"
 ---
 
+## Description
+
+Credits a player's balance in one of your virtual currencies. This is how value
+enters the economy — a quest reward, a daily bonus, a purchase you are fulfilling.
+
+The transaction is always tagged `Rewarded`. The tag is not selectable.
+
 <Info>
-  **Requires activation.** Available once ZBD switches this feature on for your account. Until then it returns a 503 — that means the feature is off, not that the API is down. Ask your ZBD contact to enable it.
+  **Requires activation.** Available once ZBD switches this feature on for your
+  account. Until then it returns a bare `503` — that means the feature is off,
+  not that the API is down. Ask your ZBD contact to enable it.
 </Info>
 
-Credit a player: `user_id`, `currency_code`, `amount`. Tag is always `Rewarded` and is not selectable. Response echoes `transaction_id`
+`amount` is an integer in the currency's smallest indivisible unit, at that
+currency's own `precision`. Never assume two decimal places.
 
-<ParamField header="x-api-key" type="string" required>
-  Your ZBD API key. Call this endpoint from your server only.
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD publisher API key. Call this from your server only.
 </ParamField>
 
-<ParamField header="Idempotency-Key" type="string" required>
-  A unique key per request so retries are not processed twice.
+<ParamField required header="Idempotency-Key" type="string">
+  A UUID you generate per logical credit. Replaying the same key returns the
+  original result and echoes an `Idempotency-Replayed` header rather than
+  crediting twice.
 </ParamField>
+
+<ParamField header="x-project-id" type="string">
+  Optional. Scopes the credit to one of your projects. A project that isn't
+  yours returns `404` without transacting.
+</ParamField>
+
+### Body
+
+<ParamField required body="user_id" type="string">
+  The ZBD user ID returned by [Create a player](/embedded-accounts/apis/create-player).
+  Not your own identifier.
+</ParamField>
+
+<ParamField required body="currency_code" type="string">
+  The currency ticker, for example `GOLD`.
+</ParamField>
+
+<ParamField required body="amount" type="integer">
+  Integer in the currency's smallest indivisible unit. Minimum `1`.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/transactions/rewards/virtual-currencies \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Idempotency-Key: 8f14e45f-ceea-467a-9f1a-3b6c2d0e7a91" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "b2c3d4e5-f6a7-4890-abcd-ef0123456789",
+    "currency_code": "GOLD",
+    "amount": 2000
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Reward processed successfully.",
+  "data": {
+    "transaction_id": "9f3c1a76-2d54-4e08-b1f9-6a7c3e0d5b28",
+    "user_id": "b2c3d4e5-f6a7-4890-abcd-ef0123456789",
+    "currency_code": "GOLD",
+    "amount": 2000
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Errors
+
+| Status | Reason |
+|---|---|
+| `400` | Missing or malformed `user_id`, `currency_code` or `amount` |
+| `401` | Missing or invalid API key |
+| `404` | Unknown user or currency, or an `x-project-id` that isn't yours |
+| `503` | The Embedded Accounts feature is not switched on for your account |
 
