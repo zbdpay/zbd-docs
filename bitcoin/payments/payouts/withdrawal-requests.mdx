@@ -51,7 +51,7 @@ When creating a Withdrawal Request code to allow Lightning Wallets to withdraw f
 | `amount` | _String_ | The Withdrawal Request amount (in millisatoshis). |
 | `description` | _String_ | The Withdrawal Request description. |
 | `internalId` | _String_ | An optional free-use attribute. Usually used by setting the Player/User ID of your Game/Application in order to link specific Withdrawal Requests to specific Players. |
-| `callbackUrl` | _String_ | The URL ZBD services will make a POST HTTP request to with information about the Withdrawal Requests's status updates. See [Callbacks](/bitcoin/callbacks) for more. |
+| `callbackUrl` | _String_ | The URL ZBD services will make a POST HTTP request to with information about the Withdrawal Requests's status updates. See [Callbacks](/bitcoin/api) for more. |
 | `expiresIn` | _Number_ | The desired expiration time for this Withdrawal Request (in seconds). |
 
 To create the Withdrawal Request, use the ZBD API (or leverage one of our SDKs) by passing the correct attributes:

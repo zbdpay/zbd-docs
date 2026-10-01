@@ -276,10 +276,9 @@
         "tab": "Bitcoin",
         "groups": [
           {
-            "group": "Get Started",
+            "group": "Bitcoin Payments",
             "pages": [
               "bitcoin",
-              "bitcoin/callbacks",
               {
                 "group": "Developer Dashboard",
                 "expanded": false,
@@ -294,12 +293,7 @@
                   "bitcoin/start/manage-project",
                   "bitcoin/start/sandbox-project"
                 ]
-              }
-            ]
-          },
-          {
-            "group": "Resources",
-            "pages": [
+              },
               "bitcoin/api",
               "bitcoin/payments/lightning-network",
               "bitcoin/payments/lightning-address",
@@ -968,7 +962,7 @@
     },
     {
       "source": "/payments/api/callbacks",
-      "destination": "/bitcoin/callbacks"
+      "destination": "/bitcoin/api"
     },
     {
       "source": "/payments/api/errors",
@@ -1381,6 +1375,10 @@
     {
       "source": "/bitcoin/payments",
       "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/callbacks",
+      "destination": "/bitcoin/api"
     }
   ]
 }
