@@ -117,6 +117,18 @@ html:not(.dark) .bg-primary\/10 {
 }
 
 /*
+ * Sidebar scrollbar touches content: the sidebar scroll container is absolutely
+ * positioned (inset-0) inside a fixed-width rail, so its right scrollbar edge sits
+ * flush against the content area — zero gap, and with classic scrollbars the bar
+ * itself touches the text. Pull the scroller in 24px from the rail's right edge.
+ */
+aside [class*="--scroll-area-fade-size"].pr-8,
+[class*="--scroll-area-fade-size"].pr-8 {
+  right: 24px;
+  width: calc(100% - 24px);
+}
+
+/*
  * Double underline on prose links: Mintlify styles .prose a with a 1px border-bottom
  * (@layer components) but the typography-plugin rule text-decoration: underline is
  * re-declared in @layer utilities, which wins on layer order — so links get the native
