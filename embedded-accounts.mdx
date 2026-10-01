@@ -2,10 +2,10 @@
 title: "Embedded Accounts Overview"
 sidebarTitle: "Overview"
 icon: "layer-group"
-description: "Give players a balance inside your game they can earn into, spend, send and cash out."
+description: "Give players a balance inside your game they can earn into, spend, send, and cash out."
 ---
 
-ZBD holds the accounts, the ledger and the money movement, so you can focus on the economy itself.
+ZBD holds the accounts, the ledger, and the money movement, so you can focus on the economy itself.
 
 ## What it's for
 
@@ -29,54 +29,54 @@ ZBD holds the accounts, the ledger and the money movement, so you can focus on t
 ```mermaid
 flowchart LR
   A[Value enters] --> B[User balance]
-  B --> C[Spending, transfers, marketplace sales]
+  B --> C[Purchases, transfers, marketplace sales]
   C --> B
   B --> D[Cash out]
 ```
 
 1. [**Create users**](/embedded-accounts/accounts-and-balances)**.** A user is the person holding a balance. You create them from your backend with your own identifier for that player.
 2. [**Credit their balance**](/embedded-accounts/credits)**.** You're either giving value out, or crediting a player for currency they bought through a platform store.
-3. [**Players spend, send and trade**](/embedded-accounts/spending)**.** In-game purchases, transfers between players, and marketplace sales with the revenue split between the parties.
+3. [**Players spend, send, and trade**](/embedded-accounts/spending)**.** In-game purchases, transfers between players, and marketplace sales with the revenue split between the parties.
 4. [**Players cash out**](/embedded-accounts/cash-out)**.** The balance converts to real money and settles to the payment method the player chose.
 
 ## Currencies
 
-The ledger holds real-world fiat and any virtual currency you define. An economy can run on either or both, and a player can hold several balances at once.
+The ledger holds real-world fiat and any virtual currency you define. An economy can run on either or both. A player has one balance per currency, and it's the same balance in every one of your games.
 
-A currency you define works differently from fiat. You issue it, you set what it's worth in each direction, and you decide whether it converts back to money. [Currencies](/embedded-accounts/currencies) covers what to set up before launch.
+A currency you define works differently from fiat. You issue it, you agree with ZBD what it's worth in each direction, and you decide whether it converts back to money. [Currencies](/embedded-accounts/currencies) covers what to set up before launch.
 
 ## Buying through a platform store
 
-When a player buys currency through a platform store, you credit them the amount that purchase is worth, and they have it right away. The credit is recorded immediately, with no funds needed at that point. Your organization wallet has to cover value when players cash it out.
+When a player buys currency through a platform store, you credit them the amount that purchase is worth, and they have it right away. The credit is recorded immediately, with no funds needed at that point. Your funding has to cover value when players cash it out.
 
 ## Is this the right fit
 
 Embedded Accounts suits economies where value moves in more than one direction inside your game. It's a good fit if:
 
-- Players earn into, spend from and top up a balance
+- Players earn into, spend from, and top up a balance
 - You'd like ZBD to hold the ledger so you don't have to build and reconcile one
 
 If you already run a mature ledger, or players only earn and withdraw, [Embedded Payouts](/embedded-payouts) is usually the simpler option.
 
 ## What ZBD handles
 
-- Accounts, balances and the ledger
+- Accounts, balances, and the ledger
 - Currency definition and conversion
 - Identity verification and tiering
 - Sanctions and watchlist screening
-- Cash out rails, FX and settlement
+- Cash out rails, FX, and settlement
 
 ## Start here
 
 <CardGroup cols={2}>
   <Card title="Accounts and Balances" icon="wallet" href="/embedded-accounts/accounts-and-balances">
-    Users, accounts, wallets and how balances move.
+    Users, accounts, and how balances move.
   </Card>
   <Card title="Currencies" icon="coins" href="/embedded-accounts/currencies">
     Fiat and virtual currencies, and what to set up before launch.
   </Card>
   <Card title="Credits" icon="circle-plus" href="/embedded-accounts/credits">
-    Grant value: top-ups, platform store purchases and rewards.
+    Grant value: rewards, platform store purchases, and adjustments.
   </Card>
   <Card title="Cash Outs" icon="money-bill-wave" href="/embedded-accounts/cash-out">
     Convert balances to real money and settle to payment methods.

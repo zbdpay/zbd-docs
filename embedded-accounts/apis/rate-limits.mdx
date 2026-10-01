@@ -1,0 +1,20 @@
+---
+title: "Rate Limits"
+description: "Default request limits for Embedded Accounts, and how to get them raised."
+---
+
+These are the default limits for each publisher. They can be raised to fit your traffic, so tell your ZBD contact ahead of a launch, a tournament, or a big reward drop.
+
+| Call | Default limit |
+| --- | --- |
+| [Credit a User](/embedded-accounts/apis/credit) | 1 per second per user |
+| [Make a Purchase](/embedded-accounts/apis/purchase) | 6 per minute per user |
+| [Make a Transfer](/embedded-accounts/apis/transfer) | 6 per minute per sender |
+| [Create a User](/embedded-accounts/apis/create-user) | 10 per minute |
+| [Get Balances](/embedded-accounts/apis/get-balances) | 20 per second |
+| [List Transactions](/embedded-accounts/apis/list-transactions), [List Payouts](/embedded-accounts/apis/list-payouts) | 5 per second |
+| Projects, currencies, and rates | 1 per second |
+
+A request over the limit returns `429`. Back off and retry with the same `Idempotency-Key`.
+
+Sandbox allows higher limits on most calls, so a clean sandbox run doesn't tell you how production will behave under load.

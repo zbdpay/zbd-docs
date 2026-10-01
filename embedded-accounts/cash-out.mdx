@@ -6,20 +6,28 @@ description: "Moving value out of a player's balance and into an account they co
 
 Cashing out is where value leaves your economy.
 
+## How a cash out starts
+
+A player cashes out in the [widget](/embedded-accounts/widget). Create a [session](/embedded-accounts/apis/create-session) with `flows: ["cashout"]` and open it from a cash out button in your game. The widget takes the player through verification and choosing a payment method if they haven't done that yet, shows the final amount, and asks them to confirm.
+
+Each cash out creates a payout. You get [webhooks](/embedded-accounts/apis/webhook-events) as it moves through its statuses, and you can read it with [Get a Payout](/embedded-accounts/apis/get-payout) or reconcile with [List Payouts](/embedded-accounts/apis/list-payouts).
+
 ## Before a player can cash out
 
 Three things need to be in place. It's worth showing players where they stand on each well before they try to cash out.
 
 - **Eligible value.** Not every part of a balance can be cashed out. This includes fiat: money a player loaded can't be withdrawn this way.
-- **Verification.** Players don't need to verify to hold, earn or spend, but they do to cash out. Their verification level affects how much they can take out and how quickly. Selling in a marketplace for fiat also requires it.
+- **Verification.** Players don't need to verify to hold, earn, or spend, but they do to cash out. Their verification level affects how much they can take out and how quickly. Selling in a marketplace for fiat also requires it.
 - **A payment method.** The player chooses how to get paid from the options available in their country.
 
 ## Conversion
 
-- **Fiat:** nothing converts.
-- **Your own currency:** converted at your redemption rate at the moment of cash out.
+A cash out can involve up to two conversions:
 
-Show the player the final amount before they confirm. If they receive a different number than they expected, they'll assume there was a hidden fee.
+- **From your currency to fiat.** Your own currency converts at the redemption rate at the moment of cash out. A fiat balance skips this step.
+- **From one fiat currency to another.** If the currency your game's account is funded in differs from the currency the player is paid in, ZBD converts between them. For example, you fund in USD and a player in Japan is paid in JPY. The conversion cost is included in the amount shown to the player.
+
+The widget shows the player the final amount, after both conversions and fees, before they confirm.
 
 ## Where the money goes
 
@@ -27,7 +35,7 @@ Money settles to the payment method the player chose, on a rail available in the
 
 ## Funding cash outs
 
-Cash outs draw from your project wallet, so it needs to cover what players take out. We recommend funding against the volume you expect over a full settlement period, with room for a busier week than usual.
+Cash outs are paid from your account for that game, so it needs to cover what players take out. We recommend funding against the volume you expect over a full settlement period, with room for a busier week than usual. See [Your own accounts](/embedded-accounts/accounts-and-balances#your-own-accounts).
 
 ## What to show players
 

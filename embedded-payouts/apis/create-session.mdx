@@ -27,7 +27,7 @@ The user has to exist first. Create them with [Create a User](/embedded-payouts/
 </ParamField>
 
 <ParamField required body="flows" type="string[]">
-  The flows this session can open: `kyc` (identity verification), `payment_methods` (payment method selection), `disclosures`, and `cashout`. `cashout` is only available where ZBD tracks earnings.
+  The flows this session can open: `kyc` (identity verification), `payment_methods` (payment method selection), `disclosures`, and `cashout`. `cashout` is only available where ZBD holds the user's balance.
 </ParamField>
 
 <ParamField body="project_id" type="string">
@@ -91,5 +91,5 @@ When the session is close to expiring, the widget asks your page for a new one. 
 | --- | --- | --- |
 | `400` | `validation_failed` | `flows` is empty or contains an unknown flow |
 | `401` | `unauthorized` | The API key is missing or invalid |
-| `403` | `feature_not_enabled` | A requested flow isn't available for your program, for example `cashout` when you track earnings yourself |
+| `403` | `feature_not_enabled` | A requested flow isn't available for your program, for example `cashout` when you track balances yourself |
 | `404` | `user_not_found` | The user doesn't exist under your key |

@@ -1,55 +1,47 @@
 ---
-title: "Create a session"
-description: "Mint a 4-hour widget session JWT carrying the project and the resolved principal."
-api: "POST https://api.zbdpay.com/api/v1/zbd-widget/sessions"
+title: "Create a Session"
+description: "Create a widget session for a user, with the flows it can open."
+api: "POST https://api.zbdpay.com/api/v1/widget-sessions"
 ---
 
-## Description
+Returns a `widget_url` you load in an iframe or WebView. The flows you list are the only ones the session can open, and they're carried in the signed session token, so they can't be changed from the browser.
 
-Mints a session token for a player so the widget can act on their behalf. The
-token is a **JWT valid for four hours**, carrying the `project_id` and the
-resolved principal.
-
-<Warning>
-  This does **not** create the player. Provision them first with
-  [Create a player](/embedded-accounts/apis/create-player); minting a session
-  for an unknown player fails.
-</Warning>
-
-Membership is checked at mint time: the player must belong to the project you
-name. Mint the token on your server and hand it to the client — never ship the
-publisher API key itself.
-
-Session tokens are what the player-scoped endpoints accept. A publisher API key
-cannot read a player's balance or history; only a session can.
+The user has to exist first. Create them with [Create a User](/embedded-accounts/apis/create-user).
 
 ## Configuration
 
 ### Header Parameters
 
 <ParamField required header="x-api-key" type="string">
-  Your ZBD publisher API key. Call this from your server only.
+  Your ZBD API key.
 </ParamField>
 
-### Body
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
 
 <ParamField required body="user_id" type="string">
-  The ZBD user ID of the player the session is for.
+  The ZBD user ID returned by Create a User.
+</ParamField>
+
+<ParamField required body="flows" type="string[]">
+  The flows this session can open: `kyc` (identity verification), `payment_methods` (payment method selection), `disclosures`, and `cashout`. `cashout` is only available where ZBD holds the user's balance.
 </ParamField>
 
 <ParamField body="project_id" type="string">
-  The project the session should be scoped to. Membership is checked against
-  this player.
+  The project the session belongs to.
 </ParamField>
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zbdpay.com/api/v1/zbd-widget/sessions \
+curl -X POST https://api.zbdpay.com/api/v1/widget-sessions \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "user_id": "b2c3d4e5-f6a7-4890-abcd-ef0123456789",
-    "project_id": "1d2e3f40-5a6b-4c7d-8e9f-0a1b2c3d4e5f"
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "flows": ["kyc", "payment_methods"]
   }'
 ```
 </RequestExample>
@@ -58,29 +50,46 @@ curl -X POST https://api.zbdpay.com/api/v1/zbd-widget/sessions \
 ```json 201
 {
   "success": true,
-  "message": "Session created successfully.",
+  "message": "Session created.",
   "data": {
-    "session_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "expires_at": "2026-05-27T19:04:05Z",
-    "widget_url": "https://widget.zbdpay.com?session_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
+    "session_token": "eyJhbGciOiJSUzI1NiIs...",
+    "widget_url": "https://widget.zbd.gg/?session_token=eyJhbGci...",
+    "flows": ["kyc", "payment_methods"],
+    "expires_at": "2026-10-01T22:00:00Z"
   },
   "error": null
 }
 ```
 </ResponseExample>
 
-`widget_url` is the hosted widget with the token already attached — hand it
-straight to the client rather than assembling the URL yourself. For your own
-API calls, pass the token as `Authorization: Bearer <session_token>`.
+## Response
 
-Mint a fresh session rather than trying to refresh: the lifetime is fixed at
-four hours.
+The session is in `data`.
+
+<ResponseField name="session_token" type="string">
+  The signed token for this session. It's already in `widget_url`, so you only need it on its own when the widget asks your page for a new session.
+</ResponseField>
+
+<ResponseField name="widget_url" type="string">
+  The URL to load in an iframe or WebView. Load it as it comes back, and add [embed parameters](/embedded-accounts/widget#embed-parameters) if you need them.
+</ResponseField>
+
+<ResponseField name="flows" type="string[]">
+  The flows this session can open, as you requested them.
+</ResponseField>
+
+<ResponseField name="expires_at" type="string">
+  When the session expires, as an ISO 8601 timestamp. Sessions last 4 hours.
+</ResponseField>
+
+
+When the session is close to expiring, the widget asks your page for a new one. See [Refreshing a session](/embedded-accounts/browser-events#refreshing-a-session).
 
 ## Errors
 
-| Status | Reason |
-|---|---|
-| `400` | Missing or malformed `user_id` |
-| `401` | Missing or invalid API key |
-| `403` | The player is not a member of the named project |
-| `404` | No such user |
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `validation_failed` | `flows` is empty or contains an unknown flow |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `403` | `feature_not_enabled` | A requested flow isn't available for your program, for example `cashout` when you track balances yourself |
+| `404` | `user_not_found` | The user doesn't exist under your key |

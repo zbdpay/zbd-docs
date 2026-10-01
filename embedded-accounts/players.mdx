@@ -1,0 +1,38 @@
+---
+title: "Players and Verification"
+icon: "users"
+description: "How players are verified, what ZBD collects from them, and how verification affects what they can do."
+---
+
+You create players from your backend with your own ID for them, and ZBD collects everything else directly from the player, in the widget. Your systems never hold identity documents, tax forms, or bank details.
+
+## When a player verifies
+
+Players can hold a balance, earn, and spend without verifying. They have to verify when they:
+
+- Load fiat into their account
+- Sell an item for fiat in your marketplace
+- Cash out
+
+You decide where verification appears in your game. Some studios ask at signup, so players are ready when they need it. Others wait until the first cash out. For marketplaces, we recommend asking sellers when they create their first listing, since a fiat sale fails if the seller isn't verified.
+
+## Tiers
+
+Because ZBD holds every player's balance, verification is tiered. A player starts at a lower tier and verifies further as they need to. Their tier sets how much they can cash out and how quickly.
+
+When a cash out needs a higher tier than the player has, the widget asks for the next step at that point, so you don't have to track tiers yourself.
+
+## What ZBD collects
+
+All of this runs in the widget's flows. See [Embedding the Widget](/embedded-accounts/widget).
+
+| What | When |
+| --- | --- |
+| Identity verification | In the `kyc` flow, or when a cash out needs it |
+| Tax information | When a cash out requires it, or at onboarding if you'd rather collect it early. ZBD works out which form applies from where the player is and where you are, and only asks once. |
+| Payment method | In the `payment_methods` flow, or during the player's first cash out. The player chooses from the options available in their country. |
+| Disclosures | For a US bank account, the widget asks the player to accept the Electronic Funds Transfer agreement when they add the account. |
+
+## Checking where a player stands
+
+[Get a User](/embedded-accounts/apis/get-user) returns `kyc_status`. Use it with `cashable` from [Get Balances](/embedded-accounts/apis/get-balances) to decide what to show the player, like a cash out button or a prompt to verify. The widget sends [browser events](/embedded-accounts/browser-events) as a player finishes verification or adds a payment method, so your UI can update straight away.

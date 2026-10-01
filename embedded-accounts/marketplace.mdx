@@ -1,24 +1,34 @@
 ---
 title: "Marketplace Sales"
 icon: "store"
-description: "Your players buy and sell from each other, and ZBD moves the money."
+description: "Your players buy and sell from each other, and ZBD settles the sale."
 ---
 
 ## Who does what
 
-You run the marketplace: listings, search, matching, pricing and disputes. ZBD doesn't see any of it.
+You run the marketplace: listings, search, matching, pricing, and disputes. ZBD doesn't see any of it.
 
-ZBD handles settlement. You send an instruction with the two players, the amount, the currency and an item reference, and ZBD moves the money.
+ZBD handles settlement. You work out who gets what, and send one instruction with the buyer, the items, and every recipient's share. ZBD moves the value. ZBD doesn't store split rules, so you can change your fees and royalties without telling ZBD.
 
 The marketplace can live inside your game, on a companion site, or on a standalone platform such as a mod portal. Whoever runs it is the publisher.
 
 ## Settling a sale
 
-A sale usually pays more than one party: the seller gets their proceeds and you get your cut. ZBD's fee comes out of your cut, so if you want to keep 5% and ZBD's fee is 5%, charge a 10% marketplace fee. Every part settles together, so either all of it lands or none of it does.
+[Settle a Marketplace Sale](/embedded-accounts/apis/marketplace-sale) takes one buyer and one or more line items, so a cart with several items from different sellers settles in one call. Each line item lists every recipient and their amount, each with a role:
+
+| Role | Who it is |
+| --- | --- |
+| `seller` | The player selling the item |
+| `royalty` | Someone else owed a share, such as the creator of a mod or skin |
+| `publisher_fee` | Your cut |
+
+The amounts have to add up: recipients to their line item, and line items to the total. Every part settles together, so either all of it lands or none of it does.
+
+ZBD's fee comes out of your cut, never a seller's proceeds or a royalty. If you want to keep 5% and ZBD's fee is 5%, charge a 10% marketplace fee. The response shows ZBD's fee as its own movement.
 
 ## Seller verification
 
-A seller has to be verified before a sale that settles in fiat. Sales in your own virtual currency don't need it, since no real money leaves.
+A seller has to be verified before a sale that settles in fiat, and so does anyone receiving a royalty. Sales in your own virtual currency don't need it, since no real money leaves.
 
 Where it applies, this is the most important part of a marketplace integration to get right. A buyer can purchase at any time, often long after the listing went up and while the seller is offline. If the seller isn't verified, the sale fails and nobody is there to fix it.
 
@@ -26,11 +36,11 @@ We recommend prompting sellers to verify when they create their first listing. I
 
 ## What the seller receives
 
-Sale proceeds land in the seller's balance and can be cashed out straight away. That gives players a quick route to real money, which can change how they use the rest of your economy.
+Sale proceeds land in the seller's balance. In a convertible currency, that gives players a quick route to real money, which can change how they use the rest of your economy.
 
-## What to send with a settlement
+## What to send with each item
 
-Along with the two players and the amount, send:
+Along with the recipients and amounts, send for each line item:
 
 - The listing reference
 - When the listing was created

@@ -3,7 +3,7 @@ title: "Webhook Events"
 description: "The events ZBD sends to your server, what's in them, and how to verify them."
 ---
 
-ZBD sends a signed `POST` to each URL you subscribe with [Create a Webhook](/embedded-payouts/apis/create-webhook). Payout events cover payouts your backend sends and cash outs from the widget, in both products. Transaction events cover value moving inside ZBD, for programs where ZBD holds balances.
+ZBD sends a signed `POST` to each URL you subscribe with [Create a Webhook](/embedded-accounts/apis/create-webhook). Payout events cover payouts your backend sends and cash outs from the widget, in both products. Transaction events cover value moving inside ZBD, for programs where ZBD holds balances.
 
 ## Payout events
 
@@ -121,4 +121,4 @@ Every webhook is signed. The `X-ZBD-Signature` header carries the signature, and
 
 - **Respond quickly with a `2xx`.** Do the work after you respond. ZBD retries deliveries that fail or time out.
 - **Deduplicate on `event_id`.** A retry can deliver the same event more than once.
-- **Don't rely on order.** Use `occurred_at`, and the payout's current status from [Get a Payout](/embedded-payouts/apis/get-payout) if you need to be sure.
+- **Don't rely on order.** Use `occurred_at`, and the payout's current status from [Get a Payout](/embedded-accounts/apis/get-payout) if you need to be sure.

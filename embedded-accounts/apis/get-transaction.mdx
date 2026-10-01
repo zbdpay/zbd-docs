@@ -1,0 +1,103 @@
+---
+title: "Get a Transaction"
+description: "Read one transaction, whichever call created it."
+api: "GET https://api.zbdpay.com/api/v1/transactions/{transactionId}"
+---
+
+Credits, debits, purchases, transfers, and marketplace sales all come back in the same shape, so you can read and reconcile them the same way.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="transactionId" type="string">
+  The `transaction_id` returned when the transaction was created.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/transactions/txn_7f2c \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Transaction retrieved.",
+  "data": {
+    "transaction_id": "txn_7f2c",
+    "type": "purchase",
+    "status": "completed",
+    "currency": "GEMS",
+    "amount": 500,
+    "payer": { "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652" },
+    "movements": [
+      { "movement_id": "mv_1", "to": { "party": "publisher" }, "amount": 500 }
+    ],
+    "reference_id": "order_9921",
+    "project_id": null,
+    "created_at": "2026-10-01T18:20:00Z"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Response
+
+The transaction is in `data`.
+
+<ResponseField name="transaction_id" type="string">
+  ZBD's ID for the transaction.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  Which call created it: a credit `type` such as `reward`, `debit`, `purchase`, a transfer `type` such as `gift`, or `marketplace_sale`.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  `completed` or `failed`. Every movement in a transaction settles together, or none of them do.
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  The currency code for every amount in the transaction.
+</ResponseField>
+
+<ResponseField name="amount" type="integer">
+  The total, in the currency's smallest unit.
+</ResponseField>
+
+<ResponseField name="payer" type="object | null">
+  The user the value came from. `null` for a credit, which has no payer inside ZBD.
+</ResponseField>
+
+<ResponseField name="movements" type="object[]">
+  Each movement of value: who received it (`to`, either a `user_id` or a `party` such as `publisher` or `zbd`), the `amount`, and for marketplace sales the recipient's `role`. A marketplace sale groups its movements under `line_items`.
+</ResponseField>
+
+<ResponseField name="reference_id" type="string | null">
+  Your own ID for the transaction, if you sent one.
+</ResponseField>
+
+<ResponseField name="project_id" type="string | null">
+  The project the transaction belongs to, if you sent one.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  When the transaction was created, as an ISO 8601 timestamp.
+</ResponseField>
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `transaction_not_found` | The transaction doesn't exist under your key |

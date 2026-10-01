@@ -8,27 +8,36 @@ You use the same call whether you're giving value out or covering a purchase a p
 
 ## Crediting a player
 
-A credit takes the player, the currency and the amount, and the value is spendable immediately.
+[Credit a User](/embedded-accounts/apis/credit) takes the player, the currency, the amount, and a `type` that says why. The value is spendable immediately.
 
-Send an idempotency key with every credit so a retry doesn't credit the player twice.
+Send an idempotency key with every credit, so a retry doesn't credit the player twice.
 
 ## When you'd credit a player
 
 <CardGroup cols={1}>
   <Card title="Giving value out" icon="gift">
-    Rewards for play, tournament prizes, compensation after an outage, promotional grants.
+    Rewards for play, tournament prizes, compensation after an outage, and promotional grants. Use the `reward` type.
   </Card>
   <Card title="Covering a platform store purchase" icon="cart-shopping">
-    A player buys currency through a store like Steam or Meta, and you credit the amount that purchase is worth.
+    A player buys currency through a store like Steam or Meta, and you credit the amount that purchase is worth. Use the `purchased_token` type.
+  </Card>
+  <Card title="Correcting a balance" icon="sliders">
+    Fixing a mistake or settling a support case. Use the `adjustment` type.
   </Card>
 </CardGroup>
 
+Your ZBD contact confirms which types your program can use.
+
 ## Covering a platform store purchase
 
-You decide what the purchase is worth in your currency and credit the player that amount.
+You decide what the purchase is worth in your currency and credit the player that amount. The purchase rate doesn't apply here, since the money never passed through ZBD.
 
-The player gets their currency as soon as they pay, and the store settles to you on its own schedule. The credit doesn't need funds behind it when it's made. Your organization wallet has to cover value when players cash it out, so plan funding around expected cash outs.
+The player gets their currency as soon as they pay, and the store settles to you on its own schedule. The credit doesn't need funds behind it when it's made. Your funding has to cover value when players cash it out, so plan around expected cash outs.
 
 ## Source tags
 
-Every credit carries a source tag recording how the player got the value, and the tag decides what they can do with it later. For example, value you gave out and value a player paid for are treated differently. ZBD sets the rules for each tag, and [Currencies](/embedded-accounts/currencies) explains how they work.
+The credit `type` decides the source tag ZBD gives the value, and the tag decides what the player can do with it later. For example, value you gave out and value a player paid for are treated differently. You never set tags yourself. ZBD sets the rules for each tag, and your ZBD contact can walk you through how they apply to your program.
+
+## Reversing a credit
+
+To take a credit back, for example when a reward was granted by mistake, call [Debit a User](/embedded-accounts/apis/debit) with the `transaction_id` of the credit. You can only reverse value you credited, and only while the player still has it.

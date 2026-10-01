@@ -24,7 +24,9 @@
             "group": "Concepts",
             "pages": [
               "embedded-accounts/accounts-and-balances",
-              "embedded-accounts/currencies"
+              "embedded-accounts/players",
+              "embedded-accounts/currencies",
+              "embedded-accounts/transactions"
             ]
           },
           {
@@ -33,19 +35,16 @@
               "embedded-accounts/credits",
               "embedded-accounts/spending",
               "embedded-accounts/transfers",
-              "embedded-accounts/marketplace"
-            ]
-          },
-          {
-            "group": "Cashing Out",
-            "pages": [
+              "embedded-accounts/marketplace",
               "embedded-accounts/cash-out"
             ]
           },
           {
             "group": "Integration",
             "pages": [
-              "development-resources/integrating-embedded-accounts"
+              "development-resources/integrating-embedded-accounts",
+              "embedded-accounts/widget",
+              "embedded-accounts/browser-events"
             ]
           },
           {
@@ -53,37 +52,62 @@
             "pages": [
               "embedded-accounts/apis/overview",
               "development-resources/idempotency-keys",
+              "embedded-accounts/apis/rate-limits",
               {
-                "group": "Players",
+                "group": "Projects",
                 "pages": [
-                  "embedded-accounts/apis/create-player",
-                  "embedded-accounts/apis/delete-player"
+                  "embedded-accounts/apis/list-projects",
+                  "embedded-accounts/apis/get-project"
                 ]
               },
               {
-                "group": "Sessions",
+                "group": "Users",
                 "pages": [
-                  "embedded-accounts/apis/create-session"
+                  "embedded-accounts/apis/create-user",
+                  "embedded-accounts/apis/get-user",
+                  "embedded-accounts/apis/update-user",
+                  "embedded-accounts/apis/delete-user",
+                  "embedded-accounts/apis/get-balances",
+                  "embedded-accounts/apis/create-session",
+                  "embedded-accounts/apis/get-disclosures",
+                  "embedded-accounts/apis/record-disclosures"
                 ]
               },
               {
                 "group": "Currencies",
                 "pages": [
                   "embedded-accounts/apis/list-currencies",
-                  "embedded-accounts/apis/get-currency"
+                  "embedded-accounts/apis/get-currency",
+                  "embedded-accounts/apis/list-rates"
                 ]
               },
               {
-                "group": "Credits & Spends",
+                "group": "Transactions",
                 "pages": [
-                  "embedded-accounts/apis/credit-player",
-                  "embedded-accounts/apis/debit-player"
+                  "embedded-accounts/apis/credit",
+                  "embedded-accounts/apis/debit",
+                  "embedded-accounts/apis/purchase",
+                  "embedded-accounts/apis/transfer",
+                  "embedded-accounts/apis/marketplace-sale",
+                  "embedded-accounts/apis/get-transaction",
+                  "embedded-accounts/apis/list-transactions"
                 ]
               },
               {
-                "group": "Rates",
+                "group": "Cash Outs",
                 "pages": [
-                  "embedded-accounts/apis/list-redemption-rates"
+                  "embedded-accounts/apis/get-payout",
+                  "embedded-accounts/apis/list-payouts"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "embedded-accounts/apis/webhook-events",
+                  "embedded-accounts/apis/create-webhook",
+                  "embedded-accounts/apis/list-webhooks",
+                  "embedded-accounts/apis/update-webhook",
+                  "embedded-accounts/apis/delete-webhook"
                 ]
               }
             ]
@@ -122,15 +146,23 @@
             "pages": [
               "embedded-payouts/apis/overview",
               {
+                "group": "Projects",
+                "pages": [
+                  "embedded-payouts/apis/list-projects",
+                  "embedded-payouts/apis/get-project"
+                ]
+              },
+              {
                 "group": "Users",
                 "pages": [
                   "embedded-payouts/apis/create-user",
                   "embedded-payouts/apis/get-user",
                   "embedded-payouts/apis/update-user",
+                  "embedded-payouts/apis/delete-user",
                   "embedded-payouts/apis/list-payment-methods",
                   "embedded-payouts/apis/create-session",
-                  "embedded-accounts/apis/get-disclosures",
-                  "embedded-accounts/apis/record-disclosures"
+                  "embedded-payouts/apis/get-disclosures",
+                  "embedded-payouts/apis/record-disclosures"
                 ]
               },
               {
@@ -146,7 +178,7 @@
                 "pages": [
                   "embedded-payouts/apis/credit-user",
                   "embedded-payouts/apis/debit-user",
-                  "embedded-payouts/apis/get-earnings",
+                  "embedded-payouts/apis/get-balances",
                   "embedded-payouts/apis/list-transactions"
                 ]
               },
@@ -596,7 +628,7 @@
     },
     {
       "source": "/widget/disclosures",
-      "destination": "/embedded-accounts/apis/get-disclosures"
+      "destination": "/embedded-payouts/apis/get-disclosures"
     },
     {
       "source": "/widget/sandbox",
@@ -1212,11 +1244,11 @@
     },
     {
       "source": "/widget/get-balance",
-      "destination": "/embedded-payouts/apis/get-earnings"
+      "destination": "/embedded-payouts/apis/get-balances"
     },
     {
       "source": "/widget/get-disclosure-status",
-      "destination": "/embedded-accounts/apis/get-disclosures"
+      "destination": "/embedded-payouts/apis/get-disclosures"
     },
     {
       "source": "/widget/get-transactions",
@@ -1228,7 +1260,7 @@
     },
     {
       "source": "/widget/submit-disclosure-acceptance",
-      "destination": "/embedded-accounts/apis/record-disclosures"
+      "destination": "/embedded-payouts/apis/record-disclosures"
     },
     {
       "source": "/widget/update-user",
@@ -1404,11 +1436,35 @@
     },
     {
       "source": "/embedded-payouts/apis/get-balance",
-      "destination": "/embedded-payouts/apis/get-earnings"
+      "destination": "/embedded-payouts/apis/get-balances"
     },
     {
       "source": "/embedded-payouts/apis/list-user-transactions",
       "destination": "/embedded-payouts/apis/list-transactions"
+    },
+    {
+      "source": "/embedded-accounts/apis/delete-player",
+      "destination": "/embedded-accounts/apis/delete-user"
+    },
+    {
+      "source": "/embedded-payouts/apis/get-earnings",
+      "destination": "/embedded-payouts/apis/get-balances"
+    },
+    {
+      "source": "/embedded-accounts/apis/list-redemption-rates",
+      "destination": "/embedded-accounts/apis/list-rates"
+    },
+    {
+      "source": "/embedded-accounts/apis/create-player",
+      "destination": "/embedded-accounts/apis/create-user"
+    },
+    {
+      "source": "/embedded-accounts/apis/credit-player",
+      "destination": "/embedded-accounts/apis/credit"
+    },
+    {
+      "source": "/embedded-accounts/apis/debit-player",
+      "destination": "/embedded-accounts/apis/purchase"
     }
   ]
 }

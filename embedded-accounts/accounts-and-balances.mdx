@@ -1,7 +1,7 @@
 ---
 title: "Accounts and Balances"
 icon: "wallet"
-description: "Every player in your economy has an account with ZBD that holds their balances."
+description: "Every player in your economy has an account with ZBD for each currency they hold."
 ---
 
 Each account also records every transaction and carries the permissions that decide what the player can do.
@@ -10,36 +10,29 @@ Each account also records every transaction and carries the permissions that dec
 
 | Object | What it is |
 | --- | --- |
-| User | The player. You create one using your own identifier for them. |
-| Account | Their financial record with ZBD. One per user. |
-| Wallet | Where a balance in a given currency lives. Wallets are currency-specific. |
+| User | The player. You create one using your own identifier for them. A user belongs to your organization, so it's the same user in every one of your games. |
+| Account | Where the user's balance in one currency lives. A user has one account per currency, and it's shared across your games, so a player sees one balance wherever they play. |
 
-Creating a user sets up the account and a wallet for each currency in your project, so you can credit them straight away.
+Creating a user sets up an account for each currency your program uses, so you can credit them straight away.
 
-## Creating an account
+## Creating a user
 
-You create accounts from your backend with your own identifier for the player, a country code, and confirmation that they accepted your terms. No identity documents or personal data are needed.
+You [create users](/embedded-accounts/apis/create-user) from your backend with your own identifier for the player. No identity documents or personal data are needed.
 
-Players can hold a balance, earn and spend without verifying. Verification is required when a player:
-
-- Loads a fiat wallet
-- Sells an item for fiat
-- Cashes out
+Players can hold a balance, earn, and spend without verifying. [Players and Verification](/embedded-accounts/players) covers when they need to verify and what ZBD collects.
 
 ## How balances are calculated
 
-A balance is the sum of every ledger entry for that wallet. Each entry has a source tag recording where the value came from.
+A balance is the sum of every ledger entry for that account. Each entry has a source tag recording where the value came from.
 
-The total is what a player can spend. What they can cash out depends on the source tags behind it, so a player with a balance of 1,700 might be able to cash out all, some or none of it. ZBD sets the rules for each tag, and [Currencies](/embedded-accounts/currencies) explains how they work.
+The total is what a player can spend. What they can cash out depends on the source tags behind it, so a player with a balance of 1,700 might be able to cash out all, some, or none of it. ZBD sets the rules for each tag, and your ZBD contact can walk you through how they apply to your program.
 
-## Multiple wallets
+## Your own accounts
 
-Each currency gets its own wallet automatically. You can also create extra wallets in the same currency to keep value separate, for example a seasonal event balance.
+You hold a primary account in each currency, plus an account for each game that you top up from it. Cash outs for a game are paid from that game's account. Keeping only a game's expected cash outs there limits how much a leaked key or fraud can reach.
 
-## Your own wallets
-
-Your organization holds a wallet per currency, and you fund a project wallet per currency for each game. Keeping only a game's expected payouts in its project wallet limits how much a leaked key or fraud can reach.
+Top-ups are manual. Agree a warning level and a critical level with ZBD, and a [webhook](/embedded-accounts/apis/webhook-events) fires when a game's account drops below either one.
 
 ## Reading balances
 
-You can read a wallet's balance, the entries behind it, and how much is available to cash out. We recommend reading these from ZBD instead of tracking balances yourself, since source tags and conversions affect what a player can do with their balance.
+[Get Balances](/embedded-accounts/apis/get-balances) returns each of a player's balances, with what they can spend (`available`) and what they can cash out now (`cashable`). [List Transactions](/embedded-accounts/apis/list-transactions) returns the history behind them. We recommend reading these from ZBD instead of tracking balances yourself, since source tags and conversions affect what a player can do with their balance.

@@ -1,0 +1,100 @@
+---
+title: "Make a Purchase"
+description: "A user buys something from you with their balance."
+api: "POST https://api.zbdpay.com/api/v1/transactions/purchases"
+---
+
+Takes value from the user's balance and pays it to you, for example for a cosmetic, a battle pass, or an entry fee. Your backend makes the call, since your game decides what's being bought and what it costs. The full amount goes to you, so there are no recipients to send.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField required header="Idempotency-Key" type="string">
+  A UUID you generate for this purchase. Retrying with the same key never charges the user twice.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="user_id" type="string">
+  The user making the purchase.
+</ParamField>
+
+<ParamField required body="currency" type="string">
+  The currency code, for example `GEMS`.
+</ParamField>
+
+<ParamField required body="amount" type="integer">
+  The price, in the currency's smallest unit.
+</ParamField>
+
+<ParamField body="reference_id" type="string">
+  Your own ID for the purchase, such as an order ID.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Shown in the user's history.
+</ParamField>
+
+<ParamField body="project_id" type="string">
+  The project the purchase belongs to.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/transactions/purchases \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Idempotency-Key: 2c9a7b13-58ef-4d02-8a6c-14b3f7e05d29" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "currency": "GEMS",
+    "amount": 500,
+    "reference_id": "order_9921",
+    "description": "Sunset skin"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "Purchase completed.",
+  "data": {
+    "transaction_id": "txn_7f2c",
+    "type": "purchase",
+    "status": "completed",
+    "currency": "GEMS",
+    "amount": 500,
+    "payer": { "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652" },
+    "movements": [
+      { "movement_id": "mv_1", "to": { "party": "publisher" }, "amount": 500 }
+    ],
+    "reference_id": "order_9921",
+    "project_id": null,
+    "created_at": "2026-10-01T18:20:00Z"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+Returns the same fields as [Get a Transaction](/embedded-accounts/apis/get-transaction#response).
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `idempotency_key_required` · `validation_failed` | No idempotency key, or a malformed body |
+| `404` | `user_not_found` | The user doesn't exist under your key |
+| `409` | `idempotency_key_reused` | The same key was sent with a different body |
+| `422` | `insufficient_funds` | The user's balance doesn't cover the amount. Nothing is taken |

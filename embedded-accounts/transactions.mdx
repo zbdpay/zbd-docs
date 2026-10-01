@@ -1,0 +1,41 @@
+---
+title: "Transactions"
+icon: "receipt"
+description: "Every way value moves in your economy, and what all of them have in common."
+---
+
+Any time value moves inside ZBD, it's a transaction: a reward, a purchase, a gift between players, or a marketplace sale. Cash outs are the exception. They're payouts, since the money leaves ZBD.
+
+## Transaction types
+
+| Type | What happens | Who it moves value between | Details |
+| --- | --- | --- | --- |
+| Credit | Value enters a player's balance | No payer inside ZBD, to a player | [Credits](/embedded-accounts/credits) |
+| Debit | You reverse a credit you made | A player, back out of the economy | [Credits](/embedded-accounts/credits#reversing-a-credit) |
+| Purchase | A player buys something from you | A player, to you | [Purchases](/embedded-accounts/spending) |
+| Transfer | A player sends value to another | A player, to another player | [Transfers](/embedded-accounts/transfers) |
+| Marketplace sale | A player buys from other players | A player, to sellers, royalty holders, and you | [Marketplace Sales](/embedded-accounts/marketplace) |
+| Cash out | A player converts value to real money | A player, out of ZBD | [Cash Outs](/embedded-accounts/cash-out) |
+
+Some types carry a more specific `type` that you send:
+
+| Transaction | `type` values |
+| --- | --- |
+| Credit | `reward`, `purchased_token`, `adjustment` |
+| Transfer | `gift`, `tip` |
+| Marketplace sale | `marketplace_sale` |
+
+The `type` decides the source tag on the value that arrives, and the tag decides what the receiving player can do with it later, including whether they can cash it out. You never set tags yourself.
+
+## What every transaction has in common
+
+- **One call, one transaction.** Each call creates one transaction with a `transaction_id`. Underneath, each movement of value is recorded separately, so a marketplace sale that pays a seller, a royalty holder, and you shows each payment on its own.
+- **All or nothing.** Every movement in a transaction settles together, or none of them do.
+- **One payer and one currency.** A transaction always comes from one payer in one currency. To move value in two currencies, make two calls.
+- **Your backend decides.** You make every call from your server. ZBD doesn't decide when value moves, but it runs limits and checks on every transaction, and refuses one that doesn't pass.
+- **Idempotent.** Every call takes an `Idempotency-Key`, so a retry never moves value twice.
+- **Your reference.** Send your own `reference_id`, such as an order or match ID, to match transactions to your records.
+
+## Reading transactions
+
+Every type comes back in the same shape, so you can read and reconcile them the same way. [Get a Transaction](/embedded-accounts/apis/get-transaction) returns one, and [List Transactions](/embedded-accounts/apis/list-transactions) returns them filtered by user, type, project, reference, or date. Cash outs are read as payouts, with [List Payouts](/embedded-accounts/apis/list-payouts).

@@ -1,0 +1,111 @@
+---
+title: "Make a Transfer"
+description: "A user sends value to another user, as a gift or a tip."
+api: "POST https://api.zbdpay.com/api/v1/transactions/transfers"
+---
+
+Moves value from one user to another, with no goods changing hands. A transfer has one sender and one receiver. To send to several users, make several calls.
+
+The sending user authorizes every transfer, because it gives away something they own. It has to start with something they did in your game.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField required header="Idempotency-Key" type="string">
+  A UUID you generate for this transfer.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="type" type="string">
+  `gift` or `tip`. The type decides what the receiver can do with the value, including whether they can cash it out.
+</ParamField>
+
+<ParamField required body="from_user_id" type="string">
+  The user sending the value.
+</ParamField>
+
+<ParamField required body="to_user_id" type="string">
+  The user receiving it.
+</ParamField>
+
+<ParamField required body="currency" type="string">
+  The currency code.
+</ParamField>
+
+<ParamField required body="amount" type="integer">
+  The amount, in the currency's smallest unit.
+</ParamField>
+
+<ParamField body="reference_id" type="string">
+  Your own ID for the transfer.
+</ParamField>
+
+<ParamField body="description" type="string">
+  Shown in both users' history.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/transactions/transfers \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Idempotency-Key: 7d1e0a4c-93b2-4f6e-8c15-2a9b6e3f0d47" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "gift",
+    "from_user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "to_user_id": "9b7e2f10-6c3a-4d85-a1e4-5f0c8d2b7a36",
+    "currency": "GEMS",
+    "amount": 200,
+    "reference_id": "gift_441",
+    "description": "Thanks for the carry"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "Transfer completed.",
+  "data": {
+    "transaction_id": "txn_8d31",
+    "type": "gift",
+    "status": "completed",
+    "currency": "GEMS",
+    "amount": 200,
+    "payer": { "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652" },
+    "movements": [
+      { "movement_id": "mv_1", "to": { "user_id": "9b7e2f10-6c3a-4d85-a1e4-5f0c8d2b7a36" }, "amount": 200 }
+    ],
+    "reference_id": "gift_441",
+    "project_id": null,
+    "created_at": "2026-10-01T18:25:00Z"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+Returns the same fields as [Get a Transaction](/embedded-accounts/apis/get-transaction#response).
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `idempotency_key_required` · `validation_failed` | No idempotency key, or a malformed body |
+| `403` | `feature_not_enabled` | The transfer `type` isn't enabled for your program |
+| `404` | `user_not_found` | The sender or receiver doesn't exist under your key |
+| `409` | `idempotency_key_reused` | The same key was sent with a different body |
+| `422` | `insufficient_funds` | The sender's balance doesn't cover the amount |
+| `422` | `limit_exceeded` | The transfer is over a limit ZBD sets. Show it to the user as a normal outcome |
+| `422` | `kyc_required` · `screening_blocked` | The receiver isn't cleared to receive |

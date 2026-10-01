@@ -4,10 +4,6 @@ description: "Read transactions for one user or across your program, whichever c
 api: "GET https://api.zbdpay.com/api/v1/transactions"
 ---
 
-<Note>
-  Only for programs where ZBD tracks earnings. If you track earnings yourself, this returns `403 feature_not_enabled`.
-</Note>
-
 Use this to show a user their history in your product, or to reconcile across your program.
 
 ## Configuration
@@ -84,4 +80,4 @@ curl "https://api.zbdpay.com/api/v1/transactions?user_id=4ac4fd8a-cc2c-4d03-af09
 ```
 </ResponseExample>
 
-Cash outs also appear in [List Payouts](/embedded-payouts/apis/list-payouts), with their payout status.
+Cash outs also appear in [List Payouts](/embedded-accounts/apis/list-payouts), with their payout status.

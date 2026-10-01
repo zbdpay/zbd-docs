@@ -11,9 +11,9 @@ Before ZBD can pay a US user by bank transfer (ACH), the user has to accept the 
 
 Your product shows the EFT agreement and records the user's acceptance. The widget doesn't do this for you.
 
-1. Before a user's first ACH payout, call [Get Disclosure Status](/embedded-accounts/apis/get-disclosures) and check whether the EFT agreement (`type_id: 6`) is current.
+1. Before a user's first ACH payout, call [Get Disclosure Status](/embedded-payouts/apis/get-disclosures) and check whether the EFT agreement (`type_id: 6`) is current.
 2. If it isn't, show the user the agreement from its `content_uri`.
-3. Record their acceptance with [Record Disclosure Acceptance](/embedded-accounts/apis/record-disclosures).
+3. Record their acceptance with [Record Disclosure Acceptance](/embedded-payouts/apis/record-disclosures).
 4. Continue with the payout.
 
 Acceptance is tracked by version. When ZBD publishes a new version of the agreement, the user has to accept it again, even if they accepted an earlier one.
@@ -25,5 +25,5 @@ If the user hasn't accepted the current version, the ACH payout is rejected befo
 Call these from your server with your API key, never from a browser, game client, or WebView.
 
 <Note>
-  Create a User and widget sessions also return an `outstanding_disclosures` array. Treat [Get Disclosure Status](/embedded-accounts/apis/get-disclosures) as the source of truth.
+  Create a User and widget sessions also return an `outstanding_disclosures` array. Treat [Get Disclosure Status](/embedded-payouts/apis/get-disclosures) as the source of truth.
 </Note>

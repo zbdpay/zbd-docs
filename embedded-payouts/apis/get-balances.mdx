@@ -1,6 +1,6 @@
 ---
-title: "Get Earnings"
-description: "Read the earnings ZBD tracks for a user."
+title: "Get Balances"
+description: "Read the balances ZBD holds for a user, in each currency."
 api: "GET https://api.zbdpay.com/api/v1/users/{userId}/balances"
 ---
 
@@ -8,7 +8,7 @@ api: "GET https://api.zbdpay.com/api/v1/users/{userId}/balances"
   Only for programs where ZBD tracks earnings. If you track earnings yourself, this returns `403 feature_not_enabled`.
 </Note>
 
-Use this to show a user what they've earned in your own product.
+Use this to show a user their balance in your own product. In Embedded Payouts, this is what the user has earned and not yet been paid.
 
 ## Configuration
 
@@ -39,7 +39,8 @@ curl https://api.zbdpay.com/api/v1/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652/ba
   "data": {
     "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
     "balances": [
-      { "currency": "USD", "available": 5000 }
+      { "currency": "USD", "available": 5000, "cashable": 3000 },
+      { "currency": "GEMS", "available": 1700, "cashable": 0 }
     ]
   },
   "error": null
@@ -47,7 +48,27 @@ curl https://api.zbdpay.com/api/v1/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652/ba
 ```
 </ResponseExample>
 
-`available` is what the user can cash out now, in the currency's smallest unit.
+## Response
+
+<ResponseField name="user_id" type="string">
+  The user the balances belong to.
+</ResponseField>
+
+<ResponseField name="balances" type="object[]">
+  One entry per currency the user holds.
+</ResponseField>
+
+<ResponseField name="balances.currency" type="string">
+  The currency code.
+</ResponseField>
+
+<ResponseField name="balances.available" type="integer">
+  What the user can spend, in the currency's smallest unit.
+</ResponseField>
+
+<ResponseField name="balances.cashable" type="integer">
+  The part of `available` the user can cash out now. It depends on how the value arrived, so it can be less than `available`.
+</ResponseField>
 
 ## Errors
 

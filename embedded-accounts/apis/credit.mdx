@@ -4,10 +4,6 @@ description: "Add value to a user's balance."
 api: "POST https://api.zbdpay.com/api/v1/transactions/credits"
 ---
 
-<Note>
-  Only for programs where ZBD tracks earnings. If you track earnings yourself, this returns `403 feature_not_enabled`.
-</Note>
-
 Adds value to a user's balance, for example a reward or currency they bought through a platform store. Nothing is drawn from your funding when you credit, only when the user cashes out.
 
 ## Configuration
@@ -91,13 +87,13 @@ curl -X POST https://api.zbdpay.com/api/v1/transactions/credits \
 ```
 </ResponseExample>
 
-To take a credit back, call [Debit a User](/embedded-payouts/apis/debit-user) with its `transaction_id`.
+To take a credit back, call [Debit a User](/embedded-accounts/apis/debit) with its `transaction_id`.
 
 ## Errors
 
 | HTTP | `code` | When |
 | --- | --- | --- |
 | `400` | `idempotency_key_required` · `validation_failed` | No idempotency key, or a malformed body |
-| `403` | `feature_not_enabled` | You track earnings yourself, or the credit `type` isn't enabled |
+| `403` | `feature_not_enabled` | The credit `type` isn't enabled for your program |
 | `404` | `user_not_found` | The user doesn't exist under your key |
 | `409` | `idempotency_key_reused` | The same key was sent with a different body |

@@ -23,9 +23,12 @@ Where an endpoint is scoped to a project, pass an optional `project_id`: in the 
 
 | Method | Path | Purpose |
 | --- | --- | --- |
+| `GET` | `/api/v1/projects` | List projects |
+| `GET` | `/api/v1/projects/{projectId}` | Get a project |
 | `POST` | `/api/v1/users` | Create a user |
 | `GET` | `/api/v1/users/{userId}` | Get a user |
 | `PATCH` | `/api/v1/users/{userId}` | Update a user |
+| `POST` | `/api/v1/users/{userId}/deletion-request` | Delete a user |
 | `GET` | `/api/v1/users/{userId}/payment-methods` | List a user's payment methods |
 | `GET` · `POST` | `/api/v1/users/{userId}/disclosures` | Read or record disclosures |
 | `POST` | `/api/v1/widget-sessions` | Create a widget session |
@@ -34,7 +37,7 @@ Where an endpoint is scoped to a project, pass an optional `project_id`: in the 
 | `GET` | `/api/v1/payments/payouts` | List payouts |
 | `POST` | `/api/v1/transactions/credits` | Credit a user's earnings |
 | `POST` | `/api/v1/transactions/debits` | Reverse a credit |
-| `GET` | `/api/v1/users/{userId}/balances` | Get a user's earnings |
+| `GET` | `/api/v1/users/{userId}/balances` | Get a user's balances (their earnings) |
 | `GET` | `/api/v1/transactions` | List transactions |
 | `POST` · `GET` | `/api/v1/webhooks/subscriptions` | Create or list webhook subscriptions |
 | `PATCH` · `DELETE` | `/api/v1/webhooks/subscriptions/{subscriptionId}` | Update or delete a subscription |
@@ -77,6 +80,6 @@ A feature that isn't enabled always returns `403 feature_not_enabled`, never `40
 
 ## Conventions
 
-- **Amounts** are integers in the currency's smallest unit. For USD, `100` is $1.00.
+- **Amounts** are always whole numbers in the currency's smallest unit. Each currency has a `precision` that says how many decimal places to show: `2` for USD, so `100` is $1.00, and `0` for a currency like JPY, so `100` is ¥100.
 - **`user_id`** is the ZBD user ID returned by [Create a User](/embedded-payouts/apis/create-user).
 - **Tracing.** Send an `X-Request-Id` header on any call to make it easier to trace with support.

@@ -4,10 +4,6 @@ description: "Reverse a credit you made to a user."
 api: "POST https://api.zbdpay.com/api/v1/transactions/debits"
 ---
 
-<Note>
-  Only for programs where ZBD tracks earnings. If you track earnings yourself, this returns `403 feature_not_enabled`.
-</Note>
-
 Reverses a credit you made, for example when a reward is canceled. The debit references the original credit, and you can only debit value you credited. A debit only succeeds while the user still has that value, so it can't recover an amount they've already spent or cashed out.
 
 ## Configuration
@@ -88,6 +84,5 @@ curl -X POST https://api.zbdpay.com/api/v1/transactions/debits \
 | HTTP | `code` | When |
 | --- | --- | --- |
 | `400` | `idempotency_key_required` · `validation_failed` | No idempotency key, a malformed body, or more than the original credit |
-| `403` | `feature_not_enabled` | You track earnings yourself |
 | `404` | `user_not_found` | The user or the credit doesn't exist under your key |
 | `422` | `insufficient_funds` | The user no longer has that value, for example because they spent it or cashed it out |

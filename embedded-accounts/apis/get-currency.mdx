@@ -1,34 +1,26 @@
 ---
-title: "Get a currency"
-description: "Get one currency."
-api: "GET https://api.zbdpay.com/api/v1/publishers/{publisherId}/virtual-currencies/{currencyCode}"
+title: "Get a Currency"
+description: "Read one currency by its code."
+api: "GET https://api.zbdpay.com/api/v1/currencies/{currency}"
 ---
-
-## Description
-
-Returns a single virtual currency by its ticker.
 
 ## Configuration
 
 ### Header Parameters
 
 <ParamField required header="x-api-key" type="string">
-  Your ZBD publisher API key. Call this from your server only.
+  Your ZBD API key.
 </ParamField>
 
 ### Path Parameters
 
-<ParamField required path="publisherId" type="string">
-  Your ZBD publisher ID.
-</ParamField>
-
-<ParamField required path="currencyCode" type="string">
-  The currency ticker, for example `GOLD`.
+<ParamField required path="currency" type="string">
+  The currency code, for example `GEMS` or `USD`.
 </ParamField>
 
 <RequestExample>
 ```bash cURL
-curl https://api.zbdpay.com/api/v1/publishers/{publisherId}/virtual-currencies/GOLD \
+curl https://api.zbdpay.com/api/v1/currencies/GEMS \
   -H "x-api-key: YOUR_API_KEY"
 ```
 </RequestExample>
@@ -37,26 +29,56 @@ curl https://api.zbdpay.com/api/v1/publishers/{publisherId}/virtual-currencies/G
 ```json 200
 {
   "success": true,
-  "message": "Virtual currency retrieved successfully.",
+  "message": "Currency retrieved.",
   "data": {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "publisher_id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-    "code": "GOLD",
-    "name": "Gold Coins",
-    "icon_url": "https://cdn.zbdpay.com/virtual-currencies/gold.png",
-    "precision": 0,
-    "created_at": "2026-05-27T15:04:05Z",
-    "updated_at": "2026-05-27T15:04:05Z"
+    "currency": "GEMS",
+    "type": "virtual",
+    "name": "Gems",
+    "precision": 2,
+    "convertible": true,
+    "icon_url": "https://cdn.zbdpay.com/virtual-currencies/gems.png",
+    "project_ids": ["prj_1", "prj_2"]
   },
   "error": null
 }
 ```
 </ResponseExample>
 
+## Response
+
+The currency is in `data`.
+
+<ResponseField name="currency" type="string">
+  The currency code you use in every call. It can't be changed.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  `fiat` for real-world money, or `virtual` for a currency you defined.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  The display name users see.
+</ResponseField>
+
+<ResponseField name="precision" type="integer">
+  How many decimal places to show. Amounts are always whole numbers in the smallest unit, so with a precision of `2`, `150` is shown as 1.50. Fiat follows its own standard, for example `2` for USD and `0` for JPY.
+</ResponseField>
+
+<ResponseField name="convertible" type="boolean">
+  Whether the currency can convert to real money and be cashed out.
+</ResponseField>
+
+<ResponseField name="icon_url" type="string | null">
+  An icon for a virtual currency, if you set one.
+</ResponseField>
+
+<ResponseField name="project_ids" type="string[] | null">
+  The projects a virtual currency is linked to. A currency linked to several projects is the same currency in each of them.
+</ResponseField>
+
 ## Errors
 
-| Status | Reason |
-|---|---|
-| `401` | Missing or invalid API key |
-| `403` | The API key does not belong to `publisherId` |
-| `404` | No such currency, or it has been soft-deleted |
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `currency_not_found` | No currency with this code in your program |
