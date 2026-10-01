@@ -418,17 +418,17 @@
   "navbar": {
     "links": [
       {
-        "label": "API Status",
+        "label": "Status",
         "href": "https://status.zbdpay.com/"
       },
       {
-        "label": "Create Account",
-        "href": "https://dashboard.zebedee.io"
+        "label": "Contact ZBD",
+        "href": "https://zbdpay.com/contact"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Log In",
+      "label": "Publisher Portal",
       "href": "https://dashboard.zebedee.io"
     }
   },
