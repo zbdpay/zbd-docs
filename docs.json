@@ -353,9 +353,11 @@
             ]
           },
           {
-            "group": "Keysend",
+            "group": "Lightning Payments",
             "pages": [
-              "bitcoin/keysend/send"
+              "bitcoin/lightning-payments/send",
+              "bitcoin/lightning-payments/retrieve",
+              "bitcoin/lightning-payments/keysend"
             ]
           },
           {
@@ -1010,11 +1012,11 @@
     },
     {
       "source": "/payments/api/keysend",
-      "destination": "/bitcoin/keysend/send"
+      "destination": "/bitcoin/lightning-payments/keysend"
     },
     {
       "source": "/payments/api/keysend/send",
-      "destination": "/bitcoin/keysend/send"
+      "destination": "/bitcoin/lightning-payments/keysend"
     },
     {
       "source": "/payments/api/lightning-address",
@@ -1350,7 +1352,7 @@
     },
     {
       "source": "/bitcoin/keysend",
-      "destination": "/bitcoin/keysend/send"
+      "destination": "/bitcoin/lightning-payments/keysend"
     },
     {
       "source": "/bitcoin/gamertags",
@@ -1375,6 +1377,10 @@
     {
       "source": "/bitcoin/oauth2/api/data-fetching",
       "destination": "/bitcoin/oauth2"
+    },
+    {
+      "source": "/bitcoin/keysend/send",
+      "destination": "/bitcoin/lightning-payments/keysend"
     }
   ]
 }
