@@ -51,34 +51,37 @@ You decide when payouts happen. Common patterns:
 
 ## Checks
 
-Every payout goes through the same checks before any money moves:
+Every payout goes through the same checks before any money moves. If one fails, the request is rejected with an [error code](/embedded-payouts/apis/overview#errors) and nothing is debited.
 
 | Check | What happens |
 | --- | --- |
 | Verification | The user has to be verified. If ZBD tracks earnings, their tier also has to allow the amount. |
 | Screening | Sanctions and watchlist screening on the user. |
 | Limits | Per-payout, velocity, and cumulative limits, counted across all payment methods. |
+| Disclosures | For a US bank payout, the user has to have accepted the current Electronic Funds Transfer agreement. The widget asks for it when they add a US bank account. |
 | Funds | Your pool has to cover the payout. If ZBD tracks earnings, the user's earnings have to cover it too. |
 
 ## Payout statuses
 
-Every payout starts as Processing and ends as either Completed or Failed, never both. A completed payout can occasionally come back as Returned.
+Once the checks pass, a payout starts as Initiated, moves to Processing, and ends as either Completed or Failed, never both. A completed payout can occasionally come back as Returned.
 
 ```mermaid
 flowchart LR
-  A[Processing] -->|settles| B[Completed]
+  I[Initiated] --> A[Processing]
+  A -->|settles| B[Completed]
   A -->|or is rejected| C[Failed]
   B -.->|sent back later, rarely| D[Returned]
 ```
 
 | Status | What it means |
 | --- | --- |
-| Processing | Checks have passed and the payout is with the payment rail. |
+| Initiated | Checks have passed and the amount has come out of your pool. |
+| Processing | The payout is with the payment rail. |
 | Completed | Settled to the user's payment method. |
-| Failed | Rejected before any money moved. |
+| Failed | Rejected by the payment rail before settling. The amount goes back to your pool. |
 | Returned | Settled, then sent back, usually because the account was closed or the details were wrong. Returns can arrive well after a payout looks complete. |
 
-A webhook fires on every status change, so you don't need to poll. Settlement timing depends on the method and the user's country. See [Payout Methods](/embedded-payouts/methods-and-coverage#what-affects-timing).
+A [webhook](/embedded-payouts/apis/webhook-events) fires on every status change, so you don't need to poll. Settlement timing depends on the method and the user's country. See [Payout Methods](/embedded-payouts/methods-and-coverage#what-affects-timing).
 
 ## When a payout fails or is returned
 

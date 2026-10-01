@@ -127,6 +127,7 @@
                   "embedded-payouts/apis/create-user",
                   "embedded-payouts/apis/get-user",
                   "embedded-payouts/apis/update-user",
+                  "embedded-payouts/apis/list-payment-methods",
                   "embedded-payouts/apis/create-session",
                   "embedded-accounts/apis/get-disclosures",
                   "embedded-accounts/apis/record-disclosures"
@@ -135,30 +136,28 @@
               {
                 "group": "Payouts",
                 "pages": [
-                  "embedded-payouts/apis/create-payout"
+                  "embedded-payouts/apis/create-payout",
+                  "embedded-payouts/apis/get-payout",
+                  "embedded-payouts/apis/list-payouts"
                 ]
               },
               {
                 "group": "Earnings",
                 "pages": [
-                  "embedded-payouts/apis/fund-user",
-                  "embedded-payouts/apis/deplete-user",
-                  "embedded-payouts/apis/get-balance",
-                  "embedded-payouts/apis/list-user-transactions"
+                  "embedded-payouts/apis/credit-user",
+                  "embedded-payouts/apis/debit-user",
+                  "embedded-payouts/apis/get-earnings",
+                  "embedded-payouts/apis/list-transactions"
                 ]
               },
               {
                 "group": "Webhooks",
                 "pages": [
+                  "embedded-payouts/apis/webhook-events",
                   "embedded-payouts/apis/create-webhook",
                   "embedded-payouts/apis/list-webhooks",
-                  "embedded-payouts/apis/update-webhook"
-                ]
-              },
-              {
-                "group": "Testing",
-                "pages": [
-                  "embedded-payouts/apis/cash-out-sandbox"
+                  "embedded-payouts/apis/update-webhook",
+                  "embedded-payouts/apis/delete-webhook"
                 ]
               }
             ]
@@ -601,7 +600,7 @@
     },
     {
       "source": "/widget/sandbox",
-      "destination": "/embedded-payouts/apis/cash-out-sandbox"
+      "destination": "/embedded-payouts/apis/overview"
     },
     {
       "source": "/widget/webhooks",
@@ -1205,15 +1204,15 @@
     },
     {
       "source": "/widget/deplete-user",
-      "destination": "/embedded-payouts/apis/deplete-user"
+      "destination": "/embedded-payouts/apis/debit-user"
     },
     {
       "source": "/widget/fund-user",
-      "destination": "/embedded-payouts/apis/fund-user"
+      "destination": "/embedded-payouts/apis/credit-user"
     },
     {
       "source": "/widget/get-balance",
-      "destination": "/embedded-payouts/apis/get-balance"
+      "destination": "/embedded-payouts/apis/get-earnings"
     },
     {
       "source": "/widget/get-disclosure-status",
@@ -1221,7 +1220,7 @@
     },
     {
       "source": "/widget/get-transactions",
-      "destination": "/embedded-payouts/apis/list-user-transactions"
+      "destination": "/embedded-payouts/apis/list-transactions"
     },
     {
       "source": "/widget/get-user",
@@ -1390,6 +1389,26 @@
     {
       "source": "/bitcoin/payments/lightning-address/static-charges",
       "destination": "/bitcoin/lightning-charges"
+    },
+    {
+      "source": "/embedded-payouts/apis/cash-out-sandbox",
+      "destination": "/embedded-payouts/apis/overview"
+    },
+    {
+      "source": "/embedded-payouts/apis/fund-user",
+      "destination": "/embedded-payouts/apis/credit-user"
+    },
+    {
+      "source": "/embedded-payouts/apis/deplete-user",
+      "destination": "/embedded-payouts/apis/debit-user"
+    },
+    {
+      "source": "/embedded-payouts/apis/get-balance",
+      "destination": "/embedded-payouts/apis/get-earnings"
+    },
+    {
+      "source": "/embedded-payouts/apis/list-user-transactions",
+      "destination": "/embedded-payouts/apis/list-transactions"
     }
   ]
 }

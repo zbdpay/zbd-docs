@@ -18,11 +18,11 @@ When a user verifies depends on [how you track earnings](/embedded-payouts/how-p
 | Tiers | None. Every user is fully verified | Users start at a lower tier and verify further as their earnings grow |
 | Why | ZBD has no record of what users have earned, so it can't step them up | ZBD sees each user's earnings and payouts, so it knows when a higher tier is needed |
 
-Either way, a user has to exist before you can [credit them](/embedded-payouts/apis/fund-user) or [pay them](/embedded-payouts/apis/create-payout).
+Either way, a user has to exist before you can [credit them](/embedded-payouts/apis/credit-user) or [pay them](/embedded-payouts/apis/create-payout).
 
 ## Creating a user
 
-[Create a user](/embedded-payouts/apis/create-user) with your own identifier for them and their email address, which ZBD uses to send verification codes. You don't need any other personal data at this stage.
+[Create a user](/embedded-payouts/apis/create-user) with your own identifier for them. You can also pass their email address, which ZBD uses to send verification codes in the widget. You don't need any other personal data at this stage.
 
 ## Verification
 
@@ -38,8 +38,8 @@ ZBD collects tax information when a payout requires it, or at onboarding if you'
 
 The user chooses how they want to be paid from the [options available in their country](/embedded-payouts/methods-and-coverage), in the widget's payment method selection flow. ZBD collects and holds the details.
 
-A user can have earnings before choosing a payment method, but can't be paid until they have one.
+A user can have earnings before choosing a payment method, but can't be paid until they have one. Use [List Payment Methods](/embedded-payouts/apis/list-payment-methods) to get the `payment_method_id` you send with a payout.
 
 ## Reading user state
 
-Use [Get a User](/embedded-payouts/apis/get-user) to check whether a user has completed identity verification. That's usually enough to decide what to show them, like a cash out button or a prompt to verify.
+Use [Get a User](/embedded-payouts/apis/get-user) and its `kyc_status` to check whether a user has completed identity verification. That's usually enough to decide what to show them, like a cash out button or a prompt to verify.

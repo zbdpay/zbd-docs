@@ -1,24 +1,21 @@
 ---
-title: "Record disclosure acceptance"
-description: "Record disclosure acceptances."
-api: "POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures"
+title: "Record Disclosures"
+description: "Record that a user accepted the latest version of one or more disclosures."
+api: "POST https://api.zbdpay.com/api/v1/users/{userId}/disclosures"
 ---
 
-## Description
+<Note>
+  Most programs don't need this endpoint. The widget asks the user to accept the Electronic Funds Transfer agreement when they add a US bank account. This endpoint is for specific cases, such as a program that runs its own front end instead of the widget. If that's you, talk to your ZBD contact during onboarding.
+</Note>
 
-Records the user's acceptance of the latest version of each disclosure type in `acceptedDisclosureTypeIds`.
-
-For widget ACH cashout, present the Electronic Funds Transfer disclosure and
-submit type `6`, as shown below. Types `1` through `5` are not required for widget
-eligibility. Do not call this endpoint from a browser, mobile client, game
-client, or WebView.
+Records the user's acceptance of the latest version of each disclosure type you send. For a US bank (ACH) payout, send type `6`, the Electronic Funds Transfer disclosure.
 
 ## Configuration
 
 ### Header Parameters
 
-<ParamField required header="apikey" type="string">
-  Your ZBD project API key.
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
 </ParamField>
 
 <ParamField initialValue="application/json" header="Content-Type" type="string">
@@ -28,23 +25,21 @@ client, or WebView.
 ### Path Parameters
 
 <ParamField required path="userId" type="string">
-  The ZBD user ID returned when the widget user is created or resolved.
+  The ZBD user ID returned by Create a User.
 </ParamField>
 
 ### Body Parameters
 
-<ParamField required body="acceptedDisclosureTypeIds" type="array">
-  Disclosure type IDs accepted by the user. For widget ACH cashout, send `[6]`. ZBD records acceptance for the latest version of each submitted type.
+<ParamField required body="accepted_disclosure_type_ids" type="integer[]">
+  The disclosure types the user accepted, for example `[6]`.
 </ParamField>
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
-  -H "apikey: YOUR_API_KEY" \
+curl -X POST https://api.zbdpay.com/api/v1/users/{userId}/disclosures \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "acceptedDisclosureTypeIds": [6]
-  }'
+  -d '{ "accepted_disclosure_type_ids": [6] }'
 ```
 </RequestExample>
 
@@ -52,33 +47,17 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
 ```json 201
 {
   "success": true,
-  "message": "Publisher user disclosure agreements recorded successfully.",
-  "data": {
-    "acceptedDisclosureTypeIds": [6]
-  },
+  "message": "Disclosures recorded.",
+  "data": { "accepted_disclosure_type_ids": [6] },
   "error": null
 }
 ```
 </ResponseExample>
 
-## Disclosure Type IDs
-
-| Disclosure type | Type ID |
-|---|---:|
-| Electronic Funds Transfer | `6` |
-
-Disclosure types `1` through `5` can appear in disclosure status responses, but
-they are not widget session or ACH cashout prerequisites.
-
-## Existing Users
-
-If an existing user has not accepted the current Electronic Funds Transfer disclosure, call this endpoint with type `6`. Do not rely on an idempotent user-create call to update disclosure acceptance.
-
 ## Errors
 
-| Status | Reason |
-|---|---|
-| `400` | `acceptedDisclosureTypeIds` is empty, missing, or contains an unknown disclosure type |
-| `401` | Missing or invalid API key |
-| `403` | The API key is not allowed to access widget disclosure APIs |
-| `404` | `userId` does not belong to the project associated with the API key |
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `validation_failed` | The list is empty or has an unknown type |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `user_not_found` | The user doesn't exist under your key |

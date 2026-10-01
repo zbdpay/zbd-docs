@@ -1,0 +1,49 @@
+---
+noindex: true
+title: "Get Pool Balance"
+description: "Read how much is in your payout pool."
+api: "GET https://api.zbdpay.com/api/v1/treasury/accounts"
+---
+
+Returns each of your pool accounts with its currency and balance. If you run several projects, each one can have its own account.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="project_id" type="string">
+  Only the account for this project.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/treasury/accounts \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Accounts retrieved.",
+  "data": {
+    "accounts": [
+      {
+        "account_id": "acct_3e9b",
+        "currency": "USD",
+        "balance": 997500,
+        "project_id": null
+      }
+    ]
+  },
+  "error": null
+}
+```
+</ResponseExample>

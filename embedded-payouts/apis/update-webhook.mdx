@@ -1,18 +1,52 @@
 ---
 title: "Update a Webhook"
-description: "Update a project webhook config."
-api: "PUT https://api.zbdpay.com/api/v1/projects/{projectId}/webhooks/{id}"
+description: "Change a subscription's URL, events, or project, or pause it."
+api: "PATCH https://api.zbdpay.com/api/v1/webhooks/subscriptions/{subscriptionId}"
 ---
 
-<ParamField header="apikey" type="string" required>
-  Your ZBD project API key. Call this endpoint from your server only.
+Only the fields you send are changed.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
 </ParamField>
 
-<ParamField path="projectId" type="string" required>
-  Your ZBD project ID.
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
 </ParamField>
 
-<ParamField path="id" type="string" required>
-  The webhook ID.
+### Path Parameters
+
+<ParamField required path="subscriptionId" type="string">
+  The `subscription_id` from Create a Webhook.
 </ParamField>
 
+### Body Parameters
+
+<ParamField body="url" type="string">
+  A new HTTPS URL.
+</ParamField>
+
+<ParamField body="events" type="string[]">
+  The event types to send.
+</ParamField>
+
+<ParamField body="project_id" type="string">
+  Only send events for this project.
+</ParamField>
+
+<ParamField body="status" type="string">
+  `active` or `paused`.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X PATCH https://api.zbdpay.com/api/v1/webhooks/subscriptions/sub_51a2 \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "status": "paused" }'
+```
+</RequestExample>

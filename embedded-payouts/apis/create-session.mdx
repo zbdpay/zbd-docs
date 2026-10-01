@@ -1,19 +1,19 @@
 ---
 title: "Create a Session"
-description: "Create a widget session for a user."
-api: "POST https://api.zbdpay.com/api/v1/widget/users/session"
+description: "Create a widget session for a user, with the flows it can open."
+api: "POST https://api.zbdpay.com/api/v1/widget-sessions"
 ---
 
-Returns a `session_token` (JWT) and a `widget_url` that you embed as an iframe. The session is valid for the duration specified in `expires_at`.
+Returns a `widget_url` you load in an iframe or WebView. The flows you list are the only ones the session can open, and they're carried in the signed session token, so they can't be changed from the browser.
 
-The widget handles email verification codes, identity verification, payment method selection, and cash out.
+The user has to exist first. Create them with [Create a User](/embedded-payouts/apis/create-user).
 
 ## Configuration
 
 ### Header Parameters
 
-<ParamField required header="apikey" type="string">
-  Your ZBD project API key (production scope).
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
 </ParamField>
 
 <ParamField initialValue="application/json" header="Content-Type" type="string">
@@ -22,36 +22,26 @@ The widget handles email verification codes, identity verification, payment meth
 
 ### Body Parameters
 
-<ParamField required body="email" type="string">
-  User's email address. Required when `access_token` is not supplied.
+<ParamField required body="user_id" type="string">
+  The ZBD user ID returned by Create a User.
 </ParamField>
 
-<ParamField body="webhook_url" type="string">
-  Optional HTTPS server URL to receive widget webhook events.
+<ParamField required body="flows" type="string[]">
+  The flows this session can open: `kyc` (identity verification), `payment_methods` (payment method selection), `disclosures`, and `cashout`. `cashout` is only available where ZBD tracks earnings.
 </ParamField>
 
-<ParamField body="reference_id" type="string">
-  Optional publisher reference for the session.
-</ParamField>
-
-<ParamField body="metadata" type="object">
-  Optional key-value metadata to attach to the session.
-</ParamField>
-
-<ParamField body="access_token" type="string">
-  Existing access token. When supplied, `email` is not required and OTP is skipped.
+<ParamField body="project_id" type="string">
+  The project the session belongs to.
 </ParamField>
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zbdpay.com/api/v1/widget/users/session \
-  -H "apikey: YOUR_API_KEY" \
+curl -X POST https://api.zbdpay.com/api/v1/widget-sessions \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "player@example.com",
-    "webhook_url": "https://your-server.com/zbd/webhooks",
-    "reference_id": "player-42",
-    "metadata": { "source": "your-game" }
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "flows": ["kyc", "payment_methods"]
   }'
 ```
 </RequestExample>
@@ -60,11 +50,46 @@ curl -X POST https://api.zbdpay.com/api/v1/widget/users/session \
 ```json 201
 {
   "success": true,
+  "message": "Session created.",
   "data": {
     "session_token": "eyJhbGciOiJSUzI1NiIs...",
-    "expires_at": "2026-06-01T00:00:00.000Z",
-    "widget_url": "https://widget.zbd.gg?session_token=eyJhbGci..."
-  }
+    "widget_url": "https://widget.zbd.gg/?session_token=eyJhbGci...",
+    "flows": ["kyc", "payment_methods"],
+    "expires_at": "2026-10-01T22:00:00Z"
+  },
+  "error": null
 }
 ```
 </ResponseExample>
+
+## Response
+
+The session is in `data`.
+
+<ResponseField name="session_token" type="string">
+  The signed token for this session. It's already in `widget_url`, so you only need it on its own when the widget asks your page for a new session.
+</ResponseField>
+
+<ResponseField name="widget_url" type="string">
+  The URL to load in an iframe or WebView. Load it as it comes back, and add [embed parameters](/embedded-payouts/cash-out-widget#embed-parameters) if you need them.
+</ResponseField>
+
+<ResponseField name="flows" type="string[]">
+  The flows this session can open, as you requested them.
+</ResponseField>
+
+<ResponseField name="expires_at" type="string">
+  When the session expires, as an ISO 8601 timestamp. Sessions last 4 hours.
+</ResponseField>
+
+
+When the session is close to expiring, the widget asks your page for a new one. See [Refreshing a session](/embedded-payouts/browser-events#refreshing-a-session).
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `validation_failed` | `flows` is empty or contains an unknown flow |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `403` | `feature_not_enabled` | A requested flow isn't available for your program, for example `cashout` when you track earnings yourself |
+| `404` | `user_not_found` | The user doesn't exist under your key |

@@ -38,7 +38,7 @@ Because the user chooses the method and its speed, the fee for that method comes
 
 - **Choosing a method.** The widget's payment method selection flow shows each method's fee, as a percentage or a flat amount, so users know the cost before they pick.
 - **Cashing out in the widget.** If ZBD tracks earnings, the cash out flow shows the fee and the final amount before the user confirms.
-- **Payouts sent from your backend.** The [Create a Payout](/embedded-payouts/apis/create-payout) response includes the fee and the net amount the user receives, so you can show it and record it.
+- **Payouts sent from your backend.** The [Create a Payout](/embedded-payouts/apis/create-payout) response includes `fee_amount` and `net_amount`, so you can show the user what they received and record it.
 
 If a payout involves a currency conversion, the conversion cost is included and shown with the converted amount. If you'd rather cover fees for your users, your ZBD contact can set that up for your program.
 

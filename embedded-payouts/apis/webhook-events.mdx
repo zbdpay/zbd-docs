@@ -1,0 +1,110 @@
+---
+title: "Webhook Events"
+description: "The events ZBD sends to your server, what's in them, and how to verify them."
+---
+
+ZBD sends a signed `POST` to each URL you subscribe with [Create a Webhook](/embedded-payouts/apis/create-webhook). One set of events covers payouts your backend sends and cash outs from the widget.
+
+## Events
+
+| Event | When | What to do |
+| --- | --- | --- |
+| `PAYMENTS.V1.PAYOUT.INITIATED` | The payout was accepted and your pool was debited | Mark the payout as pending |
+| `PAYMENTS.V1.PAYOUT.PROCESSING` | The payout was sent to the payment rail | Show the user it's on the way |
+| `PAYMENTS.V1.PAYOUT.COMPLETED` | The money settled to the user's payment method | Mark it as paid |
+| `PAYMENTS.V1.PAYOUT.FAILED` | The payout was rejected before settling, and the amount went back to your pool | If you track earnings, add the amount back in your own system. If ZBD tracks them, ZBD restores the user's earnings |
+| `PAYMENTS.V1.PAYOUT.RETURNED` | The payout settled, then came back, and the amount went back to your pool | Same as `FAILED` |
+| `TREASURY.V1.BALANCE.LOW` | A pool account dropped below the low-balance level agreed with ZBD | Top up your pool |
+
+## Payload
+
+```json
+{
+  "event_id": "evt_a1b2c3",
+  "event_type": "PAYMENTS.V1.PAYOUT.FAILED",
+  "occurred_at": "2026-10-03T09:12:00Z",
+  "data": {
+    "payout_id": "po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44",
+    "origin": "api",
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "project_id": null,
+    "reference_id": "creator_payout_2026_10",
+    "amount": 2500,
+    "currency": "USD",
+    "fee": 50,
+    "reason_code": "R02",
+    "reason_description": "account_closed",
+    "treasury_credited": true
+  }
+}
+```
+
+<ResponseField name="event_id" type="string">
+  Unique ID for the event. Deduplicate on it, since a retry can deliver the same event twice.
+</ResponseField>
+
+<ResponseField name="event_type" type="string">
+  Which event this is, from the table above.
+</ResponseField>
+
+<ResponseField name="occurred_at" type="string">
+  When it happened, as an ISO 8601 timestamp.
+</ResponseField>
+
+<ResponseField name="data.payout_id" type="string">
+  The payout the event is about.
+</ResponseField>
+
+<ResponseField name="data.origin" type="string">
+  `api` for payouts your backend sent and `widget` for cash outs.
+</ResponseField>
+
+<ResponseField name="data.user_id" type="string">
+  The user being paid.
+</ResponseField>
+
+<ResponseField name="data.project_id" type="string | null">
+  The payout's project, if it has one.
+</ResponseField>
+
+<ResponseField name="data.reference_id" type="string | null">
+  Your own ID for the payout, if you sent one. Use it to match the event to your records.
+</ResponseField>
+
+<ResponseField name="data.amount" type="integer">
+  The payout amount, in the currency's smallest unit.
+</ResponseField>
+
+<ResponseField name="data.currency" type="string">
+  Currency code for the amounts.
+</ResponseField>
+
+<ResponseField name="data.fee" type="integer">
+  The fee for the payment method, in the smallest unit. Same as `fee_amount` in the API.
+</ResponseField>
+
+<ResponseField name="data.reason_code" type="string">
+  Why the payout failed or came back. Only on `FAILED` and `RETURNED`.
+</ResponseField>
+
+<ResponseField name="data.reason_description" type="string">
+  A readable version of `reason_code`. Only on `FAILED` and `RETURNED`.
+</ResponseField>
+
+<ResponseField name="data.treasury_credited" type="boolean">
+  `true` once the amount is back in your pool. Only on `FAILED` and `RETURNED`.
+</ResponseField>
+
+## Verifying a webhook
+
+Every webhook is signed. The `X-ZBD-Signature` header carries the signature, and `X-ZBD-Signature-Key-Id` names the key that signed it.
+
+1. Fetch ZBD's public keys from `GET /api/v1/webhooks/jwks.json` and cache them.
+2. Pick the key that matches `X-ZBD-Signature-Key-Id`.
+3. Check the signature over the raw request body before you act on the event.
+
+## Handling deliveries
+
+- **Respond quickly with a `2xx`.** Do the work after you respond. ZBD retries deliveries that fail or time out.
+- **Deduplicate on `event_id`.** A retry can deliver the same event more than once.
+- **Don't rely on order.** Use `occurred_at`, and the payout's current status from [Get a Payout](/embedded-payouts/apis/get-payout) if you need to be sure.

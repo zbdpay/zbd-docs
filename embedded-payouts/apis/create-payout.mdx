@@ -1,21 +1,30 @@
 ---
 title: "Create a Payout"
 description: "Send money from your pool to a user's payment method."
-api: "POST https://api.zbdpay.com/api/v1/payouts"
+api: "POST https://api.zbdpay.com/api/v1/payments/payouts"
 ---
 
-Sends a payout to a user's payment method. The amount comes out of your [pool](/embedded-payouts/funding) when the payout is created, so the pool needs to cover it at that moment. If ZBD tracks earnings for the user, the amount also comes off their earnings.
+Sends a payout to one user's payment method. ZBD checks the user's verification, screening, limits, and, for US bank payouts, the Electronic Funds Transfer disclosure. If every check passes, the amount comes out of your [pool](/embedded-payouts/funding) and the call returns `202` with the payout in `INITIATED`. If a check fails, the call returns a `4xx` and nothing is debited.
 
-The response includes the fee for the user's payment method and the net amount they receive. The payout starts as `PROCESSING`. You get a webhook when it completes, fails, or is returned. [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) covers the full lifecycle.
+What else the payout debits depends on how you track earnings:
 
-This endpoint is idempotent on `idempotency_key`. Retrying with the same key returns the original payout instead of sending a second one.
+| | You track earnings | ZBD tracks earnings |
+| --- | --- | --- |
+| Debits | Your pool only | The user's earnings on ZBD, then your pool funds the payout |
+| On `FAILED` or `RETURNED` | The amount goes back to your pool, and you add it back in your own system | The amount goes back to your pool and to the user's earnings |
+
+The response includes the fee for the user's payment method and the net amount they receive. A webhook fires on every status change. See [Webhook Events](/embedded-payouts/apis/webhook-events).
 
 ## Configuration
 
 ### Header Parameters
 
-<ParamField required header="apikey" type="string">
-  Your ZBD project API key (production scope).
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField required header="Idempotency-Key" type="string">
+  A UUID you generate for this payout. Retrying with the same key returns the original payout instead of sending a second one.
 </ParamField>
 
 <ParamField initialValue="application/json" header="Content-Type" type="string">
@@ -25,71 +34,130 @@ This endpoint is idempotent on `idempotency_key`. Retrying with the same key ret
 ### Body Parameters
 
 <ParamField required body="user_id" type="string">
-  The ZBD user ID returned by Create User.
-</ParamField>
-
-<ParamField required body="amount" type="integer">
-  Amount in the currency's smallest unit. For a two-decimal currency, `100` is 1.00 and `1000` is 10.00. Fees for the user's payment method come out of this amount.
-</ParamField>
-
-<ParamField required body="currency" type="string">
-  Currency code for the amount, for example `USD`.
+  The ZBD user ID returned by Create a User.
 </ParamField>
 
 <ParamField required body="payment_method_id" type="string">
-  The ID of the payment method to pay out to. It has to belong to the user in `user_id`. Required even if the user has only one, so payouts stay unambiguous once users have several.
+  The payment method to pay, from [List Payment Methods](/embedded-payouts/apis/list-payment-methods). It has to belong to the user in `user_id`, or the call returns `404 payment_method_not_found`.
 </ParamField>
 
-<ParamField required body="idempotency_key" type="string">
-  Unique key to prevent duplicate payouts. Use a UUID.
+<ParamField required body="amount" type="integer">
+  Amount in the currency's smallest unit. For USD, `2500` is $25.00. The fee comes out of this amount.
 </ParamField>
 
-<ParamField body="reference" type="string">
-  Your own ID for this payout, returned in webhooks and transaction history for reconciliation.
+<ParamField required body="currency" type="string">
+  `USD` or `EUR`.
 </ParamField>
 
-## Errors
+<ParamField body="reference_id" type="string">
+  Your own ID for this payout. It's returned in webhooks and in List Payouts, for reconciliation.
+</ParamField>
 
-| Status | When it happens |
-| --- | --- |
-| `400` | A required field is missing, the amount is below the minimum for the payment method, or the payment method doesn't belong to the user. |
-| `404` | The user doesn't exist in your project. |
-| `409` | The user hasn't finished verification, hasn't chosen a payment method, or has outstanding disclosures. |
-| `422` | Your pool doesn't cover the amount, or, if ZBD tracks earnings, the user's earnings don't. |
+<ParamField body="project_id" type="string">
+  The project the payout belongs to, so you can filter payouts and webhooks by project.
+</ParamField>
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zbdpay.com/api/v1/payouts \
-  -H "apikey: YOUR_API_KEY" \
+curl -X POST https://api.zbdpay.com/api/v1/payments/payouts \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Idempotency-Key: 6b1d3f0e-2a7c-4e19-9d51-0c8f4a2e7b13" \
   -H "Content-Type: application/json" \
   -d '{
     "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
     "amount": 2500,
     "currency": "USD",
-    "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
-    "idempotency_key": "6b1d3f0e-2a7c-4e19-9d51-0c8f4a2e7b13",
-    "reference": "creator_payout_2026_10"
+    "reference_id": "creator_payout_2026_10"
   }'
 ```
 </RequestExample>
 
 <ResponseExample>
-```json 200
+```json 202
 {
   "success": true,
-  "message": "Payout created.",
+  "message": "Payout initiated.",
   "data": {
     "payout_id": "po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44",
+    "status": "INITIATED",
     "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
     "amount": 2500,
     "currency": "USD",
-    "fee": 50,
+    "fee_amount": 50,
     "net_amount": 2450,
-    "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
-    "reference": "creator_payout_2026_10",
-    "status": "PROCESSING"
+    "reference_id": "creator_payout_2026_10",
+    "project_id": null,
+    "treasury_balance": 997500
   },
   "error": null
 }
 ```
 </ResponseExample>
+
+## Response
+
+The payout is in `data`.
+
+<ResponseField name="payout_id" type="string">
+  ZBD's ID for the payout. Use it with [Get a Payout](/embedded-payouts/apis/get-payout).
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Where the payout is: `INITIATED`, `PROCESSING`, `COMPLETED`, `FAILED`, or `RETURNED`. A new payout is always `INITIATED`. See [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses).
+</ResponseField>
+
+<ResponseField name="origin" type="string">
+  `api` for payouts your backend sent and `widget` for cash outs from the widget. Returned by Get a Payout and List Payouts.
+</ResponseField>
+
+<ResponseField name="user_id" type="string">
+  The user being paid.
+</ResponseField>
+
+<ResponseField name="payment_method_id" type="string">
+  The payment method being paid.
+</ResponseField>
+
+<ResponseField name="amount" type="integer">
+  The amount you sent, in the currency's smallest unit. This is what comes out of your pool.
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Currency code for all amounts in the payout, for example `USD`.
+</ResponseField>
+
+<ResponseField name="fee_amount" type="integer">
+  The fee for the payment method, in the smallest unit. By default it comes out of `amount`.
+</ResponseField>
+
+<ResponseField name="net_amount" type="integer">
+  What the user receives, in the smallest unit. By default this is `amount` minus `fee_amount`.
+</ResponseField>
+
+<ResponseField name="reference_id" type="string | null">
+  Your own ID for the payout, if you sent one.
+</ResponseField>
+
+<ResponseField name="project_id" type="string | null">
+  The project the payout belongs to, if you sent one.
+</ResponseField>
+
+<ResponseField name="treasury_balance" type="integer">
+  What's left in your pool after this payout, in the smallest unit. Only returned when you create a payout.
+</ResponseField>
+
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `idempotency_key_required` | No `Idempotency-Key` header |
+| `400` | `validation_failed` | A required field is missing or malformed |
+| `404` | `user_not_found` · `payment_method_not_found` | The user doesn't exist, or the payment method doesn't belong to the user |
+| `409` | `idempotency_key_reused` | The same key was sent with a different body |
+| `422` | `insufficient_funds` | Your pool, or the user's earnings if ZBD tracks them, doesn't cover the amount |
+| `422` | `kyc_required` · `disclosure_required` · `screening_blocked` | The user isn't cleared for this payout |
+| `422` | `limit_exceeded` | The amount is over the user's limit |
+| `422` | `payment_method_inactive` · `unsupported_currency` | The payment method can't be used, or the currency can't be paid on that rail |

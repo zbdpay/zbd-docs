@@ -1,0 +1,64 @@
+---
+noindex: true
+title: "Set a Low-Balance Alert"
+description: "Get a webhook when your pool drops below a level you set."
+api: "PUT https://api.zbdpay.com/api/v1/treasury/accounts/{accountId}/alerts"
+---
+
+Sets the levels at which ZBD warns you that a pool account is running low. When the balance drops below a level, `TREASURY.V1.BALANCE.LOW` fires. See [Webhook Events](/embedded-payouts/apis/webhook-events).
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="accountId" type="string">
+  The `account_id` from Get Pool Balance.
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="warning_threshold" type="integer">
+  The balance, in the account's currency and smallest unit, that should prompt a top-up.
+</ParamField>
+
+<ParamField body="critical_threshold" type="integer">
+  A lower level for when payouts are about to start failing.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X PUT https://api.zbdpay.com/api/v1/treasury/accounts/acct_3e9b/alerts \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "warning_threshold": 500000,
+    "critical_threshold": 100000
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Alerts updated.",
+  "data": {
+    "account_id": "acct_3e9b",
+    "currency": "USD",
+    "warning_threshold": 500000,
+    "critical_threshold": 100000
+  },
+  "error": null
+}
+```
+</ResponseExample>

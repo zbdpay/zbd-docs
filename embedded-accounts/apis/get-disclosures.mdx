@@ -1,41 +1,29 @@
 ---
-title: "Get disclosure status"
-description: "Read disclosure / ToS acceptance status."
-api: "GET https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures"
+title: "Get Disclosures"
+description: "Read which disclosures a user has accepted."
+api: "GET https://api.zbdpay.com/api/v1/users/{userId}/disclosures"
 ---
 
-## Description
-
-Returns the user's acceptance status for each current disclosure type. The
-response can include disclosures that are not required by the widget.
-
-For widget ACH cashout, inspect Electronic Funds Transfer type `6` only. If its
-`tos_current` value is `false`, present the current EFT document and record
-acceptance with [Submit Disclosure Acceptance](/embedded-accounts/apis/record-disclosures).
-Types `1` through `5` can be ignored for widget eligibility and do not block
-cashout. No disclosure type is checked during widget session creation. Do not
-call this endpoint from a browser, mobile client, game client, or WebView.
-
-The API key determines the publisher/project context. `userId` is the ZBD user ID returned when the widget user is created or resolved.
+Returns the user's acceptance status for each current disclosure type. Before a US bank (ACH) payout, the user has to have accepted the current Electronic Funds Transfer disclosure (type `6`). If they haven't, the payout returns `422 disclosure_required`.
 
 ## Configuration
 
 ### Header Parameters
 
-<ParamField required header="apikey" type="string">
-  Your ZBD project API key.
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
 </ParamField>
 
 ### Path Parameters
 
 <ParamField required path="userId" type="string">
-  The ZBD user ID returned when the widget user is created or resolved.
+  The ZBD user ID returned by Create a User.
 </ParamField>
 
 <RequestExample>
 ```bash cURL
-curl https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
-  -H "apikey: YOUR_API_KEY"
+curl https://api.zbdpay.com/api/v1/users/{userId}/disclosures \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 </RequestExample>
 
@@ -43,20 +31,13 @@ curl https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
 ```json 200
 {
   "success": true,
-  "message": "Publisher user ToS status retrieved successfully.",
+  "message": "Disclosures retrieved.",
   "data": [
-    {
-      "type_id": 2,
-      "name": "Terms of Service",
-      "version": "1.4.0",
-      "tos_current": true,
-      "accepted_at": "2026-01-15T12:00:00Z"
-    },
     {
       "type_id": 6,
       "name": "Electronic Funds Transfer",
       "version": "1.0.0",
-      "tos_current": false,
+      "current": false,
       "accepted_at": null
     }
   ],
@@ -65,12 +46,11 @@ curl https://api.zbdpay.com/api/v1/widget/users/{userId}/disclosures \
 ```
 </ResponseExample>
 
-`tos_current` means the user has accepted the current version of that disclosure type. A value of `false` means there is no acceptance on record, or the user's latest acceptance is for an older version. For widget ACH eligibility, only the value on type `6` is relevant.
+`current` is `true` when the user has accepted the latest version of that disclosure.
 
 ## Errors
 
-| Status | Reason |
-|---|---|
-| `401` | Missing or invalid API key |
-| `403` | The API key is not allowed to access widget disclosure APIs |
-| `404` | `userId` does not belong to the project associated with the API key |
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `user_not_found` | The user doesn't exist under your key |

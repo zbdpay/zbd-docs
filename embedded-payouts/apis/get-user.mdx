@@ -1,29 +1,29 @@
 ---
 title: "Get a User"
-description: "Read a user's details and verification status."
-api: "GET https://api.zbdpay.com/api/v1/widget/users/{user_id}"
+description: "Read a user's details and whether they're verified."
+api: "GET https://api.zbdpay.com/api/v1/users/{userId}"
 ---
 
-Use this to check whether a user has completed identity verification before showing them payout options.
+Use this to check whether a user has completed identity verification before you show them payout options.
 
 ## Configuration
 
 ### Header Parameters
 
-<ParamField required header="apikey" type="string">
-  Your ZBD project API key (production scope).
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
 </ParamField>
 
 ### Path Parameters
 
-<ParamField required path="user_id" type="string">
-  The ZBD user ID returned by Create User.
+<ParamField required path="userId" type="string">
+  The ZBD user ID returned by Create a User.
 </ParamField>
 
 <RequestExample>
 ```bash cURL
-curl https://api.zbdpay.com/api/v1/widget/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652 \
-  -H "apikey: YOUR_API_KEY"
+curl https://api.zbdpay.com/api/v1/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652 \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 </RequestExample>
 
@@ -31,12 +31,47 @@ curl https://api.zbdpay.com/api/v1/widget/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89
 ```json 200
 {
   "success": true,
+  "message": "User retrieved.",
   "data": {
-    "id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
-    "reference_id": "player-42",
-    "email": "player@example.com",
-    "is_id_verified": true
-  }
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "publisher_user_id": "creator-42",
+    "email": "creator@example.com",
+    "kyc_status": "verified",
+    "created_at": "2026-10-01T18:00:00Z"
+  },
+  "error": null
 }
 ```
 </ResponseExample>
+
+## Response
+
+The user is in `data`. [Create a User](/embedded-payouts/apis/create-user) and [Update a User](/embedded-payouts/apis/update-user) return the same fields.
+
+<ResponseField name="user_id" type="string">
+  ZBD's ID for the user. Send it on every other call about this user.
+</ResponseField>
+
+<ResponseField name="publisher_user_id" type="string">
+  Your own ID for the user, as you sent it on Create a User.
+</ResponseField>
+
+<ResponseField name="email" type="string | null">
+  The user's email address, if you sent one. ZBD uses it to send verification codes in the widget.
+</ResponseField>
+
+<ResponseField name="kyc_status" type="string">
+  Where the user is in identity verification: `not_started`, `pending` (submitted and being reviewed), `verified`, or `rejected`. A user has to be `verified` before they can be paid.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  When the user was created, as an ISO 8601 timestamp.
+</ResponseField>
+
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `user_not_found` | The user doesn't exist under your key |
