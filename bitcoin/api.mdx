@@ -108,7 +108,7 @@ To receive payments, you normally create [Charges](/bitcoin/lightning-charges/cr
 
 #### Sending Bitcoin
 
-On the other hand, to send Bitcoin you must use one of the many [Payment APIs](/bitcoin/payments#instant-bitcoin-payouts). Payments through the Lightning Network can always fail, due to a myriad of reasons (e.g. network connectivity, size of payment, destination or receipient, etc). Because of that, every payment starts in a `processing` state, and only when it's settled or failed does it receive the `completed` or `failed` status' respectively.
+On the other hand, to send Bitcoin you must use one of the many [Payment APIs](/bitcoin/lightning-payments/send). Payments through the Lightning Network can always fail, due to a myriad of reasons (e.g. network connectivity, size of payment, destination or receipient, etc). Because of that, every payment starts in a `processing` state, and only when it's settled or failed does it receive the `completed` or `failed` status' respectively.
 
 As you can understand now, **it is important that you subscribe to updates on all your Charges and Payments when using the ZBD Payments API**.
 

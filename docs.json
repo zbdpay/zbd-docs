@@ -695,7 +695,7 @@
     },
     {
       "source": "/knowledge-base/guides/nostr-relay",
-      "destination": "/bitcoin/payments/nostr/nostr-relay"
+      "destination": "/bitcoin/payments/coverage"
     },
     {
       "source": "/knowledge-base/guides/*",
@@ -1123,7 +1123,7 @@
     },
     {
       "source": "/payments/glossary",
-      "destination": "/bitcoin/payments/glossary"
+      "destination": "/bitcoin/payments/coverage"
     },
     {
       "source": "/payments/integrations",
@@ -1151,11 +1151,11 @@
     },
     {
       "source": "/payments/mcp",
-      "destination": "/bitcoin/payments/mcp"
+      "destination": "/bitcoin/payments/coverage"
     },
     {
       "source": "/payments/nostr/nostr-relay",
-      "destination": "/bitcoin/payments/nostr/nostr-relay"
+      "destination": "/bitcoin/payments/coverage"
     },
     {
       "source": "/payments/openapi",
