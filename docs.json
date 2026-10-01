@@ -298,6 +298,47 @@
             ]
           },
           {
+            "group": "Resources",
+            "pages": [
+              "bitcoin/payments",
+              "bitcoin/payments/lightning-network",
+              "bitcoin/payments/lightning-address",
+              {
+                "group": "Pay Ins",
+                "expanded": false,
+                "pages": [
+                  "bitcoin/payments/payins/lightning-charges",
+                  "bitcoin/payments/payins/gamertags"
+                ]
+              },
+              {
+                "group": "Pay Outs",
+                "expanded": false,
+                "pages": [
+                  "bitcoin/payments/payouts/lightning-address",
+                  "bitcoin/payments/payouts/gamertags",
+                  "bitcoin/payments/payouts/withdrawal-requests",
+                  "bitcoin/payments/payouts/lightning-charges"
+                ]
+              },
+              {
+                "group": "Login with ZBD",
+                "expanded": false,
+                "pages": [
+                  "bitcoin/oauth2",
+                  "bitcoin/oauth2/integration",
+                  "bitcoin/oauth2/guidelines",
+                  "bitcoin/oauth2/walkthrough",
+                  "bitcoin/oauth2/api/authorization",
+                  "bitcoin/oauth2/api/retrieve-access-token",
+                  "bitcoin/oauth2/api/refresh-token",
+                  "bitcoin/oauth2/api/retrieve-user",
+                  "bitcoin/oauth2/api/retrieve-wallet"
+                ]
+              }
+            ]
+          },
+          {
             "group": "Lightning Address",
             "pages": [
               "bitcoin/lightning-address",
@@ -360,47 +401,6 @@
               "bitcoin/utils/btc-usd",
               "bitcoin/utils/is-supported-region",
               "bitcoin/utils/ip"
-            ]
-          },
-          {
-            "group": "Resources",
-            "pages": [
-              "bitcoin/payments",
-              "bitcoin/payments/lightning-network",
-              "bitcoin/payments/lightning-address",
-              {
-                "group": "Pay Ins",
-                "expanded": false,
-                "pages": [
-                  "bitcoin/payments/payins/lightning-charges",
-                  "bitcoin/payments/payins/gamertags"
-                ]
-              },
-              {
-                "group": "Pay Outs",
-                "expanded": false,
-                "pages": [
-                  "bitcoin/payments/payouts/lightning-address",
-                  "bitcoin/payments/payouts/gamertags",
-                  "bitcoin/payments/payouts/withdrawal-requests",
-                  "bitcoin/payments/payouts/lightning-charges"
-                ]
-              },
-              {
-                "group": "Login with ZBD",
-                "expanded": false,
-                "pages": [
-                  "bitcoin/oauth2",
-                  "bitcoin/oauth2/integration",
-                  "bitcoin/oauth2/guidelines",
-                  "bitcoin/oauth2/walkthrough",
-                  "bitcoin/oauth2/api/authorization",
-                  "bitcoin/oauth2/api/retrieve-access-token",
-                  "bitcoin/oauth2/api/refresh-token",
-                  "bitcoin/oauth2/api/retrieve-user",
-                  "bitcoin/oauth2/api/retrieve-wallet"
-                ]
-              }
             ]
           }
         ]
