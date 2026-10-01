@@ -16,9 +16,9 @@ export const BtcEurRate = () => {
 
   const RANGES = {
     "1D": { days: 1, granularity: 3600 },
+    "3D": { days: 3, granularity: 3600 * 6 },
     "7D": { days: 7, granularity: 3600 * 6 },
-    "14D": { days: 14, granularity: 3600 * 12 },
-    "30D": { days: 30, granularity: 3600 * 24 },
+    "30D": { days: 30, granularity: 86400 },
   }
 
   useEffect(() => {
@@ -174,6 +174,7 @@ export const BtcEurRate = () => {
   const chartW = 800
   const chartH = 260
   const pathRef = React.useRef(null)
+  const [hoverIdx, setHoverIdx] = useState(null)
 
   const chart = candles
     ? (() => {
@@ -196,7 +197,7 @@ export const BtcEurRate = () => {
           const d = new Date(candles[Math.floor(f * (candles.length - 1))].time)
           return d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
         })
-        return { line, area, min, max, change: { diff, pct, up: diff >= 0 }, labels, x, y }
+        return { line, area, min, max, change: { diff, pct, up: diff >= 0 }, labels, x, y, candles }
       })()
     : null
 
@@ -291,25 +292,45 @@ export const BtcEurRate = () => {
 
         {chart && history.status !== "error" ? (
           <div className="mt-4">
-            <p
-              className={`text-sm font-medium ${
-                chart.change.up ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
-              }`}
-            >
-              {chart.change.up ? "▲" : "▼"}{" "}
-              {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(
-                Math.abs(chart.change.diff)
-              )}{" "}
-              ({chart.change.pct >= 0 ? "+" : ""}
-              {chart.change.pct.toFixed(2)}%) over {range}
-            </p>
+            <div className="flex items-baseline justify-between">
+              <p
+                className={`text-sm font-medium ${
+                  chart.change.up ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"
+                }`}
+              >
+                {chart.change.up ? "▲" : "▼"}{" "}
+                {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(
+                  Math.abs(chart.change.diff)
+                )}{" "}
+                ({chart.change.pct >= 0 ? "+" : ""}
+                {chart.change.pct.toFixed(2)}%) over {range}
+              </p>
+              {hoverIdx !== null && chart.candles[hoverIdx] ? (
+                <p className="text-sm font-medium text-zinc-950 dark:text-white">
+                  <span className="text-zinc-500 dark:text-zinc-400">
+                    {new Date(chart.candles[hoverIdx].time).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                    :{" "}
+                  </span>
+                  {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(
+                    chart.candles[hoverIdx].close
+                  )}
+                </p>
+              ) : null}
+            </div>
             <svg
               ref={pathRef}
               viewBox={`0 0 ${chartW} ${chartH}`}
-              className="mt-2 h-56 w-full"
+              className="mt-2 h-56 w-full touch-none"
               preserveAspectRatio="none"
               role="img"
               aria-label={`BTC/USD price chart, last ${range}`}
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect()
+                const frac = (e.clientX - rect.left) / rect.width
+                const idx = Math.max(0, Math.min(chart.candles.length - 1, Math.round(frac * (chart.candles.length - 1))))
+                setHoverIdx(idx)
+              }}
+              onMouseLeave={() => setHoverIdx(null)}
             >
               <defs>
                 <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
@@ -319,6 +340,21 @@ export const BtcEurRate = () => {
               </defs>
               <path d={chart.area} fill={`url(#${gradientId})`} />
               <path d={chart.line} fill="none" stroke={strokeColor} strokeWidth="2" vectorEffect="non-scaling-stroke" />
+              {hoverIdx !== null && chart.candles[hoverIdx] ? (
+                <g>
+                  <line
+                    x1={chart.x(hoverIdx)}
+                    y1="0"
+                    x2={chart.x(hoverIdx)}
+                    y2={chartH}
+                    stroke={strokeColor}
+                    strokeWidth="1"
+                    strokeDasharray="4 4"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                  <circle cx={chart.x(hoverIdx)} cy={chart.y(chart.candles[hoverIdx].close)} r="4" fill={strokeColor} />
+                </g>
+              ) : null}
             </svg>
             <div className="flex justify-between text-xs text-zinc-500 dark:text-zinc-400">
               {chart.labels.map((label, i) => (
