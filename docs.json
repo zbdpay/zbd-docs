@@ -309,7 +309,6 @@
           {
             "group": "Lightning Payments",
             "pages": [
-              "bitcoin/lightning-payments",
               "bitcoin/lightning-payments/send",
               "bitcoin/lightning-payments/retrieve"
             ]
@@ -317,7 +316,6 @@
           {
             "group": "Withdrawal Requests",
             "pages": [
-              "bitcoin/withdrawal-requests",
               "bitcoin/withdrawal-requests/create",
               "bitcoin/withdrawal-requests/retrieve"
             ]
@@ -325,7 +323,6 @@
           {
             "group": "Gamertags",
             "pages": [
-              "bitcoin/gamertags",
               "bitcoin/gamertags/send",
               "bitcoin/gamertags/retrieve-payment",
               "bitcoin/gamertags/create-charge",
@@ -337,7 +334,6 @@
           {
             "group": "Wallet",
             "pages": [
-              "bitcoin/wallet",
               "bitcoin/wallet/retrieve-balance",
               "bitcoin/wallet/internal-transfer"
             ]
@@ -345,7 +341,6 @@
           {
             "group": "Keysend",
             "pages": [
-              "bitcoin/keysend",
               "bitcoin/keysend/send"
             ]
           },
@@ -686,7 +681,7 @@
     },
     {
       "source": "/docs/examples",
-      "destination": "/bitcoin/payments/templates"
+      "destination": "https://github.com/ZBDLabs"
     },
     {
       "source": "/docs/sdk",
@@ -1002,7 +997,7 @@
     },
     {
       "source": "/payments/api/gamertags",
-      "destination": "/bitcoin/gamertags"
+      "destination": "/bitcoin/gamertags/send"
     },
     {
       "source": "/payments/api/gamertags/create-charge",
@@ -1030,7 +1025,7 @@
     },
     {
       "source": "/payments/api/keysend",
-      "destination": "/bitcoin/keysend"
+      "destination": "/bitcoin/keysend/send"
     },
     {
       "source": "/payments/api/keysend/send",
@@ -1082,7 +1077,7 @@
     },
     {
       "source": "/payments/api/lightning-payments",
-      "destination": "/bitcoin/lightning-payments"
+      "destination": "/bitcoin/lightning-payments/send"
     },
     {
       "source": "/payments/api/lightning-payments/retrieve",
@@ -1122,7 +1117,7 @@
     },
     {
       "source": "/payments/api/wallet",
-      "destination": "/bitcoin/wallet"
+      "destination": "/bitcoin/wallet/retrieve-balance"
     },
     {
       "source": "/payments/api/wallet/internal-transfer",
@@ -1134,7 +1129,7 @@
     },
     {
       "source": "/payments/api/withdrawal-requests",
-      "destination": "/bitcoin/withdrawal-requests"
+      "destination": "/bitcoin/withdrawal-requests/create"
     },
     {
       "source": "/payments/api/withdrawal-requests/create",
@@ -1218,7 +1213,7 @@
     },
     {
       "source": "/payments/templates",
-      "destination": "/bitcoin/payments/templates"
+      "destination": "https://github.com/ZBDLabs"
     },
     {
       "source": "/widget",
@@ -1363,6 +1358,26 @@
     {
       "source": "/bitcoin/resources/openapi",
       "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/wallet",
+      "destination": "/bitcoin/wallet/retrieve-balance"
+    },
+    {
+      "source": "/bitcoin/keysend",
+      "destination": "/bitcoin/keysend/send"
+    },
+    {
+      "source": "/bitcoin/gamertags",
+      "destination": "/bitcoin/gamertags/send"
+    },
+    {
+      "source": "/bitcoin/withdrawal-requests",
+      "destination": "/bitcoin/withdrawal-requests/create"
+    },
+    {
+      "source": "/bitcoin/lightning-payments",
+      "destination": "/bitcoin/lightning-payments/send"
     }
   ]
 }
