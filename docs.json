@@ -280,7 +280,6 @@
             "pages": [
               "bitcoin",
               "bitcoin/payments/lightning-network",
-              "bitcoin/payments/lightning-address",
               "bitcoin/api"
             ]
           },
