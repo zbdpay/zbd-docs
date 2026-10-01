@@ -16,9 +16,10 @@ export const BtcEurRate = () => {
 
   const RANGES = {
     "1D": { days: 1, granularity: 3600 },
-    "3D": { days: 3, granularity: 3600 * 6 },
     "7D": { days: 7, granularity: 3600 * 6 },
     "30D": { days: 30, granularity: 86400 },
+    "90D": { days: 90, granularity: 86400 },
+    "180D": { days: 180, granularity: 86400 },
   }
 
   useEffect(() => {
