@@ -4,6 +4,8 @@ description: "Understand general API concepts and authentication strategies."
 sidebarTitle: "Introduction"
 ---
 
+import { BtcEurRate } from "/snippets/btc-eur-rate.jsx";
+
 ## Overview
 
 ZBD offers a powerful REST API that supports Bitcoin Lightning Network transactions with various payout and payin methods. Our API uses JSON data structures and makes use of industry standard HTTP response codes.
@@ -87,3 +89,5 @@ Example of an error message from the API:
   "message": "Error creating Withdrawal Request: The \"amount\" property (in millisatoshis) is required.",
 }
 ```
+
+<BtcEurRate />
