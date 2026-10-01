@@ -279,8 +279,7 @@
             "group": "Get Started",
             "pages": [
               "bitcoin",
-              "bitcoin/callbacks",
-              "bitcoin/resources/overview"
+              "bitcoin/callbacks"
             ]
           },
           {
@@ -597,15 +596,15 @@
     },
     {
       "source": "/payments/sdk",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/payments/sdk/:slug*",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/payments/http",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/payments/ai-ingestion",
@@ -637,39 +636,39 @@
     },
     {
       "source": "/docs/nodejs-quickstart",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/nextjs-quickstart",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/express-quickstart",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/vercel-edge-functions/send",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/vercel-edge-functions/receive",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/supabase-edge-functions/send",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/supabase-edge-functions/receive",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/csharp-quickstart",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/go-quickstart",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/replit-quickstart",
@@ -685,7 +684,7 @@
     },
     {
       "source": "/docs/sdk",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/integrations",
@@ -1093,11 +1092,11 @@
     },
     {
       "source": "/payments/api/resources/overview",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/payments/api/resources/postman",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/payments/api/utils",
@@ -1337,7 +1336,7 @@
     },
     {
       "source": "/bitcoin/resources/postman",
-      "destination": "/bitcoin/resources/overview"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/bitcoin/payments/integrations",
@@ -1378,6 +1377,10 @@
     {
       "source": "/bitcoin/lightning-payments",
       "destination": "/bitcoin/lightning-payments/send"
+    },
+    {
+      "source": "/bitcoin/resources/overview",
+      "destination": "/bitcoin/utils"
     }
   ]
 }
