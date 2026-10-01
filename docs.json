@@ -282,8 +282,7 @@
               "bitcoin/errors",
               "bitcoin/callbacks",
               "bitcoin/resources/openapi",
-              "bitcoin/resources/overview",
-              "bitcoin/resources/postman"
+              "bitcoin/resources/overview"
             ]
           },
           {
@@ -1113,7 +1112,7 @@
     },
     {
       "source": "/payments/api/resources/postman",
-      "destination": "/bitcoin/resources/postman"
+      "destination": "/bitcoin/resources/overview"
     },
     {
       "source": "/payments/api/utils",
@@ -1350,6 +1349,10 @@
     {
       "source": "/bitcoin/payments/openapi",
       "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/resources/postman",
+      "destination": "/bitcoin/resources/overview"
     }
   ]
 }
