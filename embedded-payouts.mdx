@@ -2,17 +2,17 @@
 title: "Embedded Payouts Overview"
 sidebarTitle: "Overview"
 icon: "layer-group"
-description: "Pay creators, sellers and players in the countries ZBD supports, from a pool you fund."
+description: "Pay creators, sellers, and players in the countries ZBD supports, from a pool you fund."
 ---
 
-Embedded Payouts puts the whole payout experience inside your own game or platform. Users verify, choose how they want to be paid and get their money without leaving your product or signing up with a separate payee portal.
+Embedded Payouts puts the whole payout experience inside your own game or platform. Users verify, choose how they want to be paid, and get their money without leaving your product or signing up with a separate payee portal.
 
 ## How it's different
 
-- **Inside your product.** Verification, payment method selection and cash out run in your game or site, in flows you place where you want them.
+- **Inside your product.** Verification, payment method selection, and cash out run in your game or site, in flows you place where you want them.
 - **On demand or on your schedule.** Pay a user the moment they're owed, or run payouts on whatever cadence suits your program, like weekly or monthly.
 - **The user chooses the method, and the cost.** Users pick how and how fast they're paid from the methods available in their country. Some methods are free or low cost, and faster ones cost more. Because the user makes that choice, the fee comes out of their payout by default, so you don't need payout minimums to keep costs down. You can choose to cover the fee yourself if you'd rather.
-- **ZBD carries the compliance.** Identity verification, screening, tax information and payment details are handled and stored by ZBD, outside your systems.
+- **ZBD carries the compliance.** Identity verification, screening, tax information, and payment details are handled and stored by ZBD, outside your systems.
 
 ## What it's for
 
@@ -23,46 +23,22 @@ Embedded Payouts puts the whole payout experience inside your own game or platfo
 
 ## How it works
 
-```mermaid
-flowchart LR
-  A[You fund a payout pool] --> B[Users onboard]
-  B --> C[Payout is sent]
-  C --> D[ZBD runs checks]
-  D --> E[Funds settle to their payment method]
-  E --> F[Webhooks and reconciliation]
-```
+1. **Fund a pool.** You send funds to your [payout pool](/embedded-payouts/funding), and every payout draws from it.
+2. **Onboard users.** Your backend creates each [user](/embedded-payouts/users). The user verifies and chooses a payment method in the [widget](/embedded-payouts/cash-out-widget), which you embed in your product.
+3. **Pay out.** Either your backend sends each payout, or users cash out the earnings ZBD tracks for them. [How Payouts Work](/embedded-payouts/how-payouts-work) explains the two models.
 
-1. [**Fund a pool**](/embedded-payouts/funding)**.** Fund a payout pool in your funding currency. It needs to cover each payout when it's initiated.
-2. [**Onboard users**](/embedded-payouts/users)**.** Create the user from your backend, and ZBD handles identity verification, tax information and payment method selection. If you track earnings yourself, users complete full verification up front. If ZBD tracks earnings, verification can be tiered, so users verify further as they earn more.
-3. [**Pay out**](/embedded-payouts/how-payouts-work)**.** Track what users earn in your own system and send each payout, or have ZBD track earnings and let users cash out.
-4. **ZBD runs the checks.** Identity, sanctions and watchlist screening, and payout limits.
-5. [**Funds settle**](/embedded-payouts/methods-and-coverage)**.** The user is paid in their local currency where it's supported, to the payment method they chose.
-6. **Reconcile.** Payout status changes arrive by webhook, so you can keep your own records up to date.
-
-## Choosing your integration
-
-Your backend creates users and handles webhooks. Depending on how you track earnings, it also either credits the earnings ZBD tracks for your users, or sends each payout instruction.
-
-The user-facing steps run in the ZBD widget: identity verification, tax information, payment method selection and cashing out. The widget is a set of separate flows, and you choose which ones to use and where they appear in your product.
-
-| Flow | What it does |
-| --- | --- |
-| Identity verification | Verifies the user. Can run on its own, for example at signup. |
-| Payment method selection | The user chooses how to be paid from the methods available in their country. Bank accounts are linked here, and methods that need no linking, like gift cards, are chosen here too. |
-| Cash out | The user cashes out the earnings ZBD tracks for them. |
-
-One session can open any of these flows without the user signing in again. For example, you might run identity verification when a creator signs up, so they're cleared before they earn anything, and payment method selection before their first payout.
-
-If you track earnings yourself and show them in your own product, you won't need the cash out flow, since your backend sends the payout. See [Embedding the Widget](/embedded-payouts/cash-out-widget) for integration details.
-
-## What ZBD handles
-
-- Identity verification
-- Sanctions and watchlist screening
-- AML monitoring
-- Tax information collection
-- Payment rails, FX and settlement
+ZBD runs verification, screening, and limit checks on every payout, settles it to the user's payment method in their local currency where it's supported, and sends you a webhook at each step.
 
 ## Start here
 
-[Fund your payout pool](/embedded-payouts/funding) · [Create a user](/embedded-payouts/users) · [Send your first payout](/embedded-payouts/apis/create-payout)
+<CardGroup cols={3}>
+  <Card title="How Payouts Work" icon="diagram-project" href="/embedded-payouts/how-payouts-work">
+    The two ways to track earnings, and how a payout moves.
+  </Card>
+  <Card title="Tracking Earnings Yourself" icon="clipboard-list" href="/embedded-payouts/tracking-earnings-yourself">
+    Your system records earnings and your backend sends each payout.
+  </Card>
+  <Card title="Tracking Earnings With ZBD" icon="coins" href="/embedded-payouts/tracking-earnings-with-zbd">
+    ZBD records earnings and users cash out in the widget.
+  </Card>
+</CardGroup>

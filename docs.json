@@ -120,7 +120,6 @@
             "group": "API Reference",
             "pages": [
               "embedded-payouts/apis/overview",
-              "development-resources/idempotency-keys",
               {
                 "group": "Users",
                 "pages": [

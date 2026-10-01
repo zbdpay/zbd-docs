@@ -1,25 +1,35 @@
 ---
 title: "Embedding the Widget"
 icon: "window-maximize"
-description: "Add ZBD's hosted flows for identity verification, tax information, payment method selection and cash out to your product."
+description: "Add ZBD's hosted flows for identity verification, tax information, payment method selection, and cash out to your product."
 ---
 
-The widget embeds in your product as an iframe, and you choose which of its flows to use.
+The widget runs the steps where ZBD collects something from the user. You embed it in your product as an iframe and choose which flows to use and where they appear.
 
 ## Flows
 
-The widget is made up of separate flows you can use together or on their own. [Choosing your integration](/embedded-payouts#choosing-your-integration) covers what each one does.
+| Flow | What it does |
+| --- | --- |
+| Identity verification | Verifies the user. Can run on its own, for example at signup. |
+| Payment method selection | The user chooses how to be paid from the methods available in their country. Bank accounts are linked here, and methods that need no linking, like gift cards, are chosen here too. |
+| Cash out | The user cashes out the earnings ZBD tracks for them. Only for programs where ZBD tracks earnings. |
 
-## How it fits
+ZBD collects tax information within these flows when a payout requires it.
 
-Your backend creates the [user](/embedded-payouts/users), credits their earnings if ZBD tracks them, and reads status. The widget covers everything the user sees and everything collected from them.
+If a user opens the cash out flow before they've verified or chosen a payment method, the widget takes them through those steps first.
 
-## Integration steps
+## Embedding a flow
 
-1. Create the user
-2. Credit their earnings, if ZBD tracks them
-3. Create a session
-4. Embed the widget in your frontend
-5. Listen for events
+<Steps>
+  <Step title="Create a session from your backend">
+    Call [Create a Session](/embedded-payouts/apis/create-session) from your server, so your API key never reaches the browser. The response includes a `widget_url`.
+  </Step>
+  <Step title="Embed the widget URL">
+    Load the `widget_url` in an iframe at the point in your product where the flow should appear.
+  </Step>
+  <Step title="Listen for webhooks">
+    ZBD sends a webhook when the user finishes verification, adds a payment method, or cashes out, so your backend can update what it shows.
+  </Step>
+</Steps>
 
-The first three steps run on your server, so your API key never reaches the browser. See [Create a Session](/embedded-payouts/apis/create-session) for the session call.
+One session can open any of the flows without the user signing in again. For example, you might run identity verification when a creator signs up, and payment method selection before their first payout.

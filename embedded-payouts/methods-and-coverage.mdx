@@ -34,10 +34,14 @@ Local banking hours and holidays apply to every method, and a payout submitted a
 
 ## Fees
 
-Because the user chooses the method and its speed, the fee for that method comes out of their payout by default. Some methods are free or low cost, and faster ones generally cost more. The widget shows the fee and the final amount before the user confirms.
+Because the user chooses the method and its speed, the fee for that method comes out of their payout by default. Some methods are free or low cost, and faster ones generally cost more.
 
-If a payout involves a currency conversion, the conversion cost is included and shown with the converted amount. If you'd rather cover fees for your users, you can choose to subsidize them.
+- **Choosing a method.** The widget's payment method selection flow shows each method's fee, as a percentage or a flat amount, so users know the cost before they pick.
+- **Cashing out in the widget.** If ZBD tracks earnings, the cash out flow shows the fee and the final amount before the user confirms.
+- **Payouts sent from your backend.** The [Create a Payout](/embedded-payouts/apis/create-payout) response includes the fee and the net amount the user receives, so you can show it and record it.
+
+If a payout involves a currency conversion, the conversion cost is included and shown with the converted amount. If you'd rather cover fees for your users, your ZBD contact can set that up for your program.
 
 ## Building against this
 
-Method types, [payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) and the shape of the payout instruction are stable. Country availability, limits, fees and the details a user has to enter can change without notice, so read them from ZBD instead of hard-coding them.
+Method types and [payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) are stable. Country availability, limits, fees, and the details a user has to enter can change without notice. The widget always shows the current options, so don't hard-code them in your own product.

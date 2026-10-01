@@ -18,11 +18,11 @@ Your product shows the EFT agreement and records the user's acceptance. The widg
 
 Acceptance is tracked by version. When ZBD publishes a new version of the agreement, the user has to accept it again, even if they accepted an earlier one.
 
-If the user hasn't accepted the current version, the ACH payout is rejected before it's processed. Nothing else is blocked: creating a user, creating a session and payouts by other methods all work without it.
+If the user hasn't accepted the current version, the ACH payout is rejected before it's processed. Nothing else is blocked: creating a user, creating a session, and payouts by other methods all work without it.
 
 ## Calling the disclosure endpoints
 
-Call these from your server with your API key, never from a browser, game client or WebView.
+Call these from your server with your API key, never from a browser, game client, or WebView.
 
 <Note>
   Create a User and widget sessions also return an `outstanding_disclosures` array. Treat [Get Disclosure Status](/embedded-accounts/apis/get-disclosures) as the source of truth.

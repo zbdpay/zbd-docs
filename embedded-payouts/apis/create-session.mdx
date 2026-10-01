@@ -6,7 +6,7 @@ api: "POST https://api.zbdpay.com/api/v1/widget/users/session"
 
 Returns a `session_token` (JWT) and a `widget_url` that you embed as an iframe. The session is valid for the duration specified in `expires_at`.
 
-The widget handles OTP email verification, identity verification (Onfido), bank linking (Plaid), and cashout initiation internally.
+The widget handles email verification codes, identity verification, payment method selection, and cash out.
 
 ## Configuration
 

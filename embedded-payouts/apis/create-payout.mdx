@@ -6,7 +6,7 @@ api: "POST https://api.zbdpay.com/api/v1/payouts"
 
 Sends a payout to a user's payment method. The amount comes out of your [pool](/embedded-payouts/funding) when the payout is created, so the pool needs to cover it at that moment. If ZBD tracks earnings for the user, the amount also comes off their earnings.
 
-The payout starts as `PROCESSING`. You get a webhook when it completes, fails or is returned. [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) covers the full lifecycle.
+The response includes the fee for the user's payment method and the net amount they receive. The payout starts as `PROCESSING`. You get a webhook when it completes, fails, or is returned. [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) covers the full lifecycle.
 
 This endpoint is idempotent on `idempotency_key`. Retrying with the same key returns the original payout instead of sending a second one.
 
@@ -83,6 +83,8 @@ curl -X POST https://api.zbdpay.com/api/v1/payouts \
     "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
     "amount": 2500,
     "currency": "USD",
+    "fee": 50,
+    "net_amount": 2450,
     "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
     "reference": "creator_payout_2026_10",
     "status": "PROCESSING"

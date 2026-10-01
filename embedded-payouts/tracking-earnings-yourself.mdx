@@ -4,25 +4,31 @@ icon: "clipboard-list"
 description: "You record what each user has earned in your own system, and your backend sends each payout."
 ---
 
-Use this model when you already have earnings logic, rules and history in your own system. ZBD doesn't keep a record of what users are owed. It pays out when you tell it to.
+Use this model when you already have earnings logic, rules, and history in your own system. ZBD doesn't keep a record of what users are owed. It pays out when you tell it to.
 
-## How it works
+<Steps>
+  <Step title="Create the user at signup">
+    When a user signs up, call [Create a User](/embedded-payouts/apis/create-user) from your backend with your own ID for them and their email address.
+  </Step>
+  <Step title="Verify the user and collect a payment method">
+    In the same signup flow, [create a session](/embedded-payouts/apis/create-session) and open the widget's identity verification and payment method selection flows. See [Embedding the Widget](/embedded-payouts/cash-out-widget).
 
-1. When a user signs up, [create them](/embedded-payouts/apis/create-user) from your backend.
-2. In the same signup flow, open the widget's identity verification and payment method selection flows. See [Embedding the Widget](/embedded-payouts/cash-out-widget). Users have to complete full verification before their first payout, because ZBD has no record of what they've earned to step them up against.
-3. Wait for the webhooks that tell you the user is verified and has a payment method. Until then, you can show them as pending.
-4. When the user should be paid, deduct the amount in your own system and [create a payout](/embedded-payouts/apis/create-payout).
-5. Update your records from the payout webhooks.
+    Users have to complete full verification before their first payout, because ZBD has no record of what they've earned to step them up against. The payment method selection flow shows each method's fee, so users know what they'll be charged.
+  </Step>
+  <Step title="Wait for the user to be ready">
+    Listen for the webhooks that tell you the user is verified and has added a payment method, and keep the payment method ID. Until then, you can show the user as pending.
+  </Step>
+  <Step title="Send a payout">
+    When the user should be paid, call [Create a Payout](/embedded-payouts/apis/create-payout) with the user ID, the amount, and the payment method ID. Deduct the amount in your own system at the same time. The response includes the fee and the net amount the user receives.
+
+    The amount comes out of your [pool](/embedded-payouts/funding) at that moment, so the pool has to cover it. If the payment method doesn't belong to that user, the payout is rejected. Send an idempotency key with every payout, so a retry doesn't pay the user twice.
+  </Step>
+  <Step title="Update your records from webhooks">
+    A webhook fires when the payout completes, fails, or is returned. See [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses).
+  </Step>
+</Steps>
 
 You don't need to manage payout limits. ZBD applies them, and if a user can't be paid, the payout is rejected with the reason.
-
-## Sending a payout
-
-Call [Create a Payout](/embedded-payouts/apis/create-payout) with the user, the amount and the ID of the payment method to pay. If the payment method doesn't belong to that user, the payout is rejected.
-
-Deduct the amount in your own system when you send the payout. It comes out of your [pool](/embedded-payouts/funding) at the same moment, so the pool needs to cover it then.
-
-Send an idempotency key with every payout, so a timeout or retry doesn't pay the user twice. [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) covers the full lifecycle.
 
 ## When a payout fails or is returned
 
@@ -36,6 +42,6 @@ Give every payout your own reference, and use webhooks to match ZBD's records ag
 
 ## What you don't need
 
-You don't need the credit, debit or earnings endpoints. Those are for programs where ZBD tracks earnings.
+You don't need the credit, debit, or earnings endpoints. Those are for programs where ZBD tracks earnings.
 
 Don't use the widget's cash out flow either. It pays out from earnings ZBD tracks, and ZBD doesn't know what your users are owed. Your backend sends every payout, so you always control which user is paid, how much, and to which payment method.

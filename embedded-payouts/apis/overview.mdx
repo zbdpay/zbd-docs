@@ -1,7 +1,7 @@
 ---
 title: "Embedded Payouts API Overview"
 sidebarTitle: "Overview"
-description: "Base URL, authentication and conventions for the Embedded Payouts API."
+description: "Base URL, authentication, and conventions for the Embedded Payouts API."
 ---
 
 ## Base URL
@@ -36,6 +36,6 @@ Send your project API key in the `apikey` header. Call these endpoints from your
 
 - **Responses** use the same envelope: `{ success, message, data, error }`. On success `error` is null, and on failure `data` is null. The HTTP status is the source of truth.
 - **Amounts** are integers in the currency's smallest unit. For USD, `100` is $1.00.
-- **Idempotency.** Payout, credit and reverse-credit calls take an `idempotency_key` in the request body. Use a new key for each new operation, and the same key when retrying one.
+- **Idempotency.** Payout, credit, and reverse-credit calls take an `idempotency_key` in the request body. Use a new key for each new operation, and the same key when retrying one.
 - **Tracing.** Send an `X-Request-Id` header on any call to make it easier to trace with support.
 - **Rate limits** apply per API key, and sandbox limits are higher than production. Load test against production limits before launch.

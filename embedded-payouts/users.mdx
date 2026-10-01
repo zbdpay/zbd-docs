@@ -1,7 +1,7 @@
 ---
 title: "Users"
 icon: "users"
-description: "The person being paid, how they're verified and their payment method."
+description: "The person being paid, how they're verified, and their payment method."
 ---
 
 A user is the same object in Embedded Payouts and Embedded Accounts, so a user you create for payouts stays the same user if you add an economy later.
@@ -42,4 +42,4 @@ A user can have earnings before choosing a payment method, but can't be paid unt
 
 ## Reading user state
 
-You can read whether a user is verified, whether they have a payment method, and whether they can be paid right now. That's usually enough to decide what to show them, like a cash out button, a prompt to verify, or a prompt to add a payment method.
+Use [Get a User](/embedded-payouts/apis/get-user) to check whether a user has completed identity verification. That's usually enough to decide what to show them, like a cash out button or a prompt to verify.

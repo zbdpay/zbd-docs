@@ -6,7 +6,7 @@ description: "How money moves from your pool to a user's payment method, the two
 
 ## Two ways to track earnings
 
-Before you integrate, decide who keeps track of what each user has earned. Funding, checks, payment methods and settlement work the same either way.
+Before you integrate, decide who keeps track of what each user has earned. Funding, checks, payment methods, and settlement work the same either way.
 
 | | You track earnings | ZBD tracks earnings |
 | --- | --- | --- |
@@ -14,14 +14,14 @@ Before you integrate, decide who keeps track of what each user has earned. Fundi
 | How money goes out | Your backend sends each payout | The user cashes out in the widget |
 | Verification | Full verification up front, before the first payout | Tiered. Users can start small and verify further as their earnings grow |
 | If a payout fails or is returned | The amount goes back to your pool, and you add it back in your own system | The amount goes back to the user's earnings on ZBD |
-| Good fit if | You already have earnings logic, rules and history | You'd rather not build and reconcile your own records |
+| Good fit if | You already have earnings logic, rules, and history | You'd rather not build and reconcile your own records |
 | Guide | [Tracking Earnings Yourself](/embedded-payouts/tracking-earnings-yourself) | [Tracking Earnings With ZBD](/embedded-payouts/tracking-earnings-with-zbd) |
 
 ## The objects
 
 | Object | What it is |
 | --- | --- |
-| Project | The scope a payout program runs in. Keys, settings and reporting belong to it. |
+| Project | The scope a payout program runs in. Keys, settings, and reporting belong to it. |
 | [Payout pool](/embedded-payouts/funding) | The funds you set aside for payouts. Every payout draws from it. |
 | [User](/embedded-payouts/users) | The person being paid. Has a verification status and a payment method. |
 | Earnings | What a user is owed and hasn't been paid yet. ZBD only tracks this if you choose that model. |
@@ -37,7 +37,7 @@ flowchart LR
   D -->|settle| F[User's payment method]
 ```
 
-A payout names the user, the amount and the [payment method](/embedded-payouts/methods-and-coverage) the user chose. ZBD holds the payment details, so the payout only refers to the method. The amount comes out of your pool when the payout is initiated, and off the user's earnings too if ZBD tracks them.
+A payout names the user, the amount, and the [payment method](/embedded-payouts/methods-and-coverage) the user chose. ZBD holds the payment details, so the payout only refers to the method. The amount comes out of your pool when the payout is initiated, and off the user's earnings too if ZBD tracks them.
 
 [Fees](/embedded-payouts/methods-and-coverage#fees) for the payment method come out of the payout by default, so the user receives less than the amount sent. If the user's currency differs from your funding currency, ZBD converts at the quoted rate.
 
@@ -57,7 +57,7 @@ Every payout goes through the same checks before any money moves:
 | --- | --- |
 | Verification | The user has to be verified. If ZBD tracks earnings, their tier also has to allow the amount. |
 | Screening | Sanctions and watchlist screening on the user. |
-| Limits | Per-payout, velocity and cumulative limits, counted across all payment methods. |
+| Limits | Per-payout, velocity, and cumulative limits, counted across all payment methods. |
 | Funds | Your pool has to cover the payout. If ZBD tracks earnings, the user's earnings have to cover it too. |
 
 ## Payout statuses

@@ -6,13 +6,25 @@ description: "ZBD keeps track of what each user has earned, and users cash out t
 
 Use this model if you'd rather not build and reconcile your own record of what users are owed. You tell ZBD each time a user earns, and ZBD keeps the running total. Your pool only needs to cover what's cashed out, when it's cashed out.
 
-## How it works
+<Steps>
+  <Step title="Create the user">
+    Call [Create a User](/embedded-payouts/apis/create-user) from your backend with your own ID for them and their email address. A user has to exist before you can credit them.
+  </Step>
+  <Step title="Credit earnings as they're earned">
+    Call [Credit a User](/embedded-payouts/apis/fund-user) each time the user earns. Nothing is drawn from your pool when you credit, only when the user cashes out. Send an idempotency key with every credit, so a retry doesn't credit the user twice.
+  </Step>
+  <Step title="Show earnings in your product">
+    Use [Get Earnings](/embedded-payouts/apis/get-balance) and [List User Transactions](/embedded-payouts/apis/list-user-transactions) to show users what they've earned and what they've been paid.
+  </Step>
+  <Step title="Let the user cash out">
+    [Create a session](/embedded-payouts/apis/create-session) and open the widget's cash out flow. If the user hasn't verified or chosen a payment method yet, the flow takes them through that first. See [Embedding the Widget](/embedded-payouts/cash-out-widget).
 
-1. [Create the user](/embedded-payouts/users) from your backend.
-2. Credit their earnings each time they earn.
-3. Show their earnings and history in your product.
-4. The user cashes out through the widget, verifying and choosing a payment method as part of the flow if they haven't already.
-5. Track the result by webhook.
+    When the user cashes out, the amount comes out of your pool and off their earnings.
+  </Step>
+  <Step title="Track the result by webhook">
+    A webhook fires when the cash out completes, fails, or is returned. See [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses).
+  </Step>
+</Steps>
 
 ## Verification
 
@@ -20,28 +32,10 @@ Because ZBD sees what each user earns and cashes out, verification can be tiered
 
 You can still run full verification up front, for example at signup, if you'd rather users are cleared before they earn anything.
 
-## Crediting earnings
-
-Each [credit](/embedded-payouts/apis/fund-user) adds to what the user is owed. Nothing is drawn from your pool when you credit, only when the user cashes out.
-
-Send an idempotency key with every credit, so a retry doesn't credit the user twice.
-
 ## Reversing a credit
 
-To take back a credit, for example when a reward is canceled, [debit the user](/embedded-payouts/apis/deplete-user). A debit only succeeds while the user still has those earnings available, so it can't recover an amount they've already cashed out.
-
-## Showing earnings
-
-Use [Get Earnings](/embedded-payouts/apis/get-balance) and [List User Transactions](/embedded-payouts/apis/list-user-transactions) to show users what they've earned and what they've been paid.
-
-## Cashing out
-
-The user cashes out through the widget's cash out flow. At that moment, the amount comes out of your pool and off the user's earnings. See [Embedding the Widget](/embedded-payouts/cash-out-widget).
+To take back a credit, for example when a reward is canceled, call [Debit a User](/embedded-payouts/apis/deplete-user). A debit only succeeds while the user still has those earnings available, so it can't recover an amount they've already cashed out.
 
 ## When a cash out fails or is returned
 
 The amount goes back to the user's earnings, so they can cash out again once the problem is fixed. A webhook tells you either way.
-
-## Holds
-
-Some cash outs may be held before they're paid. A held cash out releases on its own, and it's worth showing users the release date instead of a generic pending status.
