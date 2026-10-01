@@ -401,11 +401,9 @@
               {
                 "group": "API Reference",
                 "pages": [
-                  "bitcoin/oauth2/api",
                   "bitcoin/oauth2/api/authorization",
                   "bitcoin/oauth2/api/retrieve-access-token",
                   "bitcoin/oauth2/api/refresh-token",
-                  "bitcoin/oauth2/api/data-fetching",
                   "bitcoin/oauth2/api/retrieve-user",
                   "bitcoin/oauth2/api/retrieve-wallet"
                 ]
@@ -1278,7 +1276,7 @@
     },
     {
       "source": "/earn/oauth2/api",
-      "destination": "/bitcoin/oauth2/api"
+      "destination": "/bitcoin/oauth2"
     },
     {
       "source": "/earn/oauth2/api/authorization",
@@ -1294,7 +1292,7 @@
     },
     {
       "source": "/earn/oauth2/api/data-fetching",
-      "destination": "/bitcoin/oauth2/api/data-fetching"
+      "destination": "/bitcoin/oauth2"
     },
     {
       "source": "/earn/oauth2/api/retrieve-user",
@@ -1371,6 +1369,14 @@
     {
       "source": "/bitcoin/resources/overview",
       "destination": "/bitcoin/utils"
+    },
+    {
+      "source": "/bitcoin/oauth2/api",
+      "destination": "/bitcoin/oauth2"
+    },
+    {
+      "source": "/bitcoin/oauth2/api/data-fetching",
+      "destination": "/bitcoin/oauth2"
     }
   ]
 }
