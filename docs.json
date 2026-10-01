@@ -372,23 +372,25 @@
             "pages": [
               "bitcoin/payments",
               "bitcoin/payments/lightning-network",
-              "bitcoin/payments/lightning-address"
-            ]
-          },
-          {
-            "group": "Pay Ins",
-            "pages": [
-              "bitcoin/payments/payins/lightning-charges",
-              "bitcoin/payments/payins/gamertags"
-            ]
-          },
-          {
-            "group": "Pay Outs",
-            "pages": [
-              "bitcoin/payments/payouts/lightning-address",
-              "bitcoin/payments/payouts/gamertags",
-              "bitcoin/payments/payouts/withdrawal-requests",
-              "bitcoin/payments/payouts/lightning-charges"
+              "bitcoin/payments/lightning-address",
+              {
+                "group": "Pay Ins",
+                "expanded": false,
+                "pages": [
+                  "bitcoin/payments/payins/lightning-charges",
+                  "bitcoin/payments/payins/gamertags"
+                ]
+              },
+              {
+                "group": "Pay Outs",
+                "expanded": false,
+                "pages": [
+                  "bitcoin/payments/payouts/lightning-address",
+                  "bitcoin/payments/payouts/gamertags",
+                  "bitcoin/payments/payouts/withdrawal-requests",
+                  "bitcoin/payments/payouts/lightning-charges"
+                ]
+              }
             ]
           },
           {
