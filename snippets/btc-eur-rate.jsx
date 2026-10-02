@@ -113,14 +113,45 @@ export const BtcEurRate = () => {
 
         setHistory({ status: "ready", candles, error: null })
       } catch (error) {
-        if (!isMounted) {
-          return
+        // api.exchange.coinbase.com can be blocked by networks/extensions/regions while
+        // api.coinbase.com (the quotes host) still works. Fall back to daily spot prices.
+        try {
+          const { days } = RANGES[range]
+          const step = Math.max(1, Math.ceil(days / 90))
+          const dates = []
+          for (let i = days; i >= 0; i -= step) {
+            dates.push(new Date(Date.now() - i * 24 * 60 * 60 * 1000))
+          }
+          const spots = await Promise.all(
+            dates.map((d) =>
+              fetch(`https://api.coinbase.com/v2/prices/BTC-USD/spot?date=${d.toISOString().slice(0, 10)}`)
+                .then((r) => (r.ok ? r.json() : null))
+                .catch(() => null)
+            )
+          )
+          const fb = dates
+            .map((d, i) => {
+              const amount = spots[i]?.data?.amount
+              return amount ? { time: d.getTime(), closeUsd: Number(amount), closeEur: null } : null
+            })
+            .filter(Boolean)
+          if (fb.length < 2) {
+            throw new Error("Fallback price history was empty")
+          }
+          if (!isMounted) {
+            return
+          }
+          setHistory({ status: "ready", candles: fb, error: null })
+        } catch (fbError) {
+          if (!isMounted) {
+            return
+          }
+          setHistory((h) => ({
+            ...h,
+            status: h.candles ? "stale" : "error",
+            error: error instanceof Error ? error.message : "Unable to load BTC price history",
+          }))
         }
-        setHistory((h) => ({
-          ...h,
-          status: h.candles ? "stale" : "error",
-          error: error instanceof Error ? error.message : "Unable to load BTC price history",
-        }))
       }
     }
 
