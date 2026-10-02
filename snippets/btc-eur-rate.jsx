@@ -7,8 +7,8 @@ export const BtcEurRate = () => {
   })
   const [history, setHistory] = useState({
     status: "loading",
-    // candles: [{ time, closeUsd, closeEur }] oldest-first
-    candles: null,
+    // { EUR: [{ time, close }], USD: [...] } oldest-first, both native
+    series: null,
     error: null,
   })
   const [range, setRange] = useState("30D")
@@ -16,11 +16,11 @@ export const BtcEurRate = () => {
   const [now, setNow] = useState(Date.now())
 
   const RANGES = {
-    "1D": { days: 1, granularity: 3600 },
-    "7D": { days: 7, granularity: 3600 * 6 },
-    "30D": { days: 30, granularity: 86400 },
-    "90D": { days: 90, granularity: 86400 },
-    "180D": { days: 180, granularity: 86400 },
+    "1D": 1,
+    "7D": 7,
+    "30D": 30,
+    "90D": 90,
+    "180D": 180,
   }
 
   useEffect(() => {
@@ -86,72 +86,38 @@ export const BtcEurRate = () => {
     let isMounted = true
 
     const loadHistory = async () => {
-      const { days, granularity } = RANGES[range]
-      setHistory((h) => ({ ...h, status: h.candles ? "refreshing" : "loading" }))
+      const days = RANGES[range]
+      setHistory((h) => ({ ...h, status: h.series ? "refreshing" : "loading" }))
       try {
-        // Coinbase Exchange candles are USD-denominated: [time, low, high, open, close, volume], newest first
-        const end = new Date()
-        const start = new Date(end.getTime() - days * 24 * 60 * 60 * 1000)
-        const url =
-          `https://api.exchange.coinbase.com/products/BTC-USD/candles` +
-          `?granularity=${granularity}&start=${start.toISOString()}&end=${end.toISOString()}`
-        const response = await fetch(url)
-        if (!response.ok) {
-          throw new Error(`Candles request failed with ${response.status}`)
+        // CoinGecko market_chart: native { vs_currency } history for both currencies,
+        // one request each, CORS open, no key. prices = [timestampMs, price].
+        const fetchSeries = (vs) =>
+          fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${vs}&days=${days}`)
+            .then((r) => {
+              if (!r.ok) throw new Error(`CoinGecko request failed with ${r.status}`)
+              return r.json()
+            })
+            .then((d) => d.prices.map(([time, price]) => ({ time, close: price })))
+
+        const [eur, usd] = await Promise.all([fetchSeries("eur"), fetchSeries("usd")])
+        if (eur.length < 2 || usd.length < 2) {
+          throw new Error("Price history response was empty")
         }
-        const rows = await response.json()
-        if (!Array.isArray(rows) || rows.length < 2) {
-          throw new Error("Candles response was empty")
-        }
-        const candles = rows
-          .map((row) => ({ time: row[0] * 1000, closeUsd: row[4], closeEur: null }))
-          .sort((a, b) => a.time - b.time)
 
         if (!isMounted) {
           return
         }
 
-        setHistory({ status: "ready", candles, error: null })
+        setHistory({ status: "ready", series: { EUR: eur, USD: usd }, error: null })
       } catch (error) {
-        // api.exchange.coinbase.com can be blocked by networks/extensions/regions while
-        // api.coinbase.com (the quotes host) still works. Fall back to daily spot prices.
-        try {
-          const { days } = RANGES[range]
-          const step = Math.max(1, Math.ceil(days / 90))
-          const dates = []
-          for (let i = days; i >= 0; i -= step) {
-            dates.push(new Date(Date.now() - i * 24 * 60 * 60 * 1000))
-          }
-          const spots = await Promise.all(
-            dates.map((d) =>
-              fetch(`https://api.coinbase.com/v2/prices/BTC-USD/spot?date=${d.toISOString().slice(0, 10)}`)
-                .then((r) => (r.ok ? r.json() : null))
-                .catch(() => null)
-            )
-          )
-          const fb = dates
-            .map((d, i) => {
-              const amount = spots[i]?.data?.amount
-              return amount ? { time: d.getTime(), closeUsd: Number(amount), closeEur: null } : null
-            })
-            .filter(Boolean)
-          if (fb.length < 2) {
-            throw new Error("Fallback price history was empty")
-          }
-          if (!isMounted) {
-            return
-          }
-          setHistory({ status: "ready", candles: fb, error: null })
-        } catch (fbError) {
-          if (!isMounted) {
-            return
-          }
-          setHistory((h) => ({
-            ...h,
-            status: h.candles ? "stale" : "error",
-            error: error instanceof Error ? error.message : "Unable to load BTC price history",
-          }))
+        if (!isMounted) {
+          return
         }
+        setHistory((h) => ({
+          ...h,
+          status: h.series ? "stale" : "error",
+          error: error instanceof Error ? error.message : "Unable to load BTC price history",
+        }))
       }
     }
 
@@ -164,16 +130,6 @@ export const BtcEurRate = () => {
       clearInterval(intervalId)
     }
   }, [range])
-
-  // derive EUR candles whenever rates arrive and USD candles are already loaded
-  useEffect(() => {
-    if (!state.rates) return
-    setHistory((h) => {
-      if (!h.candles || h.candles[0].closeEur != null) return h
-      const eurPerUsd = state.rates.EUR / state.rates.USD
-      return { ...h, candles: h.candles.map((c) => ({ ...c, closeEur: c.closeUsd * eurPerUsd })) }
-    })
-  }, [state.rates])
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -212,8 +168,8 @@ export const BtcEurRate = () => {
     ? Math.max(0, Math.floor((now - state.updatedAt.getTime()) / (60 * 1000)))
     : null
 
-  // chart data — currency-dependent
-  const candles = history.candles
+  // chart data — per-currency native series
+  const candles = history.series ? history.series[currency] : null
   const chartW = 800
   const chartH = 260
   const pathRef = React.useRef(null)
@@ -221,23 +177,19 @@ export const BtcEurRate = () => {
 
   const chart = candles
     ? (() => {
-        const key = currency === "EUR" ? "closeEur" : "closeUsd"
-        if (candles[0][key] == null) return null
-        const closes = candles.map((c) => c[key])
+        const closes = candles.map((c) => c.close)
         const min = Math.min(...closes)
         const max = Math.max(...closes)
         const span = max - min || 1
         const pad = 8
         const x = (i) => pad + (i / (candles.length - 1)) * (chartW - pad * 2)
         const y = (v) => chartH - pad - ((v - min) / span) * (chartH - pad * 2)
-        const line = candles.map((c, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(2)},${y(c[key]).toFixed(2)}`).join("")
+        const line = candles.map((c, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(2)},${y(c.close).toFixed(2)}`).join("")
         const area = `${line} L${x(candles.length - 1).toFixed(2)},${chartH} L${x(0).toFixed(2)},${chartH} Z`
-        // change over the window: first vs last close
-        const first = candles[0][key]
-        const last = candles[candles.length - 1][key]
+        const first = candles[0].close
+        const last = candles[candles.length - 1].close
         const diff = last - first
         const pct = (diff / first) * 100
-        // x-axis labels: 4 dates spread across the range
         const labels = [0, 0.33, 0.66, 0.99].map((f) => {
           const d = new Date(candles[Math.floor(f * (candles.length - 1))].time)
           return d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
@@ -247,13 +199,12 @@ export const BtcEurRate = () => {
           currency,
           maximumFractionDigits: 2,
         }).format
-        return { line, area, min, max, change: { diff, pct, up: diff >= 0 }, labels, x, y, candles, key, fmt }
+        return { line, area, min, max, change: { diff, pct, up: diff >= 0 }, labels, x, y, candles, fmt }
       })()
     : null
 
   const gradientId = "btc-chart-fill"
   const strokeColor = chart?.change.up ? "#16a34a" : "#dc2626"
-  const locale = currency === "EUR" ? "en-IE" : "en-US"
 
   return (
     <div className="not-prose my-6 rounded-2xl border border-zinc-950/10 bg-gradient-to-br from-white to-zinc-50 p-5 shadow-sm dark:border-white/10 dark:from-zinc-900 dark:to-zinc-950">
@@ -378,7 +329,7 @@ export const BtcEurRate = () => {
                     {new Date(chart.candles[hoverIdx].time).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                     :{" "}
                   </span>
-                  {chart.fmt(chart.candles[hoverIdx][chart.key])}
+                  {chart.fmt(chart.candles[hoverIdx].close)}
                 </p>
               ) : null}
             </div>
@@ -417,7 +368,7 @@ export const BtcEurRate = () => {
                     strokeDasharray="4 4"
                     vectorEffect="non-scaling-stroke"
                   />
-                  <circle cx={chart.x(hoverIdx)} cy={chart.y(chart.candles[hoverIdx][chart.key])} r="4" fill={strokeColor} />
+                  <circle cx={chart.x(hoverIdx)} cy={chart.y(chart.candles[hoverIdx].close)} r="4" fill={strokeColor} />
                 </g>
               ) : null}
             </svg>
@@ -438,13 +389,13 @@ export const BtcEurRate = () => {
 
       {state.status === "stale" ? (
         <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
-          Live refresh failed. Showing the last successfully loaded Coinbase rates.
+          Live refresh failed. Showing the last successfully loaded rates.
         </p>
       ) : null}
 
       {state.status === "error" ? (
         <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
-          Unable to load the Coinbase BTC/USD and BTC/EUR rates right now. Try refreshing the page.
+          Unable to load the BTC/USD and BTC/EUR rates right now. Try refreshing the page.
         </p>
       ) : null}
     </div>
