@@ -1,0 +1,41 @@
+---
+title: "Payout Pools"
+icon: "piggy-bank"
+description: "The funds you send to ZBD for payouts. Every payout draws from your pool."
+---
+
+Your payout pool holds the funds you've sent to ZBD for payouts. A payout can only be initiated if the pool covers it. Crediting earnings doesn't touch the pool.
+
+## How funding works
+
+1. You send funds from your treasury to the account ZBD provides for your organization.
+2. The funds land in your pool, in your funding currency.
+3. Once they settle, the full amount is available to pay out.
+
+Funding is always a push from your side. ZBD never pulls from your account.
+
+## Funding currency and conversion
+
+Your pool holds one funding currency. Users are paid in [their own currency](/embedded-payouts/methods-and-coverage), converted at the rate quoted at the time of the payout, so the amount leaving your pool can differ from what the user receives.
+
+## Keeping the pool funded
+
+<CardGroup cols={1}>
+  <Card title="Track your pool" icon="chart-line">
+    Your ZBD contact can set up reporting for your own monitoring.
+  </Card>
+  <Card title="Agree a low-balance level" icon="gauge">
+    Work with ZBD on the level that should prompt a top-up.
+  </Card>
+  <Card title="Fund ahead of volume" icon="forward">
+    If your volume is predictable, fund against your expected run rate instead of waiting for alerts.
+  </Card>
+</CardGroup>
+
+## When the pool is short
+
+If the pool can't cover a payout when it's initiated, the payout fails the [funds check](/embedded-payouts/how-payouts-work#checks) and nothing is paid. Top up and try again. Users aren't shown a failure caused by funding, but payouts stop until you top up.
+
+## Settlement timing
+
+Funds become available once they settle with ZBD, and timing depends on how you send them. Plan top-ups so users aren't left waiting on your funding to settle.

@@ -1,0 +1,71 @@
+---
+title: "Update a User"
+description: "Change a user's email address."
+api: "PATCH https://api.zbdpay.com/api/v1/users/{userId}"
+---
+
+This is a partial update, so only the fields you send change. Today `email` is the only field you can update.
+
+Use this when a user changes the email tied to their account in your product. Verification codes requested after the update go to the new address.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="userId" type="string">
+  The ZBD user ID returned by Create a User.
+</ParamField>
+
+### Body Parameters
+
+<ParamField body="email" type="string">
+  The user's new email address.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X PATCH https://api.zbdpay.com/api/v1/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652 \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "new-address@example.com"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "User updated.",
+  "data": {
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "publisher_user_id": "user-42",
+    "email": "new-address@example.com",
+    "kyc_status": "verified",
+    "created_at": "2026-10-01T18:00:00Z"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+Returns the same fields as [Get a User](/embedded-payouts/apis/get-user).
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `validation_failed` | The body is malformed or the email isn't valid |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `user_not_found` | The user doesn't exist under your key |

@@ -1,0 +1,41 @@
+---
+title: "Tracking Earnings With ZBD"
+icon: "coins"
+description: "ZBD keeps track of what each user has earned, and users cash out through the widget."
+---
+
+Use this model if you'd rather not build and reconcile your own record of what users are owed. You tell ZBD each time a user earns, and ZBD keeps the running total. Your pool only needs to cover what's cashed out, when it's cashed out.
+
+<Steps>
+  <Step title="Create the user">
+    Call [Create a User](/embedded-payouts/apis/create-user) from your backend with your own ID for them. A user has to exist before you can credit them.
+  </Step>
+  <Step title="Credit earnings as they're earned">
+    Call [Credit a User](/embedded-payouts/apis/credit-user) each time the user earns, with a `type` that says what the credit is for. Nothing is drawn from your pool when you credit, only when the user cashes out. Send a unique `Idempotency-Key` header with every credit, so a retry doesn't credit the user twice.
+  </Step>
+  <Step title="Show earnings in your product">
+    Use [Get Balances](/embedded-payouts/apis/get-balances) and [List Transactions](/embedded-payouts/apis/list-transactions) to show users what they've earned and what they've been paid.
+  </Step>
+  <Step title="Let the user cash out">
+    Call [Create a Session](/embedded-payouts/apis/create-session) with `flows: ["cashout"]` and open the widget with the session token. If the user hasn't verified or chosen a payment method yet, the flow takes them through that first. See [Embedding the Widget](/embedded-payouts/cash-out-widget).
+
+    When the user cashes out, the amount comes out of your pool and off their earnings.
+  </Step>
+  <Step title="Track the result by webhook">
+    A cash out creates a payout, so you get the same [webhooks](/embedded-payouts/apis/webhook-events) as any other payout, with `origin` set to `widget`. See [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses).
+  </Step>
+</Steps>
+
+## Verification
+
+Because ZBD sees what each user earns and cashes out, verification can be tiered. Users can start earning and cash out small amounts at a lower tier, and verify further when a cash out needs it. The cash out flow asks for it at that point, so you don't have to track tiers yourself.
+
+You can still run full verification up front, for example at signup, if you'd rather users are cleared before they earn anything.
+
+## Reversing a credit
+
+To take back a credit, for example when a reward is canceled, call [Debit a User](/embedded-payouts/apis/debit-user) with the `credit_transaction_id` of the credit you're reversing. A debit only succeeds while the user still has those earnings available, so it can't recover an amount they've already cashed out.
+
+## When a cash out fails or is returned
+
+The amount goes back to the user's earnings, so they can cash out again once the problem is fixed. A webhook tells you either way.

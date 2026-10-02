@@ -1,0 +1,41 @@
+---
+title: "List Webhooks"
+description: "List your webhook subscriptions."
+api: "GET https://api.zbdpay.com/api/v1/webhooks/subscriptions"
+---
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/webhooks/subscriptions \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Subscriptions retrieved.",
+  "data": {
+    "subscriptions": [
+      {
+        "subscription_id": "sub_51a2",
+        "url": "https://your-server.com/zbd/webhooks",
+        "events": ["PAYMENTS.V1.PAYOUT.FAILED", "PAYMENTS.V1.PAYOUT.RETURNED"],
+        "project_id": null,
+        "status": "active"
+      }
+    ]
+  },
+  "error": null
+}
+```
+</ResponseExample>

@@ -1,0 +1,87 @@
+---
+title: "List Payment Methods"
+description: "Read a user's linked payment methods, masked, with the ID you send on a payout."
+api: "GET https://api.zbdpay.com/api/v1/users/{userId}/payment-methods"
+---
+
+Users add payment methods in the widget's payment method selection flow. This endpoint returns them, masked, so your backend can get the `payment_method_id` to send on [Create a Payout](/embedded-payouts/apis/create-payout), or show them in your own selector.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="userId" type="string">
+  The ZBD user ID returned by Create a User.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652/payment-methods \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Payment methods retrieved.",
+  "data": {
+    "payment_methods": [
+      {
+        "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
+        "rail": "ach",
+        "institution_name": "Chase",
+        "currency": "USD",
+        "last4": "6789",
+        "status": "active"
+      }
+    ]
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Response
+
+<ResponseField name="payment_methods" type="object[]">
+  The user's payment methods. Each one is a single account paid over a single rail, so the same bank account can appear once for each rail it supports.
+</ResponseField>
+
+<ResponseField name="payment_method_id" type="string">
+  The ID you send on [Create a Payout](/embedded-payouts/apis/create-payout).
+</ResponseField>
+
+<ResponseField name="rail" type="string">
+  How the payout reaches the account, for example `ach`. Rails differ in fees and timing. See [Payout Methods](/embedded-payouts/methods-and-coverage).
+</ResponseField>
+
+<ResponseField name="institution_name" type="string | null">
+  The bank or provider, so you can show something like "Chase ending in 6789".
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  The currency the method is paid in.
+</ResponseField>
+
+<ResponseField name="last4" type="string">
+  The last four digits of the account.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  `active` or `inactive`. A payout to an inactive method returns `422 payment_method_inactive`.
+</ResponseField>
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `user_not_found` | The user doesn't exist under your key |

@@ -1,0 +1,163 @@
+---
+title: "Settle a Marketplace Sale"
+description: "Settle a sale between users: a cart, multiple sellers, royalties, and your fee, in one call."
+api: "POST https://api.zbdpay.com/api/v1/transactions"
+---
+
+You run the marketplace and work out who gets what. ZBD settles it. A sale has one payer and one or more line items, and each line item lists every recipient and the amount they get. Every movement settles together, or none of them do.
+
+## Rules
+
+- **Amounts add up.** Recipients sum to their line item, and line items sum to `amount`. Otherwise the call returns `400 validation_failed`.
+- **Recipients are always explicit.** A missing recipient is an error, never a default to you.
+- **`role`** is `seller`, `royalty`, or `publisher_fee`. It doesn't change how money moves. It tells ZBD the gross and net for each seller, for tax reporting and transaction monitoring.
+- **ZBD's fee comes out of your `publisher_fee`**, never a seller's proceeds or a royalty. ZBD adds it as its own movement, and the response shows it.
+- **Every recipient is checked.** A sale that settles in fiat needs a verified seller, or the call returns `422 kyc_required`.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField required header="Idempotency-Key" type="string">
+  A UUID you generate for this sale.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="type" type="string">
+  `marketplace_sale`.
+</ParamField>
+
+<ParamField required body="currency" type="string">
+  The currency code for every amount in the sale.
+</ParamField>
+
+<ParamField required body="amount" type="integer">
+  The total the payer pays, in the currency's smallest unit.
+</ParamField>
+
+<ParamField required body="payer.user_id" type="string">
+  The user buying.
+</ParamField>
+
+<ParamField required body="line_items" type="object[]">
+  One per item in the cart. Each has an `amount`, an optional `reference_id` such as your listing ID, optional `listing` details, and its `recipients`.
+</ParamField>
+
+<ParamField required body="line_items.recipients" type="object[]">
+  Everyone paid from this line item. Each has a `role`, an `amount`, and either a `user_id` or `"party": "publisher"` for your fee.
+</ParamField>
+
+<ParamField body="line_items.listing" type="object">
+  `created_at` (when the listing went up) and `visibility` (`open` for anyone to buy, or `direct` for a deal between two named users). Optional, but it feeds ZBD's risk checks: a listing that was open for a day looks very different from one created and bought in the same second.
+</ParamField>
+
+<ParamField body="reference_id" type="string">
+  Your own ID for the sale, such as a cart ID.
+</ParamField>
+
+<ParamField body="project_id" type="string">
+  The project the sale belongs to.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/transactions \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Idempotency-Key: 0e5c9a72-1f43-4b8d-9a26-7c3e1d5b8f04" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "marketplace_sale",
+    "currency": "GEMS",
+    "amount": 1500,
+    "payer": { "user_id": "usr_buyer" },
+    "reference_id": "cart_5521",
+    "line_items": [
+      {
+        "reference_id": "listing_sword_88",
+        "amount": 1000,
+        "listing": { "created_at": "2026-09-28T14:02:00Z", "visibility": "open" },
+        "recipients": [
+          { "user_id": "usr_alice", "role": "seller", "amount": 800 },
+          { "user_id": "usr_creator_1", "role": "royalty", "amount": 100 },
+          { "party": "publisher", "role": "publisher_fee", "amount": 100 }
+        ]
+      },
+      {
+        "reference_id": "listing_armor_12",
+        "amount": 500,
+        "listing": { "created_at": "2026-09-30T09:15:00Z", "visibility": "direct" },
+        "recipients": [
+          { "user_id": "usr_bob", "role": "seller", "amount": 450 },
+          { "party": "publisher", "role": "publisher_fee", "amount": 50 }
+        ]
+      }
+    ]
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "Sale settled.",
+  "data": {
+    "transaction_id": "txn_9a41",
+    "type": "marketplace_sale",
+    "status": "completed",
+    "currency": "GEMS",
+    "amount": 1500,
+    "payer": { "user_id": "usr_buyer" },
+    "reference_id": "cart_5521",
+    "line_items": [
+      {
+        "reference_id": "listing_sword_88",
+        "amount": 1000,
+        "movements": [
+          { "movement_id": "mv_1", "to": { "user_id": "usr_alice" }, "role": "seller", "amount": 800 },
+          { "movement_id": "mv_2", "to": { "user_id": "usr_creator_1" }, "role": "royalty", "amount": 100 },
+          { "movement_id": "mv_3", "to": { "party": "publisher" }, "role": "publisher_fee", "amount": 50 },
+          { "movement_id": "mv_4", "to": { "party": "zbd" }, "role": "zbd_fee", "amount": 50 }
+        ]
+      },
+      {
+        "reference_id": "listing_armor_12",
+        "amount": 500,
+        "movements": [
+          { "movement_id": "mv_5", "to": { "user_id": "usr_bob" }, "role": "seller", "amount": 450 },
+          { "movement_id": "mv_6", "to": { "party": "publisher" }, "role": "publisher_fee", "amount": 25 },
+          { "movement_id": "mv_7", "to": { "party": "zbd" }, "role": "zbd_fee", "amount": 25 }
+        ]
+      }
+    ],
+    "project_id": null,
+    "created_at": "2026-10-01T18:22:00Z"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+Returns the same fields as [Get a Transaction](/embedded-accounts/apis/get-transaction#response), with movements grouped by line item. The ZBD fee amounts in this example are illustrative.
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `validation_failed` | Amounts don't add up, an unknown `role`, or a missing recipient. `details` names the fields |
+| `400` | `idempotency_key_required` | No idempotency key |
+| `403` | `feature_not_enabled` | Marketplace sales aren't enabled for your program |
+| `404` | `user_not_found` | The payer or a recipient doesn't exist under your key |
+| `409` | `idempotency_key_reused` | The same key was sent with a different body |
+| `422` | `insufficient_funds` | The payer's balance doesn't cover `amount` |
+| `422` | `kyc_required` · `screening_blocked` | A recipient isn't cleared to receive |
+| `422` | `limit_exceeded` | The sale is over a transaction limit |

@@ -1,0 +1,75 @@
+---
+title: "Pay to ZBD Gamertag"
+description: "Start sending test Bitcoin payments to ZBD Gamertags."
+api: "POST https://sandbox-api.zbdpay.com/v0/gamertag/send-payment"
+sidebarTitle: "Pay to Gamertag (Sandbox)"
+---
+
+<Info>
+This API endpoint is to be used with the ZBD Sandbox API. To use this API you must first create a Project in the [ZBD Developer Dashboard](https://dashboard.zbdpay.com/) and then generate a Sandbox API Key.
+
+**Sandbox keys only work with the Sandbox API. Live keys only work with the Live API.**
+</Info>
+
+## Description
+
+This API endpoint is used to send fake **Sandbox Bitcoin** payments directly to a user's ZBD Gamertag.
+
+## Usage
+
+The idea behind this API endpoint is to allow developers integrating ZBD Gamertag capabilities to test their integrations before going Live.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="amount" type="string">
+  The amount for the Payment -> in millisatoshis
+</ParamField>
+
+<ParamField required body="gamertag" type="string">
+  Destination SANDBOX ZBD Gamertag
+</ParamField>
+
+<ParamField initialValue="‎" body="description" type="string">
+  Note or comment for this Payment (visible to recipient)
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json 200 Response
+{
+  "success": true,
+  "data": {
+    "id": "4a67ea26-00b7-4310-82bd-2c5d1490cc2a",
+    "status": "settled",
+    "transactionId": "4be87b3a-bf40-45fa-9624-1aa5cb6d61c5",
+    "receiverId": "14db5692-133a-42ba-a58d-abbcae282185",
+    "amount": "1000",
+    "comment": "Sending to Gamertag",
+    "settledAt": "2023-04-13T15:38:54.595Z"
+  },
+  "message": "Payment done.",
+}
+```
+
+```json 400 Response
+{
+  "success": false,
+  "message": "You cannot pay to this user, missing destination"
+}
+```
+
+</ResponseExample>

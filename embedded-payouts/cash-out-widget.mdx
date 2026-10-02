@@ -1,0 +1,113 @@
+---
+title: "Embedding the Widget"
+icon: "window-maximize"
+description: "Add ZBD's hosted flows for identity verification, tax information, payment method selection, and cash out to your product."
+---
+
+The widget runs the steps where ZBD collects something from the user. You embed it in your product and choose which flows to use and where they appear.
+
+## Flows
+
+| Flow | `flows` value | What it does |
+| --- | --- | --- |
+| Identity verification | `kyc` | Verifies the user. Can run on its own, for example at signup. |
+| Payment method selection | `payment_methods` | The user chooses how to be paid from the methods available in their country, with each method's fee shown. Bank accounts are linked here, and methods that need no linking, like gift cards, are chosen here too. |
+| Disclosures | `disclosures` | The user accepts disclosures a payout needs, such as the Electronic Funds Transfer agreement for US bank payouts. |
+| Cash out | `cashout` | The user cashes out the earnings ZBD tracks for them. Only for programs where ZBD tracks earnings. |
+
+ZBD collects tax information within these flows when a payout requires it.
+
+If a user opens the cash out flow before they've verified or chosen a payment method, the widget takes them through those steps first.
+
+## Embedding a flow
+
+<Steps>
+  <Step title="Create a session with the flows you need">
+    Call [Create a Session](/embedded-payouts/apis/create-session) from your server with the `flows` this session can open, for example `["kyc"]` at signup. Your API key never reaches the browser or game client, and the user can't open a flow you didn't list. The response includes a `widget_url`.
+  </Step>
+  <Step title="Load the widget">
+    Load the URL in an iframe or WebView at the point in your product where the flow should appear. See [Code examples](#code-examples).
+  </Step>
+  <Step title="Listen for events">
+    Your frontend receives [browser events](/embedded-payouts/browser-events) as the user moves through the flow, for example when they finish verification or add a payment method. Payout status changes reach your backend by [webhook](/embedded-payouts/apis/webhook-events).
+  </Step>
+</Steps>
+
+One session can open any of the flows you listed without the user signing in again. For example, a session with `["kyc", "payment_methods"]` can run identity verification when a creator signs up, and payment method selection before their first payout.
+
+## Embed parameters
+
+These control how the widget looks. Add them as query parameters on the `widget_url` returned by Create a Session. Don't build the widget URL or hostname yourself, and choose flows on the session, not in the URL.
+
+| Parameter | Values | What it does |
+| --- | --- | --- |
+| `theme` | `zbd-default`, `zbd-light` | Sets the widget theme |
+| `embed` | `true` | Hides the widget's header and footer, so it sits inside your own UI |
+| `component` | `balance`, `history`, `method-picker` | Shows a single component on its own: the user's earnings, their history, or the payment method picker |
+
+The `balance` and `history` components only apply if ZBD tracks earnings.
+
+## Code examples
+
+<Tabs>
+  <Tab title="Web">
+    ```html
+    <iframe
+      id="zbd-widget"
+      src="{widget_url}"
+      style="width: 100%; height: 600px; border: none;"
+      allow="camera; microphone"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-downloads"
+    ></iframe>
+    ```
+  </Tab>
+
+  <Tab title="Unreal">
+    Enable Unreal's **Web Browser** plugin, add a Web Browser widget to your UMG screen, and load the `widget_url` returned by your backend.
+
+    ```cpp
+    #include "Components/WebBrowser.h"
+
+    void UCashoutScreen::OpenZbdWidget(const FString& WidgetUrl)
+    {
+        if (ZbdWidgetBrowser)
+        {
+            ZbdWidgetBrowser->LoadURL(WidgetUrl);
+        }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Unity">
+    Use a native WebView package for your Unity target and load the `widget_url` returned by your backend.
+
+    ```csharp
+    using UnityEngine;
+
+    public class ZbdWidgetLauncher : MonoBehaviour
+    {
+        [SerializeField] private GameObject webViewContainer;
+
+        public void OpenWidget(string widgetUrl)
+        {
+            // Replace this with your Unity WebView package API.
+            var webView = webViewContainer.GetComponent<IWebView>();
+            webView.LoadUrl(widgetUrl);
+            webView.SetVisible(true);
+        }
+    }
+
+    public interface IWebView
+    {
+        void LoadUrl(string url);
+        void SetVisible(bool visible);
+    }
+    ```
+  </Tab>
+</Tabs>
+
+The widget needs camera and microphone access for identity verification, so keep the `allow` attribute.
+
+<Warning>
+  **Allow downloads.** Users can download documents from the widget, such as disclosures and payout receipts. If you set a `sandbox` attribute on the iframe, it has to include `allow-downloads`, as in the example above. Without it, the browser blocks the download and the widget opens the document in a new tab instead. If you don't set a `sandbox` attribute, downloads work by default.
+</Warning>

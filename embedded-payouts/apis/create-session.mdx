@@ -1,0 +1,95 @@
+---
+title: "Create a Session"
+description: "Create a widget session for a user, with the flows it can open."
+api: "POST https://api.zbdpay.com/api/v1/widget-sessions"
+---
+
+Returns a `widget_url` you load in an iframe or WebView. The flows you list are the only ones the session can open, and they're carried in the signed session token, so they can't be changed from the browser.
+
+The user has to exist first. Create them with [Create a User](/embedded-payouts/apis/create-user).
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="user_id" type="string">
+  The ZBD user ID returned by Create a User.
+</ParamField>
+
+<ParamField required body="flows" type="string[]">
+  The flows this session can open: `kyc` (identity verification), `payment_methods` (payment method selection), `disclosures`, and `cashout`. `cashout` is only available where ZBD holds the user's balance.
+</ParamField>
+
+<ParamField body="project_id" type="string">
+  The project the session belongs to.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/widget-sessions \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "flows": ["kyc", "payment_methods"]
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "Session created.",
+  "data": {
+    "session_token": "eyJhbGciOiJSUzI1NiIs...",
+    "widget_url": "https://widget.zbd.gg/?session_token=eyJhbGci...",
+    "flows": ["kyc", "payment_methods"],
+    "expires_at": "2026-10-01T22:00:00Z"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Response
+
+The session is in `data`.
+
+<ResponseField name="session_token" type="string">
+  The signed token for this session. It's already in `widget_url`, so you only need it on its own when the widget asks your page for a new session.
+</ResponseField>
+
+<ResponseField name="widget_url" type="string">
+  The URL to load in an iframe or WebView. Load it as it comes back, and add [embed parameters](/embedded-payouts/cash-out-widget#embed-parameters) if you need them.
+</ResponseField>
+
+<ResponseField name="flows" type="string[]">
+  The flows this session can open, as you requested them.
+</ResponseField>
+
+<ResponseField name="expires_at" type="string">
+  When the session expires, as an ISO 8601 timestamp. Sessions last 4 hours.
+</ResponseField>
+
+
+When the session is close to expiring, the widget asks your page for a new one. See [Refreshing a session](/embedded-payouts/browser-events#refreshing-a-session).
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `validation_failed` | `flows` is empty or contains an unknown flow |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `403` | `feature_not_enabled` | A requested flow isn't available for your program, for example `cashout` when you track balances yourself |
+| `404` | `user_not_found` | The user doesn't exist under your key |

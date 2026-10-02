@@ -1,0 +1,94 @@
+---
+title: "List Payouts"
+description: "List payouts, including those sent from your backend and cash outs from the widget."
+api: "GET https://api.zbdpay.com/api/v1/payments/payouts"
+---
+
+Covers every payout under your key, whether your backend sent it or a user cashed out in the widget. Use it for reconciliation.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="user_id" type="string">
+  Only payouts to this user.
+</ParamField>
+
+<ParamField query="status" type="string">
+  Only payouts in this status.
+</ParamField>
+
+<ParamField query="reference_id" type="string">
+  Only the payout with your reference.
+</ParamField>
+
+<ParamField query="project_id" type="string">
+  Only payouts in this project.
+</ParamField>
+
+<ParamField query="from" type="string">
+  ISO 8601 start of the date range.
+</ParamField>
+
+<ParamField query="to" type="string">
+  ISO 8601 end of the date range.
+</ParamField>
+
+<ParamField query="limit" type="integer">
+  Page size.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `next_cursor` from the previous page.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl "https://api.zbdpay.com/api/v1/payments/payouts?status=COMPLETED&from=2026-10-01T00:00:00Z" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Payouts retrieved.",
+  "data": {
+    "payouts": [
+      {
+        "payout_id": "po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44",
+        "status": "COMPLETED",
+        "origin": "api",
+        "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+        "amount": 2500,
+        "currency": "USD",
+        "fee_amount": 50,
+        "net_amount": 2450,
+        "reference_id": "creator_payout_2026_10",
+        "project_id": null
+      }
+    ],
+    "next_cursor": null
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Response
+
+<ResponseField name="payouts" type="object[]">
+  Payouts matching your filters, newest first. Each has the same fields as [Create a Payout](/embedded-payouts/apis/create-payout#response), including `origin`, which tells you whether your backend sent it or the user cashed out in the widget.
+</ResponseField>
+
+<ResponseField name="next_cursor" type="string | null">
+  Pass this as `cursor` to get the next page. `null` when there are no more results.
+</ResponseField>
+

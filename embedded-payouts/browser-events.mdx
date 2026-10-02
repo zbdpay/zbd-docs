@@ -1,0 +1,86 @@
+---
+title: "Handling Browser Events"
+icon: "tower-broadcast"
+description: "The events the widget sends to your frontend, and the commands your frontend can send back."
+---
+
+The widget talks to your page with browser `postMessage` events. Use them to update your UI, for example to close the widget when the user is done or show that a payment method was added.
+
+Payout status changes don't come through browser events. They reach your backend by webhook.
+
+## Listening for events
+
+Take the trusted origin from the `widget_url` your backend received, and check both the origin and the source window on every message:
+
+```javascript
+const widgetFrame = document.querySelector("#zbd-widget");
+const widgetOrigin = new URL(widgetUrl).origin;
+
+window.addEventListener("message", (event) => {
+  if (event.origin !== widgetOrigin) return;
+  if (event.source !== widgetFrame?.contentWindow) return;
+
+  const { type, payload } = event.data ?? {};
+  if (!type?.startsWith("ZBD_")) return;
+
+  switch (type) {
+    case "ZBD_WIDGET_READY":
+      // Widget loaded and authenticated
+      break;
+    case "ZBD_METHOD_ADDED":
+      // User added a payment method
+      break;
+    case "ZBD_WIDGET_CLOSE":
+      // User closed the widget, so remove the iframe
+      break;
+  }
+});
+```
+
+<Warning>
+  The `ZBD_` prefix isn't authentication. Don't act on an event until you've checked both `event.origin` and `event.source`.
+</Warning>
+
+## Events
+
+| Event | Payload | When it fires |
+| --- | --- | --- |
+| `ZBD_WIDGET_READY` | `{ user? }` | The widget loaded and authenticated |
+| `ZBD_WIDGET_CLOSE` | None | The user closed the widget |
+| `ZBD_WIDGET_BACK` | None | The user asked to go back in your product |
+| `ZBD_WIDGET_ERROR` | `{ code, message }` | Something went wrong |
+| `ZBD_SESSION_REFRESH_REQUIRED` | `{ request_id }` | The session is expiring and the widget needs a new one. See [Refreshing a session](#refreshing-a-session) |
+| `ZBD_NAVIGATION` | `{ from, to }` | The user moved to a different screen |
+| `ZBD_EXTERNAL_REDIRECT` | `{ provider, url, flow? }` | The widget needs to send the user to an external provider |
+| `ZBD_KYC_STARTED` | `{ target_tier }` | Identity verification started |
+| `ZBD_KYC_STEP_COMPLETED` | `{ step }` | A verification step finished |
+| `ZBD_KYC_COMPLETE` | `{ tier }` | The user was verified |
+| `ZBD_KYC_PENDING_REVIEW` | None | Verification needs a manual review |
+| `ZBD_KYC_FAILED` | `{ retryable }` or `{ reason }` | Verification failed |
+| `ZBD_KYC_CANCELLED` | None | The user left verification |
+| `ZBD_METHOD_ADD_STARTED` | `{ method_type }` | The user started adding a payment method |
+| `ZBD_METHOD_ADDED` | `{ payout_method_id, type, label }` | The user added a payment method |
+| `ZBD_METHOD_CANCELLED` | None | The user left before adding a payment method |
+| `ZBD_PAYOUT_INITIATED` | `{ cashout_id, idempotency_key }` | A payout was started |
+| `ZBD_PAYOUT_CONFIRMED` | `{ method_id, amount }` | The user confirmed a payout |
+| `ZBD_CASHOUT_SUCCESS` | `{ cashout_id, status?, amount, currency_code, usd_equivalent }` | A cash out was submitted |
+| `ZBD_CASHOUT_CANCELLED` | None | The user left the cash out flow |
+| `ZBD_GIFT_CARD_PURCHASE_SUCCESS` | `{ product_name, amount, email }` | A gift card was issued |
+| `ZBD_GIFT_CARD_PURCHASE_FAILED` | `{ reason }` | A gift card couldn't be issued |
+
+Treat these events as UI signals. For anything that affects money, like a completed or failed payout, rely on the webhook your backend receives.
+
+## Commands you can send
+
+After the same origin and source checks, your page can send these commands to the widget with `postMessage`:
+
+| Command | Payload | What it does |
+| --- | --- | --- |
+| `ZBD_SESSION_REFRESH_RESULT` | `{ request_id, session_token }` | Answers a refresh request with a new session token, or `null` if the refresh failed |
+| `ZBD_SET_THEME` | Key-value object of strings | Updates supported theme values |
+| `ZBD_SET_CONFIG` | Widget configuration object | Updates supported runtime settings |
+| `ZBD_NAVIGATE` | `{ path }` | Moves the widget to a supported screen |
+
+## Refreshing a session
+
+When a session is about to expire, the widget sends `ZBD_SESSION_REFRESH_REQUIRED` with a `request_id`. Ask your backend to [create a new session](/embedded-payouts/apis/create-session), then send the new token back with `ZBD_SESSION_REFRESH_RESULT` and the same `request_id`. The user stays where they are in the flow.

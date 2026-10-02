@@ -1,0 +1,60 @@
+---
+title: "Get Disclosures"
+description: "Read which disclosures a user has accepted."
+api: "GET https://api.zbdpay.com/api/v1/users/{userId}/disclosures"
+---
+
+<Note>
+  Most programs don't need this endpoint. The widget asks the user to accept the Electronic Funds Transfer agreement when they add a US bank account. This endpoint is for specific cases, such as a program that runs its own front end instead of the widget. If that's you, talk to your ZBD contact during onboarding.
+</Note>
+
+Returns the user's acceptance status for each current disclosure type. Before a US bank (ACH) payout, the user has to have accepted the current Electronic Funds Transfer disclosure (type `6`). If they haven't, the payout returns `422 disclosure_required`.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="userId" type="string">
+  The ZBD user ID returned by Create a User.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/users/{userId}/disclosures \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Disclosures retrieved.",
+  "data": [
+    {
+      "type_id": 6,
+      "name": "Electronic Funds Transfer",
+      "version": "1.0.0",
+      "current": false,
+      "accepted_at": null
+    }
+  ],
+  "error": null
+}
+```
+</ResponseExample>
+
+`current` is `true` when the user has accepted the latest version of that disclosure.
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `user_not_found` | The user doesn't exist under your key |

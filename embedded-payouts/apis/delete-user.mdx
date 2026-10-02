@@ -1,0 +1,51 @@
+---
+title: "Delete a User"
+description: "Request that a user's data is archived, for example to handle an erasure request."
+api: "POST https://api.zbdpay.com/api/v1/users/{userId}/deletion-request"
+---
+
+Queues the user for archival. It's a request rather than an immediate delete: ZBD processes it in the background, and the user can't be used again once it's accepted.
+
+Use it when a user asks you to erase their data. Check that the request comes from the account holder before you call it, because archival can't be undone.
+
+A user with open payouts can't be archived, and a user who still holds a balance has to be paid out or brought to zero first.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="userId" type="string">
+  The ZBD user ID returned by [Create a User](/embedded-payouts/apis/create-user).
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652/deletion-request \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 202
+{
+  "success": true,
+  "message": "Deletion request accepted.",
+  "data": null,
+  "error": null
+}
+```
+</ResponseExample>
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `user_not_found` | The user doesn't exist under your key |
+| `409` | `payouts_in_flight` | The user has payouts that haven't finished |

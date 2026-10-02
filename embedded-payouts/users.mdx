@@ -1,0 +1,45 @@
+---
+title: "Users"
+icon: "users"
+description: "The person being paid, how they're verified, and their payment method."
+---
+
+A user is the same object in Embedded Payouts and Embedded Accounts, so a user you create for payouts stays the same user if you add an economy later.
+
+You create users from your backend, and ZBD verifies them. Each user has a verification status and a payment method.
+
+## When to verify
+
+When a user verifies depends on [how you track earnings](/embedded-payouts/how-payouts-work#two-ways-to-track-earnings).
+
+|   | You track earnings | ZBD tracks earnings |
+| --- | --- | --- |
+| When | Full verification before the first payout, usually at signup | Up front, or just in time when a payout needs it |
+| Tiers | None. Every user is fully verified | Users start at a lower tier and verify further as their earnings grow |
+| Why | ZBD has no record of what users have earned, so it can't step them up | ZBD sees each user's earnings and payouts, so it knows when a higher tier is needed |
+
+Either way, a user has to exist before you can [credit them](/embedded-payouts/apis/credit-user) or [pay them](/embedded-payouts/apis/create-payout).
+
+## Creating a user
+
+[Create a user](/embedded-payouts/apis/create-user) with your own identifier for them. You can also pass their email address, which ZBD uses to send verification codes in the widget. You don't need any other personal data at this stage.
+
+## Verification
+
+Verification always runs through ZBD, in the widget's identity verification flow. You decide where it appears in your product.
+
+If ZBD tracks earnings, verification is tiered. A user's tier sets how much they can be paid, and ZBD tells you when a payout needs a higher tier than the user has.
+
+## Tax information
+
+ZBD collects tax information when a payout requires it, or at onboarding if you'd rather collect it early. ZBD works out which form applies based on where the user is and where you are. It's collected once, so users aren't asked again.
+
+## Payment method
+
+The user chooses how they want to be paid from the [options available in their country](/embedded-payouts/methods-and-coverage), in the widget's payment method selection flow. ZBD collects and holds the details.
+
+A user can have earnings before choosing a payment method, but can't be paid until they have one. Use [List Payment Methods](/embedded-payouts/apis/list-payment-methods) to get the `payment_method_id` you send with a payout.
+
+## Reading user state
+
+Use [Get a User](/embedded-payouts/apis/get-user) and its `kyc_status` to check whether a user has completed identity verification. That's usually enough to decide what to show them, like a cash out button or a prompt to verify.

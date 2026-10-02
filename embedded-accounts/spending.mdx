@@ -1,0 +1,40 @@
+---
+title: "Purchases"
+icon: "cart-shopping"
+description: "A purchase moves currency out of a player's balance and into yours."
+---
+
+Purchases happen when a player buys something from you, like a cosmetic, a battle pass, an upgrade, or an entry fee.
+
+For player-to-player activity, see [Transfers](/embedded-accounts/transfers) and [Marketplace Sales](/embedded-accounts/marketplace).
+
+## Making a purchase
+
+[Make a Purchase](/embedded-accounts/apis/purchase) takes the player, the currency, and the amount. Your backend makes the call, since your game decides what's being bought and what it costs.
+
+Send an idempotency key so a retry doesn't charge the player twice.
+
+## Where spent currency goes
+
+Spent currency moves to your revenue account in that currency. What you do with it is an economy design decision:
+
+- **Retire it** to take supply out of circulation, which supports the value of what's left
+- **Recirculate it** as rewards, which keeps supply flat and costs you nothing new
+
+Most economies do some of both, and the mix is one of your main levers on inflation.
+
+## Spend order
+
+A player's balance is made up of value from different sources, and ZBD draws them down in a fixed order: value you granted is spent before value the player paid for. For example, a player with 1,000 units they bought and 500 from rewards who spends 600 uses the 500 from rewards first, then 100 of what they bought. They're left with 900 they bought, and the mix that's left affects what they can cash out.
+
+## Recurring purchases
+
+Subscriptions, season passes, and other scheduled charges are ordinary purchases you make when each period comes due.
+
+Plan for a player's balance falling short between charges. Decide ahead of time whether the subscription lapses, retries, or pauses, and let the player know.
+
+## When a purchase fails
+
+A purchase fails if the balance can't cover it, and nothing is taken.
+
+Where you can, check the player's balance with [Get Balances](/embedded-accounts/apis/get-balances) before showing a price. It's a better experience to show a shortfall early than to refuse a purchase after the player confirms.

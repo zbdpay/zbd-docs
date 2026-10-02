@@ -1,0 +1,106 @@
+---
+title: "List Conversion Rates"
+description: "Read the purchase and redemption rates for a virtual currency."
+api: "GET https://api.zbdpay.com/api/v1/currencies/{currency}/rates"
+---
+
+A virtual currency has two rates, one for each direction. ZBD sets them with you, and you read them here.
+
+| Rate | Applies when |
+| --- | --- |
+| Purchase | A user buys the currency with fiat they hold on ZBD, for example money they loaded from their bank account |
+| Redemption | A user converts the currency to fiat, for example when they cash out |
+
+Purchases made off ZBD, such as through Steam or Meta, don't use the purchase rate. You decide what the purchase is worth and [credit](/embedded-accounts/apis/credit) the user that amount.
+
+Rates only move forward. A new rate takes over from the previous one instead of replacing it, so the history stays readable. Ask your ZBD contact to change a rate.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="currency" type="string">
+  The virtual currency code, for example `GEMS`.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="current_only" type="boolean">
+  Only the rates in force now, without earlier ones.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl "https://api.zbdpay.com/api/v1/currencies/GEMS/rates?current_only=true" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Rates retrieved.",
+  "data": {
+    "rates": [
+      {
+        "direction": "purchase",
+        "from_currency": "USD",
+        "to_currency": "GEMS",
+        "rate": "100.00",
+        "is_current": true,
+        "effective_at": "2026-09-01T00:00:00Z"
+      },
+      {
+        "direction": "redemption",
+        "from_currency": "GEMS",
+        "to_currency": "USD",
+        "rate": "0.00666667",
+        "is_current": true,
+        "effective_at": "2026-09-01T00:00:00Z"
+      }
+    ]
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Response
+
+<ResponseField name="rates.direction" type="string">
+  `purchase` or `redemption`.
+</ResponseField>
+
+<ResponseField name="rates.from_currency" type="string">
+  The currency being converted.
+</ResponseField>
+
+<ResponseField name="rates.to_currency" type="string">
+  The currency it converts to.
+</ResponseField>
+
+<ResponseField name="rates.rate" type="string">
+  How many units of `to_currency` one unit of `from_currency` converts to. It's a string so the precision survives, so parse it as a decimal, not a float.
+</ResponseField>
+
+<ResponseField name="rates.is_current" type="boolean">
+  Whether this is the rate in force now.
+</ResponseField>
+
+<ResponseField name="rates.effective_at" type="string">
+  When the rate took effect, as an ISO 8601 timestamp.
+</ResponseField>
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `currency_not_found` | No virtual currency with this code in your program |

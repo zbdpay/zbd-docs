@@ -1,0 +1,71 @@
+---
+title: "Get a Project"
+description: "Read one project."
+api: "GET https://api.zbdpay.com/api/v1/projects/{projectId}"
+---
+
+You create and edit projects in the Publisher Portal.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="projectId" type="string">
+  The project's ID, from [List Projects](/embedded-accounts/apis/list-projects).
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/projects/prj_1 \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Project retrieved.",
+  "data": {
+    "project_id": "prj_1",
+    "display_name": "Northlight",
+    "description": "Main game",
+    "created_at": "2026-09-01T12:00:00Z"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Response
+
+The project is in `data`.
+
+<ResponseField name="project_id" type="string">
+  The ID you pass as `project_id` on other calls.
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The project's name, as set in the Publisher Portal.
+</ResponseField>
+
+<ResponseField name="description" type="string | null">
+  An optional description.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  When the project was created, as an ISO 8601 timestamp.
+</ResponseField>
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `project_not_found` | No project with this ID under your key |

@@ -1,0 +1,59 @@
+---
+title: "Get a Payout"
+description: "Read one payout's current status."
+api: "GET https://api.zbdpay.com/api/v1/payments/payouts/{payoutId}"
+---
+
+Returns the same fields as [Create a Payout](/embedded-payouts/apis/create-payout#response), with the current `status` and the payout's `origin`. Webhooks tell you when a status changes, so use this for reconciliation and support rather than polling.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="payoutId" type="string">
+  The `payout_id` returned by Create a Payout.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/payments/payouts/po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44 \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Payout retrieved.",
+  "data": {
+    "payout_id": "po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44",
+    "status": "COMPLETED",
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
+    "amount": 2500,
+    "currency": "USD",
+    "fee_amount": 50,
+    "net_amount": 2450,
+    "reference_id": "creator_payout_2026_10",
+    "project_id": null
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+`status` is `INITIATED`, `PROCESSING`, `COMPLETED`, `FAILED`, or `RETURNED`. See [Payout statuses](/embedded-payouts/how-payouts-work#payout-statuses).
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `payout_not_found` | The payout doesn't exist under your key |

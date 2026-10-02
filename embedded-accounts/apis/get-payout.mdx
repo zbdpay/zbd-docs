@@ -1,0 +1,109 @@
+---
+title: "Get a Payout"
+description: "Read one payout's current status."
+api: "GET https://api.zbdpay.com/api/v1/payments/payouts/{payoutId}"
+---
+
+A cash out in the widget creates a payout. This returns its current status and amounts. Webhooks tell you when a status changes, so use this for reconciliation and support rather than polling.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="payoutId" type="string">
+  The `payout_id` from the payout webhook, or from List Payouts.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/payments/payouts/po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44 \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Payout retrieved.",
+  "data": {
+    "payout_id": "po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44",
+    "status": "COMPLETED",
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "payment_method_id": "pm_1c7e9a20-5d4b-4f3a-8e62-7b0d2f91c3a8",
+    "amount": 2500,
+    "currency": "USD",
+    "fee_amount": 50,
+    "net_amount": 2450,
+    "reference_id": "creator_payout_2026_10",
+    "project_id": null
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+`status` is `INITIATED`, `PROCESSING`, `COMPLETED`, `FAILED`, or `RETURNED`. See [Payout statuses](/embedded-accounts/cash-out).
+
+## Response
+
+The payout is in `data`.
+
+<ResponseField name="payout_id" type="string">
+  ZBD's ID for the payout. Use it with [Get a Payout](/embedded-accounts/apis/get-payout).
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Where the payout is: `INITIATED`, `PROCESSING`, `COMPLETED`, `FAILED`, or `RETURNED`. A new payout is always `INITIATED`. See [Payout statuses](/embedded-accounts/cash-out).
+</ResponseField>
+
+<ResponseField name="origin" type="string">
+  `api` for payouts your backend sent and `widget` for cash outs from the widget.
+</ResponseField>
+
+<ResponseField name="user_id" type="string">
+  The user being paid.
+</ResponseField>
+
+<ResponseField name="payment_method_id" type="string">
+  The payment method being paid.
+</ResponseField>
+
+<ResponseField name="amount" type="integer">
+  The fiat amount of the payout, in the currency's smallest unit.
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Currency code for all amounts in the payout, for example `USD`.
+</ResponseField>
+
+<ResponseField name="fee_amount" type="integer">
+  The fee for the payment method, in the smallest unit. By default it comes out of `amount`.
+</ResponseField>
+
+<ResponseField name="net_amount" type="integer">
+  What the user receives, in the smallest unit. By default this is `amount` minus `fee_amount`.
+</ResponseField>
+
+<ResponseField name="reference_id" type="string | null">
+  Your own ID for the payout, if you sent one.
+</ResponseField>
+
+<ResponseField name="project_id" type="string | null">
+  The project the payout belongs to, if you sent one.
+</ResponseField>
+
+
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `payout_not_found` | The payout doesn't exist under your key |

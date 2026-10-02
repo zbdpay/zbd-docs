@@ -1,0 +1,89 @@
+---
+sidebarTitle: "Integration Guide"
+title: "Integrating Embedded Accounts"
+icon: "gamepad"
+description: "How to integrate Embedded Accounts, from setup to cash out."
+---
+
+ZBD holds a balance for every player in each of your currencies, keeps the ledger, verifies players, and pays them out. Your integration decides when value moves. Each step below says what to build and links to the page that explains it.
+
+## How it fits together
+
+| Step | What you use |
+| --- | --- |
+| 1. [Set up](#1-set-up) | Publisher Portal |
+| 2. [Create users](#2-create-users) | [Create a User](/embedded-accounts/apis/create-user) |
+| 3. [Credit value](#3-credit-value) | [Credit a User](/embedded-accounts/apis/credit) |
+| 4. [Spend, send, and trade](#4-spend-send-and-trade) | [Purchases](/embedded-accounts/apis/purchase), [transfers](/embedded-accounts/apis/transfer), [marketplace sales](/embedded-accounts/apis/marketplace-sale) |
+| 5. [Show balances](#5-show-balances) | [Get Balances](/embedded-accounts/apis/get-balances) or the widget |
+| 6. [Cash out](#6-cash-out) | [Create a Session](/embedded-accounts/apis/create-session) and the widget |
+| 7. [Reconcile](#7-reconcile) | [Webhooks](/embedded-accounts/apis/webhook-events), [List Transactions](/embedded-accounts/apis/list-transactions), [List Payouts](/embedded-accounts/apis/list-payouts) |
+
+## Before you start
+
+- **Business verification.** ZBD takes you through it before issuing credentials, so plan for it at the start of your timeline.
+- **API keys.** Created in the Publisher Portal, separately for sandbox (`https://sandbox-api.zbdpay.com`) and production (`https://api.zbdpay.com`). Paths are the same in both.
+- **Who calls what.** Every API call comes from your server with your key, and the key never reaches a game client. The client gets what it needs either through your backend, for anything you render yourself, or through the widget, for verification, payment details, cash outs, and screens you'd rather not build.
+
+The [API overview](/embedded-accounts/apis/overview) covers responses, errors, and idempotency.
+
+## 1. Set up
+
+- **Projects.** Create one per game in the Publisher Portal, and find each `project_id` with [List Projects](/embedded-accounts/apis/list-projects).
+- **Currencies.** Set them up in the Portal, and agree conversion rates with ZBD for any that cash out. [Currencies](/embedded-accounts/currencies) covers the decisions that are hard to change after launch.
+- **Funding.** Fund an account for each game, and agree warning and critical low-balance levels with ZBD. Credits don't need funds behind them, but cash outs do. See [Accounts and Balances](/embedded-accounts/accounts-and-balances#your-own-accounts).
+
+## 2. Create users
+
+Call [Create a User](/embedded-accounts/apis/create-user) the first time a player needs a balance, with your own ID for them, and store the `user_id` it returns. It's safe to call on every login. Keep personal data out of your ID, since players give ZBD their identity details directly in the widget.
+
+## 3. Credit value
+
+Call [Credit a User](/embedded-accounts/apis/credit) with a `type` that says why: `reward` for value you give out, `purchased_token` for currency bought on a platform store, or `adjustment` for corrections. To reverse a credit, use [Debit a User](/embedded-accounts/apis/debit). [Credits](/embedded-accounts/credits) has more.
+
+### A platform store purchase
+
+1. The player buys a currency pack on Steam, and your server confirms it with Steam.
+2. Your server credits the player with `type: "purchased_token"`, the pack's value in your currency, and Steam's order ID as `reference_id`. Generate the `Idempotency-Key` when you confirm the order and store it with the order, so a retry never credits twice.
+3. The player can spend straight away. Steam settles to you later, and your funding covers the value if the player cashes any of it out in the meantime.
+
+## 4. Spend, send, and trade
+
+- **[Purchases](/embedded-accounts/spending).** When a player buys from you, call [Make a Purchase](/embedded-accounts/apis/purchase). Check their balance first, so you can show a shortfall before they confirm.
+- **[Transfers](/embedded-accounts/transfers).** When a player sends value to another, call [Make a Transfer](/embedded-accounts/apis/transfer), and only when the sender started it in your game. Treat a refused transfer as a normal outcome.
+- **[Marketplace sales](/embedded-accounts/marketplace).** You work out each recipient's share and call [Settle a Marketplace Sale](/embedded-accounts/apis/marketplace-sale). Prompt sellers to verify when they create their first listing, since a fiat sale fails if the seller isn't verified.
+
+## 5. Show balances
+
+[Get Balances](/embedded-accounts/apis/get-balances) returns what a player can spend (`available`) and what they can cash out now (`cashable`). Read it from your backend for anything you render yourself, or open the widget's `balance` or `history` component for a ready-made view. Read balances from ZBD instead of keeping your own copy.
+
+## 6. Cash out
+
+Players cash out in the widget:
+
+1. Your server calls [Create a Session](/embedded-accounts/apis/create-session) with `flows: ["cashout"]`, and your client opens the `widget_url`.
+2. The widget handles verification and the payment method if needed, converts the cashable balance, shows the final amount, and asks the player to confirm.
+3. The cash out creates a payout, and payout webhooks tell your server as it moves through its statuses. If it fails or comes back, the amount returns to the player's balance automatically.
+
+[Cash Outs](/embedded-accounts/cash-out) covers eligibility and fees.
+
+## 7. Reconcile
+
+- **Webhooks.** Subscribe with [Create a Webhook](/embedded-accounts/apis/create-webhook), verify every signature, and deduplicate on `event_id`. You'll get transaction, payout, and low-balance events. See [Webhook Events](/embedded-accounts/apis/webhook-events).
+- **Your references.** Send your own `reference_id` on every call, such as an order or match ID.
+- **A nightly job.** Compare [List Transactions](/embedded-accounts/apis/list-transactions) and [List Payouts](/embedded-accounts/apis/list-payouts) against your own records.
+
+Check the default [rate limits](/embedded-accounts/apis/rate-limits) before launch, and ask your ZBD contact to raise them ahead of a spike.
+
+## Go-live checklist
+
+- [ ] Business verification complete, and your production API key stored in your secrets manager
+- [ ] Projects and currencies set up, and conversion rates agreed with ZBD
+- [ ] Game accounts funded, with warning and critical levels agreed
+- [ ] Your player records store the ZBD `user_id`
+- [ ] Every call that moves value sends an `Idempotency-Key` stored with its business event
+- [ ] Platform store purchases credited with `purchased_token` and the store's order ID as `reference_id`
+- [ ] Webhook endpoint subscribed, with signatures verified
+- [ ] Cash out button opens the widget, and your server handles payout webhooks
+- [ ] A nightly reconciliation job reads List Transactions and List Payouts
+- [ ] An end-to-end run in sandbox, including a completed cash out
