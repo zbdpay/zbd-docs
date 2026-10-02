@@ -86,20 +86,31 @@ export const BtcEurRate = () => {
     let isMounted = true
 
     const loadHistory = async () => {
+      // Granularity in seconds; ≤300 candles per request (Coinbase Exchange limit).
+      // 1D/7D hourly, 30D six-hourly, 90D/180D daily.
       const days = RANGES[range]
+      const granularity = days <= 7 ? 3600 : days <= 30 ? 21600 : 86400
       setHistory((h) => ({ ...h, status: h.series ? "refreshing" : "loading" }))
       try {
-        // CoinGecko market_chart: native { vs_currency } history for both currencies,
-        // one request each, CORS open, no key. prices = [timestampMs, price].
-        const fetchSeries = (vs) =>
-          fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${vs}&days=${days}`)
+        // Coinbase Exchange candles: public, CORS open, no key. Candles are
+        // [unixSeconds, low, high, open, close, volume], newest-first, and the
+        // endpoint always returns the most recent ~350 at the given granularity,
+        // so slice to the requested window.
+        const cutoffMs = Date.now() - days * 24 * 60 * 60 * 1000
+        const fetchSeries = (product) =>
+          fetch(`https://api.exchange.coinbase.com/products/${product}/candles?granularity=${granularity}`)
             .then((r) => {
-              if (!r.ok) throw new Error(`CoinGecko request failed with ${r.status}`)
+              if (!r.ok) throw new Error(`Coinbase request failed with ${r.status}`)
               return r.json()
             })
-            .then((d) => d.prices.map(([time, price]) => ({ time, close: price })))
+            .then((d) =>
+              d
+                .map(([time, , , , close]) => ({ time: time * 1000, close }))
+                .filter((c) => c.time >= cutoffMs)
+                .reverse(),
+            )
 
-        const [eur, usd] = await Promise.all([fetchSeries("eur"), fetchSeries("usd")])
+        const [eur, usd] = await Promise.all([fetchSeries("BTC-EUR"), fetchSeries("BTC-USD")])
         if (eur.length < 2 || usd.length < 2) {
           throw new Error("Price history response was empty")
         }
