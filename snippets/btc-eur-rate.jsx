@@ -7,11 +7,12 @@ export const BtcEurRate = () => {
   })
   const [history, setHistory] = useState({
     status: "loading",
-    // candles: [{ time, close }] oldest-first
+    // candles: [{ time, closeUsd, closeEur }] oldest-first
     candles: null,
     error: null,
   })
   const [range, setRange] = useState("30D")
+  const [currency, setCurrency] = useState("EUR")
   const [now, setNow] = useState(Date.now())
 
   const RANGES = {
@@ -88,7 +89,7 @@ export const BtcEurRate = () => {
       const { days, granularity } = RANGES[range]
       setHistory((h) => ({ ...h, status: h.candles ? "refreshing" : "loading" }))
       try {
-        // Coinbase Exchange candles: array of [time, low, high, open, close, volume], newest first
+        // Coinbase Exchange candles are USD-denominated: [time, low, high, open, close, volume], newest first
         const end = new Date()
         const start = new Date(end.getTime() - days * 24 * 60 * 60 * 1000)
         const url =
@@ -103,7 +104,7 @@ export const BtcEurRate = () => {
           throw new Error("Candles response was empty")
         }
         const candles = rows
-          .map((row) => ({ time: row[0] * 1000, close: row[4] }))
+          .map((row) => ({ time: row[0] * 1000, closeUsd: row[4], closeEur: null }))
           .sort((a, b) => a.time - b.time)
 
         if (!isMounted) {
@@ -132,6 +133,16 @@ export const BtcEurRate = () => {
       clearInterval(intervalId)
     }
   }, [range])
+
+  // derive EUR candles whenever rates arrive and USD candles are already loaded
+  useEffect(() => {
+    if (!state.rates) return
+    setHistory((h) => {
+      if (!h.candles || h.candles[0].closeEur != null) return h
+      const eurPerUsd = state.rates.EUR / state.rates.USD
+      return { ...h, candles: h.candles.map((c) => ({ ...c, closeEur: c.closeUsd * eurPerUsd })) }
+    })
+  }, [state.rates])
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -170,7 +181,7 @@ export const BtcEurRate = () => {
     ? Math.max(0, Math.floor((now - state.updatedAt.getTime()) / (60 * 1000)))
     : null
 
-  // chart data
+  // chart data — currency-dependent
   const candles = history.candles
   const chartW = 800
   const chartH = 260
@@ -179,18 +190,20 @@ export const BtcEurRate = () => {
 
   const chart = candles
     ? (() => {
-        const closes = candles.map((c) => c.close)
+        const key = currency === "EUR" ? "closeEur" : "closeUsd"
+        if (candles[0][key] == null) return null
+        const closes = candles.map((c) => c[key])
         const min = Math.min(...closes)
         const max = Math.max(...closes)
         const span = max - min || 1
         const pad = 8
         const x = (i) => pad + (i / (candles.length - 1)) * (chartW - pad * 2)
         const y = (v) => chartH - pad - ((v - min) / span) * (chartH - pad * 2)
-        const line = candles.map((c, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(2)},${y(c.close).toFixed(2)}`).join("")
+        const line = candles.map((c, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(2)},${y(c[key]).toFixed(2)}`).join("")
         const area = `${line} L${x(candles.length - 1).toFixed(2)},${chartH} L${x(0).toFixed(2)},${chartH} Z`
-        // change over the window: first open vs last close
-        const first = candles[0].close
-        const last = candles[candles.length - 1].close
+        // change over the window: first vs last close
+        const first = candles[0][key]
+        const last = candles[candles.length - 1][key]
         const diff = last - first
         const pct = (diff / first) * 100
         // x-axis labels: 4 dates spread across the range
@@ -198,12 +211,18 @@ export const BtcEurRate = () => {
           const d = new Date(candles[Math.floor(f * (candles.length - 1))].time)
           return d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
         })
-        return { line, area, min, max, change: { diff, pct, up: diff >= 0 }, labels, x, y, candles }
+        const fmt = new Intl.NumberFormat(currency === "EUR" ? "en-IE" : "en-US", {
+          style: "currency",
+          currency,
+          maximumFractionDigits: 2,
+        }).format
+        return { line, area, min, max, change: { diff, pct, up: diff >= 0 }, labels, x, y, candles, key, fmt }
       })()
     : null
 
   const gradientId = "btc-chart-fill"
   const strokeColor = chart?.change.up ? "#16a34a" : "#dc2626"
+  const locale = currency === "EUR" ? "en-IE" : "en-US"
 
   return (
     <div className="not-prose my-6 rounded-2xl border border-zinc-950/10 bg-gradient-to-br from-white to-zinc-50 p-5 shadow-sm dark:border-white/10 dark:from-zinc-900 dark:to-zinc-950">
@@ -268,26 +287,45 @@ export const BtcEurRate = () => {
       </div>
 
       <div className="mt-6 border-t border-zinc-950/10 pt-5 dark:border-white/10">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
-            BTC/USD history
+            BTC/{currency} history
           </p>
-          <div className="flex items-center gap-1" role="tablist" aria-label="Chart range">
-            {Object.keys(RANGES).map((key) => (
-              <button
-                key={key}
-                role="tab"
-                aria-selected={range === key}
-                onClick={() => setRange(key)}
-                className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
-                  range === key
-                    ? "border border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
-                    : "border border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
-                }`}
-              >
-                {key}
-              </button>
-            ))}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1" role="tablist" aria-label="Chart currency">
+              {["EUR", "USD"].map((cur) => (
+                <button
+                  key={cur}
+                  role="tab"
+                  aria-selected={currency === cur}
+                  onClick={() => setCurrency(cur)}
+                  className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
+                    currency === cur
+                      ? "border border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+                      : "border border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+                  }`}
+                >
+                  {cur}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-1" role="tablist" aria-label="Chart range">
+              {Object.keys(RANGES).map((key) => (
+                <button
+                  key={key}
+                  role="tab"
+                  aria-selected={range === key}
+                  onClick={() => setRange(key)}
+                  className={`rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
+                    range === key
+                      ? "border border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400"
+                      : "border border-transparent text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-200"
+                  }`}
+                >
+                  {key}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -300,10 +338,7 @@ export const BtcEurRate = () => {
                 }`}
               >
                 {chart.change.up ? "▲" : "▼"}{" "}
-                {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(
-                  Math.abs(chart.change.diff)
-                )}{" "}
-                ({chart.change.pct >= 0 ? "+" : ""}
+                {chart.fmt(Math.abs(chart.change.diff))} ({chart.change.pct >= 0 ? "+" : ""}
                 {chart.change.pct.toFixed(2)}%) over {range}
               </p>
               {hoverIdx !== null && chart.candles[hoverIdx] ? (
@@ -312,9 +347,7 @@ export const BtcEurRate = () => {
                     {new Date(chart.candles[hoverIdx].time).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                     :{" "}
                   </span>
-                  {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(
-                    chart.candles[hoverIdx].close
-                  )}
+                  {chart.fmt(chart.candles[hoverIdx][chart.key])}
                 </p>
               ) : null}
             </div>
@@ -324,7 +357,7 @@ export const BtcEurRate = () => {
               className="mt-2 h-56 w-full touch-none"
               preserveAspectRatio="none"
               role="img"
-              aria-label={`BTC/USD price chart, last ${range}`}
+              aria-label={`BTC/${currency} price chart, last ${range}`}
               onMouseMove={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect()
                 const frac = (e.clientX - rect.left) / rect.width
@@ -353,7 +386,7 @@ export const BtcEurRate = () => {
                     strokeDasharray="4 4"
                     vectorEffect="non-scaling-stroke"
                   />
-                  <circle cx={chart.x(hoverIdx)} cy={chart.y(chart.candles[hoverIdx].close)} r="4" fill={strokeColor} />
+                  <circle cx={chart.x(hoverIdx)} cy={chart.y(chart.candles[hoverIdx][chart.key])} r="4" fill={strokeColor} />
                 </g>
               ) : null}
             </svg>
