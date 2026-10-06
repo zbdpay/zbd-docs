@@ -2,6 +2,7 @@
 title: "Create a Payout"
 description: "Send money from your pool to a user's payment method."
 api: "POST https://api.zbdpay.com/api/v1/payouts"
+playground: "none"
 ---
 
 Sends a payout to one user's payment method. ZBD checks the user's verification, screening, limits, and, for US bank payouts, the Electronic Funds Transfer disclosure. If every check passes, the amount comes out of your [pool](/embedded-payouts/funding) and the call returns `202` with the payout in `INITIATED`. If a check fails, the call returns a `4xx` and nothing is debited.

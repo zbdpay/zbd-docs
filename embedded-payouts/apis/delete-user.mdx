@@ -2,6 +2,7 @@
 title: "Delete a User"
 description: "Request that a user's data is archived, for example to handle an erasure request."
 api: "POST https://api.zbdpay.com/api/v1/users/{userId}/deletion-request"
+playground: "none"
 ---
 
 Queues the user for archival. It's a request rather than an immediate delete: ZBD processes it in the background, and the user can't be used again once it's accepted.
