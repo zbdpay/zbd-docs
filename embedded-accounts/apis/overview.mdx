@@ -1,0 +1,92 @@
+---
+title: "Embedded Accounts API Overview"
+sidebarTitle: "Overview"
+description: "Base URL, authentication, errors, and the conventions every Embedded Accounts endpoint shares."
+---
+
+## Base URL
+
+| Environment | Base URL |
+| --- | --- |
+| Production | `https://api.zbdpay.com` |
+| Sandbox | `https://sandbox-api.zbdpay.com` |
+
+Paths are the same in both environments. Keys are issued per environment, so a sandbox key only works on the sandbox host and a production key only works in production. To go live, change the base URL and the key.
+
+## Authentication
+
+Send your API key in the `x-api-key` header. The key identifies your organization, so there's no publisher or organization ID in any path. A user belongs to your organization, so the same user and balances work across every one of your games. Call these endpoints from your server only, so the key never reaches a browser or game client.
+
+Where an endpoint is scoped to a project, pass an optional `project_id`: in the body for writes, and in the query for reads.
+
+## Endpoints
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/v1/projects` | List projects |
+| `GET` | `/api/v1/projects/{projectId}` | Get a project |
+| `POST` | `/api/v1/users` | Create a user |
+| `GET` | `/api/v1/users/{userId}` | Get a user |
+| `PATCH` | `/api/v1/users/{userId}` | Update a user |
+| `POST` | `/api/v1/users/{userId}/deletion-request` | Delete a user |
+| `GET` | `/api/v1/users/{userId}/balances` | Get a user's balances |
+| `GET` · `POST` | `/api/v1/users/{userId}/disclosures` | Read or record disclosures |
+| `POST` | `/api/v1/widget-sessions` | Create a widget session |
+| `GET` | `/api/v1/currencies` | List currencies |
+| `GET` | `/api/v1/currencies/{currency}` | Get a currency |
+| `GET` | `/api/v1/currencies/{currency}/rates` | List a currency's conversion rates |
+| `POST` | `/api/v1/transactions/credits` | Credit a user |
+| `POST` | `/api/v1/transactions/debits` | Reverse a credit |
+| `POST` | `/api/v1/transactions/purchases` | A user buys from you |
+| `POST` | `/api/v1/transactions/transfers` | A user sends value to another user |
+| `POST` | `/api/v1/transactions` | Settle a marketplace sale |
+| `GET` | `/api/v1/transactions/{transactionId}` | Get a transaction |
+| `GET` | `/api/v1/transactions` | List transactions |
+| `GET` | `/api/v1/payouts/{payoutId}` | Get a cash out's payout |
+| `GET` | `/api/v1/payouts` | List payouts |
+| `POST` · `GET` | `/api/v1/webhooks/subscriptions` | Create or list webhook subscriptions |
+| `PATCH` · `DELETE` | `/api/v1/webhooks/subscriptions/{subscriptionId}` | Update or delete a subscription |
+
+Users cash out in the widget, and each cash out creates a payout you can read and reconcile. Projects and currencies are set up in the Publisher Portal, and the API reads them.
+
+Projects, users, sessions, disclosures, balances, transactions, payouts, and webhooks are the same endpoints in Embedded Payouts, so one integration covers both.
+
+## Idempotency
+
+Every call that moves value takes an `Idempotency-Key` header with a UUID you generate. Retrying with the same key returns the original result instead of acting twice. Use a new key for each new operation, and the same key when retrying one.
+
+## Responses
+
+Every response uses the same wrapper:
+
+```json
+{ "success": true, "message": "…", "data": {}, "error": null }
+```
+
+On failure, `data` is `null` and `error` is `{ code, message, details? }`. `code` is a stable string you can branch on, and the HTTP status matches it. Nothing moves on any `4xx`.
+
+## Errors
+
+These codes are shared by every endpoint.
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `idempotency_key_required` | A call that moves value has no `Idempotency-Key` |
+| `400` | `validation_failed` | The body is malformed, or a marketplace sale's amounts don't add up. `details` names the fields |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `403` | `feature_not_enabled` | The feature or transaction type isn't enabled for your program |
+| `404` | `user_not_found` · `transaction_not_found` · `currency_not_found` | The ID doesn't exist under your key |
+| `409` | `idempotency_key_reused` | The same key was sent with a different body |
+| `409` | `payouts_in_flight` | A user deletion was requested while the user has open payouts |
+| `422` | `insufficient_funds` | The user's balance doesn't cover the amount |
+| `422` | `kyc_required` · `screening_blocked` | A user isn't cleared to receive |
+| `422` | `limit_exceeded` | Over a transfer, transaction, or cash out limit |
+
+A feature that isn't enabled always returns `403 feature_not_enabled`, never `404`.
+
+## Conventions
+
+- **Amounts** are always whole numbers in the currency's smallest unit. Each currency has a `precision` that says how many decimal places to show: `2` for USD, so `100` is $1.00, and `0` for a currency like JPY. For your own currency, the precision is whatever you set. See [Get a Currency](/embedded-accounts/apis/get-currency#response).
+- **`currency`** is the field name for a currency code everywhere, for both fiat and your own currencies.
+- **`user_id`** is the ZBD user ID returned by [Create a User](/embedded-accounts/apis/create-user).
+- **Tracing.** Send an `X-Request-Id` header on any call to make it easier to trace with support.

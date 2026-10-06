@@ -1,0 +1,50 @@
+---
+title: "List Projects"
+description: "List your projects, to find the project_id you pass on other calls."
+api: "GET https://api.zbdpay.com/api/v1/projects"
+---
+
+A project is one part of your program, usually a game. You create and edit projects in the Publisher Portal. Use this to find a project's `project_id`, which you can pass on other calls to scope them to that project and filter reports and webhooks by it.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/projects \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Projects retrieved.",
+  "data": {
+    "projects": [
+      {
+        "project_id": "prj_1",
+        "display_name": "Northlight",
+        "description": "Main game",
+        "created_at": "2026-09-01T12:00:00Z"
+      }
+    ]
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+Each project has the same fields as [Get a Project](/embedded-accounts/apis/get-project#response).
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |

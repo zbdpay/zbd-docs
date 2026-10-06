@@ -1,0 +1,58 @@
+---
+title: "Pay to ZBD Gamertag"
+sidebarTitle: "To Gamertag"
+description: "Send instant Bitcoin payments to ZBD Users."
+api: "POST https://api.zbdpay.com/v0/gamertag/send-payment"
+---
+
+<Info>Unlike other payout endpoints in the ZBD API, sending payments to ZBD Gamertags is a synchronous action -> this is why there is no `callbackUrl` property. The payment either succeeds or fails on the spot.</Info>
+
+<Warning>**Important:** ZBD Gamertags are mutable and can be changed by users at any time. If you're implementing user-specific limits (e.g., 1 withdrawal per day) or tracking balances, **do not use Gamertags as identifiers**. Instead, use the [Get ID by ZBD Gamertag](/bitcoin/gamertags/retrieve-userid) endpoint to retrieve the immutable User ID for each Gamertag, then track limits and balances using that User ID. Otherwise, users can bypass your limits simply by changing their Gamertag.</Warning>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="amount" type="string">
+  The amount for the Payment -> in millisatoshis
+</ParamField>
+
+<ParamField required body="gamertag" type="string">
+  Destination ZBD Gamertag
+</ParamField>
+
+<ParamField required initialValue="‎" body="description" type="string">
+  Note or comment for this Payment (visible to recipient)
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json Response
+{
+  "success": true,
+  "data": {
+      "id": "49cccd62-b686-4057-9f44-f492bd54ac39",
+      "status": "settled",
+      "transactionId": "78fb6474-d791-47a1-bda1-a4b9023898c0",
+      "receiverId": "ec9b38d5-b126-4307-9d1e-8aa0dfab5d7e",
+      "amount": "1000",
+      "comment": "Sent to ZBD Gamertag",
+      "settledAt": "2023-07-19T21:42:54.993Z"
+  },
+  "message": "Payment done."
+}
+```
+
+</ResponseExample>

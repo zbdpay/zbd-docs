@@ -1,0 +1,47 @@
+---
+title: "Payout Methods"
+icon: "earth-europe"
+description: "Where a user can be paid, and how they get their money."
+---
+
+Both depend on the user's country and on what your program supports. They change over time, so ZBD works out what's available when it's needed.
+
+## How coverage works
+
+When a user chooses a payment method, they see the methods available to them, based on their country, and the methods your program has enabled.
+
+You don't need to maintain a list of countries or methods, or branch on them in your code. When ZBD adds a country, users there see the new option without any change on your side.
+
+## Method types
+
+| Type | What it is |
+| --- | --- |
+| Bank account | Domestic or cross-border transfer to an account the user holds |
+| Mobile wallet | Transfer to a wallet, where the market supports it |
+| Gift card | Redemption against a catalog, where available |
+
+Some countries support more than one type, and the user chooses.
+
+## What affects timing
+
+Timing depends on the method and the user's country:
+
+- **Near-instant.** Mobile wallets and some domestic schemes settle in minutes.
+- **Same or next business day.** Domestic bank transfers in most supported markets.
+- **Several business days.** Cross-border bank transfers that go through an intermediary.
+
+Local banking hours and holidays apply to every method, and a payout submitted after the local cut-off starts the next business day.
+
+## Fees
+
+Because the user chooses the method and its speed, the fee for that method comes out of their payout by default. Some methods are free or low cost, and faster ones generally cost more.
+
+- **Choosing a method.** The widget's payment method selection flow shows each method's fee, as a percentage or a flat amount, so users know the cost before they pick.
+- **Cashing out in the widget.** If ZBD tracks earnings, the cash out flow shows the fee and the final amount before the user confirms.
+- **Payouts sent from your backend.** The [Create a Payout](/embedded-payouts/apis/create-payout) response includes `fee_amount` and `net_amount`, so you can show the user what they received and record it.
+
+If a payout involves a currency conversion, the conversion cost is included and shown with the converted amount. If you'd rather cover fees for your users, your ZBD contact can set that up for your program.
+
+## Building against this
+
+Method types and [payout statuses](/embedded-payouts/how-payouts-work#payout-statuses) are stable. Country availability, limits, fees, and the details a user has to enter can change without notice. The widget always shows the current options, so don't hard-code them in your own product.

@@ -1,0 +1,70 @@
+---
+title: "List Currencies"
+description: "List the currencies your program uses, fiat and your own."
+api: "GET https://api.zbdpay.com/api/v1/currencies"
+---
+
+Returns every currency your program can use: fiat currencies like `USD`, and virtual currencies you've defined with ZBD.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="type" type="string">
+  Only `fiat` or only `virtual` currencies.
+</ParamField>
+
+<ParamField query="project_id" type="string">
+  Only currencies linked to this project.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/currencies \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Currencies retrieved.",
+  "data": {
+    "currencies": [
+      {
+        "currency": "USD",
+        "type": "fiat",
+        "name": "US Dollar",
+        "precision": 2,
+        "convertible": true
+      },
+      {
+        "currency": "GEMS",
+        "type": "virtual",
+        "name": "Gems",
+        "precision": 2,
+        "convertible": true,
+        "icon_url": "https://cdn.zbdpay.com/virtual-currencies/gems.png",
+        "project_ids": ["prj_1", "prj_2"]
+      }
+    ]
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+Each currency has the same fields as [Get a Currency](/embedded-accounts/apis/get-currency#response).
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |

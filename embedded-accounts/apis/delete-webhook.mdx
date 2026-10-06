@@ -1,0 +1,26 @@
+---
+title: "Delete a Webhook"
+description: "Stop sending events to a URL."
+api: "DELETE https://api.zbdpay.com/api/v1/webhooks/subscriptions/{subscriptionId}"
+---
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="subscriptionId" type="string">
+  The `subscription_id` from Create a Webhook.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X DELETE https://api.zbdpay.com/api/v1/webhooks/subscriptions/sub_51a2 \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>

@@ -1,0 +1,32 @@
+---
+title: "Adjust Player Balance (Dashboard)"
+description: "Manually increase or decrease a player's rewards balance from the ZBD Developer Dashboard."
+sidebarTitle: "Adjust Balance"
+icon: "arrows-up-down"
+---
+
+Use the ZBD Developer Dashboard to manually adjust a player's rewards balance — for example, when resolving a support issue or correcting a reward that failed to deliver.
+
+## Find the player
+
+1. Go to [dashboard.zbdpay.com](https://dashboard.zbdpay.com)
+2. Navigate to **Earn User Support** in the sidebar
+3. Search by one of the following:
+   - **`rewardsUserId`** — the player's SDK identifier, returned by `GetUserStatus`. Loads the player directly.
+   - **Support ID** — a player-facing identifier shown in the ZBD modal, used when a player contacts your support team. Returns a list of matching players.
+   - **Gamertag** — the player's ZBD gamertag. Returns a list of matching players.
+4. Click **Load Data**
+
+## Adjust the balance
+
+Once the player's data loads:
+
+1. Click the **edit button** next to the Rewards Balance field
+2. Enter the new balance value — higher to increase, lower to decrease
+3. Click **Save**
+
+The system calculates and applies the difference automatically.
+
+<Note>
+  Balance values are displayed in **SATS** if your project rewards players in Bitcoin, or **POINTS** if you are using in-game currency. This is set when your project is configured — if you're unsure which applies, check your project settings in the dashboard or ask your ZBD Customer Success Manager.
+</Note>

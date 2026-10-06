@@ -1,0 +1,100 @@
+---
+title: "Create Withdrawal Request"
+sidebarTitle: "Create Withdrawal"
+description: "Start creating Bitcoin withdrawal QR codes."
+api: "POST https://api.zbdpay.com/v0/withdrawal-requests"
+---
+
+## Description
+
+Withdrawal Requests can be thought of as exact opposites to Charges. Charges in the ZBD API are QR codes that represent Payment Requests in the Bitcoin Lightning Network. These QR codes expect that a payer will scan and perform a **payment** against it.
+
+A Withdrawal Request is the same in that it also is represented as a QR code. But unlike Charges, Withdrawal Requests are QR codes that someone scans to **receive** Bitcoin. You can read more about the LNURL Withdrawal specification [here](https://github.com/lnurl/luds/blob/luds/03.md).
+
+Think of it like this:
+
+- **Charges** -> Lightning QR codes that **YOU SPEND**
+
+- **Withdrawal Requests** -> Lightning QR codes that **YOU RECEIVE**
+
+## Usage
+
+The most common use of this API endpoint are 1) Fintechs adding the ability for Withdrawals / Payouts through the Lightning Network, and 2) Apps and Games sending Bitcoin microrewards through Withdrawal QR codes / redeem codes.
+
+Every Withdrawal Request will be in a `pending` state until someone scans the QR code and claims the funds.
+
+<Info>
+  Withdrawal Requests created by ZBD API are `single-use` and will not work if attempted again.
+</Info>
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="apikey" type="string">
+  ZBD Project API Key
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body
+
+<ParamField required body="amount" type="string">
+  The amount for the Withdrawal Request -> in millisatoshis
+</ParamField>
+
+<ParamField initialValue="‎" body="description" type="string">
+  Note or comment for this Withdrawal Request
+</ParamField>
+
+<ParamField initialValue={1} body="expiresIn" type="number">
+  Time until Withdrawal Request expiration -> in seconds
+</ParamField>
+
+<ParamField initialValue="‎" body="internalId" type="string">
+  Open metadata string property
+</ParamField>
+
+<ParamField initialValue="‎" body="callbackUrl" type="string">
+  The endpoint ZBD will POST Charge updates to
+</ParamField>
+
+
+
+<ResponseExample>
+
+```json 200 Response
+{
+  "success": true,
+  "data": {
+    "id": "e54e62d4-9cfa-495d-abb9-9c9f4bc4f2cf",
+    "unit": "msats",
+    "amount": "15000",
+    "createdAt": "2023-04-27T22:15:54.258Z",
+    "expiresAt": "2023-04-27T22:20:54.252Z",
+    "internalId": "1c3b1-f61j2",
+    "description": "Withdraw QR!",
+    "callbackUrl": "https://your-website.com/zbd-callback",
+    "status": "pending",
+    "fee": null,
+    "invoice": {
+      "request": "lnurl1dp68gurn8ghj7ctsdyh85etzv4jx2efwd9hj7a3s9acxz7tvdaskgtthd96xserjv9mkzmpdwfjhzat9wd6r7um9vdex2apax5exxwpjx9jx2wf4xajnxc3sx4jrwcenv56nwdm9vg6kxwtrx9sk2dtzvsunxce3vymkxef4vycxvwpexd3kxcmpxcmk2d3n8yenswqph63m6",
+      "fastRequest": "lnurl1dp68gurn8ghj7ctsdyh85etzv4jx2efwd9hj7a3s9acxz7tvdaskgtthd96xserjv9mkzmpdwfjhzat9wd6r7arpvu7hw6t5dpj8ycth2fjhzat9wd6zv6e3856nycecxgckgefex5mk2vmzxq6kgdmrxdjn2dehv43r2ceevvckzef4vfjrjvmrx9snwcm9x4snqe3c8yekxcmrvymrwefkxvunxwpcyekkjmjhd96xserjv9mkzcnvv57nzdfsxqczvmtp0ptkjargv3exzampvfkx20f3x5crqvpxv3jkvct4d36ygetnvdexjur5d9hku02hd96xserjv9mjq52jyynxxctvd33xzcmt8458garswvaz7tmpwp5ju7n9vfjkget99e5k7tmkxqhhqun0vdjhxuedwa5hg6rywfshwctv94ex2ut4v4ehg5thy6x",
+      "uri": "lightning:lnurl1dp68gurn8ghj7ctsdyh85etzv4jx2efwd9hj7a3s9acxz7tvdaskgtthd96xserjv9mkzmpdwfjhzat9wd6r7um9vdex2apax5exxwpjx9jx2wf4xajnxc3sx4jrwcenv56nwdm9vg6kxwtrx9sk2dtzvsunxce3vymkxef4vycxvwpexd3kxcmpxcmk2d3n8yenswqph63m6",
+      "fastUri": "lightning:lnurl1dp68gurn8ghj7ctsdyh85etzv4jx2efwd9hj7a3s9acxz7tvdaskgtthd96xserjv9mkzmpdwfjhzat9wd6r7arpvu7hw6t5dpj8ycth2fjhzat9wd6zv6e3856nycecxgckgefex5mk2vmzxq6kgdmrxdjn2dehv43r2ceevvckzef4vfjrjvmrx9snwcm9x4snqe3c8yekxcmrvymrwefkxvunxwpcyekkjmjhd96xserjv9mkzcnvv57nzdfsxqczvmtp0ptkjargv3exzampvfkx20f3x5crqvpxv3jkvct4d36ygetnvdexjur5d9hku02hd96xserjv9mjq52jyynxxctvd33xzcmt8458garswvaz7tmpwp5ju7n9vfjkget99e5k7tmkxqhhqun0vdjhxuedwa5hg6rywfshwctv94ex2ut4v4ehg5thy6x"
+    }
+  },
+  "message": "Successfully created Withdrawal Request."
+}
+```
+
+```json 400 Response
+{
+  "success": false,
+  "message": "The minimum Withdrawal amount supported is 10 satoshis."
+}
+```
+
+</ResponseExample>

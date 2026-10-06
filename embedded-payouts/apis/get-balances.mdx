@@ -1,0 +1,78 @@
+---
+title: "Get Balances"
+description: "Read the balances ZBD holds for a user, in each currency."
+api: "GET https://api.zbdpay.com/api/v1/users/{userId}/balances"
+---
+
+<Note>
+  Only for programs where ZBD tracks earnings. If you track earnings yourself, this returns `403 feature_not_enabled`.
+</Note>
+
+Use this to show a user their balance in your own product. In Embedded Payouts, this is what the user has earned and not yet been paid.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="userId" type="string">
+  The ZBD user ID returned by Create a User.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/users/4ac4fd8a-cc2c-4d03-af09-a76f4e89d652/balances \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Balances retrieved.",
+  "data": {
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "balances": [
+      { "currency": "USD", "available": 5000, "cashable": 3000 },
+      { "currency": "GEMS", "available": 1700, "cashable": 0 }
+    ]
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Response
+
+<ResponseField name="user_id" type="string">
+  The user the balances belong to.
+</ResponseField>
+
+<ResponseField name="balances" type="object[]">
+  One entry per currency the user holds.
+</ResponseField>
+
+<ResponseField name="balances.currency" type="string">
+  The currency code.
+</ResponseField>
+
+<ResponseField name="balances.available" type="integer">
+  What the user can spend, in the currency's smallest unit.
+</ResponseField>
+
+<ResponseField name="balances.cashable" type="integer">
+  The part of `available` the user can cash out now. It depends on how the value arrived, so it can be less than `available`.
+</ResponseField>
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `403` | `feature_not_enabled` | You track earnings yourself |
+| `404` | `user_not_found` | The user doesn't exist under your key |

@@ -1,0 +1,83 @@
+---
+title: "List Transactions"
+description: "Read transactions for one user or across your program, whichever call created them."
+api: "GET https://api.zbdpay.com/api/v1/transactions"
+---
+
+Use this to show a user their history in your product, or to reconcile across your program.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Query Parameters
+
+<ParamField query="user_id" type="string">
+  Only this user's transactions.
+</ParamField>
+
+<ParamField query="type" type="string">
+  Only one type, for example `reward`, `debit`, `purchase`, `gift`, or `marketplace_sale`.
+</ParamField>
+
+<ParamField query="reference_id" type="string">
+  Only the transaction with your reference.
+</ParamField>
+
+<ParamField query="project_id" type="string">
+  Only transactions in this project.
+</ParamField>
+
+<ParamField query="from" type="string">
+  ISO 8601 start of the date range.
+</ParamField>
+
+<ParamField query="to" type="string">
+  ISO 8601 end of the date range.
+</ParamField>
+
+<ParamField query="limit" type="integer">
+  Page size.
+</ParamField>
+
+<ParamField query="cursor" type="string">
+  The `next_cursor` from the previous page.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl "https://api.zbdpay.com/api/v1/transactions?user_id=4ac4fd8a-cc2c-4d03-af09-a76f4e89d652" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Transactions retrieved.",
+  "data": {
+    "transactions": [
+      {
+        "transaction_id": "txn_3b10",
+        "type": "reward",
+        "status": "completed",
+        "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+        "amount": 1000,
+        "currency": "USD",
+        "reference_id": "season_3_win",
+        "created_at": "2026-10-01T18:20:00Z"
+      }
+    ],
+    "next_cursor": null
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+Cash outs also appear in [List Payouts](/embedded-accounts/apis/list-payouts), with their payout status.

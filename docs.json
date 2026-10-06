@@ -12,81 +12,102 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Getting Started",
-        "dropdowns": [
+        "tab": "Embedded Accounts",
+        "groups": [
           {
-            "dropdown": "Build with ZBD",
-            "icon": "bolt-lightning",
+            "group": "Get Started",
             "pages": [
-              "get-started",
-              "get-started/dev-dashboard",
+              "embedded-accounts"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "embedded-accounts/accounts-and-balances",
+              "embedded-accounts/players",
+              "embedded-accounts/currencies",
+              "embedded-accounts/transactions"
+            ]
+          },
+          {
+            "group": "Moving Value",
+            "pages": [
+              "embedded-accounts/credits",
+              "embedded-accounts/spending",
+              "embedded-accounts/transfers",
+              "embedded-accounts/marketplace",
+              "embedded-accounts/cash-out"
+            ]
+          },
+          {
+            "group": "Integration",
+            "pages": [
+              "development-resources/integrating-embedded-accounts",
+              "embedded-accounts/widget",
+              "embedded-accounts/browser-events"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "embedded-accounts/apis/overview",
+              "development-resources/idempotency-keys",
+              "embedded-accounts/apis/rate-limits",
               {
-                "group": "Set Up ZBD",
+                "group": "Projects",
                 "pages": [
-                  "get-started/create-account",
-                  "get-started/verify-identity",
-                  "get-started/add-funds",
-                  {
-                    "group": "Projects",
-                    "icon": "folder",
-                    "pages": [
-                      "get-started/create-project",
-                      "get-started/api-keys",
-                      "get-started/project-wallet",
-                      "get-started/manage-project"
-                    ]
-                  }
+                  "embedded-accounts/apis/list-projects",
+                  "embedded-accounts/apis/get-project"
                 ]
               },
               {
-                "group": "Building with LLMs",
+                "group": "Users",
                 "pages": [
-                  "payments/mcp",
-                  "payments/ai-ingestion"
+                  "embedded-accounts/apis/create-user",
+                  "embedded-accounts/apis/get-user",
+                  "embedded-accounts/apis/update-user",
+                  "embedded-accounts/apis/delete-user",
+                  "embedded-accounts/apis/get-balances",
+                  "embedded-accounts/apis/create-session",
+                  "embedded-accounts/apis/get-disclosures",
+                  "embedded-accounts/apis/record-disclosures"
                 ]
               },
               {
-                "group": "Products",
+                "group": "Currencies",
                 "pages": [
-                  "get-started/zbd-ramp",
-                  "get-started/zbd-earn-sdk",
-                  "get-started/zbd-payments-api",
-                  "get-started/login-with-zbd",
-                  "get-started/zbd-app"
+                  "embedded-accounts/apis/list-currencies",
+                  "embedded-accounts/apis/get-currency",
+                  "embedded-accounts/apis/list-rates"
                 ]
               },
               {
-                "group": "Knowledge Base",
+                "group": "Transactions",
                 "pages": [
-                  "earn/knowledge-base",
-                  {
-                    "group": "Rewarded Play",
-                    "pages": [
-                      "earn/knowledge-base/rewarded-play",
-                      "earn/knowledge-base/rewarded-play/integrating",
-                      {
-                        "group": "Game Security Course",
-                        "pages": [
-                          "earn/knowledge-base/game-security",
-                          "earn/knowledge-base/game-security/insecure-game",
-                          "earn/knowledge-base/game-security/hacking-saved-game",
-                          "earn/knowledge-base/game-security/hacking-memory-values",
-                          "earn/knowledge-base/game-security/decompiling-source-code",
-                          "earn/knowledge-base/game-security/altering-network-traffic",
-                          "earn/knowledge-base/game-security/securing-game",
-                          "earn/knowledge-base/game-security/replay-attacks",
-                          "earn/knowledge-base/game-security/securing-data",
-                          "earn/knowledge-base/game-security/app-check"
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "group": "Integration Guides",
-                    "pages": [
-                      "earn/knowledge-base/integrations/unity"
-                    ]
-                  }
+                  "embedded-accounts/apis/credit",
+                  "embedded-accounts/apis/debit",
+                  "embedded-accounts/apis/purchase",
+                  "embedded-accounts/apis/transfer",
+                  "embedded-accounts/apis/marketplace-sale",
+                  "embedded-accounts/apis/get-transaction",
+                  "embedded-accounts/apis/list-transactions"
+                ]
+              },
+              {
+                "group": "Cash Outs",
+                "pages": [
+                  "embedded-accounts/apis/get-payout",
+                  "embedded-accounts/apis/list-payouts"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "embedded-accounts/apis/webhook-events",
+                  "embedded-accounts/apis/create-webhook",
+                  "embedded-accounts/apis/list-webhooks",
+                  "embedded-accounts/apis/update-webhook",
+                  "embedded-accounts/apis/delete-webhook"
                 ]
               }
             ]
@@ -94,428 +115,319 @@
         ]
       },
       {
-        "tab": "Earn",
-        "anchors": [
+        "tab": "Embedded Payouts",
+        "groups": [
           {
-            "anchor": "Earn SDK",
-            "icon": "layer-group",
+            "group": "Get Started",
+            "pages": [
+              "embedded-payouts"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "embedded-payouts/how-payouts-work",
+              "embedded-payouts/funding",
+              "embedded-payouts/users",
+              "embedded-payouts/methods-and-coverage"
+            ]
+          },
+          {
+            "group": "Integration",
+            "pages": [
+              "embedded-payouts/tracking-earnings-yourself",
+              "embedded-payouts/tracking-earnings-with-zbd",
+              "embedded-payouts/cash-out-widget",
+              "embedded-payouts/browser-events"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "embedded-payouts/apis/overview",
+              {
+                "group": "Projects",
+                "pages": [
+                  "embedded-payouts/apis/list-projects",
+                  "embedded-payouts/apis/get-project"
+                ]
+              },
+              {
+                "group": "Users",
+                "pages": [
+                  "embedded-payouts/apis/create-user",
+                  "embedded-payouts/apis/get-user",
+                  "embedded-payouts/apis/update-user",
+                  "embedded-payouts/apis/delete-user",
+                  "embedded-payouts/apis/list-payment-methods",
+                  "embedded-payouts/apis/create-session",
+                  "embedded-payouts/apis/get-disclosures",
+                  "embedded-payouts/apis/record-disclosures"
+                ]
+              },
+              {
+                "group": "Payouts",
+                "pages": [
+                  "embedded-payouts/apis/create-payout",
+                  "embedded-payouts/apis/get-payout",
+                  "embedded-payouts/apis/list-payouts"
+                ]
+              },
+              {
+                "group": "Earnings",
+                "pages": [
+                  "embedded-payouts/apis/credit-user",
+                  "embedded-payouts/apis/debit-user",
+                  "embedded-payouts/apis/get-balances",
+                  "embedded-payouts/apis/list-transactions"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "embedded-payouts/apis/webhook-events",
+                  "embedded-payouts/apis/create-webhook",
+                  "embedded-payouts/apis/list-webhooks",
+                  "embedded-payouts/apis/update-webhook",
+                  "embedded-payouts/apis/delete-webhook"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Embedded Rewards",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "embedded-rewards"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "embedded-rewards/planning",
+              "embedded-rewards/reward-economics",
+              "embedded-rewards/soft-currency",
+              "embedded-rewards/security",
+              "embedded-rewards/customization"
+            ]
+          },
+          {
+            "group": "Setup",
+            "pages": [
+              "embedded-rewards/coverage",
+              "embedded-rewards/download",
+              "embedded-rewards/compatibility",
+              "embedded-rewards/integration",
+              "embedded-rewards/building"
+            ]
+          },
+          {
+            "group": "Advanced Configuration",
+            "pages": [
+              "embedded-rewards/url-scheme",
+              "embedded-rewards/attestation-setup"
+            ]
+          },
+          {
+            "group": "Sending Rewards",
+            "pages": [
+              "embedded-rewards/send-rewards-client",
+              "embedded-rewards/send-rewards-server",
+              "embedded-rewards/restrict-client-rewards"
+            ]
+          },
+          {
+            "group": "Balances & Limits",
+            "pages": [
+              "embedded-rewards/user-balance",
+              "embedded-rewards/withdrawal-events",
+              "embedded-rewards/manage-rewards-balance",
+              "embedded-rewards/gift-cards",
+              "embedded-rewards/revenue-based-earning",
+              "embedded-rewards/mmp-postbacks",
+              "embedded-rewards/manage-withdrawal-limits"
+            ]
+          },
+          {
+            "group": "Developer Dashboard",
+            "pages": [
+              "embedded-rewards/manage-via-dashboard",
+              "embedded-rewards/manage-controls-dashboard",
+              "embedded-rewards/manage-user-linking"
+            ]
+          },
+          {
+            "group": "Best Practices & Engagement",
+            "pages": [
+              "embedded-rewards/player-comms",
+              "embedded-rewards/best-practices",
+              "embedded-rewards/creatives",
+              "embedded-rewards/local-notifications"
+            ]
+          },
+          {
+            "group": "Go Live",
+            "pages": [
+              "embedded-rewards/error-handling",
+              "embedded-rewards/troubleshoot",
+              "embedded-rewards/support-data",
+              "embedded-rewards/ios-app-store",
+              "embedded-rewards/android-app-store",
+              "embedded-rewards/go-live-checklist"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "embedded-rewards/send-rewards-api"
+            ]
+          },
+          {
+            "group": "API Keys",
+            "pages": [
+              "embedded-rewards/create-api-key",
+              "embedded-rewards/list-api-keys",
+              "embedded-rewards/revoke-api-key"
+            ]
+          },
+          {
+            "group": "Blocklist",
+            "pages": [
+              "embedded-rewards/get-blocklist-entries",
+              "embedded-rewards/delete-blocklist-entry"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Bitcoin",
+        "groups": [
+          {
+            "group": "Bitcoin Payments",
+            "pages": [
+              "bitcoin",
+              "bitcoin/payments/lightning-network",
+              "bitcoin/api"
+            ]
+          },
+          {
+            "group": "Resources",
             "pages": [
               {
-                "group": "Overview",
+                "group": "Pay Ins",
+                "expanded": false,
                 "pages": [
-                  "earn/sdk",
-                  "earn/sdk/planning",
-                  "earn/coverage"
+                  "bitcoin/payments/payins/lightning-charges",
+                  "bitcoin/payments/payins/gamertags"
                 ]
               },
               {
-                "group": "Concepts",
+                "group": "Pay Outs",
+                "expanded": false,
                 "pages": [
-                  "earn/sdk/reward-economics",
-                  "earn/sdk/soft-currency",
-                  "earn/sdk/security",
-                  "earn/sdk/customization"
+                  "bitcoin/payments/payouts/lightning-address",
+                  "bitcoin/payments/payouts/gamertags",
+                  "bitcoin/payments/payouts/withdrawal-requests",
+                  "bitcoin/payments/payouts/lightning-charges"
                 ]
               },
               {
-                "group": "Setup",
+                "group": "Login with ZBD",
+                "expanded": false,
                 "pages": [
-                  "earn/sdk/download",
-                  "earn/sdk/compatibility",
-                  "earn/sdk/integration",
-                  "earn/sdk/building",
-                  {
-                    "group": "Advanced Configuration",
-                    "icon": "sliders",
-                    "pages": [
-                      "earn/sdk/url-scheme",
-                      "earn/sdk/attestation-setup"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Sending Rewards",
-                "pages": [
-                  "earn/sdk/send-rewards-client",
-                  "earn/sdk/send-rewards-server",
-                  "earn/sdk/restrict-client-rewards"
-                ]
-              },
-              {
-                "group": "Balances & Limits",
-                "pages": [
-                  "earn/sdk/user-balance",
-                  "earn/sdk/withdrawal-events",
-                  "earn/sdk/manage-rewards-balance",
-                  "earn/sdk/gift-cards",
-                  "earn/sdk/revenue-based-earning",
-                  "earn/sdk/mmp-postbacks",
-                  "earn/sdk/manage-withdrawal-limits"
+                  "bitcoin/oauth2",
+                  "bitcoin/oauth2/integration",
+                  "bitcoin/oauth2/guidelines",
+                  "bitcoin/oauth2/walkthrough",
+                  "bitcoin/oauth2/api/authorization",
+                  "bitcoin/oauth2/api/retrieve-access-token",
+                  "bitcoin/oauth2/api/refresh-token",
+                  "bitcoin/oauth2/api/retrieve-user",
+                  "bitcoin/oauth2/api/retrieve-wallet"
                 ]
               },
               {
                 "group": "Developer Dashboard",
+                "expanded": false,
                 "pages": [
-                  "earn/sdk/manage-via-dashboard",
-                  "earn/sdk/manage-controls-dashboard",
-                  "earn/sdk/manage-user-linking"
-                ]
-              },
-              {
-                "group": "Best Practices & Engagement",
-                "pages": [
-                  "earn/sdk/player-comms",
-                  "earn/sdk/best-practices",
-                  "earn/sdk/creatives",
-                  "earn/sdk/local-notifications"
-                ]
-              },
-              {
-                "group": "Go Live",
-                "pages": [
-                  "earn/sdk/error-handling",
-                  "earn/sdk/troubleshoot",
-                  "earn/sdk/support-data",
-                  "earn/sdk/ios-app-store",
-                  "earn/sdk/android-app-store",
-                  "earn/sdk/go-live-checklist"
-                ]
-              },
-              {
-                "group": "API Reference",
-                "pages": [
-                  "earn/sdk/send-rewards-api",
-                  {
-                    "group": "API Keys",
-                    "icon": "key",
-                    "pages": [
-                      "earn/sdk/create-api-key",
-                      "earn/sdk/list-api-keys",
-                      "earn/sdk/revoke-api-key"
-                    ]
-                  },
-                  {
-                    "group": "Blocklist",
-                    "icon": "ban",
-                    "pages": [
-                      "earn/sdk/get-blocklist-entries",
-                      "earn/sdk/delete-blocklist-entry"
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Pay",
-        "anchors": [
-          {
-            "anchor": "Overview",
-            "icon": "inbox",
-            "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "payments",
-                  "payments/lightning-network",
-                  "payments/lightning-address"
-                ]
-              },
-              {
-                "group": "Guides",
-                "pages": [
-                  {
-                    "group": "Pay Ins",
-                    "pages": [
-                      "payments/payins/lightning-charges",
-                      "payments/payins/gamertags"
-                    ]
-                  },
-                  {
-                    "group": "Pay Outs",
-                    "pages": [
-                      "payments/payouts/lightning-address",
-                      "payments/payouts/gamertags",
-                      "payments/payouts/withdrawal-requests",
-                      "payments/payouts/lightning-charges"
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Resources",
-                "pages": [
-                  "payments/coverage",
-                  "payments/glossary"
+                  "bitcoin/start/dev-dashboard",
+                  "bitcoin/start/create-account",
+                  "bitcoin/start/verify-identity",
+                  "bitcoin/start/add-funds",
+                  "bitcoin/start/create-project",
+                  "bitcoin/start/api-keys",
+                  "bitcoin/start/project-wallet",
+                  "bitcoin/start/manage-project",
+                  "bitcoin/start/sandbox-project"
                 ]
               }
             ]
           },
           {
-            "anchor": "Payments SDK",
-            "icon": "layer-group",
+            "group": "Lightning Address",
             "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "payments/sdk"
-                ]
-              },
-              {
-                "group": "TypeScript",
-                "pages": [
-                  "payments/sdk/typescript",
-                  {
-                    "group": "Guides",
-                    "pages": [
-                      "payments/sdk/typescript/next",
-                      "payments/sdk/typescript/node",
-                      "payments/sdk/typescript/express",
-                      {
-                        "group": "Vercel",
-                        "pages": [
-                          "payments/sdk/typescript/vercel/send",
-                          "payments/sdk/typescript/vercel/receive"
-                        ]
-                      },
-                      {
-                        "group": "Supabase",
-                        "pages": [
-                          "payments/sdk/typescript/supabase/send",
-                          "payments/sdk/typescript/supabase/receive"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "group": "Go",
-                "pages": [
-                  "payments/sdk/go"
-                ]
-              },
-              {
-                "group": "Rust",
-                "pages": [
-                  "payments/sdk/rust"
-                ]
-              },
-              {
-                "group": "C#",
-                "pages": [
-                  "payments/sdk/csharp"
-                ]
-              }
+              "bitcoin/lightning-address",
+              "bitcoin/lightning-address/send",
+              "bitcoin/lightning-address/validate",
+              "bitcoin/lightning-address/create-charge"
             ]
           },
           {
-            "anchor": "Payments API",
-            "icon": "code",
+            "group": "Lightning Charges",
             "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "payments/api",
-                  "payments/api/errors",
-                  "payments/api/callbacks",
-                  "payments/api/resources/openapi"
-                ]
-              },
-              {
-                "group": "Lightning Address",
-                "pages": [
-                  "payments/api/lightning-address",
-                  "payments/api/lightning-address/send",
-                  "payments/api/lightning-address/validate",
-                  "payments/api/lightning-address/create-charge"
-                ]
-              },
-              {
-                "group": "Lightning Charges",
-                "pages": [
-                  "payments/api/lightning-charges",
-                  "payments/api/lightning-charges/create",
-                  "payments/api/lightning-charges/retrieve",
-                  "payments/api/lightning-charges/decode",
-                  "payments/api/lightning-charges/create-static",
-                  "payments/api/lightning-charges/retrieve-static",
-                  "payments/api/lightning-charges/update-static"
-                ]
-              },
-              {
-                "group": "Lightning Payments",
-                "pages": [
-                  "payments/api/lightning-payments",
-                  "payments/api/lightning-payments/send",
-                  "payments/api/lightning-payments/retrieve"
-                ]
-              },
-              {
-                "group": "Withdrawal Requests",
-                "pages": [
-                  "payments/api/withdrawal-requests",
-                  "payments/api/withdrawal-requests/create",
-                  "payments/api/withdrawal-requests/retrieve"
-                ]
-              },
-              {
-                "group": "Gamertags",
-                "pages": [
-                  "payments/api/gamertags",
-                  "payments/api/gamertags/send",
-                  "payments/api/gamertags/retrieve-payment",
-                  "payments/api/gamertags/create-charge",
-                  "payments/api/gamertags/retrieve-userid",
-                  "payments/api/gamertags/retrieve-from-userid"
-                ]
-              },
-              {
-                "group": "Wallet",
-                "pages": [
-                  "payments/api/wallet",
-                  "payments/api/wallet/retrieve-balance",
-                  "payments/api/wallet/internal-transfer"
-                ]
-              },
-              {
-                "group": "Keysend",
-                "pages": [
-                  "payments/api/keysend",
-                  "payments/api/keysend/send"
-                ]
-              },
-              {
-                "group": "Utilities",
-                "pages": [
-                  "payments/api/utils",
-                  "payments/api/utils/btc-usd",
-                  "payments/api/utils/is-supported-region",
-                  "payments/api/utils/ip"
-                ]
-              }
+              "bitcoin/lightning-charges",
+              "bitcoin/lightning-charges/create",
+              "bitcoin/lightning-charges/retrieve",
+              "bitcoin/lightning-charges/decode",
+              "bitcoin/lightning-charges/create-static",
+              "bitcoin/lightning-charges/retrieve-static",
+              "bitcoin/lightning-charges/update-static"
             ]
           },
           {
-            "anchor": "Onramps",
-            "icon": "circle-dollar-to-slot",
+            "group": "Lightning Payments",
             "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "payments/ramp",
-                  "payments/ramp/quickstart",
-                  "payments/ramp/user-flow",
-                  "payments/ramp/faq"
-                ]
-              },
-              {
-                "group": "SDKs",
-                "pages": [
-                  "payments/ramp/sdks/typescript",
-                  "payments/ramp/sdks/react",
-                  "payments/ramp/sdks/react-native",
-                  "payments/ramp/sdks/flutter"
-                ]
-              },
-              {
-                "group": "API",
-                "pages": [
-                  "payments/ramp/session"
-                ]
-              },
-              {
-                "group": "Customization",
-                "pages": [
-                  "payments/ramp/platform",
-                  "payments/ramp/themes",
-                  "payments/ramp/ai-themes"
-                ]
-              },
-              {
-                "group": "Events",
-                "pages": [
-                  "payments/ramp/webhooks",
-                  "payments/ramp/emails"
-                ]
-              }
+              "bitcoin/lightning-payments/send",
+              "bitcoin/lightning-payments/retrieve",
+              "bitcoin/lightning-payments/keysend"
             ]
           },
           {
-            "anchor": "Login with ZBD",
-            "icon": "shield-check",
+            "group": "Withdrawal Requests",
             "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "earn/oauth2",
-                  "earn/oauth2/integration",
-                  "earn/oauth2/guidelines",
-                  "earn/oauth2/walkthrough"
-                ]
-              },
-              {
-                "group": "API Reference",
-                "icon": "code",
-                "pages": [
-                  "earn/oauth2/api",
-                  "earn/oauth2/api/authorization",
-                  "earn/oauth2/api/retrieve-access-token",
-                  "earn/oauth2/api/refresh-token",
-                  "earn/oauth2/api/data-fetching",
-                  "earn/oauth2/api/retrieve-user",
-                  "earn/oauth2/api/retrieve-wallet"
-                ]
-              }
+              "bitcoin/withdrawal-requests/create",
+              "bitcoin/withdrawal-requests/retrieve"
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Widgets",
-        "anchors": [
+          },
           {
-            "anchor": "ZBD Widget",
-            "icon": "grid-2",
+            "group": "Gamertags",
             "pages": [
-              {
-                "group": "Overview",
-                "pages": [
-                  "widget",
-                  "widget/disclosures"
-                ]
-              },
-              {
-                "group": "Events",
-                "pages": [
-                  "widget/browser-events",
-                  "widget/webhooks"
-                ]
-              },
-              {
-                "group": "API Reference",
-                "pages": [
-                  "widget/create-user",
-                  "widget/update-user",
-                  "widget/fund-user",
-                  "widget/get-balance",
-                  "widget/create-session",
-                  "widget/get-disclosure-status",
-                  "widget/submit-disclosure-acceptance",
-                  "widget/get-user",
-                  "widget/get-transactions",
-                  "widget/deplete-user"
-                ]
-              },
-              {
-                "group": "Testing",
-                "pages": [
-                  "widget/sandbox"
-                ]
-              }
+              "bitcoin/gamertags/send",
+              "bitcoin/gamertags/retrieve-payment",
+              "bitcoin/gamertags/create-charge",
+              "bitcoin/gamertags/retrieve-userid",
+              "bitcoin/gamertags/retrieve-from-userid",
+              "bitcoin/gamertags/sandbox/send"
+            ]
+          },
+          {
+            "group": "Wallet",
+            "pages": [
+              "bitcoin/wallet/retrieve-balance",
+              "bitcoin/wallet/internal-transfer"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "bitcoin/utils",
+              "bitcoin/utils/btc-usd",
+              "bitcoin/utils/is-supported-region",
+              "bitcoin/utils/ip"
             ]
           }
         ]
@@ -540,18 +452,18 @@
   "navbar": {
     "links": [
       {
-        "label": "API Status",
+        "label": "Status",
         "href": "https://status.zbdpay.com/"
       },
       {
-        "label": "Create Account",
-        "href": "https://dashboard.zebedee.io"
+        "label": "Contact ZBD",
+        "href": "https://zbdpay.com/contact"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Log In",
-      "href": "https://dashboard.zebedee.io"
+      "label": "Publisher Portal",
+      "href": "https://dashboard.zbdpay.com"
     }
   },
   "search": {
@@ -565,154 +477,994 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/zebedeeio",
-      "github": "https://github.com/zebedeeio"
+      "x": "https://x.com/zbdpay",
+      "github": "https://github.com/zbdpay"
     }
   },
   "redirects": [
     {
+      "source": "/embedded-accounts/apis/list-workspaces",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/create-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/update-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/delete-workspace",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/list-bundles",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-bundle",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/get-publisher-config",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/list-monetary-accounts",
+      "destination": "/embedded-accounts/apis/overview"
+    },
+    {
+      "source": "/embedded-accounts/apis/create-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/update-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/delete-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/link-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/embedded-accounts/apis/unlink-currency",
+      "destination": "/embedded-accounts/apis/list-currencies"
+    },
+    {
+      "source": "/get-started",
+      "destination": "/embedded-payouts"
+    },
+    {
+      "source": "/get-started/zbd-ramp",
+      "destination": "/embedded-accounts"
+    },
+    {
+      "source": "/get-started/zbd-payments-api",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/get-started/zbd-earn-sdk",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/get-started/zbd-app",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/get-started/login-with-zbd",
+      "destination": "/bitcoin/oauth2"
+    },
+    {
+      "source": "/earn/app/uri-schemes",
+      "destination": "/embedded-rewards/url-scheme"
+    },
+    {
+      "source": "/earn/knowledge-base/game-security/:slug*",
+      "destination": "/embedded-rewards/security"
+    },
+    {
+      "source": "/earn/knowledge-base/game-security",
+      "destination": "/embedded-rewards/security"
+    },
+    {
+      "source": "/earn/knowledge-base/integrations/unity",
+      "destination": "/embedded-rewards/integration"
+    },
+    {
+      "source": "/earn/app",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/knowledge-base",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/knowledge-base/rewarded-play",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/knowledge-base/rewarded-play/integrating",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/payments/ramp",
+      "destination": "/embedded-accounts"
+    },
+    {
+      "source": "/payments/ramp/:slug*",
+      "destination": "/embedded-accounts"
+    },
+    {
+      "source": "/payments/sdk",
+      "destination": "/bitcoin/utils"
+    },
+    {
+      "source": "/payments/sdk/:slug*",
+      "destination": "/bitcoin/utils"
+    },
+    {
+      "source": "/payments/http",
+      "destination": "/bitcoin/utils"
+    },
+    {
+      "source": "/payments/ai-ingestion",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/roadmap",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/widget/browser-events",
+      "destination": "/embedded-payouts/browser-events"
+    },
+    {
+      "source": "/widget/disclosures",
+      "destination": "/embedded-payouts/apis/get-disclosures"
+    },
+    {
+      "source": "/widget/sandbox",
+      "destination": "/embedded-payouts/apis/overview"
+    },
+    {
+      "source": "/widget/webhooks",
+      "destination": "/embedded-payouts/apis/create-webhook"
+    },
+    {
       "source": "/docs/introduction",
-      "destination": "/get-started"
+      "destination": "/embedded-payouts"
     },
     {
       "source": "/docs/nodejs-quickstart",
-      "destination": "/payments/sdk/node"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/nextjs-quickstart",
-      "destination": "/payments/sdk/typescript/next"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/express-quickstart",
-      "destination": "/payments/sdk/typescript/express"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/vercel-edge-functions/send",
-      "destination": "/payments/sdk/typescript/vercel/send"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/vercel-edge-functions/receive",
-      "destination": "/payments/sdk/typescript/vercel/receive"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/supabase-edge-functions/send",
-      "destination": "/payments/sdk/typescript/supabase/send"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/supabase-edge-functions/receive",
-      "destination": "/payments/sdk/typescript/supabase/receive"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/csharp-quickstart",
-      "destination": "/payments/sdk/csharp"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/go-quickstart",
-      "destination": "/payments/sdk/go"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/replit-quickstart",
-      "destination": "/payments/sdk"
+      "destination": "/bitcoin"
     },
     {
       "source": "/docs/openapi",
-      "destination": "/payments/api/resources/openapi"
+      "destination": "/bitcoin"
     },
     {
       "source": "/docs/examples",
-      "destination": "/payments/templates"
+      "destination": "https://github.com/zbdpay"
     },
     {
       "source": "/docs/sdk",
-      "destination": "/payments/sdk"
+      "destination": "/bitcoin/utils"
     },
     {
       "source": "/docs/integrations",
-      "destination": "/payments"
+      "destination": "/bitcoin"
     },
     {
       "source": "/docs/global-support",
-      "destination": "/payments/coverage"
+      "destination": "/bitcoin/payments/coverage"
     },
     {
       "source": "/courses/*",
-      "destination": "/get-started"
+      "destination": "/embedded-payouts"
     },
     {
       "source": "/knowledge-base/payouts/zbd-gamertag",
-      "destination": "/payments/payouts/gamertags"
+      "destination": "/bitcoin/payments/payouts/gamertags"
     },
     {
       "source": "/knowledge-base/payouts/:slug*",
-      "destination": "/payments/payouts/:slug*"
+      "destination": "/bitcoin/payments/payouts/:slug*"
     },
     {
       "source": "/knowledge-base/payins/charges",
-      "destination": "/payments/payins/lightning-charges"
+      "destination": "/bitcoin/payments/payins/lightning-charges"
     },
     {
       "source": "/knowledge-base/payins/zbd-gamertag",
-      "destination": "/payments/payins/gamertags"
+      "destination": "/bitcoin/payments/payins/gamertags"
     },
     {
       "source": "/knowledge-base/guides/nostr-relay",
-      "destination": "/payments/nostr/nostr-relay"
+      "destination": "/bitcoin/payments/coverage"
     },
     {
       "source": "/knowledge-base/guides/*",
-      "destination": "/payments"
+      "destination": "/bitcoin"
     },
     {
       "source": "/api-reference/introduction",
-      "destination": "/payments/api"
+      "destination": "/bitcoin"
     },
     {
       "source": "/rewards/:slug*",
-      "destination": "/earn/:slug*"
+      "destination": "/embedded-rewards"
     },
     {
       "source": "/rewards",
-      "destination": "/earn"
+      "destination": "/embedded-rewards"
     },
     {
       "source": "/earn/api",
-      "destination": "/earn/sdk"
+      "destination": "/embedded-rewards"
     },
     {
       "source": "/earn/api/gamertags",
-      "destination": "/earn/sdk"
+      "destination": "/embedded-rewards"
     },
     {
       "source": "/earn/api/gamertags/:slug*",
-      "destination": "/earn/sdk"
+      "destination": "/embedded-rewards"
     },
     {
       "source": "/earn/knowledge-base/integrations/beamable",
-      "destination": "/earn/knowledge-base/integrations/unity"
+      "destination": "/embedded-rewards/integration"
     },
     {
       "source": "/earn/sdk/fraud-prevention",
-      "destination": "/earn/sdk/security"
+      "destination": "/embedded-rewards/security"
     },
     {
       "source": "/earn/sdk/withdrawal-limits",
-      "destination": "/earn/sdk/revenue-based-earning"
+      "destination": "/embedded-rewards/revenue-based-earning"
     },
     {
       "source": "/earn/sdk/user-withdrawal",
-      "destination": "/earn/sdk/user-balance"
+      "destination": "/embedded-rewards/user-balance"
     },
     {
       "source": "/earn/sdk/increase-withdrawal-limit",
-      "destination": "/earn/sdk/manage-withdrawal-limits"
+      "destination": "/embedded-rewards/manage-withdrawal-limits"
     },
     {
       "source": "/earn/sdk/decrease-withdrawal-limit",
-      "destination": "/earn/sdk/manage-withdrawal-limits"
+      "destination": "/embedded-rewards/manage-withdrawal-limits"
     },
     {
       "source": "/earn/sdk/intro",
-      "destination": "/earn/sdk"
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/coverage",
+      "destination": "/embedded-rewards/coverage"
+    },
+    {
+      "source": "/earn/sdk",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/sdk/android-app-store",
+      "destination": "/embedded-rewards/android-app-store"
+    },
+    {
+      "source": "/earn/sdk/attestation-setup",
+      "destination": "/embedded-rewards/attestation-setup"
+    },
+    {
+      "source": "/earn/sdk/best-practices",
+      "destination": "/embedded-rewards/best-practices"
+    },
+    {
+      "source": "/earn/sdk/building",
+      "destination": "/embedded-rewards/building"
+    },
+    {
+      "source": "/earn/sdk/compatibility",
+      "destination": "/embedded-rewards/compatibility"
+    },
+    {
+      "source": "/earn/sdk/create-api-key",
+      "destination": "/embedded-rewards/create-api-key"
+    },
+    {
+      "source": "/earn/sdk/creatives",
+      "destination": "/embedded-rewards/creatives"
+    },
+    {
+      "source": "/earn/sdk/customization",
+      "destination": "/embedded-rewards/customization"
+    },
+    {
+      "source": "/earn/sdk/delete-blocklist-entry",
+      "destination": "/embedded-rewards/delete-blocklist-entry"
+    },
+    {
+      "source": "/earn/sdk/download",
+      "destination": "/embedded-rewards/download"
+    },
+    {
+      "source": "/earn/sdk/error-handling",
+      "destination": "/embedded-rewards/error-handling"
+    },
+    {
+      "source": "/earn/sdk/get-blocklist-entries",
+      "destination": "/embedded-rewards/get-blocklist-entries"
+    },
+    {
+      "source": "/earn/sdk/gift-cards",
+      "destination": "/embedded-rewards/gift-cards"
+    },
+    {
+      "source": "/earn/sdk/go-live-checklist",
+      "destination": "/embedded-rewards/go-live-checklist"
+    },
+    {
+      "source": "/earn/sdk/integration",
+      "destination": "/embedded-rewards/integration"
+    },
+    {
+      "source": "/earn/sdk/ios-app-store",
+      "destination": "/embedded-rewards/ios-app-store"
+    },
+    {
+      "source": "/earn/sdk/list-api-keys",
+      "destination": "/embedded-rewards/list-api-keys"
+    },
+    {
+      "source": "/earn/sdk/local-notifications",
+      "destination": "/embedded-rewards/local-notifications"
+    },
+    {
+      "source": "/earn/sdk/manage-controls-dashboard",
+      "destination": "/embedded-rewards/manage-controls-dashboard"
+    },
+    {
+      "source": "/earn/sdk/manage-rewards-balance",
+      "destination": "/embedded-rewards/manage-rewards-balance"
+    },
+    {
+      "source": "/earn/sdk/manage-user-linking",
+      "destination": "/embedded-rewards/manage-user-linking"
+    },
+    {
+      "source": "/earn/sdk/manage-via-dashboard",
+      "destination": "/embedded-rewards/manage-via-dashboard"
+    },
+    {
+      "source": "/earn/sdk/manage-withdrawal-limits",
+      "destination": "/embedded-rewards/manage-withdrawal-limits"
+    },
+    {
+      "source": "/earn/sdk/mmp-postbacks",
+      "destination": "/embedded-rewards/mmp-postbacks"
+    },
+    {
+      "source": "/earn/sdk/planning",
+      "destination": "/embedded-rewards/planning"
+    },
+    {
+      "source": "/earn/sdk/player-comms",
+      "destination": "/embedded-rewards/player-comms"
+    },
+    {
+      "source": "/earn/sdk/restrict-client-rewards",
+      "destination": "/embedded-rewards/restrict-client-rewards"
+    },
+    {
+      "source": "/earn/sdk/revenue-based-earning",
+      "destination": "/embedded-rewards/revenue-based-earning"
+    },
+    {
+      "source": "/earn/sdk/revoke-api-key",
+      "destination": "/embedded-rewards/revoke-api-key"
+    },
+    {
+      "source": "/earn/sdk/reward-economics",
+      "destination": "/embedded-rewards/reward-economics"
+    },
+    {
+      "source": "/earn/sdk/security",
+      "destination": "/embedded-rewards/security"
+    },
+    {
+      "source": "/earn/sdk/send-rewards-api",
+      "destination": "/embedded-rewards/send-rewards-api"
+    },
+    {
+      "source": "/earn/sdk/send-rewards-client",
+      "destination": "/embedded-rewards/send-rewards-client"
+    },
+    {
+      "source": "/earn/sdk/send-rewards-server",
+      "destination": "/embedded-rewards/send-rewards-server"
+    },
+    {
+      "source": "/earn/sdk/soft-currency",
+      "destination": "/embedded-rewards/soft-currency"
+    },
+    {
+      "source": "/earn/sdk/support-data",
+      "destination": "/embedded-rewards/support-data"
+    },
+    {
+      "source": "/earn/sdk/troubleshoot",
+      "destination": "/embedded-rewards/troubleshoot"
+    },
+    {
+      "source": "/earn/sdk/url-scheme",
+      "destination": "/embedded-rewards/url-scheme"
+    },
+    {
+      "source": "/earn/sdk/user-balance",
+      "destination": "/embedded-rewards/user-balance"
+    },
+    {
+      "source": "/earn/sdk/withdrawal-events",
+      "destination": "/embedded-rewards/withdrawal-events"
+    },
+    {
+      "source": "/get-started/add-funds",
+      "destination": "/bitcoin/start/add-funds"
+    },
+    {
+      "source": "/get-started/api-keys",
+      "destination": "/bitcoin/start/api-keys"
+    },
+    {
+      "source": "/get-started/create-account",
+      "destination": "/bitcoin/start/create-account"
+    },
+    {
+      "source": "/get-started/create-project",
+      "destination": "/bitcoin/start/create-project"
+    },
+    {
+      "source": "/get-started/dev-dashboard",
+      "destination": "/bitcoin/start/dev-dashboard"
+    },
+    {
+      "source": "/get-started/manage-project",
+      "destination": "/bitcoin/start/manage-project"
+    },
+    {
+      "source": "/get-started/project-wallet",
+      "destination": "/bitcoin/start/project-wallet"
+    },
+    {
+      "source": "/get-started/sandbox-project",
+      "destination": "/bitcoin/start/sandbox-project"
+    },
+    {
+      "source": "/get-started/verify-identity",
+      "destination": "/bitcoin/start/verify-identity"
+    },
+    {
+      "source": "/payments",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/api",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/api/callbacks",
+      "destination": "/bitcoin/api"
+    },
+    {
+      "source": "/payments/api/errors",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/api/gamertags",
+      "destination": "/bitcoin/gamertags/send"
+    },
+    {
+      "source": "/payments/api/gamertags/create-charge",
+      "destination": "/bitcoin/gamertags/create-charge"
+    },
+    {
+      "source": "/payments/api/gamertags/retrieve-from-userid",
+      "destination": "/bitcoin/gamertags/retrieve-from-userid"
+    },
+    {
+      "source": "/payments/api/gamertags/retrieve-payment",
+      "destination": "/bitcoin/gamertags/retrieve-payment"
+    },
+    {
+      "source": "/payments/api/gamertags/retrieve-userid",
+      "destination": "/bitcoin/gamertags/retrieve-userid"
+    },
+    {
+      "source": "/payments/api/gamertags/sandbox/send",
+      "destination": "/bitcoin/gamertags/sandbox/send"
+    },
+    {
+      "source": "/payments/api/gamertags/send",
+      "destination": "/bitcoin/gamertags/send"
+    },
+    {
+      "source": "/payments/api/keysend",
+      "destination": "/bitcoin/lightning-payments/keysend"
+    },
+    {
+      "source": "/payments/api/keysend/send",
+      "destination": "/bitcoin/lightning-payments/keysend"
+    },
+    {
+      "source": "/payments/api/lightning-address",
+      "destination": "/bitcoin/lightning-address"
+    },
+    {
+      "source": "/payments/api/lightning-address/create-charge",
+      "destination": "/bitcoin/lightning-address/create-charge"
+    },
+    {
+      "source": "/payments/api/lightning-address/send",
+      "destination": "/bitcoin/lightning-address/send"
+    },
+    {
+      "source": "/payments/api/lightning-address/validate",
+      "destination": "/bitcoin/lightning-address/validate"
+    },
+    {
+      "source": "/payments/api/lightning-charges",
+      "destination": "/bitcoin/lightning-charges"
+    },
+    {
+      "source": "/payments/api/lightning-charges/create",
+      "destination": "/bitcoin/lightning-charges/create"
+    },
+    {
+      "source": "/payments/api/lightning-charges/create-static",
+      "destination": "/bitcoin/lightning-charges/create-static"
+    },
+    {
+      "source": "/payments/api/lightning-charges/decode",
+      "destination": "/bitcoin/lightning-charges/decode"
+    },
+    {
+      "source": "/payments/api/lightning-charges/retrieve",
+      "destination": "/bitcoin/lightning-charges/retrieve"
+    },
+    {
+      "source": "/payments/api/lightning-charges/retrieve-static",
+      "destination": "/bitcoin/lightning-charges/retrieve-static"
+    },
+    {
+      "source": "/payments/api/lightning-charges/update-static",
+      "destination": "/bitcoin/lightning-charges/update-static"
+    },
+    {
+      "source": "/payments/api/lightning-payments",
+      "destination": "/bitcoin/lightning-payments/send"
+    },
+    {
+      "source": "/payments/api/lightning-payments/retrieve",
+      "destination": "/bitcoin/lightning-payments/retrieve"
+    },
+    {
+      "source": "/payments/api/lightning-payments/send",
+      "destination": "/bitcoin/lightning-payments/send"
+    },
+    {
+      "source": "/payments/api/resources/openapi",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/api/resources/overview",
+      "destination": "/bitcoin/utils"
+    },
+    {
+      "source": "/payments/api/resources/postman",
+      "destination": "/bitcoin/utils"
+    },
+    {
+      "source": "/payments/api/utils",
+      "destination": "/bitcoin/utils"
+    },
+    {
+      "source": "/payments/api/utils/btc-usd",
+      "destination": "/bitcoin/utils/btc-usd"
+    },
+    {
+      "source": "/payments/api/utils/ip",
+      "destination": "/bitcoin/utils/ip"
+    },
+    {
+      "source": "/payments/api/utils/is-supported-region",
+      "destination": "/bitcoin/utils/is-supported-region"
+    },
+    {
+      "source": "/payments/api/wallet",
+      "destination": "/bitcoin/wallet/retrieve-balance"
+    },
+    {
+      "source": "/payments/api/wallet/internal-transfer",
+      "destination": "/bitcoin/wallet/internal-transfer"
+    },
+    {
+      "source": "/payments/api/wallet/retrieve-balance",
+      "destination": "/bitcoin/wallet/retrieve-balance"
+    },
+    {
+      "source": "/payments/api/withdrawal-requests",
+      "destination": "/bitcoin/withdrawal-requests/create"
+    },
+    {
+      "source": "/payments/api/withdrawal-requests/create",
+      "destination": "/bitcoin/withdrawal-requests/create"
+    },
+    {
+      "source": "/payments/api/withdrawal-requests/retrieve",
+      "destination": "/bitcoin/withdrawal-requests/retrieve"
+    },
+    {
+      "source": "/payments/coverage",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/payments/glossary",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/payments/integrations",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/knowledge-base",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/lightning-address",
+      "destination": "/bitcoin/lightning-address"
+    },
+    {
+      "source": "/payments/lightning-address/intro",
+      "destination": "/bitcoin/lightning-address"
+    },
+    {
+      "source": "/payments/lightning-address/static-charges",
+      "destination": "/bitcoin/lightning-charges"
+    },
+    {
+      "source": "/payments/lightning-network",
+      "destination": "/bitcoin/payments/lightning-network"
+    },
+    {
+      "source": "/payments/mcp",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/payments/nostr/nostr-relay",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/payments/openapi",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/payins/gamertags",
+      "destination": "/bitcoin/payments/payins/gamertags"
+    },
+    {
+      "source": "/payments/payins/lightning-charges",
+      "destination": "/bitcoin/payments/payins/lightning-charges"
+    },
+    {
+      "source": "/payments/payouts/gamertags",
+      "destination": "/bitcoin/payments/payouts/gamertags"
+    },
+    {
+      "source": "/payments/payouts/lightning-address",
+      "destination": "/bitcoin/payments/payouts/lightning-address"
+    },
+    {
+      "source": "/payments/payouts/lightning-charges",
+      "destination": "/bitcoin/payments/payouts/lightning-charges"
+    },
+    {
+      "source": "/payments/payouts/withdrawal-requests",
+      "destination": "/bitcoin/payments/payouts/withdrawal-requests"
+    },
+    {
+      "source": "/payments/replit",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/payments/templates",
+      "destination": "https://github.com/zbdpay"
+    },
+    {
+      "source": "/widget",
+      "destination": "/embedded-payouts"
+    },
+    {
+      "source": "/widget/create-session",
+      "destination": "/embedded-payouts/apis/create-session"
+    },
+    {
+      "source": "/widget/create-user",
+      "destination": "/embedded-payouts/apis/create-user"
+    },
+    {
+      "source": "/widget/deplete-user",
+      "destination": "/embedded-payouts/apis/debit-user"
+    },
+    {
+      "source": "/widget/fund-user",
+      "destination": "/embedded-payouts/apis/credit-user"
+    },
+    {
+      "source": "/widget/get-balance",
+      "destination": "/embedded-payouts/apis/get-balances"
+    },
+    {
+      "source": "/widget/get-disclosure-status",
+      "destination": "/embedded-payouts/apis/get-disclosures"
+    },
+    {
+      "source": "/widget/get-transactions",
+      "destination": "/embedded-payouts/apis/list-transactions"
+    },
+    {
+      "source": "/widget/get-user",
+      "destination": "/embedded-payouts/apis/get-user"
+    },
+    {
+      "source": "/widget/submit-disclosure-acceptance",
+      "destination": "/embedded-payouts/apis/record-disclosures"
+    },
+    {
+      "source": "/widget/update-user",
+      "destination": "/embedded-payouts/apis/update-user"
+    },
+    {
+      "source": "/embedded-payouts/apis/list-publisher-transactions",
+      "destination": "/embedded-payouts/apis/overview"
+    },
+    {
+      "source": "/embedded-payouts/paying-out",
+      "destination": "/embedded-payouts/how-payouts-work"
+    },
+    {
+      "source": "/earn",
+      "destination": "/embedded-rewards"
+    },
+    {
+      "source": "/earn/oauth2",
+      "destination": "/bitcoin/oauth2"
+    },
+    {
+      "source": "/earn/oauth2/integration",
+      "destination": "/bitcoin/oauth2/integration"
+    },
+    {
+      "source": "/earn/oauth2/guidelines",
+      "destination": "/bitcoin/oauth2/guidelines"
+    },
+    {
+      "source": "/earn/oauth2/walkthrough",
+      "destination": "/bitcoin/oauth2/walkthrough"
+    },
+    {
+      "source": "/earn/oauth2/api",
+      "destination": "/bitcoin/oauth2"
+    },
+    {
+      "source": "/earn/oauth2/api/authorization",
+      "destination": "/bitcoin/oauth2/api/authorization"
+    },
+    {
+      "source": "/earn/oauth2/api/retrieve-access-token",
+      "destination": "/bitcoin/oauth2/api/retrieve-access-token"
+    },
+    {
+      "source": "/earn/oauth2/api/refresh-token",
+      "destination": "/bitcoin/oauth2/api/refresh-token"
+    },
+    {
+      "source": "/earn/oauth2/api/data-fetching",
+      "destination": "/bitcoin/oauth2"
+    },
+    {
+      "source": "/earn/oauth2/api/retrieve-user",
+      "destination": "/bitcoin/oauth2/api/retrieve-user"
+    },
+    {
+      "source": "/earn/oauth2/api/retrieve-wallet",
+      "destination": "/bitcoin/oauth2/api/retrieve-wallet"
+    },
+    {
+      "source": "/bitcoin/payments/glossary",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/payments/templates",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/payments/nostr/nostr-relay",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/payments/mcp",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/payments/openapi",
+      "destination": "/bitcoin/payments/coverage"
+    },
+    {
+      "source": "/bitcoin/resources/postman",
+      "destination": "/bitcoin/utils"
+    },
+    {
+      "source": "/bitcoin/payments/integrations",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/payments/knowledge-base",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/payments/replit",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/errors",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/resources/openapi",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/wallet",
+      "destination": "/bitcoin/wallet/retrieve-balance"
+    },
+    {
+      "source": "/bitcoin/keysend",
+      "destination": "/bitcoin/lightning-payments/keysend"
+    },
+    {
+      "source": "/bitcoin/gamertags",
+      "destination": "/bitcoin/gamertags/send"
+    },
+    {
+      "source": "/bitcoin/withdrawal-requests",
+      "destination": "/bitcoin/withdrawal-requests/create"
+    },
+    {
+      "source": "/bitcoin/lightning-payments",
+      "destination": "/bitcoin/lightning-payments/send"
+    },
+    {
+      "source": "/bitcoin/resources/overview",
+      "destination": "/bitcoin/utils"
+    },
+    {
+      "source": "/bitcoin/oauth2/api",
+      "destination": "/bitcoin/oauth2"
+    },
+    {
+      "source": "/bitcoin/oauth2/api/data-fetching",
+      "destination": "/bitcoin/oauth2"
+    },
+    {
+      "source": "/bitcoin/keysend/send",
+      "destination": "/bitcoin/lightning-payments/keysend"
+    },
+    {
+      "source": "/bitcoin/payments/lightning-address/intro",
+      "destination": "/bitcoin/lightning-address"
+    },
+    {
+      "source": "/bitcoin/payments",
+      "destination": "/bitcoin"
+    },
+    {
+      "source": "/bitcoin/callbacks",
+      "destination": "/bitcoin/api"
+    },
+    {
+      "source": "/bitcoin/payments/lightning-address",
+      "destination": "/bitcoin/lightning-address"
+    },
+    {
+      "source": "/bitcoin/payments/lightning-address/static-charges",
+      "destination": "/bitcoin/lightning-charges"
+    },
+    {
+      "source": "/embedded-payouts/apis/cash-out-sandbox",
+      "destination": "/embedded-payouts/apis/overview"
+    },
+    {
+      "source": "/embedded-payouts/apis/fund-user",
+      "destination": "/embedded-payouts/apis/credit-user"
+    },
+    {
+      "source": "/embedded-payouts/apis/deplete-user",
+      "destination": "/embedded-payouts/apis/debit-user"
+    },
+    {
+      "source": "/embedded-payouts/apis/get-balance",
+      "destination": "/embedded-payouts/apis/get-balances"
+    },
+    {
+      "source": "/embedded-payouts/apis/list-user-transactions",
+      "destination": "/embedded-payouts/apis/list-transactions"
+    },
+    {
+      "source": "/embedded-accounts/apis/delete-player",
+      "destination": "/embedded-accounts/apis/delete-user"
+    },
+    {
+      "source": "/embedded-payouts/apis/get-earnings",
+      "destination": "/embedded-payouts/apis/get-balances"
+    },
+    {
+      "source": "/embedded-accounts/apis/list-redemption-rates",
+      "destination": "/embedded-accounts/apis/list-rates"
+    },
+    {
+      "source": "/embedded-accounts/apis/create-player",
+      "destination": "/embedded-accounts/apis/create-user"
+    },
+    {
+      "source": "/embedded-accounts/apis/credit-player",
+      "destination": "/embedded-accounts/apis/credit"
+    },
+    {
+      "source": "/embedded-accounts/apis/debit-player",
+      "destination": "/embedded-accounts/apis/purchase"
     }
   ]
 }

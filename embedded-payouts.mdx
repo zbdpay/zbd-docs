@@ -1,0 +1,44 @@
+---
+title: "Embedded Payouts Overview"
+sidebarTitle: "Overview"
+icon: "layer-group"
+description: "Pay creators, sellers, and players in the countries ZBD supports, from a pool you fund."
+---
+
+Embedded Payouts puts the whole payout experience inside your own game or platform. Users verify, choose how they want to be paid, and get their money without leaving your product or signing up with a separate payee portal.
+
+## How it's different
+
+- **Inside your product.** Verification, payment method selection, and cash out run in your game or site, in flows you place where you want them.
+- **On demand or on your schedule.** Pay a user the moment they're owed, or run payouts on whatever cadence suits your program, like weekly or monthly.
+- **The user chooses the method, and the cost.** Users pick how and how fast they're paid from the methods available in their country. Some methods are free or low cost, and faster ones cost more. Because the user makes that choice, the fee comes out of their payout by default, so you don't need payout minimums to keep costs down. You can choose to cover the fee yourself if you'd rather.
+- **ZBD carries the compliance.** Identity verification, screening, tax information, and payment details are handled and stored by ZBD, outside your systems.
+
+## What it's for
+
+- Creator and UGC revenue share
+- Marketplace seller payouts
+- Tournament and prize distribution
+- Player reward cash out
+
+## How it works
+
+1. **Fund a pool.** You send funds to your [payout pool](/embedded-payouts/funding), and every payout draws from it.
+2. **Onboard users.** Your backend creates each [user](/embedded-payouts/users). The user verifies and chooses a payment method in the [widget](/embedded-payouts/cash-out-widget), which you embed in your product.
+3. **Pay out.** Either your backend sends each payout, or users cash out the earnings ZBD tracks for them. [How Payouts Work](/embedded-payouts/how-payouts-work) explains the two models.
+
+ZBD runs verification, screening, and limit checks on every payout, settles it to the user's payment method in their local currency where it's supported, and sends you a webhook at each step.
+
+## Start here
+
+<CardGroup cols={3}>
+  <Card title="How Payouts Work" icon="diagram-project" href="/embedded-payouts/how-payouts-work">
+    The two ways to track earnings, and how a payout moves.
+  </Card>
+  <Card title="Tracking Earnings Yourself" icon="clipboard-list" href="/embedded-payouts/tracking-earnings-yourself">
+    Your system records earnings and your backend sends each payout.
+  </Card>
+  <Card title="Tracking Earnings With ZBD" icon="coins" href="/embedded-payouts/tracking-earnings-with-zbd">
+    ZBD records earnings and users cash out in the widget.
+  </Card>
+</CardGroup>

@@ -1,0 +1,68 @@
+---
+title: "Create a User"
+description: "Create a user and get back the ZBD user ID you'll use in every other call."
+api: "POST https://api.zbdpay.com/api/v1/users"
+---
+
+Call this from your server when a user signs up. The call is idempotent on `publisher_user_id`: the first call returns `201`, and calling again with the same identifier returns `200` with the same user, so it's safe to retry.
+
+Store the returned `user_id` next to your own record for the user. Every later call identifies the user by `user_id`.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="publisher_user_id" type="string">
+  Your own stable identifier for the user. Keep personal data out of it, so no email, username, or device ID.
+</ParamField>
+
+<ParamField body="email" type="string">
+  The user's email address. ZBD uses it to send the user verification codes in the widget.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/users \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "publisher_user_id": "user-42",
+    "email": "user@example.com"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "User created.",
+  "data": {
+    "user_id": "4ac4fd8a-cc2c-4d03-af09-a76f4e89d652",
+    "publisher_user_id": "user-42",
+    "email": "user@example.com",
+    "created_at": "2026-10-01T18:00:00Z"
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+Returns the same fields as [Get a User](/embedded-accounts/apis/get-user#response).
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `validation_failed` | `publisher_user_id` is missing, or `email` is malformed |
+| `401` | `unauthorized` | The API key is missing or invalid |

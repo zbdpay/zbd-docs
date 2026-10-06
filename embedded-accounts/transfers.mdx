@@ -1,0 +1,25 @@
+---
+title: "Transfers"
+icon: "arrow-right-arrow-left"
+description: "A player can send currency to another player, with no goods changing hands."
+---
+
+## How a transfer starts
+
+The sending player authorizes every transfer, so it has to start with something they did in your game. Your backend can't move value between two players on its own initiative, because a transfer gives away something the player owns.
+
+[Make a Transfer](/embedded-accounts/apis/transfer) has one sender and one receiver. To send to several players, make several calls.
+
+## Gifts and tips
+
+Every transfer has a `type`: `gift` or `tip`. The type decides the source tag on the value the receiving player gets, and that tag decides what they can do with it, including whether they can cash it out later. ZBD sets the rules for each tag, and your ZBD contact can walk you through how they apply to your program.
+
+## Why transfers are useful
+
+Transfers let value move between players, as well as between you and your players. That's what makes guilds, favors, trades outside the marketplace, and gifts between friends possible, and it makes your currency feel like something players own.
+
+## Limits and checks
+
+ZBD sets and runs limits and checks on transfers. Transfers are a common route for moving value for reasons that have nothing to do with play, so they get more scrutiny than purchases.
+
+These controls change over time. Build against the response you get instead of assuming fixed rules, and show a refused transfer to the player as a normal outcome instead of an error.

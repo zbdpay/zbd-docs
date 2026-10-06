@@ -1,0 +1,62 @@
+---
+title: "Create a Webhook"
+description: "Subscribe a URL on your server to webhook events."
+api: "POST https://api.zbdpay.com/api/v1/webhooks/subscriptions"
+---
+
+Registers a URL to receive events. Filter by event type and project, or leave the filters out to receive everything. See [Webhook Events](/embedded-payouts/apis/webhook-events) for the events and how to verify them.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="url" type="string">
+  An HTTPS URL on your server.
+</ParamField>
+
+<ParamField body="events" type="string[]">
+  The event types to send. Leave it out to receive every event.
+</ParamField>
+
+<ParamField body="project_id" type="string">
+  Only send events for this project.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/webhooks/subscriptions \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://your-server.com/zbd/webhooks",
+    "events": ["PAYMENTS.V1.PAYOUT.FAILED", "PAYMENTS.V1.PAYOUT.RETURNED"]
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "Subscription created.",
+  "data": {
+    "subscription_id": "sub_51a2",
+    "url": "https://your-server.com/zbd/webhooks",
+    "events": ["PAYMENTS.V1.PAYOUT.FAILED", "PAYMENTS.V1.PAYOUT.RETURNED"],
+    "project_id": null,
+    "status": "active"
+  },
+  "error": null
+}
+```
+</ResponseExample>

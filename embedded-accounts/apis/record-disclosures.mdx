@@ -1,0 +1,63 @@
+---
+title: "Record Disclosures"
+description: "Record that a user accepted the latest version of one or more disclosures."
+api: "POST https://api.zbdpay.com/api/v1/users/{userId}/disclosures"
+---
+
+<Note>
+  Most programs don't need this endpoint. The widget asks the user to accept the Electronic Funds Transfer agreement when they add a US bank account. This endpoint is for specific cases, such as a program that runs its own front end instead of the widget. If that's you, talk to your ZBD contact during onboarding.
+</Note>
+
+Records the user's acceptance of the latest version of each disclosure type you send. For a US bank (ACH) payout, send type `6`, the Electronic Funds Transfer disclosure.
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+<ParamField initialValue="application/json" header="Content-Type" type="string">
+  Content Type
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="userId" type="string">
+  The ZBD user ID returned by Create a User.
+</ParamField>
+
+### Body Parameters
+
+<ParamField required body="accepted_disclosure_type_ids" type="integer[]">
+  The disclosure types the user accepted, for example `[6]`.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl -X POST https://api.zbdpay.com/api/v1/users/{userId}/disclosures \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{ "accepted_disclosure_type_ids": [6] }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 201
+{
+  "success": true,
+  "message": "Disclosures recorded.",
+  "data": { "accepted_disclosure_type_ids": [6] },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `400` | `validation_failed` | The list is empty or has an unknown type |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `user_not_found` | The user doesn't exist under your key |

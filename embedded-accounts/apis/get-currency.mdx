@@ -1,0 +1,84 @@
+---
+title: "Get a Currency"
+description: "Read one currency by its code."
+api: "GET https://api.zbdpay.com/api/v1/currencies/{currency}"
+---
+
+## Configuration
+
+### Header Parameters
+
+<ParamField required header="x-api-key" type="string">
+  Your ZBD API key.
+</ParamField>
+
+### Path Parameters
+
+<ParamField required path="currency" type="string">
+  The currency code, for example `GEMS` or `USD`.
+</ParamField>
+
+<RequestExample>
+```bash cURL
+curl https://api.zbdpay.com/api/v1/currencies/GEMS \
+  -H "x-api-key: YOUR_API_KEY"
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "success": true,
+  "message": "Currency retrieved.",
+  "data": {
+    "currency": "GEMS",
+    "type": "virtual",
+    "name": "Gems",
+    "precision": 2,
+    "convertible": true,
+    "icon_url": "https://cdn.zbdpay.com/virtual-currencies/gems.png",
+    "project_ids": ["prj_1", "prj_2"]
+  },
+  "error": null
+}
+```
+</ResponseExample>
+
+## Response
+
+The currency is in `data`.
+
+<ResponseField name="currency" type="string">
+  The currency code you use in every call. It can't be changed.
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  `fiat` for real-world money, or `virtual` for a currency you defined.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  The display name users see.
+</ResponseField>
+
+<ResponseField name="precision" type="integer">
+  How many decimal places to show. Amounts are always whole numbers in the smallest unit, so with a precision of `2`, `150` is shown as 1.50. Fiat follows its own standard, for example `2` for USD and `0` for JPY.
+</ResponseField>
+
+<ResponseField name="convertible" type="boolean">
+  Whether the currency can convert to real money and be cashed out.
+</ResponseField>
+
+<ResponseField name="icon_url" type="string | null">
+  An icon for a virtual currency, if you set one.
+</ResponseField>
+
+<ResponseField name="project_ids" type="string[] | null">
+  The projects a virtual currency is linked to. A currency linked to several projects is the same currency in each of them.
+</ResponseField>
+
+## Errors
+
+| HTTP | `code` | When |
+| --- | --- | --- |
+| `401` | `unauthorized` | The API key is missing or invalid |
+| `404` | `currency_not_found` | No currency with this code in your program |

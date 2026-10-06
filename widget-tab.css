@@ -16,3 +16,167 @@ html:not(.zbd-widget-route) [role="tablist"] a[href$="/widget"],
 html:not(.zbd-widget-route) [role="tablist"] a[href$="/widget/"] {
   display: none !important;
 }
+
+/*
+ * Dark mode: body text uses the light-mode prose color.
+ * Mintlify's custom-CSS pipeline re-declares `.prose` light variables in @layer utilities,
+ * which beats the `dark:prose-invert` override living in @layer components (layer order wins
+ * over specificity). Re-assert the inverted variables unlayered so they win the cascade.
+ */
+.dark\:prose-invert:is(.dark *) {
+  --tw-prose-body: var(--tw-prose-invert-body);
+  --tw-prose-headings: var(--tw-prose-invert-headings);
+  --tw-prose-lead: var(--tw-prose-invert-lead);
+  --tw-prose-links: var(--tw-prose-invert-links);
+  --tw-prose-bold: var(--tw-prose-invert-bold);
+  --tw-prose-counters: var(--tw-prose-invert-counters);
+  --tw-prose-bullets: var(--tw-prose-invert-bullets);
+  --tw-prose-hr: var(--tw-prose-invert-hr);
+  --tw-prose-quotes: var(--tw-prose-invert-quotes);
+  --tw-prose-quote-borders: var(--tw-prose-invert-quote-borders);
+  --tw-prose-captions: var(--tw-prose-invert-captions);
+  --tw-prose-code: var(--tw-prose-invert-code);
+  --tw-prose-pre-code: var(--tw-prose-invert-pre-code);
+  --tw-prose-pre-bg: var(--tw-prose-invert-pre-bg);
+  --tw-prose-th-borders: var(--tw-prose-invert-th-borders);
+  --tw-prose-td-borders: var(--tw-prose-invert-td-borders);
+}
+
+/*
+ * --primary is stored as a raw RGB channel triplet (e.g. "22 89 231"), so it must be
+ * consumed as rgb(var(--primary)). Mintlify's custom-CSS pipeline re-injects the theme
+ * utilities without the rgb() wrapper (e.g. background-color:var(--primary)), which is
+ * invalid and falls back to transparent/inherit. That hid the active sidebar icon and
+ * text in light mode. Re-assert the wrapped forms unlayered so they win the cascade.
+ * Light mode only: dark mode uses -light variants via higher-specificity layered rules.
+ */
+html:not(.dark) .bg-primary {
+  background-color: rgb(var(--primary));
+}
+html:not(.dark) .text-primary {
+  color: rgb(var(--primary));
+}
+html:not(.dark) .border-primary {
+  border-color: rgb(var(--primary));
+}
+html:not(.dark) .bg-primary\/10 {
+  background-color: color-mix(in oklab, rgb(var(--primary)) 10%, transparent);
+}
+@supports not (color: color-mix(in lab, red, red)) {
+  html:not(.dark) .bg-primary\/10 {
+    background-color: rgb(var(--primary) / 0.1);
+  }
+}
+
+/*
+ * Double bullets on unordered lists: Mintlify styles list dots with an ::before pseudo
+ * element (dot at left:0.5em) but the native `list-style-type: disc` marker is never
+ * suppressed, so each item renders two bullets. Hide the native marker; the ::before
+ * dot is the intended one. Ordered lists are unaffected (numbered marker, no ::before).
+ */
+#content-area ul > li {
+  list-style: none !important;
+}
+
+/*
+ * List indent: the ::before dot already sits inside the li at left:8px, but the ul also
+ * carries 26px padding-left plus 32px li padding — pushing text ~58px right of the
+ * heading edge. Drop the ul padding; the dot keeps its own offset and text aligns 32px in.
+ * (No nested lists in current content; if nested lists are added, scope to :not(ul ul).)
+ */
+#content-area ul {
+  padding-left: 0;
+}
+
+/*
+ * CardGroup rows: .card carries margin-block 8px which stacks on top of the grid's
+ * 16px row-gap, doubling the space between card rows to 32px. Zero the card margins;
+ * the grid gap alone handles spacing.
+ */
+#content-area .card {
+  margin-block: 0;
+}
+
+/*
+ * Table spacing: the typography plugin gives tables margin-block 2em, and Mintlify's
+ * scroll wrapper adds another my/py of 1em — ~64px of dead space above and below every
+ * table. Drop the table's own margin; the wrapper's 1em keeps paragraph-like rhythm.
+ */
+#content-area table {
+  margin-block: 0;
+}
+
+/*
+ * Steps: the step title <p> should sit level with its number badge. The badge wrapper
+ * carries py-2 (8px), and the title's own mt-2 (8px) compensates — but the prose
+ * paragraph rule (margin-top: 1.25em = 20px) overrides mt-2, pushing the title down
+ * 12px below the badge. Pin it back to 8px.
+ */
+#content-area .step p.font-semibold {
+  margin-top: 8px;
+}
+
+/*
+ * Sidebar scrollbar touches content: the sidebar scroll container is absolutely
+ * positioned (inset-0) inside a fixed-width rail, so its right scrollbar edge sits
+ * flush against the content area — zero gap, and with classic scrollbars the bar
+ * itself touches the text. Pull the scroller in 24px from the rail's right edge.
+ */
+aside [class*="--scroll-area-fade-size"].pr-8,
+[class*="--scroll-area-fade-size"].pr-8 {
+  right: 24px;
+  width: calc(100% - 24px);
+}
+
+/*
+ * Double underline on prose links: Mintlify styles .prose a with a 1px border-bottom
+ * (@layer components) but the typography-plugin rule text-decoration: underline is
+ * re-declared in @layer utilities, which wins on layer order — so links get the native
+ * underline AND the border. Keep only the border (the intended style).
+ */
+#content-area .prose a:not([class*="opacity-0"]) {
+  text-decoration: none !important;
+}
+
+/*
+ * Text selection color: Mintlify's ::selection rules use var(--primary) raw (channel
+ * triplet, not a color), which is invalid — selection shows no visible highlight.
+ * Light mode: black background / white text. Dark mode: reversed.
+ */
+html:not(.dark) ::selection {
+  background: #000;
+  color: #fff;
+}
+.dark ::selection {
+  background: #fff;
+  color: #000;
+}
+
+/*
+ * Inline code in tables (event names, API paths): keep each token on one line.
+ * Long tokens wrap their container instead of breaking mid-name, and the table
+ * cell allows the token to shrink so the row never overflows.
+ */
+.mdx-content td code,
+.mdx-content th code {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: top;
+}
+
+/*
+ * CardGroup row spacing: Mintlify's card class ships my-2 (8px vertical margins).
+ * Grid row-gap is 0, so stacked rows show a 16px band of page background between
+ * them while columns stay 16px apart — uneven. Drop the vertical margins; the
+ * grid's 16px column gap stays, and rows use the same 16px via row-gap.
+ */
+.mdx-content .columns > .card {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.mdx-content .columns {
+  gap: 16px;
+}
