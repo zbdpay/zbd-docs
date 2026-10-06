@@ -166,3 +166,17 @@ html:not(.dark) ::selection {
   max-width: 100%;
   vertical-align: top;
 }
+
+/*
+ * CardGroup row spacing: Mintlify's card class ships my-2 (8px vertical margins).
+ * Grid row-gap is 0, so stacked rows show a 16px band of page background between
+ * them while columns stay 16px apart — uneven. Drop the vertical margins; the
+ * grid's 16px column gap stays, and rows use the same 16px via row-gap.
+ */
+.mdx-content .columns > .card {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.mdx-content .columns {
+  gap: 16px;
+}

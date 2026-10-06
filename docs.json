@@ -477,8 +477,8 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/zebedeeio",
-      "github": "https://github.com/zebedeeio"
+      "x": "https://x.com/zbdpay",
+      "github": "https://github.com/zbdpay"
     }
   },
   "redirects": [
@@ -688,7 +688,7 @@
     },
     {
       "source": "/docs/examples",
-      "destination": "https://github.com/ZBDLabs"
+      "destination": "https://github.com/zbdpay"
     },
     {
       "source": "/docs/sdk",
@@ -1220,7 +1220,7 @@
     },
     {
       "source": "/payments/templates",
-      "destination": "https://github.com/ZBDLabs"
+      "destination": "https://github.com/zbdpay"
     },
     {
       "source": "/widget",
