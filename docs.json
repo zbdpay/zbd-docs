@@ -544,7 +544,7 @@
     },
     {
       "source": "/get-started/zbd-ramp",
-      "destination": "/retired-products"
+      "destination": "/embedded-accounts"
     },
     {
       "source": "/get-started/zbd-payments-api",
@@ -596,11 +596,11 @@
     },
     {
       "source": "/payments/ramp",
-      "destination": "/retired-products"
+      "destination": "/embedded-accounts"
     },
     {
       "source": "/payments/ramp/:slug*",
-      "destination": "/retired-products"
+      "destination": "/embedded-accounts"
     },
     {
       "source": "/payments/sdk",
