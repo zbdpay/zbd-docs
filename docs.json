@@ -12,6 +12,88 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Embedded Payouts",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "embedded-payouts"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "embedded-payouts/how-payouts-work",
+              "embedded-payouts/funding",
+              "embedded-payouts/users",
+              "embedded-payouts/methods-and-coverage"
+            ]
+          },
+          {
+            "group": "Integration",
+            "pages": [
+              "embedded-payouts/tracking-earnings-yourself",
+              "embedded-payouts/tracking-earnings-with-zbd",
+              "embedded-payouts/cash-out-widget",
+              "embedded-payouts/browser-events"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "embedded-payouts/apis/overview",
+              {
+                "group": "Projects",
+                "pages": [
+                  "embedded-payouts/apis/list-projects",
+                  "embedded-payouts/apis/get-project"
+                ]
+              },
+              {
+                "group": "Users",
+                "pages": [
+                  "embedded-payouts/apis/create-user",
+                  "embedded-payouts/apis/get-user",
+                  "embedded-payouts/apis/update-user",
+                  "embedded-payouts/apis/delete-user",
+                  "embedded-payouts/apis/list-payment-methods",
+                  "embedded-payouts/apis/create-session",
+                  "embedded-payouts/apis/get-disclosures",
+                  "embedded-payouts/apis/record-disclosures"
+                ]
+              },
+              {
+                "group": "Payouts",
+                "pages": [
+                  "embedded-payouts/apis/create-payout",
+                  "embedded-payouts/apis/get-payout",
+                  "embedded-payouts/apis/list-payouts"
+                ]
+              },
+              {
+                "group": "Earnings",
+                "pages": [
+                  "embedded-payouts/apis/credit-user",
+                  "embedded-payouts/apis/debit-user",
+                  "embedded-payouts/apis/get-balances",
+                  "embedded-payouts/apis/list-transactions"
+                ]
+              },
+              {
+                "group": "Webhooks",
+                "pages": [
+                  "embedded-payouts/apis/webhook-events",
+                  "embedded-payouts/apis/create-webhook",
+                  "embedded-payouts/apis/list-webhooks",
+                  "embedded-payouts/apis/update-webhook",
+                  "embedded-payouts/apis/delete-webhook"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Embedded Accounts",
         "groups": [
           {
@@ -108,88 +190,6 @@
                   "embedded-accounts/apis/list-webhooks",
                   "embedded-accounts/apis/update-webhook",
                   "embedded-accounts/apis/delete-webhook"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Embedded Payouts",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "embedded-payouts"
-            ]
-          },
-          {
-            "group": "Concepts",
-            "pages": [
-              "embedded-payouts/how-payouts-work",
-              "embedded-payouts/funding",
-              "embedded-payouts/users",
-              "embedded-payouts/methods-and-coverage"
-            ]
-          },
-          {
-            "group": "Integration",
-            "pages": [
-              "embedded-payouts/tracking-earnings-yourself",
-              "embedded-payouts/tracking-earnings-with-zbd",
-              "embedded-payouts/cash-out-widget",
-              "embedded-payouts/browser-events"
-            ]
-          },
-          {
-            "group": "API Reference",
-            "pages": [
-              "embedded-payouts/apis/overview",
-              {
-                "group": "Projects",
-                "pages": [
-                  "embedded-payouts/apis/list-projects",
-                  "embedded-payouts/apis/get-project"
-                ]
-              },
-              {
-                "group": "Users",
-                "pages": [
-                  "embedded-payouts/apis/create-user",
-                  "embedded-payouts/apis/get-user",
-                  "embedded-payouts/apis/update-user",
-                  "embedded-payouts/apis/delete-user",
-                  "embedded-payouts/apis/list-payment-methods",
-                  "embedded-payouts/apis/create-session",
-                  "embedded-payouts/apis/get-disclosures",
-                  "embedded-payouts/apis/record-disclosures"
-                ]
-              },
-              {
-                "group": "Payouts",
-                "pages": [
-                  "embedded-payouts/apis/create-payout",
-                  "embedded-payouts/apis/get-payout",
-                  "embedded-payouts/apis/list-payouts"
-                ]
-              },
-              {
-                "group": "Earnings",
-                "pages": [
-                  "embedded-payouts/apis/credit-user",
-                  "embedded-payouts/apis/debit-user",
-                  "embedded-payouts/apis/get-balances",
-                  "embedded-payouts/apis/list-transactions"
-                ]
-              },
-              {
-                "group": "Webhooks",
-                "pages": [
-                  "embedded-payouts/apis/webhook-events",
-                  "embedded-payouts/apis/create-webhook",
-                  "embedded-payouts/apis/list-webhooks",
-                  "embedded-payouts/apis/update-webhook",
-                  "embedded-payouts/apis/delete-webhook"
                 ]
               }
             ]
