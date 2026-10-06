@@ -1,7 +1,7 @@
 ---
 title: "Create a Payout"
 description: "Send money from your pool to a user's payment method."
-api: "POST https://api.zbdpay.com/api/v1/payments/payouts"
+api: "POST https://api.zbdpay.com/api/v1/payouts"
 ---
 
 Sends a payout to one user's payment method. ZBD checks the user's verification, screening, limits, and, for US bank payouts, the Electronic Funds Transfer disclosure. If every check passes, the amount comes out of your [pool](/embedded-payouts/funding) and the call returns `202` with the payout in `INITIATED`. If a check fails, the call returns a `4xx` and nothing is debited.
@@ -59,7 +59,7 @@ The response includes the fee for the user's payment method and the net amount t
 
 <RequestExample>
 ```bash cURL
-curl -X POST https://api.zbdpay.com/api/v1/payments/payouts \
+curl -X POST https://api.zbdpay.com/api/v1/payouts \
   -H "x-api-key: YOUR_API_KEY" \
   -H "Idempotency-Key: 6b1d3f0e-2a7c-4e19-9d51-0c8f4a2e7b13" \
   -H "Content-Type: application/json" \

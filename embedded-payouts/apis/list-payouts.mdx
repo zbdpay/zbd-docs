@@ -1,7 +1,7 @@
 ---
 title: "List Payouts"
 description: "List payouts, including those sent from your backend and cash outs from the widget."
-api: "GET https://api.zbdpay.com/api/v1/payments/payouts"
+api: "GET https://api.zbdpay.com/api/v1/payouts"
 ---
 
 Covers every payout under your key, whether your backend sent it or a user cashed out in the widget. Use it for reconciliation.
@@ -50,7 +50,7 @@ Covers every payout under your key, whether your backend sent it or a user cashe
 
 <RequestExample>
 ```bash cURL
-curl "https://api.zbdpay.com/api/v1/payments/payouts?status=COMPLETED&from=2026-10-01T00:00:00Z" \
+curl "https://api.zbdpay.com/api/v1/payouts?status=COMPLETED&from=2026-10-01T00:00:00Z" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 </RequestExample>

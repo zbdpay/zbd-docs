@@ -1,7 +1,7 @@
 ---
 title: "Get a Payout"
 description: "Read one payout's current status."
-api: "GET https://api.zbdpay.com/api/v1/payments/payouts/{payoutId}"
+api: "GET https://api.zbdpay.com/api/v1/payouts/{payoutId}"
 ---
 
 Returns the same fields as [Create a Payout](/embedded-payouts/apis/create-payout#response), with the current `status` and the payout's `origin`. Webhooks tell you when a status changes, so use this for reconciliation and support rather than polling.
@@ -22,7 +22,7 @@ Returns the same fields as [Create a Payout](/embedded-payouts/apis/create-payou
 
 <RequestExample>
 ```bash cURL
-curl https://api.zbdpay.com/api/v1/payments/payouts/po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44 \
+curl https://api.zbdpay.com/api/v1/payouts/po_8f2c41d7-3b9e-4a10-b6f2-91de0c7a5e44 \
   -H "x-api-key: YOUR_API_KEY"
 ```
 </RequestExample>
