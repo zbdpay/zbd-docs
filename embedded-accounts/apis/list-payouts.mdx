@@ -1,7 +1,7 @@
 ---
 title: "List Payouts"
 description: "List cash outs across your program, for reconciliation."
-api: "GET https://api.zbdpay.com/api/v1/payments/payouts"
+api: "GET https://api.zbdpay.com/api/v1/payouts"
 ---
 
 Every cash out a user makes in the widget creates a payout. Use this to reconcile them, or to find one by user or status.
@@ -50,7 +50,7 @@ Every cash out a user makes in the widget creates a payout. Use this to reconcil
 
 <RequestExample>
 ```bash cURL
-curl "https://api.zbdpay.com/api/v1/payments/payouts?status=COMPLETED&from=2026-10-01T00:00:00Z" \
+curl "https://api.zbdpay.com/api/v1/payouts?status=COMPLETED&from=2026-10-01T00:00:00Z" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 </RequestExample>

@@ -151,3 +151,18 @@ html:not(.dark) ::selection {
   background: #fff;
   color: #000;
 }
+
+/*
+ * Inline code in tables (event names, API paths): keep each token on one line.
+ * Long tokens wrap their container instead of breaking mid-name, and the table
+ * cell allows the token to shrink so the row never overflows.
+ */
+.mdx-content td code,
+.mdx-content th code {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: top;
+}
