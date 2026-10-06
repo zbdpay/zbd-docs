@@ -2,7 +2,6 @@
 title: "Create a User"
 description: "Create a user and get back the ZBD user ID you'll use in every other call."
 api: "POST https://api.zbdpay.com/api/v1/users"
-playground: "none"
 ---
 
 Call this from your server when a user signs up. The call is idempotent on `publisher_user_id`: the first call returns `201`, and calling again with the same identifier returns `200` with the same user, so it's safe to retry.

@@ -2,7 +2,6 @@
 title: "List Payment Methods"
 description: "Read a user's linked payment methods, masked, with the ID you send on a payout."
 api: "GET https://api.zbdpay.com/api/v1/users/{userId}/payment-methods"
-playground: "none"
 ---
 
 Users add payment methods in the widget's payment method selection flow. This endpoint returns them, masked, so your backend can get the `payment_method_id` to send on [Create a Payout](/embedded-payouts/apis/create-payout), or show them in your own selector.

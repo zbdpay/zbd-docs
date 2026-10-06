@@ -2,7 +2,6 @@
 title: "Get a Payout"
 description: "Read one payout's current status."
 api: "GET https://api.zbdpay.com/api/v1/payouts/{payoutId}"
-playground: "none"
 ---
 
 Returns the same fields as [Create a Payout](/embedded-payouts/apis/create-payout#response), with the current `status` and the payout's `origin`. Webhooks tell you when a status changes, so use this for reconciliation and support rather than polling.
