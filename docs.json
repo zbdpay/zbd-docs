@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "almond",
   "name": "ZBD Documentation",
   "description": "ZBD is the global Bitcoin payments API for app and game developers. Integrate ZBD into your app or game to enable multicurrency payments, rewards, and payouts in minutes.",
   "colors": {
@@ -10,9 +10,10 @@
   },
   "favicon": "/favicon.png",
   "navigation": {
-    "tabs": [
+    "anchors": [
       {
-        "tab": "Embedded Payouts",
+        "anchor": "Payouts",
+        "icon": "money-bill-transfer",
         "groups": [
           {
             "group": "Get Started",
@@ -94,7 +95,8 @@
         ]
       },
       {
-        "tab": "Embedded Accounts",
+        "anchor": "Accounts",
+        "icon": "wallet",
         "groups": [
           {
             "group": "Get Started",
@@ -197,7 +199,8 @@
         ]
       },
       {
-        "tab": "Embedded Rewards",
+        "anchor": "Rewards",
+        "icon": "gift",
         "groups": [
           {
             "group": "Get Started",
@@ -304,7 +307,9 @@
         ]
       },
       {
-        "tab": "Bitcoin",
+        "anchor": "Bitcoin",
+        "icon": "bitcoin",
+        "hidden": true,
         "groups": [
           {
             "group": "Bitcoin Payments",
@@ -452,7 +457,7 @@
   "navbar": {
     "links": [
       {
-        "label": "Status",
+        "label": "API Status",
         "href": "https://status.zbdpay.com/"
       },
       {
